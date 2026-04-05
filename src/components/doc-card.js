@@ -1,5 +1,6 @@
 import { escapeHtml, highlightSearchTerms } from '../js/html.js';
 import { renderDocumentSurface } from './document-surface.js';
+import { renderDocumentTextPreview } from './document-text-preview.js';
 import {
   buildDocumentLegacyRoute,
   buildDocumentRoute,
@@ -96,14 +97,15 @@ export function renderDocCard(document) {
   return `
     <article class="doc-card">
       <div class="doc-card-preview">
-        ${renderDocumentSurface(document, { mode: 'summary', title: 'Быстрый обзор' })}
+        ${renderDocumentTextPreview(document, { title: 'Фрагмент документа', compact: true, limit: 2 })
+          || renderDocumentSurface(document, { mode: 'summary', title: 'Быстрый обзор' })}
       </div>
       <div class="doc-card-body">
         <p class="doc-card-kicker">${escapeHtml(document.gostNumber)}</p>
         <h3>${escapeHtml(document.title)}</h3>
         <p class="doc-card-meta">${escapeHtml(document.year)} · ${escapeHtml(document.pages)} стр. · ${escapeHtml(document.language?.toUpperCase() ?? 'RU')}</p>
         ${renderSignalChips(document)}
-        <p class="doc-card-description">${escapeHtml(description)}</p>
+        <p class="doc-card-description">${escapeHtml(document.previewExcerpt || description)}</p>
         ${renderSearchPreview(searchHit, document.searchQuery ?? '', matchedPagesLabel)}
         ${searchHit
           ? `<p class="doc-card-search-meta">${searchMetaLabel}</p>`

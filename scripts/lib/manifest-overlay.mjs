@@ -1,4 +1,5 @@
 import { readCanonicalDocument } from './canonical-document.mjs';
+import { buildCanonicalPreview } from './canonical-preview.mjs';
 import { enrichDocumentRecord } from './document-record.mjs';
 import { buildCurationReportEntry } from './curation-report.mjs';
 import { readCurationDraft } from './curation-draft.mjs';
@@ -13,6 +14,7 @@ export function applyCanonicalFieldsToRecord(record, canonicalDocument) {
   }
 
   const curationReport = buildCurationReportEntry(canonicalDocument, record);
+  const preview = buildCanonicalPreview(canonicalDocument);
 
   return enrichDocumentRecord({
     ...record,
@@ -29,6 +31,8 @@ export function applyCanonicalFieldsToRecord(record, canonicalDocument) {
     curationIssuesCount: curationReport.counts.errors + curationReport.counts.warnings,
     curationWarningsCount: curationReport.counts.warnings,
     curationErrorsCount: curationReport.counts.errors,
+    previewExcerpt: preview.previewExcerpt,
+    previewSections: preview.previewSections,
     v2BlockCount: getCount(canonicalDocument.blocks),
     v2DefinitionsCount: getCount(canonicalDocument.definitions),
     v2RelatedNormsCount: getCount(canonicalDocument.relatedNorms)

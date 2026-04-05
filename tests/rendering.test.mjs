@@ -25,6 +25,14 @@ test('renderDocCard escapes document fields in generated markup', () => {
     tags: ['<svg onload=alert(1)>', 'Безопасный тег'],
     previewUrl: 'javascript:alert(1)',
     viewerUrl: 'data:text/html,test',
+    previewExcerpt: 'Фрагмент <unsafe> текста.',
+    previewSections: [
+      {
+        title: '1. Область применения',
+        pageNumber: 4,
+        excerpt: 'Настоящий стандарт устанавливает <b>основные</b> положения.'
+      }
+    ],
     searchHit: {
       totalMatches: 4,
       matchedPages: [0, 2],
@@ -35,13 +43,15 @@ test('renderDocCard escapes document fields in generated markup', () => {
   });
 
   assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt;/);
+  assert.match(html, /Фрагмент &lt;unsafe&gt; текста\./);
+  assert.match(html, /Настоящий стандарт устанавливает &lt;b&gt;основные&lt;\/b&gt; положения\./);
   assert.match(html, /&lt;script&gt;alert\(1\)&lt;\/script&gt;Заголовок/);
   assert.match(html, /&lt;b&gt;<mark>совпадение<\/mark>&lt;\/b&gt;/);
   assert.match(html, /&lt;svg onload=alert\(1\)&gt;/);
   assert.doesNotMatch(html, /<script>alert\(1\)<\/script>/);
   assert.doesNotMatch(html, /src="javascript:alert\(1\)"/);
   assert.doesNotMatch(html, /href="data:text\/html,test"/);
-  assert.match(html, /Быстрый обзор/);
+  assert.match(html, /Фрагмент документа/);
   assert.match(html, /href="\/doc\/gost-1-0-2015\/legacy#match-1"/);
   assert.match(html, /Совпадения: 4 · стр. 1, 3/);
   assert.match(html, /Page hit/);
@@ -66,6 +76,7 @@ test('renderDocCard renders semantic search preview for V2 hits', () => {
     v2BlockCount: 24,
     v2DefinitionsCount: 5,
     v2RelatedNormsCount: 18,
+    previewExcerpt: 'Сравнение цвета проводят при нормированном освещении.',
     searchHit: {
       kind: 'v2-definition',
       totalMatches: 2,
@@ -78,6 +89,7 @@ test('renderDocCard renders semantic search preview for V2 hits', () => {
   });
 
   assert.match(html, /Определение/);
+  assert.match(html, /Сравнение цвета проводят при нормированном освещении\./);
   assert.match(html, /Определение: контрольный образец/);
   assert.match(html, /Печать A4: стр\. 7/);
   assert.match(html, /Кураторски проверено/);
@@ -111,6 +123,14 @@ test('renderDocumentPage escapes route and manifest content', () => {
     editionCount: 2,
     attachmentCount: 4,
     assetCount: 3,
+    previewExcerpt: 'Настоящий стандарт устанавливает цели и принципы межгосударственной стандартизации.',
+    previewSections: [
+      {
+        title: '1. Область применения',
+        pageNumber: 4,
+        excerpt: 'Настоящий стандарт устанавливает цели и принципы межгосударственной стандартизации.'
+      }
+    ],
     navItems: [
       {
         label: '<img src=x onerror=alert(1)>',
@@ -128,6 +148,8 @@ test('renderDocumentPage escapes route and manifest content', () => {
   assert.match(html, /Состояние reader и migration layer/);
   assert.match(html, /Document package/);
   assert.match(html, /2 редакций · 4 вложений/);
+  assert.match(html, /Текст документа/);
+  assert.match(html, /Настоящий стандарт устанавливает цели и принципы межгосударственной стандартизации\./);
   assert.doesNotMatch(html, /href="javascript:alert\(1\)"/);
   assert.doesNotMatch(html, /href="\/doc\/bad%20slug%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert\(1\)%3E\/legacy"/);
   assert.match(html, /href="\/doc\/bad%20slug%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert\(1\)%3E\/print"/);

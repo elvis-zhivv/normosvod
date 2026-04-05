@@ -219,7 +219,7 @@ async function renderRoute() {
     const documentItem = state.documents.find((item) => item.slug === route.params.slug);
     const requestedView = route.query.get('view');
     const showEmbeddedViewer = requestedView === 'card' && route.query.get('embed') === '1';
-    const showV2Reader = requestedView === 'v2' || (requestedView !== 'card' && documentItem?.readerMode !== 'legacy');
+    const showV2Reader = requestedView === 'v2' || (requestedView !== 'card' && Boolean(documentItem?.canonicalDocumentUrl));
     route.pageTitle = documentItem?.gostNumber ?? route.params.slug;
 
     renderLayout(

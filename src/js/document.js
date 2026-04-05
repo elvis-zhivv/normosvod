@@ -1,4 +1,5 @@
 import { renderDocumentSurface } from '../components/document-surface.js';
+import { renderDocumentTextPreview } from '../components/document-text-preview.js';
 import { escapeHtml } from './html.js';
 import {
   buildDocumentCardRoute,
@@ -271,6 +272,29 @@ function renderRouteSummary(document, { mode = 'summary' } = {}) {
   `;
 }
 
+function renderDocumentContentSection(document) {
+  const preview = renderDocumentTextPreview(document, {
+    title: 'Текст документа',
+    limit: 4
+  });
+
+  if (!preview) {
+    return '';
+  }
+
+  return `
+    <section class="document-workspace-panel">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Содержимое</p>
+          <h2>Текст документа</h2>
+        </div>
+      </div>
+      ${preview}
+    </section>
+  `;
+}
+
 function renderDocumentWorkspace(document, {
   mode = 'summary',
   anchor = ''
@@ -280,6 +304,7 @@ function renderDocumentWorkspace(document, {
       ${renderWorkspaceOutline(document)}
       <div class="document-workspace-main">
         ${renderDocumentOverview(document, { mode, anchor })}
+        ${renderDocumentContentSection(document)}
         ${renderRouteSummary(document, { mode })}
         ${renderPlatformStatus(document)}
         ${renderNavItems(document)}

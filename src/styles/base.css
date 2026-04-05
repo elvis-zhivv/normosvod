@@ -348,6 +348,7 @@ select {
   border-radius: 12px;
   overflow: hidden;
   background: #f4f5f6;
+  padding: 18px;
 }
 
 .document-surface {
@@ -445,6 +446,53 @@ select {
 .document-surface-empty {
   color: var(--muted);
   font-size: 0.88rem;
+}
+
+.document-text-preview {
+  display: grid;
+  gap: 14px;
+}
+
+.document-text-preview-lead,
+.document-preview-excerpt {
+  margin: 0;
+  line-height: 1.7;
+}
+
+.document-text-preview-lead {
+  font-size: 1rem;
+  color: var(--text);
+}
+
+.document-preview-sections {
+  display: grid;
+  gap: 12px;
+}
+
+.document-preview-sections-compact {
+  gap: 10px;
+}
+
+.document-preview-section {
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(24, 32, 42, 0.04);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.document-preview-title,
+.document-preview-meta {
+  margin: 0 0 8px;
+}
+
+.document-preview-title {
+  font-weight: 700;
+  color: var(--text);
+}
+
+.document-preview-meta {
+  font-size: 0.86rem;
+  color: var(--muted);
 }
 
 .doc-card-body h3 {

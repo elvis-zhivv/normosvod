@@ -112,6 +112,13 @@
       }
     ],
     "canonicalDocumentUrl": "/data/canonical/gost-1-0-2015.json",
+    "sourceLabel": "Legacy HTML viewer",
+    "sourceCategory": "legacy",
+    "supportsCanonicalDocument": false,
+    "supportsPackageManifest": false,
+    "supportsEditions": false,
+    "supportsAttachments": false,
+    "supportsAssets": false,
     "themeId": "regulation",
     "readerMode": "legacy",
     "migrationStatus": "imported",
@@ -126,6 +133,33 @@
     "curationIssuesCount": 2,
     "curationWarningsCount": 2,
     "curationErrorsCount": 0,
+    "previewExcerpt": "1 Область применения Настоящий стандарт устанавливает цели и принципы межгосударственной стандартизации, основные направления работ и объекты межгосударственной стандартизации, организационные основы межгосударственной системы стандартизации, категории документов по межгосударственной стандартизации и правила их применения. Примечание — В настоящем стандарте применены термины по ГОСТ 1.1. Настоящий стандарт…",
+    "previewSections": [
+      {
+        "blockId": "gost-1-0-2015-1-oblast-primeneniya",
+        "title": "1. Область применения",
+        "pageNumber": 4,
+        "excerpt": "1 Область применения Настоящий стандарт устанавливает цели и принципы межгосударственной стандартизации, основные направления работ и объекты межгосударственной стандартизации, организационные основы межгосударственной системы…"
+      },
+      {
+        "blockId": "gost-1-0-2015-2-normativnye-ssylki",
+        "title": "2. Нормативные ссылки",
+        "pageNumber": 4,
+        "excerpt": "2 Нормативные ссылки В настоящем стандарте использованы нормативные ссылки на следующие стандарты: ГОСТ 1.1—2002 Межгосударственная система стандартизации. Термины и определения ГОСТ 1.2—2015 Межгосударственная система стандартизации.…"
+      },
+      {
+        "blockId": "gost-1-0-2015-3-celi-mezhgosudarstvennoi-standartizacii",
+        "title": "3. Цели межгосударственной стандартизации",
+        "pageNumber": 5,
+        "excerpt": "3 Цели межгосударственной стандартизации Основными целями межгосударственной стандартизации являются: - содействие устранению технических барьеров в торговле; - обеспечение безопасности для жизни, здоровья и имущества населения; -…"
+      },
+      {
+        "blockId": "gost-1-0-2015-4-osnovnye-principy-mezhgosudarstvennoi-standartizacii",
+        "title": "4. Основные принципы межгосударственной стандартизации",
+        "pageNumber": 5,
+        "excerpt": "4 Основные принципы межгосударственной стандартизации Основными принципами межгосударственной стандартизации являются: - приоритетное использование международных и европейских стандартов при планировании разработки межгосударственных…"
+      }
+    ],
     "v2BlockCount": 16,
     "v2DefinitionsCount": 0,
     "v2RelatedNormsCount": 14,
@@ -287,6 +321,13 @@
       }
     ],
     "canonicalDocumentUrl": "/data/canonical/gost-29319-2025.json",
+    "sourceLabel": "Legacy HTML viewer",
+    "sourceCategory": "legacy",
+    "supportsCanonicalDocument": false,
+    "supportsPackageManifest": false,
+    "supportsEditions": false,
+    "supportsAttachments": false,
+    "supportsAssets": false,
     "themeId": "coatings",
     "readerMode": "hybrid",
     "migrationStatus": "entity-linked",
@@ -301,6 +342,33 @@
     "curationIssuesCount": 2,
     "curationWarningsCount": 2,
     "curationErrorsCount": 0,
+    "previewExcerpt": "МЕЖГОСУДАРСТВЕННЫЙ СОВЕТ ПО СТАНДАРТИЗАЦИИ, МЕТРОЛОГИИ И СЕРТИФИКАЦИИ (МГС) INTERSTATE COUNCIL FOR STANDARDIZATION, METROLOGY AND CERTIFICATION (ISC) МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ ГОСТ 29319— 2025 МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ Метод визуального сравнения цвета (ISO 3668:2017, NEQ) Издание официальное Москва Российский институт стандартизации 2026",
+    "previewSections": [
+      {
+        "blockId": "gost-29319-2025-stranica-i-titul",
+        "title": "Страница I — «Титул»",
+        "pageNumber": 1,
+        "excerpt": "МЕЖГОСУДАРСТВЕННЫЙ СОВЕТ ПО СТАНДАРТИЗАЦИИ, МЕТРОЛОГИИ И СЕРТИФИКАЦИИ (МГС) INTERSTATE COUNCIL FOR STANDARDIZATION, METROLOGY AND CERTIFICATION (ISC) МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ ГОСТ 29319— 2025 МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ Метод визуального…"
+      },
+      {
+        "blockId": "gost-29319-2025-stranica-iii-informacionnye-svedeniya",
+        "title": "Страница III — «Информационные сведения»",
+        "pageNumber": 3,
+        "excerpt": "ГОСТ 29319—2025 Информация о введении в действие (прекращении действия) настоящего стандарта и изменений к нему на территории указанных выше государств публикуется в указателях национальных стандартов, издаваемых в этих государствах, а…"
+      },
+      {
+        "blockId": "gost-29319-2025-1-oblast-primeneniya",
+        "title": "1. Область применения",
+        "pageNumber": 5,
+        "excerpt": "1 Область применения Настоящий стандарт распространяется на лакокрасочные материалы и устанавливает метод визуального сравнения цвета лакокрасочных покрытий с эталоном сравнения при естественном или искусственном дневном освещении.…"
+      },
+      {
+        "blockId": "gost-29319-2025-2-normativnye-ssylki",
+        "title": "2. Нормативные ссылки",
+        "pageNumber": 5,
+        "excerpt": "2 Нормативные ссылки В настоящем стандарте использованы нормативные ссылки на следующие межгосударственные стандарты: ГОСТ 8784 Материалы лакокрасочные. Методы определения укрывистости ГОСТ 8832 Материалы лакокрасочные. Методы получения…"
+      }
+    ],
     "v2BlockCount": 24,
     "v2DefinitionsCount": 5,
     "v2RelatedNormsCount": 18,
@@ -447,6 +515,13 @@
       }
     ],
     "canonicalDocumentUrl": "/data/canonical/gost-8784-75.json",
+    "sourceLabel": "Legacy HTML viewer",
+    "sourceCategory": "legacy",
+    "supportsCanonicalDocument": false,
+    "supportsPackageManifest": false,
+    "supportsEditions": false,
+    "supportsAttachments": false,
+    "supportsAssets": false,
     "themeId": "coatings",
     "readerMode": "legacy",
     "migrationStatus": "imported",
@@ -461,6 +536,33 @@
     "curationIssuesCount": 3,
     "curationWarningsCount": 3,
     "curationErrorsCount": 0,
+    "previewExcerpt": "МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ Методы определения укрывистости Paint materials. Methods for determination of hiding power ГОСТ 8784—75 ОКСТУ 2310 Дата введения 01.01.76 Настоящий стандарт распространяется на лакокрасочные материалы (эмали, краски) и неорганические пигменты и устанавливает визуальный, инструментальный и инструментально-математический методы определения укрывистости. За…",
+    "previewSections": [
+      {
+        "blockId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti",
+        "title": "Титульная страница и 1. Визуальный метод определения укрывистости",
+        "pageNumber": 2,
+        "excerpt": "МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ Методы определения укрывистости Paint materials. Methods for determination of hiding power ГОСТ 8784—75 ОКСТУ 2310 Дата введения 01.01.76 Настоящий стандарт распространяется на…"
+      },
+      {
+        "blockId": "gost-8784-75-1-1-suschnost-metoda",
+        "title": "1.1. Сущность метода",
+        "pageNumber": 2,
+        "excerpt": "1.1. Сущность метода Метод заключается в нанесении слоев лакокрасочного материала на стеклянную пластинку до тех пор, пока контуры черно-белой контрастной пластинки или шахматной доски, подложенной под стеклянную пластинку, станут…"
+      },
+      {
+        "blockId": "gost-8784-75-1-2-apparatura-i-materialy",
+        "title": "1.2. Аппаратура и материалы",
+        "pageNumber": 2,
+        "excerpt": "1.2. Аппаратура и материалы Пластинки стеклянные (стекло для фотографических пластинок размером 9 × 12—1,2 по ТУ 6—43—0205133—03, допускается применять стеклянные пластинки размером 180 × 240 мм, на которых закрашивается площадь размером…"
+      },
+      {
+        "blockId": "gost-8784-75-1-3-provedenie-ispytaniya",
+        "title": "1.3. Проведение испытания",
+        "pageNumber": 3,
+        "excerpt": "1.3. Проведение испытания Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Пигменты предварительно растирают с натуральной олифой (ГОСТ 7931), затем пигментную пасту разбавляют олифой до получения готовой…"
+      }
+    ],
     "v2BlockCount": 21,
     "v2DefinitionsCount": 0,
     "v2RelatedNormsCount": 20,
