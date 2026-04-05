@@ -1,5 +1,6 @@
 archive/imported/
 archive/replaced/
+archive/deploy/
 incoming/
 node_modules/
 dist/

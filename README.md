@@ -17,6 +17,10 @@
 npm install
 npm run dev
 npm run build
+npm run build:reg
+npm run build:pages
+npm run deploy:pack
+npm run deploy:ssh
 npm run import:all
 ```
 
@@ -32,6 +36,63 @@ node scripts/import-viewer.mjs ./incoming/gost-8784-75.html
 node scripts/import-viewer.mjs --all
 ```
 
+## Деплой на Reg.ru
+
+Для обычного Linux-хостинга Reg.ru с `ispmanager` проект публикуется как статический сайт:
+
+1. Соберите сайт под корень домена:
+
+```bash
+npm run build:reg
+```
+
+2. Загрузите содержимое папки `dist` в корень сайта `normosvod.ru` через `Менеджер файлов` или FTP.
+3. Файл `dist/.htaccess` нужно загрузить вместе с остальными файлами. Он включает rewrite для маршрутов `/catalog` и `/doc/:slug`.
+
+### Вариант 1. Архив для файлового менеджера
+
+```bash
+npm run deploy:pack
+```
+
+Команда:
+
+- собирает `dist`;
+- создаёт zip-архив в `archive/deploy/`;
+- этот архив можно загрузить в `www/<домен>/` через `ispmanager` и распаковать на сервере.
+
+### Вариант 2. Выкладка по SSH/SCP
+
+1. Скопируйте `.env.example` в `.env`.
+2. Заполните параметры:
+
+```bash
+REG_HOST=server204.hosting.reg.ru
+REG_PORT=22
+REG_USER=ваш_логин_хостинга
+REG_REMOTE_PATH=www/normosvod.ru
+```
+
+3. Запустите:
+
+```bash
+npm run deploy:ssh
+```
+
+Команда:
+
+- собирает `dist`;
+- подключается по `ssh`;
+- создаёт удалённую папку, если её ещё нет;
+- загружает `assets`, `data`, `docs`, `index.html`, `404.html` и `.htaccess` по `scp`.
+
+Важно:
+
+- загружать нужно содержимое `dist`, а не саму папку `dist`;
+- при публикации на корень домена базовый путь должен быть `/`, это уже режим по умолчанию для `build:reg`;
+- viewer-файлы из `dist/docs/...` должны копироваться без изменений.
+- `.env` уже исключён из git и подходит для хранения локальных настроек выкладки.
+
 ## Деплой на GitHub Pages
 
 В проекте уже добавлен workflow [deploy-pages.yml](d:/normosvod/.github/workflows/deploy-pages.yml), рассчитанный на публикацию репозитория `normosvod` как GitHub Pages project site.
@@ -41,9 +102,7 @@ node scripts/import-viewer.mjs --all
 1. `Settings -> Pages`
 2. `Source: GitHub Actions`
 
-После этого каждый push в `main` будет публиковать `dist` на Pages.
-
-Для этого репозитория базовый путь сборки задан как `/normosvod/`.
+После этого каждый push в `main` будет публиковать `dist` на Pages. Для Pages используется базовый путь `/normosvod/`, он задаётся переменной `BASE_PATH` в workflow.
 
 ## Замечания по маршрутам
 
