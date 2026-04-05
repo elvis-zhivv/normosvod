@@ -1772,6 +1772,17 @@ body {
   place-items: start center;
   background: white;
 }
+.viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  place-items: start center;
+}
+.scale-wrap {
+  width: max-content;
+  transform-origin: top center;
+}
 .page {
   margin: 0 !important;
   box-shadow: none !important;
@@ -1779,7 +1790,9 @@ body {
     </style>
   </head>
   <body>
-    <section class="page active g10-cover" data-page="1" aria-label="Обложка" id="cover-page">
+    <div class="viewport">
+      <div class="scale-wrap">
+        <section class="page active g10-cover" data-page="1" aria-label="Обложка" id="cover-page">
             <div class="cover">
               <div class="cover-top-line"></div>
               <div class="cover-top-text">
@@ -1805,5 +1818,25 @@ body {
               </div>
             </div>
           </section>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const wrap = document.querySelector('.scale-wrap');
+        const page = document.querySelector('.page');
+
+        function fit() {
+          if (!wrap || !page) return;
+          const pageRect = page.getBoundingClientRect();
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          const scale = Math.min(viewportWidth / pageRect.width, viewportHeight / pageRect.height, 1);
+          wrap.style.transform = 'scale(' + scale + ')';
+        }
+
+        window.addEventListener('resize', fit);
+        fit();
+      })();
+    </script>
   </body>
 </html>

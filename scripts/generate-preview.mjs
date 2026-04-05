@@ -40,8 +40,19 @@ function buildFallbackHtml({ gostNumber = '', title = '', year = '' }) {
       }
       body {
         display: grid;
-        place-items: center;
+        place-items: start center;
         font-family: Arial, Helvetica, sans-serif;
+      }
+      .viewport {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        display: grid;
+        place-items: start center;
+      }
+      .scale-wrap {
+        width: max-content;
+        transform-origin: top center;
       }
       .page {
         width: 840px;
@@ -77,11 +88,33 @@ function buildFallbackHtml({ gostNumber = '', title = '', year = '' }) {
     </style>
   </head>
   <body>
-    <article class="page">
-      <div class="gost">${escapeHtml(gostNumber)}</div>
-      <div class="title">${escapeHtml(title)}</div>
-      <div class="year">${escapeHtml(year)}</div>
-    </article>
+    <div class="viewport">
+      <div class="scale-wrap">
+        <article class="page">
+          <div class="gost">${escapeHtml(gostNumber)}</div>
+          <div class="title">${escapeHtml(title)}</div>
+          <div class="year">${escapeHtml(year)}</div>
+        </article>
+      </div>
+    </div>
+    <script>
+      (function () {
+        const wrap = document.querySelector('.scale-wrap');
+        const page = document.querySelector('.page');
+
+        function fit() {
+          if (!wrap || !page) return;
+          const pageRect = page.getBoundingClientRect();
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          const scale = Math.min(viewportWidth / pageRect.width, viewportHeight / pageRect.height, 1);
+          wrap.style.transform = 'scale(' + scale + ')';
+        }
+
+        window.addEventListener('resize', fit);
+        fit();
+      })();
+    </script>
   </body>
 </html>`;
 }
@@ -114,6 +147,17 @@ body {
   place-items: start center;
   background: white;
 }
+.viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: grid;
+  place-items: start center;
+}
+.scale-wrap {
+  width: max-content;
+  transform-origin: top center;
+}
 .page {
   margin: 0 !important;
   box-shadow: none !important;
@@ -121,7 +165,29 @@ body {
     </style>
   </head>
   <body>
-    ${firstPageMarkup}
+    <div class="viewport">
+      <div class="scale-wrap">
+        ${firstPageMarkup}
+      </div>
+    </div>
+    <script>
+      (function () {
+        const wrap = document.querySelector('.scale-wrap');
+        const page = document.querySelector('.page');
+
+        function fit() {
+          if (!wrap || !page) return;
+          const pageRect = page.getBoundingClientRect();
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          const scale = Math.min(viewportWidth / pageRect.width, viewportHeight / pageRect.height, 1);
+          wrap.style.transform = 'scale(' + scale + ')';
+        }
+
+        window.addEventListener('resize', fit);
+        fit();
+      })();
+    </script>
   </body>
 </html>`;
 }
