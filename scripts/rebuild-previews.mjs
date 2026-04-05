@@ -17,7 +17,7 @@ async function main() {
     const docDir = path.join(DOCS_DIR, entry.name);
     const html = await readFile(path.join(docDir, 'viewer.html'), 'utf8');
     const meta = await readJsonFile(path.join(docDir, 'meta.json'), {});
-    meta.previewUrl = `/docs/${entry.name}/preview.svg`;
+    meta.previewUrl = `/docs/${entry.name}/preview.html`;
     await generatePreviewOrPlaceholder({ outputDirectory: docDir, html, meta });
     await writeJson(path.join(docDir, 'meta.json'), meta);
     console.log(`Preview rebuilt for ${entry.name}`);

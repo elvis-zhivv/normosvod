@@ -80,7 +80,13 @@ export function renderDocumentPage(document, { showEmbeddedViewer }) {
         <p class="direct-link">Прямой URL: <a href="${viewerUrl}" target="_blank" rel="noreferrer">${viewerUrl}</a></p>
       </div>
       <div class="document-hero-preview">
-        <img src="${previewUrl}" alt="Титульный лист ${document.gostNumber}" loading="lazy" />
+        <iframe
+          class="doc-preview-frame"
+          src="${previewUrl}"
+          title="Титульный лист ${document.gostNumber}"
+          loading="lazy"
+          tabindex="-1"
+        ></iframe>
       </div>
     </section>
     ${showEmbeddedViewer ? renderViewerFrame(document) : ''}

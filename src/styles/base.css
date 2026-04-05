@@ -302,13 +302,12 @@ select {
   background: linear-gradient(180deg, #f2ead7, #dce7f2);
 }
 
-.doc-card-preview img,
-.document-hero-preview img {
+.doc-preview-frame {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  object-position: center top;
+  border: 0;
   background: white;
+  pointer-events: none;
 }
 
 .doc-card-body h3 {

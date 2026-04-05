@@ -3,15 +3,6 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { cleanText } from './lib/text-utils.mjs';
 
-function escapeXml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
-}
-
 function extractFirstPageMarkup(html) {
   const match = html.match(/<section[^>]*class="[^"]*\bpage\b[^"]*"[\s\S]*?<\/section>/i);
   return match ? match[0] : '';
@@ -24,70 +15,121 @@ function extractInlineStyles(html) {
     .join('\n');
 }
 
-function buildFallbackSvg({ gostNumber = '', title = '', year = '' }) {
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="840" height="1188" viewBox="0 0 840 1188">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#f7f1e5"/>
-      <stop offset="100%" stop-color="#e5edf5"/>
-    </linearGradient>
-  </defs>
-  <rect width="840" height="1188" fill="url(#bg)"/>
-  <rect x="44" y="44" width="752" height="1100" rx="28" fill="#fffdf9" stroke="#d7d3cb"/>
-  <text x="88" y="130" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#617087" letter-spacing="4">${escapeXml(gostNumber)}</text>
-  <foreignObject x="88" y="200" width="664" height="760">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family: Georgia, 'Times New Roman', serif; color: #1b2430; display: flex; height: 100%; align-items: center;">
-      <div>
-        <div style="font-size: 58px; line-height: 1.05; font-weight: 700;">${escapeXml(title)}</div>
-        <div style="margin-top: 36px; font-family: Arial, Helvetica, sans-serif; font-size: 26px; font-weight: 700; color: #0c4a6e;">${escapeXml(year)}</div>
-      </div>
-    </div>
-  </foreignObject>
-</svg>`;
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
 }
 
-function buildPreviewSvg({ html, meta }) {
+function buildFallbackHtml({ gostNumber = '', title = '', year = '' }) {
+  return `<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #ffffff;
+      }
+      body {
+        display: grid;
+        place-items: center;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .page {
+        width: 840px;
+        height: 1188px;
+        box-sizing: border-box;
+        padding: 64px 72px;
+        background: #fff;
+        color: #141a22;
+        display: grid;
+        align-content: space-between;
+      }
+      .gost {
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        color: #617087;
+      }
+      .title {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 64px;
+        line-height: 1.04;
+        font-weight: 700;
+      }
+      .year {
+        justify-self: start;
+        padding: 10px 16px;
+        border-radius: 999px;
+        background: #edf4fa;
+        color: #0c4a6e;
+        font-size: 28px;
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="page">
+      <div class="gost">${escapeHtml(gostNumber)}</div>
+      <div class="title">${escapeHtml(title)}</div>
+      <div class="year">${escapeHtml(year)}</div>
+    </article>
+  </body>
+</html>`;
+}
+
+function buildPreviewHtml({ html, meta }) {
   const firstPageMarkup = extractFirstPageMarkup(html);
   const styleText = extractInlineStyles(html);
 
   if (!firstPageMarkup || !styleText) {
-    return buildFallbackSvg(meta);
+    return buildFallbackHtml(meta);
   }
 
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="840" height="1188" viewBox="0 0 840 1188">
-  <foreignObject x="0" y="0" width="840" height="1188">
-    <div xmlns="http://www.w3.org/1999/xhtml" style="width: 840px; height: 1188px; overflow: hidden; background: white;">
-      <style>
+  return `<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
 ${styleText}
 html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  overflow: hidden !important;
-  background: white !important;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: white;
 }
 body {
-  display: grid !important;
-  place-items: start center !important;
+  display: grid;
+  place-items: start center;
+  background: white;
 }
 .page {
   margin: 0 !important;
   box-shadow: none !important;
 }
-      </style>
-      ${firstPageMarkup}
-    </div>
-  </foreignObject>
-</svg>`;
+    </style>
+  </head>
+  <body>
+    ${firstPageMarkup}
+  </body>
+</html>`;
 }
 
 export async function generatePreviewOrPlaceholder({ outputDirectory, html = '', meta = {} }) {
   await mkdir(outputDirectory, { recursive: true });
-  const previewPath = path.join(outputDirectory, 'preview.svg');
-  const svg = buildPreviewSvg({
+  const previewPath = path.join(outputDirectory, 'preview.html');
+  const previewHtml = buildPreviewHtml({
     html,
     meta: {
       gostNumber: meta.gostNumber ?? '',
@@ -95,10 +137,10 @@ export async function generatePreviewOrPlaceholder({ outputDirectory, html = '',
       year: meta.year ?? ''
     }
   });
-  await writeFile(previewPath, svg, 'utf8');
+  await writeFile(previewPath, previewHtml, 'utf8');
   return previewPath;
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  console.log('Этот скрипт используется как модуль генерации preview SVG.');
+  console.log('Этот скрипт используется как модуль генерации preview HTML.');
 }

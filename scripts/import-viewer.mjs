@@ -76,7 +76,7 @@ async function archiveImportedSource(sourcePath) {
   await rename(sourcePath, destinationPath);
 }
 
-function buildLocalMeta(meta, slug, fileHash, timestamps, previewFileName = 'preview.svg') {
+function buildLocalMeta(meta, slug, fileHash, timestamps, previewFileName = 'preview.html') {
   return {
     id: slug,
     slug,
@@ -137,7 +137,7 @@ export async function importViewer(inputPath, options = {}) {
   const localMeta = buildLocalMeta(parsedMeta, slug, fileHash, {
     importedAt: existing?.importedAt ?? now,
     updatedAt: now
-  }, 'preview.svg');
+  }, 'preview.html');
 
   await mkdir(stagingDirectory, { recursive: true });
 

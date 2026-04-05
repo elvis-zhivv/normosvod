@@ -11,7 +11,13 @@ export function renderDocCard(document) {
   return `
     <article class="doc-card">
       <div class="doc-card-preview">
-        <img src="${previewUrl}" alt="Титульный лист ${document.gostNumber}" loading="lazy" />
+        <iframe
+          class="doc-preview-frame"
+          src="${previewUrl}"
+          title="Титульный лист ${document.gostNumber}"
+          loading="lazy"
+          tabindex="-1"
+        ></iframe>
       </div>
       <div class="doc-card-body">
         <p class="doc-card-kicker">${document.gostNumber}</p>
