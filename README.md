@@ -86,6 +86,27 @@ npm run deploy:ssh
 - создаёт удалённую папку, если её ещё нет;
 - загружает `assets`, `data`, `docs`, `index.html`, `404.html` и `.htaccess` по `scp`.
 
+### Вариант 3. Автодеплой из GitHub Actions
+
+В проект добавлен workflow [deploy-reg-ru.yml](d:/normosvod/.github/workflows/deploy-reg-ru.yml). Он запускается по `push` в `main` и выкладывает сайт на Reg.ru.
+
+Перед этим нужно добавить в `GitHub -> Settings -> Secrets and variables -> Actions` следующие secrets:
+
+```text
+REG_HOST=server204.hosting.reg.ru
+REG_PORT=22
+REG_USER=u3474399
+REG_REMOTE_PATH=www/normosvod.ru
+REG_SSH_KEY=<приватный SSH-ключ для деплоя>
+```
+
+Рекомендуемый порядок:
+
+1. Создать отдельный SSH-ключ для GitHub Actions.
+2. Добавить его публичную часть в `~/.ssh/authorized_keys` на хостинге Reg.ru.
+3. Приватную часть сохранить в `REG_SSH_KEY`.
+4. После этого каждый `git push origin main` будет автоматически запускать деплой.
+
 Важно:
 
 - загружать нужно содержимое `dist`, а не саму папку `dist`;
