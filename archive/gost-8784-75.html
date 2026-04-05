@@ -921,10 +921,13 @@
     }
 
     .viewer-tools{
-      position:absolute;
-      top:14px;
-      right:16px;
+      position:sticky;
+      top:0;
       z-index:20;
+      width:100%;
+      height:0;
+      overflow:visible;
+      padding:14px 16px 0;
       pointer-events:none;
       display:flex;
       align-items:center;
@@ -980,6 +983,20 @@
     .viewer-back-btn[hidden]{
       display:none !important;
     }
+    .flowchart-formula-link{
+      cursor:pointer;
+    }
+    .flowchart-formula-link text{
+      fill:#1c4f8a;
+      text-decoration:underline;
+      text-decoration-thickness:1px;
+      text-underline-offset:2px;
+      transition:fill .15s ease;
+    }
+    .flowchart-formula-link:hover text,
+    .flowchart-formula-link:active text{
+      fill:#0f3b6b;
+    }
 
     body[data-theme="dark"]{
       --screen-bg: #4c535c;
@@ -1032,9 +1049,16 @@
     body[data-theme="dark"] .doc-ref:visited{
       color:#8fb6dc;
     }
+    body[data-theme="dark"] .flowchart-formula-link text{
+      fill:#8fb6dc;
+    }
     body[data-theme="dark"] .doc-ref:hover,
     body[data-theme="dark"] .doc-ref:active{
       color:#b6d0e6;
+    }
+    body[data-theme="dark"] .flowchart-formula-link:hover text,
+    body[data-theme="dark"] .flowchart-formula-link:active text{
+      fill:#b6d0e6;
     }
     body[data-theme="dark"] .doc-ref:focus-visible{
       outline-color:rgba(182,208,230,.45);
@@ -2012,7 +2036,7 @@
 
               <div class="subsection" id="section-3-4">3.4. Обработка результатов</div>
               <p>3.4.1. Укрывистость (<i>Y</i>), м²/л, вычисляют по формуле</p>
-              <div class="formula-row"><div class="formula-main">
+              <div class="formula-row" id="formula-8"><div class="formula-main">
   <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
     <mrow>
       <mi>y</mi>
@@ -2032,7 +2056,7 @@
               <p class="formula-note">где H<sub>к</sub> — толщина покрытия с коэффициентом контрастности 0,98, обеспечивающего полное укрытие черно-белой контрастной подложки, мм.</p>
 
               <p>3.4.2. Толщину укрывающего слоя (H<sub>к</sub>) в миллиметрах вычисляют по формуле</p>
-              <div class="formula-row"><div class="formula-main">
+              <div class="formula-row" id="formula-9"><div class="formula-main">
   <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
     <mrow>
       <msub>
@@ -2113,7 +2137,7 @@
   </math>
 </div><div class="formula-num">(9)</div></div>
               <p class="formula-note">где H — толщина неукрывающего слоя, мм; <br>R<sub>ок</sub> — коэффициент яркости покрытия толщиной H<sub>к</sub>, который вычисляют по формуле</p>
-              <div class="formula-row"><div class="formula-main">
+              <div class="formula-row" id="formula-10"><div class="formula-main">
   <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
     <mrow>
       <msub>
@@ -2179,7 +2203,7 @@
   </math>
 </div><div class="formula-num">(10)</div></div>
               <p class="formula-note">где R<sub>g</sub> — коэффициент яркости белой пластинки; <br>a — оптическая константа, которую вычисляют по формуле</p>
-              <div class="formula-row"><div class="formula-main">
+              <div class="formula-row" id="formula-11"><div class="formula-main">
   <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
     <mrow>
       <mi>a</mi>
@@ -2426,26 +2450,34 @@
   </text>
 
   <!-- Блок 2 -->
-  <text x="270" y="195" font-size="10.5" font-weight="600" text-anchor="middle" dominant-baseline="middle">
-    РАСЧЕТ <tspan font-style="italic">a</tspan> ПО ФОРМУЛЕ (11)
-  </text>
+  <a href="#formula-11" class="doc-ref flowchart-formula-link">
+    <text x="270" y="195" font-size="10.5" font-weight="600" text-anchor="middle" dominant-baseline="middle">
+      РАСЧЕТ <tspan font-style="italic">a</tspan> ПО ФОРМУЛЕ (11)
+    </text>
+  </a>
 
   <!-- Блок 3 -->
-  <text x="270" y="263" font-size="10.5" font-weight="600" text-anchor="middle" dominant-baseline="middle">
-    РАСЧЕТ <tspan font-style="italic">R</tspan><tspan baseline-shift="sub" font-size="7.5">ок</tspan> ПО ФОРМУЛЕ (10)
-  </text>
+  <a href="#formula-10" class="doc-ref flowchart-formula-link">
+    <text x="270" y="263" font-size="10.5" font-weight="600" text-anchor="middle" dominant-baseline="middle">
+      РАСЧЕТ <tspan font-style="italic">R</tspan><tspan baseline-shift="sub" font-size="7.5">ок</tspan> ПО ФОРМУЛЕ (10)
+    </text>
+  </a>
 
   <!-- Блок 4 -->
-  <text x="270" y="330" font-size="10.5" font-weight="600" text-anchor="middle">
-    <tspan x="270" dy="0">РАСЧЕТ ТОЛЩИНЫ КРОЮЩЕГО СЛОЯ</tspan>
-    <tspan x="270" dy="13"><tspan font-style="italic">H</tspan><tspan baseline-shift="sub" font-size="7.5">к</tspan> ПО ФОРМУЛЕ (9)</tspan>
-  </text>
+  <a href="#formula-9" class="doc-ref flowchart-formula-link">
+    <text x="270" y="330" font-size="10.5" font-weight="600" text-anchor="middle">
+      <tspan x="270" dy="0">РАСЧЕТ ТОЛЩИНЫ КРОЮЩЕГО СЛОЯ</tspan>
+      <tspan x="270" dy="13"><tspan font-style="italic">H</tspan><tspan baseline-shift="sub" font-size="7.5">к</tspan> ПО ФОРМУЛЕ (9)</tspan>
+    </text>
+  </a>
 
   <!-- Блок 5 -->
-  <text x="270" y="410" font-size="10.5" font-weight="600" text-anchor="middle">
-    <tspan x="270" dy="0">РАСЧЕТ ВЕЛИЧИНЫ УКРЫВИСТОСТИ</tspan>
-    <tspan x="270" dy="13">ПО ФОРМУЛЕ (8)</tspan>
-  </text>
+  <a href="#formula-8" class="doc-ref flowchart-formula-link">
+    <text x="270" y="410" font-size="10.5" font-weight="600" text-anchor="middle">
+      <tspan x="270" dy="0">РАСЧЕТ ВЕЛИЧИНЫ УКРЫВИСТОСТИ</tspan>
+      <tspan x="270" dy="13">ПО ФОРМУЛЕ (8)</tspan>
+    </text>
+  </a>
 
   <!-- Блок 6 -->
   <text x="270" y="493" font-size="10.5" font-weight="600" text-anchor="middle" dominant-baseline="middle">

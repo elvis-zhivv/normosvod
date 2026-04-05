@@ -922,10 +922,13 @@
     }
 
     .viewer-tools{
-      position:absolute;
-      top:14px;
-      right:16px;
+      position:sticky;
+      top:0;
       z-index:20;
+      width:100%;
+      height:0;
+      overflow:visible;
+      padding:14px 16px 0;
       pointer-events:none;
       display:flex;
       align-items:center;
