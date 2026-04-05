@@ -32,6 +32,19 @@ node scripts/import-viewer.mjs ./incoming/gost-8784-75.html
 node scripts/import-viewer.mjs --all
 ```
 
+## Деплой на GitHub Pages
+
+В проекте уже добавлен workflow [deploy-pages.yml](d:/normosvod/.github/workflows/deploy-pages.yml), рассчитанный на публикацию репозитория `normosvod` как GitHub Pages project site.
+
+Что нужно включить в GitHub:
+
+1. `Settings -> Pages`
+2. `Source: GitHub Actions`
+
+После этого каждый push в `main` будет публиковать `dist` на Pages.
+
+Для этого репозитория базовый путь сборки задан как `/normosvod/`.
+
 ## Замечания по маршрутам
 
 Каталог использует client-side routing для `/`, `/catalog` и `/doc/:slug`.

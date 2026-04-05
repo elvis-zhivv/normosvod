@@ -1,5 +1,6 @@
 import { applyDocumentFilters, collectFilterOptions, SORT_OPTIONS } from './filters.js';
 import { renderDocCard } from '../components/doc-card.js';
+import { withBase } from './paths.js';
 
 function renderEmptyState() {
   return `
@@ -96,7 +97,7 @@ export function renderHomePage({ documents, stats, filters }) {
     ${renderFilterForm({
       filters,
       options,
-      actionPath: '/catalog',
+      actionPath: withBase('/catalog'),
       heading: 'Каталог автономных HTML-viewer документов ГОСТ',
       lead: 'Каталог не смешивает runtime документов. Каждый viewer публикуется отдельно, а сайт работает как слой навигации, метаданных и поиска по manifest.'
     })}
@@ -107,7 +108,7 @@ export function renderHomePage({ documents, stats, filters }) {
           <p class="eyebrow">Последние документы</p>
           <h2>Новые и обновлённые viewer</h2>
         </div>
-        <a class="button button-secondary" href="/catalog" data-link>Открыть полный каталог</a>
+        <a class="button button-secondary" href="${withBase('/catalog')}" data-link>Открыть полный каталог</a>
       </div>
       <div class="doc-grid">
         ${recent.length > 0 ? recent.map(renderDocCard).join('') : renderEmptyState()}
@@ -124,7 +125,7 @@ export function renderCatalogPage({ documents, filters }) {
     ${renderFilterForm({
       filters,
       options,
-      actionPath: '/catalog',
+      actionPath: withBase('/catalog'),
       heading: 'Полный каталог документов',
       lead: 'Фильтрация работает только по manifest-данным. Viewer остаются полностью автономными HTML-файлами.',
       compact: true

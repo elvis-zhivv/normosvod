@@ -2,6 +2,7 @@ import { renderHeader } from '../components/header.js';
 import { SORT_OPTIONS } from './filters.js';
 import { renderCatalogPage, renderHomePage } from './catalog.js';
 import { renderDocumentPage, renderMissingDocument } from './document.js';
+import { stripBasePath, withBase } from './paths.js';
 
 const appNode = document.getElementById('app');
 
@@ -17,7 +18,7 @@ const state = {
 
 async function loadJson(url, fallback) {
   try {
-    const response = await fetch(url, { cache: 'no-store' });
+    const response = await fetch(withBase(url), { cache: 'no-store' });
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
@@ -32,26 +33,27 @@ async function loadJson(url, fallback) {
 
 function getRoute() {
   const url = new URL(window.location.href);
-  const pathname = url.pathname.replace(/\/+$/, '') || '/';
+  const pathname = stripBasePath(url.pathname).replace(/\/+$/, '') || '/';
   const segments = pathname.split('/').filter(Boolean);
 
   if (pathname === '/') {
-    return { name: 'home', params: {}, query: url.searchParams };
+    return { name: 'home', currentPath: pathname, params: {}, query: url.searchParams };
   }
 
   if (pathname === '/catalog') {
-    return { name: 'catalog', params: {}, query: url.searchParams };
+    return { name: 'catalog', currentPath: pathname, params: {}, query: url.searchParams };
   }
 
   if (segments[0] === 'doc' && segments[1]) {
     return {
       name: 'document',
+      currentPath: pathname,
       params: { slug: decodeURIComponent(segments.slice(1).join('/')) },
       query: url.searchParams
     };
   }
 
-  return { name: 'not-found', params: {}, query: url.searchParams };
+  return { name: 'not-found', currentPath: pathname, params: {}, query: url.searchParams };
 }
 
 function getFilters(query) {
@@ -65,7 +67,7 @@ function getFilters(query) {
 
 function renderLayout(content, route) {
   appNode.innerHTML = `
-    ${renderHeader(window.location.pathname)}
+    ${renderHeader(route.currentPath)}
     <main class="shell page-shell">
       ${content}
     </main>
@@ -118,7 +120,7 @@ function renderRoute() {
       <p class="eyebrow">404</p>
       <h1>Маршрут не найден</h1>
       <p>Откройте каталог или главную страницу.</p>
-      <a class="button button-primary" href="/catalog" data-link>В каталог</a>
+      <a class="button button-primary" href="${withBase('/catalog')}" data-link>В каталог</a>
     </section>
   `, route);
 }
@@ -169,6 +171,17 @@ function handleLinkClick(event) {
 }
 
 async function bootstrap() {
+  const redirectUrl = new URL(window.location.href);
+  const redirectPath = redirectUrl.searchParams.get('redirect');
+
+  if (redirectPath) {
+    redirectUrl.searchParams.delete('redirect');
+    const restoredPath = redirectPath.startsWith('/') ? redirectPath : `/${redirectPath}`;
+    const queryString = redirectUrl.searchParams.toString();
+    const nextUrl = queryString ? `${restoredPath}?${queryString}` : restoredPath;
+    window.history.replaceState({}, '', withBase(nextUrl));
+  }
+
   const [documents, stats] = await Promise.all([
     loadJson('/data/documents.json', []),
     loadJson('/data/stats.json', state.stats)

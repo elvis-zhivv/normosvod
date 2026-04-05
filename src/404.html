@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Redirecting…</title>
+    <script>
+      (function () {
+        const pathSegmentsToKeep = 1;
+        const location = window.location;
+        const normalizedPath = location.pathname.replace(/\/+$/, '');
+        const segments = normalizedPath.split('/').filter(Boolean);
+        const baseSegments = segments.slice(0, pathSegmentsToKeep);
+        const routeSegments = segments.slice(pathSegmentsToKeep);
+        const basePath = baseSegments.length > 0 ? '/' + baseSegments.join('/') : '';
+        const routePath = '/' + routeSegments.join('/');
+        const targetPath = routeSegments.length > 0 ? routePath : '/';
+        const search = location.search && location.search !== '?' ? location.search.slice(1) : '';
+        const redirectQuery = search ? `redirect=${encodeURIComponent(targetPath)}&${search}` : `redirect=${encodeURIComponent(targetPath)}`;
+        const nextUrl = `${basePath}/?${redirectQuery}${location.hash || ''}`;
+        location.replace(nextUrl);
+      })();
+    </script>
+  </head>
+  <body></body>
+  </html>

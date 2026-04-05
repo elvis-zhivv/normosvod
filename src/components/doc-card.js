@@ -1,4 +1,9 @@
+import { normalizeDocumentUrl, withBase } from '../js/paths.js';
+
 export function renderDocCard(document) {
+  const previewUrl = normalizeDocumentUrl(document.previewUrl);
+  const viewerUrl = normalizeDocumentUrl(document.viewerUrl);
+  const documentUrl = withBase(`/doc/${document.slug}`);
   const tags = (document.tags ?? [])
     .map((tag) => `<li class="tag-chip">${tag}</li>`)
     .join('');
@@ -6,7 +11,7 @@ export function renderDocCard(document) {
   return `
     <article class="doc-card">
       <div class="doc-card-preview">
-        <img src="${document.previewUrl}" alt="Превью ${document.gostNumber}" loading="lazy" />
+        <img src="${previewUrl}" alt="Превью ${document.gostNumber}" loading="lazy" />
       </div>
       <div class="doc-card-body">
         <p class="doc-card-kicker">${document.gostNumber}</p>
@@ -16,8 +21,8 @@ export function renderDocCard(document) {
         <ul class="tag-list">${tags}</ul>
       </div>
       <div class="doc-card-actions">
-        <a class="button button-secondary" href="/doc/${document.slug}" data-link>Карточка документа</a>
-        <a class="button button-primary" href="${document.viewerUrl}" target="_blank" rel="noreferrer">Открыть</a>
+        <a class="button button-secondary" href="${documentUrl}" data-link>Карточка документа</a>
+        <a class="button button-primary" href="${viewerUrl}" target="_blank" rel="noreferrer">Открыть</a>
       </div>
     </article>
   `;
