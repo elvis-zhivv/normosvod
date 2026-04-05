@@ -3,6 +3,7 @@ import { mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promise
 import { fileURLToPath } from 'node:url';
 import { hashContent } from './lib/hash-file.mjs';
 import { buildStats, readDocumentsManifest, upsertDocumentRecord } from './lib/manifest.mjs';
+import { enrichDocumentRecord } from './lib/document-record.mjs';
 import { buildSlug } from './lib/slugify.mjs';
 import {
   ARCHIVE_DIR,
@@ -10,12 +11,17 @@ import {
   DOCUMENTS_MANIFEST_PATH,
   INCOMING_DIR,
   SEARCH_INDEX_PATH,
+  V2_SEARCH_INDEX_PATH,
   STATS_PATH
 } from './lib/project-paths.mjs';
 import { extractViewerMeta, validateViewerHtmlBasic } from './lib/parse-viewer-meta.mjs';
 import { writeJsonAtomic } from './lib/write-json.mjs';
 import { buildSearchIndex } from './build-search-index.mjs';
+import { buildV2SearchIndex } from './build-v2-search-index.mjs';
 import { generatePreviewOrPlaceholder } from './generate-preview.mjs';
+import { buildV2DocumentStub } from './lib/v2-document-stub.mjs';
+import { rebuildCanonicalDocs } from './rebuild-canonical-docs.mjs';
+import { rebuildV2Data } from './rebuild-v2-data.mjs';
 
 function timestampForPath(date = new Date()) {
   return date.toISOString().replace(/[:.]/g, '-');
@@ -77,7 +83,7 @@ async function archiveImportedSource(sourcePath) {
 }
 
 function buildLocalMeta(meta, slug, fileHash, timestamps, previewFileName = 'preview.html') {
-  return {
+  return enrichDocumentRecord({
     id: slug,
     slug,
     gostNumber: meta.gostNumber,
@@ -105,7 +111,7 @@ function buildLocalMeta(meta, slug, fileHash, timestamps, previewFileName = 'pre
     description: meta.description,
     navItemsCount: meta.navItems.length,
     navItems: meta.navItems
-  };
+  });
 }
 
 export async function importViewer(inputPath, options = {}) {
@@ -153,6 +159,11 @@ export async function importViewer(inputPath, options = {}) {
       `${JSON.stringify(localMeta, null, 2)}\n`,
       'utf8'
     );
+    await writeFile(
+      path.join(stagingDirectory, 'v2.json'),
+      `${JSON.stringify(buildV2DocumentStub(localMeta), null, 2)}\n`,
+      'utf8'
+    );
 
     const nextManifest = upsertDocumentRecord(manifest, localMeta);
     const nextStats = buildStats(nextManifest);
@@ -171,6 +182,10 @@ export async function importViewer(inputPath, options = {}) {
       writeJsonAtomic(STATS_PATH, nextStats),
       writeJsonAtomic(SEARCH_INDEX_PATH, nextSearchIndex)
     ]);
+    await rebuildCanonicalDocs();
+    await rebuildV2Data();
+    const nextV2SearchIndex = await buildV2SearchIndex(nextManifest);
+    await writeJsonAtomic(V2_SEARCH_INDEX_PATH, nextV2SearchIndex);
 
     await archiveImportedSource(absoluteInputPath);
     return localMeta;

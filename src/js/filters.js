@@ -1,4 +1,4 @@
-import { buildDocumentSearchHit, buildSearchIndexMap, normalizeText } from './search.js';
+import { buildDocumentSearchHit, buildSearchIndexMap, buildV2SearchIndexMap, normalizeText } from './search.js';
 
 export const SORT_OPTIONS = {
   relevance: 'relevance-desc',
@@ -64,11 +64,17 @@ export function sortDocuments(documents, sort) {
   }
 }
 
-export function applyDocumentFilters(documents, filters, searchIndex = []) {
+export function applyDocumentFilters(documents, filters, searchIndex = [], v2SearchIndex = []) {
   const indexBySlug = buildSearchIndexMap(searchIndex);
+  const v2IndexBySlug = buildV2SearchIndexMap(v2SearchIndex);
   const filtered = documents.reduce((items, document) => {
     const searchHit = filters.query
-      ? buildDocumentSearchHit(document, filters.query, indexBySlug.get(document.slug))
+      ? buildDocumentSearchHit(
+        document,
+        filters.query,
+        indexBySlug.get(document.slug),
+        v2IndexBySlug.get(document.slug)
+      )
       : null;
 
     if (filters.query && !searchHit) {

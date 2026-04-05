@@ -3,6 +3,14 @@ import { renderDocCard } from '../components/doc-card.js';
 import { escapeHtml } from './html.js';
 import { withBase } from './paths.js';
 
+const SEARCH_GROUPS = [
+  { id: 'v2-definition', label: 'Определения', eyebrow: 'Semantic Results' },
+  { id: 'v2-related-norm', label: 'Связанные нормы', eyebrow: 'Linked Norms' },
+  { id: 'v2-block', label: 'Блоки документа', eyebrow: 'Screen Flow' },
+  { id: 'v2-entity', label: 'Сущности', eyebrow: 'Entity Hits' },
+  { id: 'legacy', label: 'Документы', eyebrow: 'Legacy / Document Hits' }
+];
+
 function renderEmptyState() {
   return `
     <section class="empty-state">
@@ -16,8 +24,8 @@ function renderResultsHeading(filtered, filters) {
   if (filters.query?.trim()) {
     return `
       <div>
-        <p class="eyebrow">Полнотекстовый поиск</p>
-        <h2>${filtered.length} документов по запросу «${escapeHtml(filters.query.trim())}»</h2>
+        <p class="eyebrow">Поисковая выдача</p>
+        <h2>${filtered.length} документов с совпадениями по запросу «${escapeHtml(filters.query.trim())}»</h2>
       </div>
     `;
   }
@@ -26,6 +34,72 @@ function renderResultsHeading(filtered, filters) {
     <div>
       <p class="eyebrow">Результаты</p>
       <h2>${filtered.length} документов</h2>
+    </div>
+  `;
+}
+
+function getSearchGroupId(document) {
+  const kind = document.searchHit?.kind;
+
+  if (kind && SEARCH_GROUPS.some((group) => group.id === kind)) {
+    return kind;
+  }
+
+  return 'legacy';
+}
+
+function groupSearchResults(documents) {
+  const grouped = new Map(SEARCH_GROUPS.map((group) => [group.id, []]));
+
+  for (const document of documents) {
+    grouped.get(getSearchGroupId(document)).push(document);
+  }
+
+  return SEARCH_GROUPS
+    .map((group) => ({
+      ...group,
+      items: grouped.get(group.id) ?? []
+    }))
+    .filter((group) => group.items.length > 0);
+}
+
+function renderSearchSummary(groups) {
+  return `
+    <div class="search-result-summary">
+      ${groups.map((group) => `
+        <span class="search-result-chip">
+          <strong>${escapeHtml(group.items.length)}</strong>
+          <span>${escapeHtml(group.label)}</span>
+        </span>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderSearchGroups(documents, filters) {
+  const groups = groupSearchResults(documents);
+
+  if (groups.length === 0) {
+    return renderEmptyState();
+  }
+
+  return `
+    ${renderSearchSummary(groups)}
+    <div class="search-result-groups">
+      ${groups.map((group) => `
+        <section class="search-result-group">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">${escapeHtml(group.eyebrow)}</p>
+              <h3>${escapeHtml(group.label)}</h3>
+            </div>
+            <p class="muted-copy">${escapeHtml(group.items.length)} результата</p>
+          </div>
+          <div class="doc-grid">
+            ${group.items.map((item) => renderDocCard({ ...item, searchQuery: filters.query ?? '' })).join('')}
+          </div>
+        </section>
+      `).join('')}
     </div>
   `;
 }
@@ -116,11 +190,11 @@ function renderStats(stats) {
   `;
 }
 
-export function renderHomePage({ documents, searchIndex, stats, filters }) {
+export function renderHomePage({ documents, searchIndex, v2SearchIndex, stats, filters }) {
   const options = collectFilterOptions(documents);
-  const filtered = applyDocumentFilters(documents, filters, searchIndex);
-  const recent = filtered.slice(0, 6);
+  const filtered = applyDocumentFilters(documents, filters, searchIndex, v2SearchIndex);
   const hasQuery = Boolean(filters.query?.trim());
+  const recent = filtered.slice(0, 6);
 
   return `
     ${renderFilterForm({
@@ -129,8 +203,8 @@ export function renderHomePage({ documents, searchIndex, stats, filters }) {
       actionPath: withBase('/catalog'),
       heading: 'Каталог автономных HTML-viewer документов ГОСТ',
       lead: hasQuery
-        ? 'Поиск использует полнотекстовый индекс страниц документов и ранжирует результаты по релевантности.'
-        : 'Каталог не смешивает runtime документов. Каждый viewer публикуется отдельно, а сайт работает как слой навигации, метаданных и поиска по manifest.'
+        ? 'Поиск использует semantic block/entity index V2 и page-based fallback legacy viewer.'
+        : 'Каталог больше не ограничен page-based поиском: при наличии canonical V2 model результаты ранжируются по блокам, сущностям и связанным нормам.'
     })}
     ${renderStats(stats)}
     <section class="content-block">
@@ -145,16 +219,18 @@ export function renderHomePage({ documents, searchIndex, stats, filters }) {
           `}
         <a class="button button-secondary" href="${withBase('/catalog')}" data-link>Открыть полный каталог</a>
       </div>
-      <div class="doc-grid">
-        ${recent.length > 0 ? recent.map(renderDocCard).join('') : renderEmptyState()}
-      </div>
+      ${hasQuery
+        ? renderSearchGroups(filtered, filters)
+        : `<div class="doc-grid">
+            ${recent.length > 0 ? recent.map(renderDocCard).join('') : renderEmptyState()}
+          </div>`}
     </section>
   `;
 }
 
-export function renderCatalogPage({ documents, searchIndex, filters }) {
+export function renderCatalogPage({ documents, searchIndex, v2SearchIndex, filters }) {
   const options = collectFilterOptions(documents);
-  const filtered = applyDocumentFilters(documents, filters, searchIndex);
+  const filtered = applyDocumentFilters(documents, filters, searchIndex, v2SearchIndex);
 
   return `
     ${renderFilterForm({
@@ -162,16 +238,18 @@ export function renderCatalogPage({ documents, searchIndex, filters }) {
       options,
       actionPath: withBase('/catalog'),
       heading: 'Полный каталог документов',
-      lead: 'Фильтрация работает только по manifest-данным. Viewer остаются полностью автономными HTML-файлами.',
+      lead: 'Каталог использует manifest-фильтры и semantic search по canonical V2 blocks с fallback на legacy page index.',
       compact: true
     })}
     <section class="content-block">
       <div class="section-head">
         ${renderResultsHeading(filtered, filters)}
       </div>
-      <div class="doc-grid">
-        ${filtered.length > 0 ? filtered.map(renderDocCard).join('') : renderEmptyState()}
-      </div>
+      ${filters.query?.trim()
+        ? renderSearchGroups(filtered, filters)
+        : `<div class="doc-grid">
+            ${filtered.length > 0 ? filtered.map(renderDocCard).join('') : renderEmptyState()}
+          </div>`}
     </section>
   `;
 }

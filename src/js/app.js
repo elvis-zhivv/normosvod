@@ -3,6 +3,7 @@ import { SORT_OPTIONS } from './filters.js';
 import { renderCatalogPage, renderHomePage } from './catalog.js';
 import { renderDocumentPage, renderMissingDocument } from './document.js';
 import { safeDecodePathSegment, stripBasePath, withBase } from './paths.js';
+import { enhanceV2Readers } from '../v2/enhance.js';
 
 const appNode = document.getElementById('app');
 const SEARCH_INPUT_SELECTOR = 'input[data-search-input]';
@@ -12,6 +13,7 @@ const AUTO_SEARCH_DELAY_MS = 280;
 const state = {
   documents: [],
   searchIndex: [],
+  v2SearchIndex: [],
   stats: {
     totalDocuments: 0,
     totalPages: 0,
@@ -96,6 +98,7 @@ function renderRoute() {
     renderLayout(renderHomePage({
       documents: state.documents,
       searchIndex: state.searchIndex,
+      v2SearchIndex: state.v2SearchIndex,
       stats: state.stats,
       filters
     }), route);
@@ -106,6 +109,7 @@ function renderRoute() {
     renderLayout(renderCatalogPage({
       documents: state.documents,
       searchIndex: state.searchIndex,
+      v2SearchIndex: state.v2SearchIndex,
       filters
     }), route);
     return;
@@ -114,14 +118,16 @@ function renderRoute() {
   if (route.name === 'document') {
     const documentItem = state.documents.find((item) => item.slug === route.params.slug);
     const showEmbeddedViewer = route.query.get('embed') === '1';
+    const showV2Reader = route.query.get('view') === 'v2' || documentItem?.readerMode === 'v2';
     route.pageTitle = documentItem?.gostNumber ?? route.params.slug;
 
     renderLayout(
       documentItem
-        ? renderDocumentPage(documentItem, { showEmbeddedViewer })
+        ? renderDocumentPage(documentItem, { showEmbeddedViewer, showV2Reader })
         : renderMissingDocument(route.params.slug),
       route
     );
+    void enhanceV2Readers(state.documents);
     return;
   }
 
@@ -133,6 +139,7 @@ function renderRoute() {
       <a class="button button-primary" href="${withBase('/catalog')}" data-link>В каталог</a>
     </section>
   `, route);
+  void enhanceV2Readers(state.documents);
 }
 
 function navigate(url, { replace = false } = {}) {
@@ -249,15 +256,17 @@ async function bootstrap() {
     window.history.replaceState({}, '', withBase(nextUrl));
   }
 
-  const [documents, stats, searchIndex] = await Promise.all([
+  const [documents, stats, searchIndex, v2SearchIndex] = await Promise.all([
     loadJson('/data/documents.json', []),
     loadJson('/data/stats.json', state.stats),
-    loadJson('/data/search-index.json', [])
+    loadJson('/data/search-index.json', []),
+    loadJson('/data/v2-search-index.json', [])
   ]);
 
   state.documents = documents;
   state.stats = stats;
   state.searchIndex = Array.isArray(searchIndex) ? searchIndex : [];
+  state.v2SearchIndex = Array.isArray(v2SearchIndex) ? v2SearchIndex : [];
 
   document.addEventListener('submit', handleFormSubmit);
   document.addEventListener('click', handleLinkClick);

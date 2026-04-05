@@ -259,6 +259,45 @@ select {
   gap: 18px;
 }
 
+.search-result-groups {
+  display: grid;
+  gap: 24px;
+}
+
+.search-result-group {
+  padding-top: 10px;
+  border-top: 1px solid rgba(24, 32, 42, 0.08);
+}
+
+.search-result-group h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.search-result-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.search-result-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(24, 32, 42, 0.08);
+}
+
+.search-result-chip strong {
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--brand);
+}
+
 .stats-grid {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin-bottom: 24px;
@@ -320,6 +359,91 @@ select {
 .doc-card-search-meta {
   margin: 12px 0 0;
   font-size: 0.92rem;
+}
+
+.doc-card-search-hit {
+  margin-top: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(24, 32, 42, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.doc-card-search-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.doc-card-hit-chip,
+.doc-card-hit-meta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+}
+
+.doc-card-hit-chip {
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0c4a6e;
+  background: rgba(12, 74, 110, 0.1);
+}
+
+.doc-card-hit-meta {
+  color: var(--muted);
+  background: rgba(24, 32, 42, 0.05);
+}
+
+.doc-card-hit-title {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1rem;
+}
+
+.doc-card-hit-snippet {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.doc-card-hit-snippet mark {
+  padding: 0 0.18em;
+  border-radius: 0.35em;
+  background: rgba(180, 83, 9, 0.18);
+  color: inherit;
+}
+
+.doc-card-hit-block,
+.doc-card-hit-definition,
+.doc-card-hit-related-norm,
+.doc-card-hit-entity {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(244, 248, 252, 0.88));
+}
+
+.doc-card-hit-definition .doc-card-hit-chip {
+  color: #7c2d12;
+  background: rgba(180, 83, 9, 0.14);
+}
+
+.doc-card-hit-related-norm .doc-card-hit-chip {
+  color: #243b53;
+  background: rgba(12, 74, 110, 0.14);
+}
+
+.doc-card-hit-entity .doc-card-hit-chip {
+  color: #475569;
+  background: rgba(71, 85, 105, 0.12);
+}
+
+.doc-card-hit-legacy .doc-card-hit-chip {
+  color: #5f6c7d;
+  background: rgba(95, 108, 125, 0.12);
 }
 
 .doc-card-description mark {

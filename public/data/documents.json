@@ -111,7 +111,14 @@
         "targetPageIndex": 10,
         "targetSelector": "#imprint"
       }
-    ]
+    ],
+    "themeId": "regulation",
+    "readerMode": "legacy",
+    "migrationStatus": "imported",
+    "v2DocumentUrl": "/data/v2/gost-1-0-2015.json",
+    "legacyViewerUrl": "/docs/gost-1-0-2015/viewer.html",
+    "printUrl": "/docs/gost-1-0-2015/viewer.html",
+    "hasV2Scaffold": true
   },
   {
     "id": "gost-29319-2025",
@@ -265,7 +272,14 @@
         "targetPageIndex": 19,
         "targetSelector": null
       }
-    ]
+    ],
+    "themeId": "coatings",
+    "readerMode": "legacy",
+    "migrationStatus": "imported",
+    "v2DocumentUrl": "/data/v2/gost-29319-2025.json",
+    "legacyViewerUrl": "/docs/gost-29319-2025/viewer.html",
+    "printUrl": "/docs/gost-29319-2025/viewer.html",
+    "hasV2Scaffold": true
   },
   {
     "id": "gost-8784-75",
@@ -404,6 +418,13 @@
         "targetPageIndex": 10,
         "targetSelector": "#section-imprint"
       }
-    ]
+    ],
+    "themeId": "coatings",
+    "readerMode": "legacy",
+    "migrationStatus": "imported",
+    "v2DocumentUrl": "/data/v2/gost-8784-75.json",
+    "legacyViewerUrl": "/docs/gost-8784-75/viewer.html",
+    "printUrl": "/docs/gost-8784-75/viewer.html",
+    "hasV2Scaffold": true
   }
 ]

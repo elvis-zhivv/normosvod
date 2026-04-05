@@ -45,8 +45,55 @@ const searchIndex = [
   }
 ];
 
-test('buildDocumentSearchHit returns ranked hit with snippet and anchor', () => {
-  const hit = buildDocumentSearchHit(documents[0], 'покрытие визуально', searchIndex[0]);
+const v2SearchIndex = [
+  {
+    slug: 'doc-a',
+    blocks: [
+      {
+        id: 'doc-a-block-1',
+        title: '4 Требования',
+        type: 'requirements',
+        text: 'Не допускается использовать загрязненные панели. Оператор должен применять ISO 3668:2017.',
+        summary: 'Практические требования к испытанию.',
+        pageNumber: 3,
+        references: ['ISO 3668:2017'],
+        highlightLabels: ['Не допускается'],
+        unitLabels: ['Требования']
+      }
+    ],
+    entities: [
+      { id: 'entity-topic-1', label: 'лакокрасочные материалы', type: 'topic' }
+    ],
+    definitions: [
+      { id: 'definition-1', term: 'контрольный образец', summary: 'Образец для сравнения.', blockId: 'doc-a-block-1' }
+    ],
+    relatedNorms: [
+      { id: 'related-iso-3668-2017', label: 'ISO 3668:2017', sourceBlockIds: ['doc-a-block-1'], occurrenceCount: 1 }
+    ]
+  },
+  {
+    slug: 'doc-b',
+    blocks: [
+      {
+        id: 'doc-b-block-1',
+        title: '3 Визуальное сравнение',
+        type: 'procedure',
+        text: 'Визуальное сравнение цвета проводят при дневном освещении.',
+        summary: 'Базовая процедура сравнения.',
+        pageNumber: 2,
+        references: [],
+        highlightLabels: [],
+        unitLabels: ['Визуальное сравнение']
+      }
+    ],
+    entities: [],
+    definitions: [],
+    relatedNorms: []
+  }
+];
+
+test('buildDocumentSearchHit returns ranked legacy page hit with snippet and anchor', () => {
+  const hit = buildDocumentSearchHit(documents[0], 'покрытие визуально', searchIndex[0], null);
 
   assert.ok(hit);
   assert.equal(hit.anchor, '#p3');
@@ -55,13 +102,23 @@ test('buildDocumentSearchHit returns ranked hit with snippet and anchor', () => 
   assert.deepEqual(hit.matchedPages, [2]);
 });
 
-test('applyDocumentFilters uses fulltext index and relevance sorting', () => {
+test('buildDocumentSearchHit prefers semantic V2 block hits when canonical match is stronger', () => {
+  const hit = buildDocumentSearchHit(documents[0], 'загрязненные панели', searchIndex[0], v2SearchIndex[0]);
+
+  assert.ok(hit);
+  assert.equal(hit.kind, 'v2-block');
+  assert.equal(hit.anchor, '#doc-a-block-1');
+  assert.equal(hit.actionUrl, '/doc/doc-a?view=v2#doc-a-block-1');
+  assert.match(hit.snippet, /загрязненные панели/i);
+});
+
+test('applyDocumentFilters uses semantic index and relevance sorting', () => {
   const results = applyDocumentFilters(documents, {
     query: 'визуально',
     year: '',
     tag: '',
     sort: SORT_OPTIONS.relevance
-  }, searchIndex);
+  }, searchIndex, v2SearchIndex);
 
   assert.equal(results.length, 2);
   assert.equal(results[0].slug, 'doc-b');
@@ -70,11 +127,12 @@ test('applyDocumentFilters uses fulltext index and relevance sorting', () => {
 
 test('applyDocumentFilters still applies metadata filters on top of fulltext', () => {
   const results = applyDocumentFilters(documents, {
-    query: 'визуально',
+    query: 'iso 3668',
     year: '2024',
     tag: '',
     sort: SORT_OPTIONS.relevance
-  }, searchIndex);
+  }, searchIndex, v2SearchIndex);
 
   assert.deepEqual(results.map((item) => item.slug), ['doc-a']);
+  assert.equal(results[0].searchHit.kind, 'v2-related-norm');
 });
