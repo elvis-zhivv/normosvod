@@ -116,6 +116,179 @@ function renderPlatformStatus(document) {
   `;
 }
 
+function renderWorkspaceOutline(document) {
+  const navItems = Array.isArray(document.navItems) ? document.navItems : [];
+
+  return `
+    <aside class="document-workspace-side document-workspace-outline">
+      <div class="document-workspace-panel">
+        <p class="eyebrow">Содержание</p>
+        <h2>Структура документа</h2>
+        ${navItems.length
+          ? `
+            <ol class="document-outline-list">
+              ${navItems.map((item) => `
+                <li class="document-outline-item">
+                  <strong>${escapeHtml(item.label)}</strong>
+                  <span>Источник: стр. ${escapeHtml(Number(item.targetPageIndex ?? 0) + 1)}</span>
+                </li>
+              `).join('')}
+            </ol>
+          `
+          : '<p class="muted-copy">Структура будет показана после импорта или migration pass.</p>'}
+      </div>
+    </aside>
+  `;
+}
+
+function renderWorkspaceRail(document, { mode = 'summary' } = {}) {
+  const title = mode === 'print'
+    ? 'Print route surface'
+    : mode === 'legacy'
+      ? 'Legacy route surface'
+      : 'Документная поверхность';
+
+  return `
+    <aside class="document-workspace-side document-workspace-rail">
+      <div class="document-workspace-panel document-workspace-panel-surface">
+        ${renderDocumentSurface(document, { mode, title })}
+      </div>
+      <div class="document-workspace-panel">
+        <p class="eyebrow">Краткая сводка</p>
+        <div class="document-brief-grid">
+          <div class="document-brief-item">
+            <span>Источник</span>
+            <strong>${escapeHtml(formatSourceTypeLabel(document.sourceType))}</strong>
+          </div>
+          <div class="document-brief-item">
+            <span>Режим</span>
+            <strong>${escapeHtml(formatReaderModeLabel(document.readerMode))}</strong>
+          </div>
+          <div class="document-brief-item">
+            <span>Блоки</span>
+            <strong>${escapeHtml(document.v2BlockCount ?? 0)}</strong>
+          </div>
+          <div class="document-brief-item">
+            <span>Редакции</span>
+            <strong>${escapeHtml(document.editionCount ?? 0)}</strong>
+          </div>
+        </div>
+      </div>
+    </aside>
+  `;
+}
+
+function renderDocumentOverview(document, { mode = 'summary', anchor = '' } = {}) {
+  const legacyUrl = document.legacyViewerUrl ? buildDocumentLegacyRoute(document.slug ?? '', anchor) : '';
+  const printUrl = buildDocumentPrintRoute(document.slug ?? '', anchor);
+  const readerUrl = buildDocumentRoute(document.slug ?? '');
+  const cardUrl = buildDocumentCardRoute(document.slug ?? '');
+  const importedAt = document.importedAt ? new Date(document.importedAt).toLocaleString('ru-RU') : '—';
+  const updatedAt = document.updatedAt ? new Date(document.updatedAt).toLocaleString('ru-RU') : '—';
+  const tags = (document.tags ?? []).map((tag) => `<li class="tag-chip">${escapeHtml(tag)}</li>`).join('');
+  const title = mode === 'legacy'
+    ? 'Legacy-режим'
+    : mode === 'print'
+      ? 'Print A4'
+      : document.gostNumber;
+  const lead = mode === 'legacy'
+    ? 'Legacy-режим остаётся только совместимым архивным слоем. Пользовательский маршрут должен работать как часть платформы, а не как пустая обёртка над старым viewer.'
+    : mode === 'print'
+      ? 'Print A4 остаётся отдельным представлением того же документа. Экран и печать больше не должны расходиться по источнику правды.'
+      : (document.description ?? 'Профессиональный нормативный документ с экранным и печатным представлением.');
+
+  return `
+    <section class="document-workspace-panel document-workspace-hero-panel">
+      <p class="eyebrow">${escapeHtml(title)}</p>
+      <h1>${escapeHtml(document.title)}</h1>
+      <p class="document-lead">${escapeHtml(lead)}</p>
+      ${renderSignalChips(document)}
+      <div class="document-overview-grid">
+        <article class="document-overview-card">
+          <span>Документ</span>
+          <strong>${escapeHtml(document.gostNumber)}</strong>
+          <p>${escapeHtml(document.year ?? '—')} · ${escapeHtml(document.pages ?? 0)} стр. · ${escapeHtml(document.language?.toUpperCase() ?? 'RU')}</p>
+        </article>
+        <article class="document-overview-card">
+          <span>Импорт и обновление</span>
+          <strong>${escapeHtml(importedAt)}</strong>
+          <p>Обновление: ${escapeHtml(updatedAt)}</p>
+        </article>
+        <article class="document-overview-card">
+          <span>Migration</span>
+          <strong>${escapeHtml(formatMigrationStatusLabel(document.migrationStatus))}</strong>
+          <p>${document.curationApplied ? 'Кураторская верификация применена.' : 'Документ ещё требует ручной верификации.'}</p>
+        </article>
+      </div>
+      <ul class="tag-list">${tags}</ul>
+      <div class="hero-actions">
+        <a class="button button-primary" href="${escapeHtml(readerUrl)}" data-link>Reader V2</a>
+        ${mode !== 'summary' ? `<a class="button button-secondary" href="${escapeHtml(cardUrl)}" data-link>Карточка документа</a>` : ''}
+        ${mode !== 'legacy' && legacyUrl ? `<a class="button button-secondary" href="${escapeHtml(legacyUrl)}" data-link>Legacy-режим</a>` : ''}
+        ${mode !== 'print'
+          ? `<a class="button button-secondary" href="${escapeHtml(printUrl)}" data-link>Print A4</a>`
+          : `<button class="button button-secondary" type="button" onclick="window.print()">Печать</button>`}
+      </div>
+    </section>
+  `;
+}
+
+function renderRouteSummary(document, { mode = 'summary' } = {}) {
+  const routePath = mode === 'legacy'
+    ? `/doc/${document.slug}/legacy`
+    : mode === 'print'
+      ? `/doc/${document.slug}/print`
+      : `/doc/${document.slug}`;
+
+  return `
+    <section class="document-workspace-panel">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Рабочий режим</p>
+          <h2>${mode === 'legacy' ? 'Архивный вход документа' : mode === 'print' ? 'Печатное представление' : 'Карточка документа'}</h2>
+        </div>
+      </div>
+      <div class="document-overview-grid">
+        <article class="document-overview-card">
+          <span>Маршрут</span>
+          <strong><code>${escapeHtml(routePath)}</code></strong>
+          <p>Пользовательский URL остаётся чистым и не показывает внутренний <code>.html</code> artifact.</p>
+        </article>
+        <article class="document-overview-card">
+          <span>Источник импорта</span>
+          <strong>${escapeHtml(formatSourceTypeLabel(document.sourceType))}</strong>
+          <p>${document.supportsPackageManifest
+            ? 'Документ поддерживает package manifest, редакции, вложения и assets.'
+            : 'Документ импортирован без package manifest.'}</p>
+        </article>
+        <article class="document-overview-card">
+          <span>Пакет</span>
+          <strong>${escapeHtml(document.editionCount ?? 0)} редакций · ${escapeHtml(document.attachmentCount ?? 0)} вложений</strong>
+          <p>${escapeHtml(document.assetCount ?? 0)} assets · ${document.hasLegacyViewer ? 'legacy fallback доступен' : 'legacy fallback отсутствует'}</p>
+        </article>
+      </div>
+    </section>
+  `;
+}
+
+function renderDocumentWorkspace(document, {
+  mode = 'summary',
+  anchor = ''
+} = {}) {
+  return `
+    <section class="document-workspace document-workspace-${escapeHtml(mode)}">
+      ${renderWorkspaceOutline(document)}
+      <div class="document-workspace-main">
+        ${renderDocumentOverview(document, { mode, anchor })}
+        ${renderRouteSummary(document, { mode })}
+        ${renderPlatformStatus(document)}
+        ${renderNavItems(document)}
+      </div>
+      ${renderWorkspaceRail(document, { mode })}
+    </section>
+  `;
+}
+
 export function renderMissingDocument(slug) {
   return `
     <section class="content-block narrow-block">
@@ -176,81 +349,13 @@ function renderV2Scaffold(document) {
 }
 
 export function renderDocumentArtifactPage(document, { mode = 'legacy', anchor = '' } = {}) {
-  const readerUrl = buildDocumentRoute(document.slug ?? '');
-  const cardUrl = buildDocumentCardRoute(document.slug ?? '');
-  const routeLabel = mode === 'print' ? 'Print A4' : 'Legacy-режим';
-  const description = mode === 'print'
-    ? 'Печатный A4-маршрут использует canonical print renderer и остаётся без `.html` в пользовательском URL.'
-    : 'Legacy-режим сохранён как совместимый слой поверх старого viewer, но открывается через чистый пользовательский маршрут.';
-
-  return `
-    <section class="document-hero">
-      <div class="document-hero-copy">
-        <p class="eyebrow">${escapeHtml(routeLabel)}</p>
-        <h1>${escapeHtml(document.title)}</h1>
-        <p class="document-lead">${escapeHtml(description)}</p>
-        ${renderSignalChips(document)}
-        <ul class="meta-list">
-          <li><strong>Документ:</strong> ${escapeHtml(document.gostNumber)}</li>
-          <li><strong>Режим:</strong> ${escapeHtml(mode)}</li>
-          <li><strong>Маршрут:</strong> <code>/doc/${escapeHtml(document.slug)}/${escapeHtml(mode === 'print' ? 'print' : 'legacy')}</code></li>
-        </ul>
-        <div class="hero-actions">
-          <a class="button button-primary" href="${escapeHtml(readerUrl)}" data-link>Reader V2</a>
-          <a class="button button-secondary" href="${escapeHtml(cardUrl)}" data-link>Карточка документа</a>
-          ${mode === 'print'
-            ? `<button class="button button-ghost" type="button" onclick="window.print()">Печать</button>`
-            : `<a class="button button-ghost" href="${escapeHtml(buildDocumentPrintRoute(document.slug ?? '', anchor))}" data-link>Print A4</a>`}
-        </div>
-      </div>
-      <div class="document-hero-preview">
-        ${renderDocumentSurface(document, { mode, title: mode === 'print' ? 'Print route surface' : 'Legacy route surface' })}
-      </div>
-    </section>
-    ${renderPlatformStatus(document)}
-    ${renderNavItems(document)}
-  `;
+  return renderDocumentWorkspace(document, { mode, anchor });
 }
 
 export function renderDocumentPage(document, { showEmbeddedViewer, showV2Reader = false, anchor = '' }) {
-  const legacyUrl = document.legacyViewerUrl ? buildDocumentLegacyRoute(document.slug ?? '', anchor) : '';
-  const printUrl = buildDocumentPrintRoute(document.slug ?? '', anchor);
-  const readerUrl = buildDocumentRoute(document.slug ?? '');
-  const tags = (document.tags ?? []).map((tag) => `<li class="tag-chip">${escapeHtml(tag)}</li>`).join('');
-  const importedAt = document.importedAt ? new Date(document.importedAt).toLocaleString('ru-RU') : '—';
-  const updatedAt = document.updatedAt ? new Date(document.updatedAt).toLocaleString('ru-RU') : '—';
-
   if (showV2Reader) {
     return renderV2Scaffold(document);
   }
 
-  return `
-    <section class="document-hero">
-      <div class="document-hero-copy">
-        <p class="eyebrow">${escapeHtml(document.gostNumber)}</p>
-        <h1>${escapeHtml(document.title)}</h1>
-        <p class="document-lead">${escapeHtml(document.description ?? 'Профессиональный нормативный документ с экранным и печатным представлением.')}</p>
-        ${renderSignalChips(document)}
-        <ul class="meta-list">
-          <li><strong>Год:</strong> ${escapeHtml(document.year)}</li>
-          <li><strong>Страниц:</strong> ${escapeHtml(document.pages)}</li>
-          <li><strong>Статус:</strong> ${escapeHtml(document.status)}</li>
-          <li><strong>Язык:</strong> ${escapeHtml(document.language?.toUpperCase() ?? 'RU')}</li>
-          <li><strong>Импорт:</strong> ${escapeHtml(importedAt)}</li>
-          <li><strong>Обновление:</strong> ${escapeHtml(updatedAt)}</li>
-        </ul>
-        <ul class="tag-list">${tags}</ul>
-        <div class="hero-actions">
-          <a class="button button-primary" href="${escapeHtml(readerUrl)}" data-link>Reader V2</a>
-          ${legacyUrl ? `<a class="button button-secondary" href="${escapeHtml(legacyUrl)}" data-link>Legacy-режим</a>` : ''}
-          <a class="button button-secondary" href="${escapeHtml(printUrl)}" data-link>Print A4</a>
-        </div>
-      </div>
-      <div class="document-hero-preview">
-        ${renderDocumentSurface(document, { mode: 'summary', title: 'Документная поверхность' })}
-      </div>
-    </section>
-    ${renderPlatformStatus(document)}
-    ${renderNavItems(document)}
-  `;
+  return renderDocumentWorkspace(document, { mode: 'summary', anchor });
 }

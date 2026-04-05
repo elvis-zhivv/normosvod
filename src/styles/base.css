@@ -827,10 +827,121 @@ select {
   gap: 8px;
 }
 
+.document-workspace {
+  display: grid;
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr) minmax(280px, 360px);
+  gap: 20px;
+  align-items: start;
+}
+
+.document-workspace-main,
+.document-workspace-side {
+  display: grid;
+  gap: 20px;
+}
+
+.document-workspace-panel {
+  padding: 22px;
+  border-radius: calc(var(--radius) + 2px);
+  background: var(--paper);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: var(--shadow);
+}
+
+.document-workspace-panel h1,
+.document-workspace-panel h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.document-workspace-hero-panel {
+  padding: 28px;
+}
+
+.document-workspace-hero-panel h1 {
+  font-size: clamp(2rem, 3vw, 3.4rem);
+  line-height: 1.02;
+}
+
+.document-overview-grid,
+.document-brief-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.document-overview-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 20px 0;
+}
+
+.document-brief-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.document-overview-card,
+.document-brief-item,
+.document-outline-item {
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--paper-strong);
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.document-overview-card span,
+.document-brief-item span,
+.document-outline-item span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.document-overview-card strong,
+.document-brief-item strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.06rem;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.document-overview-card p,
+.document-brief-item p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.document-outline-list {
+  list-style: none;
+  padding: 0;
+  margin: 18px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.document-outline-item {
+  display: grid;
+  gap: 6px;
+}
+
+.document-outline-item strong {
+  font-size: 0.98rem;
+  line-height: 1.35;
+}
+
+.document-workspace-panel-surface {
+  padding: 0;
+  overflow: hidden;
+}
+
 @media (max-width: 980px) {
   .search-panel,
   .document-hero,
-  .doc-card {
+  .doc-card,
+  .document-workspace {
     grid-template-columns: 1fr;
   }
 
@@ -843,7 +954,9 @@ select {
   .meta-list,
   .filter-grid,
   .platform-status-grid,
-  .workbench-metrics {
+  .workbench-metrics,
+  .document-overview-grid,
+  .document-brief-grid {
     grid-template-columns: 1fr;
   }
 }
