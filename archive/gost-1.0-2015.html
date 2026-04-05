@@ -2883,6 +2883,25 @@
         return page ? pages.indexOf(page) : -1;
       }
 
+      function scrollElementIntoWorkspace(element, block = 'center'){
+        if (!workspace || !element) return;
+        const workspaceRect = workspace.getBoundingClientRect();
+        const elementRect = element.getBoundingClientRect();
+        const currentScrollTop = workspace.scrollTop;
+        const maxScrollTop = Math.max(0, workspace.scrollHeight - workspace.clientHeight);
+        const stickyToolsInset = 72;
+        let nextScrollTop = currentScrollTop + (elementRect.top - workspaceRect.top);
+
+        if (block === 'center') {
+          nextScrollTop -= Math.max(0, (workspace.clientHeight - elementRect.height) / 2);
+        } else {
+          nextScrollTop -= stickyToolsInset;
+        }
+
+        nextScrollTop = Math.max(0, Math.min(maxScrollTop, nextScrollTop));
+        workspace.scrollTo({ top: nextScrollTop, left: 0, behavior: 'auto' });
+      }
+
       function navigateToElement(element, options = {}){
         if (!element) return;
         const page = element.closest('.page');
@@ -2906,11 +2925,7 @@
           }
 
           const focusTarget = activeSearchElement || element;
-          focusTarget.scrollIntoView({
-            block: options.scrollBlock || 'center',
-            inline: 'nearest',
-            behavior: 'auto'
-          });
+          scrollElementIntoWorkspace(focusTarget, options.scrollBlock || 'center');
 
           if (options.syncUrl && element.id) {
             syncLocationHash(`#${element.id}`);
