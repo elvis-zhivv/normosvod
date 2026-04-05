@@ -52,6 +52,7 @@ export function renderMissingDocument(slug) {
 }
 
 export function renderDocumentPage(document, { showEmbeddedViewer }) {
+  const previewUrl = normalizeDocumentUrl(document.previewUrl);
   const viewerUrl = normalizeDocumentUrl(document.viewerUrl);
   const embedUrl = withBase(`/doc/${document.slug}?embed=${showEmbeddedViewer ? '0' : '1'}`);
   const tags = (document.tags ?? []).map((tag) => `<li class="tag-chip">${tag}</li>`).join('');
@@ -79,30 +80,7 @@ export function renderDocumentPage(document, { showEmbeddedViewer }) {
         <p class="direct-link">Прямой URL: <a href="${viewerUrl}" target="_blank" rel="noreferrer">${viewerUrl}</a></p>
       </div>
       <div class="document-hero-preview">
-        <div
-          class="document-cover-preview"
-          data-cover-preview
-          data-preview-kind="hero"
-          data-viewer-url="${viewerUrl}"
-          data-gost-number="${document.gostNumber}"
-          data-title="${document.shortTitle || document.title}"
-          data-year="${document.year ?? ''}"
-        >
-          <div class="document-cover-preview-shell">
-            <div class="document-cover-preview-loading">
-              <div class="doc-cover-card doc-cover-card-hero" aria-label="Обложка ${document.gostNumber}">
-                <p class="doc-cover-card-kicker">${document.gostNumber}</p>
-                <strong>${document.shortTitle || document.title}</strong>
-                <span>${document.year}</span>
-              </div>
-            </div>
-            <iframe
-              title="Титульный лист ${document.gostNumber}"
-              loading="lazy"
-              tabindex="-1"
-            ></iframe>
-          </div>
-        </div>
+        <img src="${previewUrl}" alt="Титульный лист ${document.gostNumber}" loading="lazy" />
       </div>
     </section>
     ${showEmbeddedViewer ? renderViewerFrame(document) : ''}

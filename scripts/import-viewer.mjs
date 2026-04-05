@@ -76,7 +76,7 @@ async function archiveImportedSource(sourcePath) {
   await rename(sourcePath, destinationPath);
 }
 
-function buildLocalMeta(meta, slug, fileHash, timestamps) {
+function buildLocalMeta(meta, slug, fileHash, timestamps, previewFileName = 'preview.svg') {
   return {
     id: slug,
     slug,
@@ -89,7 +89,7 @@ function buildLocalMeta(meta, slug, fileHash, timestamps) {
     pages: meta.pages,
     viewerUrl: `/docs/${slug}/viewer.html`,
     metaUrl: `/docs/${slug}/meta.json`,
-    previewUrl: `/docs/${slug}/preview.png`,
+    previewUrl: `/docs/${slug}/${previewFileName}`,
     searchTextUrl: '/data/search-index.json',
     tags: meta.tags,
     sourceType: meta.sourceType,
@@ -137,13 +137,17 @@ export async function importViewer(inputPath, options = {}) {
   const localMeta = buildLocalMeta(parsedMeta, slug, fileHash, {
     importedAt: existing?.importedAt ?? now,
     updatedAt: now
-  });
+  }, 'preview.svg');
 
   await mkdir(stagingDirectory, { recursive: true });
 
   try {
     await writeFile(path.join(stagingDirectory, 'viewer.html'), html, 'utf8');
-    await generatePreviewOrPlaceholder({ outputDirectory: stagingDirectory });
+    await generatePreviewOrPlaceholder({
+      outputDirectory: stagingDirectory,
+      html,
+      meta: parsedMeta
+    });
     await writeFile(
       path.join(stagingDirectory, 'meta.json'),
       `${JSON.stringify(localMeta, null, 2)}\n`,

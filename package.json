@@ -10,6 +10,7 @@
     "import:one": "node scripts/import-viewer.mjs",
     "import:all": "node scripts/import-viewer.mjs --all",
     "reindex": "node scripts/build-search-index.mjs",
+    "previews:rebuild": "node scripts/rebuild-previews.mjs",
     "manifest:rebuild": "node scripts/rebuild-manifest.mjs",
     "validate:viewers": "node scripts/validate-viewer.mjs"
   },
