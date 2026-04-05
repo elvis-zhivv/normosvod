@@ -302,11 +302,39 @@ select {
   background: linear-gradient(180deg, #f2ead7, #dce7f2);
 }
 
-.doc-card-preview img,
-.document-hero-preview img {
-  width: 100%;
+.doc-cover-card {
+  display: grid;
+  align-content: space-between;
   height: 100%;
-  object-fit: cover;
+  padding: 18px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(245, 235, 220, 0.96)),
+    linear-gradient(135deg, #f5efe4, #e5edf5);
+  color: #18202a;
+}
+
+.doc-cover-card-kicker {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.doc-cover-card strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.5rem;
+  line-height: 1.05;
+}
+
+.doc-cover-card span {
+  justify-self: start;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(12, 74, 110, 0.1);
+  color: var(--brand);
+  font-weight: 700;
 }
 
 .doc-card-body h3 {
@@ -361,6 +389,40 @@ select {
   border-radius: 24px;
   overflow: hidden;
   background: linear-gradient(180deg, #f2ead7, #dce7f2);
+}
+
+.document-cover-preview,
+.document-cover-preview-shell {
+  width: 100%;
+  height: 100%;
+}
+
+.document-cover-preview-shell {
+  position: relative;
+  padding: 12px;
+}
+
+.document-cover-preview-loading {
+  position: absolute;
+  inset: 12px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(246, 239, 228, 0.92)),
+    linear-gradient(135deg, #f5efe4, #e5edf5);
+  color: var(--muted);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.document-cover-preview iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  opacity: 0;
+  transition: opacity 0.24s ease;
+  background: transparent;
 }
 
 .meta-list {

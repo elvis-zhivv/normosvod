@@ -3,6 +3,7 @@ import { SORT_OPTIONS } from './filters.js';
 import { renderCatalogPage, renderHomePage } from './catalog.js';
 import { renderDocumentPage, renderMissingDocument } from './document.js';
 import { stripBasePath, withBase } from './paths.js';
+import { initCoverPreviews } from './preview.js';
 
 const appNode = document.getElementById('app');
 
@@ -72,6 +73,8 @@ function renderLayout(content, route) {
       ${content}
     </main>
   `;
+
+  initCoverPreviews();
 
   document.title = route.name === 'document'
     ? `${route.pageTitle ?? route.params.slug} — Normosvod`

@@ -52,7 +52,6 @@ export function renderMissingDocument(slug) {
 }
 
 export function renderDocumentPage(document, { showEmbeddedViewer }) {
-  const previewUrl = normalizeDocumentUrl(document.previewUrl);
   const viewerUrl = normalizeDocumentUrl(document.viewerUrl);
   const embedUrl = withBase(`/doc/${document.slug}?embed=${showEmbeddedViewer ? '0' : '1'}`);
   const tags = (document.tags ?? []).map((tag) => `<li class="tag-chip">${tag}</li>`).join('');
@@ -80,7 +79,22 @@ export function renderDocumentPage(document, { showEmbeddedViewer }) {
         <p class="direct-link">Прямой URL: <a href="${viewerUrl}" target="_blank" rel="noreferrer">${viewerUrl}</a></p>
       </div>
       <div class="document-hero-preview">
-        <img src="${previewUrl}" alt="Превью ${document.gostNumber}" />
+        <div
+          class="document-cover-preview"
+          data-cover-preview
+          data-viewer-url="${viewerUrl}"
+          data-gost-number="${document.gostNumber}"
+        >
+          <div class="document-cover-preview-shell">
+            <div class="document-cover-preview-loading">Загружаем титульный лист…</div>
+            <iframe
+              title="Титульный лист ${document.gostNumber}"
+              src="${viewerUrl}"
+              loading="lazy"
+              tabindex="-1"
+            ></iframe>
+          </div>
+        </div>
       </div>
     </section>
     ${showEmbeddedViewer ? renderViewerFrame(document) : ''}

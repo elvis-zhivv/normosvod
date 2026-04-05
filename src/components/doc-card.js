@@ -1,7 +1,6 @@
 import { normalizeDocumentUrl, withBase } from '../js/paths.js';
 
 export function renderDocCard(document) {
-  const previewUrl = normalizeDocumentUrl(document.previewUrl);
   const viewerUrl = normalizeDocumentUrl(document.viewerUrl);
   const documentUrl = withBase(`/doc/${document.slug}`);
   const tags = (document.tags ?? [])
@@ -11,7 +10,11 @@ export function renderDocCard(document) {
   return `
     <article class="doc-card">
       <div class="doc-card-preview">
-        <img src="${previewUrl}" alt="Превью ${document.gostNumber}" loading="lazy" />
+        <div class="doc-cover-card" aria-label="Обложка ${document.gostNumber}">
+          <p class="doc-cover-card-kicker">${document.gostNumber}</p>
+          <strong>${document.shortTitle || document.title}</strong>
+          <span>${document.year}</span>
+        </div>
       </div>
       <div class="doc-card-body">
         <p class="doc-card-kicker">${document.gostNumber}</p>
