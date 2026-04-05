@@ -51,8 +51,12 @@ function buildFallbackHtml({ gostNumber = '', title = '', year = '' }) {
         place-items: start center;
       }
       .scale-wrap {
+        position: relative;
+        overflow: hidden;
+      }
+      .scale-target {
         width: max-content;
-        transform-origin: top center;
+        transform-origin: top left;
       }
       .page {
         width: 840px;
@@ -90,25 +94,32 @@ function buildFallbackHtml({ gostNumber = '', title = '', year = '' }) {
   <body>
     <div class="viewport">
       <div class="scale-wrap">
-        <article class="page">
-          <div class="gost">${escapeHtml(gostNumber)}</div>
-          <div class="title">${escapeHtml(title)}</div>
-          <div class="year">${escapeHtml(year)}</div>
-        </article>
+        <div class="scale-target">
+          <article class="page">
+            <div class="gost">${escapeHtml(gostNumber)}</div>
+            <div class="title">${escapeHtml(title)}</div>
+            <div class="year">${escapeHtml(year)}</div>
+          </article>
+        </div>
       </div>
     </div>
     <script>
       (function () {
         const wrap = document.querySelector('.scale-wrap');
+        const target = document.querySelector('.scale-target');
         const page = document.querySelector('.page');
+        const viewport = document.querySelector('.viewport');
 
         function fit() {
-          if (!wrap || !page) return;
+          if (!wrap || !target || !page || !viewport) return;
           const pageRect = page.getBoundingClientRect();
-          const viewportWidth = window.innerWidth;
-          const viewportHeight = window.innerHeight;
+          const viewportRect = viewport.getBoundingClientRect();
+          const viewportWidth = viewportRect.width;
+          const viewportHeight = viewportRect.height;
           const scale = Math.min(viewportWidth / pageRect.width, viewportHeight / pageRect.height, 1);
-          wrap.style.transform = 'scale(' + scale + ')';
+          wrap.style.width = (pageRect.width * scale) + 'px';
+          wrap.style.height = (pageRect.height * scale) + 'px';
+          target.style.transform = 'scale(' + scale + ')';
         }
 
         window.addEventListener('resize', fit);
@@ -155,8 +166,12 @@ body {
   place-items: start center;
 }
 .scale-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.scale-target {
   width: max-content;
-  transform-origin: top center;
+  transform-origin: top left;
 }
 .page {
   margin: 0 !important;
@@ -167,21 +182,28 @@ body {
   <body>
     <div class="viewport">
       <div class="scale-wrap">
-        ${firstPageMarkup}
+        <div class="scale-target">
+          ${firstPageMarkup}
+        </div>
       </div>
     </div>
     <script>
       (function () {
         const wrap = document.querySelector('.scale-wrap');
+        const target = document.querySelector('.scale-target');
         const page = document.querySelector('.page');
+        const viewport = document.querySelector('.viewport');
 
         function fit() {
-          if (!wrap || !page) return;
+          if (!wrap || !target || !page || !viewport) return;
           const pageRect = page.getBoundingClientRect();
-          const viewportWidth = window.innerWidth;
-          const viewportHeight = window.innerHeight;
+          const viewportRect = viewport.getBoundingClientRect();
+          const viewportWidth = viewportRect.width;
+          const viewportHeight = viewportRect.height;
           const scale = Math.min(viewportWidth / pageRect.width, viewportHeight / pageRect.height, 1);
-          wrap.style.transform = 'scale(' + scale + ')';
+          wrap.style.width = (pageRect.width * scale) + 'px';
+          wrap.style.height = (pageRect.height * scale) + 'px';
+          target.style.transform = 'scale(' + scale + ')';
         }
 
         window.addEventListener('resize', fit);

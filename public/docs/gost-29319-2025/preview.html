@@ -1240,8 +1240,12 @@ body {
   place-items: start center;
 }
 .scale-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.scale-target {
   width: max-content;
-  transform-origin: top center;
+  transform-origin: top left;
 }
 .page {
   margin: 0 !important;
@@ -1252,7 +1256,8 @@ body {
   <body>
     <div class="viewport">
       <div class="scale-wrap">
-        <section class="page page-1 active" data-page="1" aria-label="Страница 1">
+        <div class="scale-target">
+          <section class="page page-1 active" data-page="1" aria-label="Страница 1">
             <div class="cover">
               <div class="cover-top-line"></div>
               <div class="cover-top-text">
@@ -1289,20 +1294,26 @@ body {
               </div>
             </div>
           </section>
+        </div>
       </div>
     </div>
     <script>
       (function () {
         const wrap = document.querySelector('.scale-wrap');
+        const target = document.querySelector('.scale-target');
         const page = document.querySelector('.page');
+        const viewport = document.querySelector('.viewport');
 
         function fit() {
-          if (!wrap || !page) return;
+          if (!wrap || !target || !page || !viewport) return;
           const pageRect = page.getBoundingClientRect();
-          const viewportWidth = window.innerWidth;
-          const viewportHeight = window.innerHeight;
+          const viewportRect = viewport.getBoundingClientRect();
+          const viewportWidth = viewportRect.width;
+          const viewportHeight = viewportRect.height;
           const scale = Math.min(viewportWidth / pageRect.width, viewportHeight / pageRect.height, 1);
-          wrap.style.transform = 'scale(' + scale + ')';
+          wrap.style.width = (pageRect.width * scale) + 'px';
+          wrap.style.height = (pageRect.height * scale) + 'px';
+          target.style.transform = 'scale(' + scale + ')';
         }
 
         window.addEventListener('resize', fit);
