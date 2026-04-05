@@ -1,0 +1,409 @@
+[
+  {
+    "id": "gost-1-0-2015",
+    "slug": "gost-1-0-2015",
+    "gostNumber": "ГОСТ 1.0—2015",
+    "title": "Межгосударственная система стандартизации. Основные положения",
+    "shortTitle": "Основные положения",
+    "year": 2015,
+    "status": "active",
+    "language": "ru",
+    "pages": 24,
+    "viewerUrl": "/docs/gost-1-0-2015/viewer.html",
+    "metaUrl": "/docs/gost-1-0-2015/meta.json",
+    "previewUrl": "/docs/gost-1-0-2015/preview.png",
+    "searchTextUrl": "/data/search-index.json",
+    "tags": [
+      "ГОСТ",
+      "Межгосударственная система стандартизации",
+      "Основные положения"
+    ],
+    "sourceType": "html-viewer",
+    "importedAt": "2026-04-05T08:58:44.090Z",
+    "updatedAt": "2026-04-05T08:59:59.287Z",
+    "fileHash": "sha256-3818570a90b866b82cf853b3e4e054e5df1117d194a337e6fb46ea32b66fdb6c",
+    "viewerVersion": "1.0.0",
+    "hasInternalSearch": true,
+    "hasThemeToggle": true,
+    "hasPrintMode": true,
+    "hasQuickNav": true,
+    "hasBackNavigation": true,
+    "description": "Автономный viewer ГОСТ 1.0—2015.",
+    "navItemsCount": 16,
+    "navItems": [
+      {
+        "label": "Обложка",
+        "targetPageIndex": 0,
+        "targetSelector": "#cover-page"
+      },
+      {
+        "label": "Предисловие и сведения о стандарте",
+        "targetPageIndex": 1,
+        "targetSelector": "#preface"
+      },
+      {
+        "label": "Содержание",
+        "targetPageIndex": 2,
+        "targetSelector": "#toc"
+      },
+      {
+        "label": "1. Область применения",
+        "targetPageIndex": 3,
+        "targetSelector": "#section-1"
+      },
+      {
+        "label": "2. Нормативные ссылки",
+        "targetPageIndex": 3,
+        "targetSelector": "#section-2"
+      },
+      {
+        "label": "3. Цели межгосударственной стандартизации",
+        "targetPageIndex": 4,
+        "targetSelector": "#section-3"
+      },
+      {
+        "label": "4. Основные принципы межгосударственной стандартизации",
+        "targetPageIndex": 4,
+        "targetSelector": "#section-4"
+      },
+      {
+        "label": "5. Основные направления работ по межгосударственной стандартизации",
+        "targetPageIndex": 4,
+        "targetSelector": "#section-5"
+      },
+      {
+        "label": "5.2. Приоритетные направления работ по межгосударственной стандартизации",
+        "targetPageIndex": 5,
+        "targetSelector": "#section-5-2"
+      },
+      {
+        "label": "6. Организация работ по межгосударственной стандартизации",
+        "targetPageIndex": 5,
+        "targetSelector": "#section-6"
+      },
+      {
+        "label": "7. Объекты межгосударственной стандартизации",
+        "targetPageIndex": 6,
+        "targetSelector": "#section-7"
+      },
+      {
+        "label": "8. Документы по межгосударственной стандартизации и правила их применения",
+        "targetPageIndex": 7,
+        "targetSelector": "#section-8"
+      },
+      {
+        "label": "8.3.4. Дата введения национальных стандартов",
+        "targetPageIndex": 8,
+        "targetSelector": "#section-8-3-4"
+      },
+      {
+        "label": "8.8.1. Уведомление о прекращении применения МГС в государстве — участнике Соглашения",
+        "targetPageIndex": 9,
+        "targetSelector": "#section-8-8-1"
+      },
+      {
+        "label": "Библиография",
+        "targetPageIndex": 10,
+        "targetSelector": "#bibliography"
+      },
+      {
+        "label": "Издательские сведения",
+        "targetPageIndex": 10,
+        "targetSelector": "#imprint"
+      }
+    ]
+  },
+  {
+    "id": "gost-29319-2025",
+    "slug": "gost-29319-2025",
+    "gostNumber": "ГОСТ 29319—2025",
+    "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
+    "shortTitle": "Метод визуального сравнения цвета",
+    "year": 2025,
+    "status": "active",
+    "language": "ru",
+    "pages": 26,
+    "viewerUrl": "/docs/gost-29319-2025/viewer.html",
+    "metaUrl": "/docs/gost-29319-2025/meta.json",
+    "previewUrl": "/docs/gost-29319-2025/preview.png",
+    "searchTextUrl": "/data/search-index.json",
+    "tags": [
+      "ГОСТ",
+      "Материалы лакокрасочные",
+      "Метод визуального сравнения цвета"
+    ],
+    "sourceType": "html-viewer",
+    "importedAt": "2026-04-05T08:58:44.039Z",
+    "updatedAt": "2026-04-05T08:59:59.232Z",
+    "fileHash": "sha256-bd4e609ad1720bf1e167bd2eff11567aa6c4584dc8c04e549628e2116f019db0",
+    "viewerVersion": "1.0.0",
+    "hasInternalSearch": true,
+    "hasThemeToggle": true,
+    "hasPrintMode": true,
+    "hasQuickNav": true,
+    "hasBackNavigation": true,
+    "description": "Автономный viewer ГОСТ 29319—2025.",
+    "navItemsCount": 24,
+    "navItems": [
+      {
+        "label": "Страница I — «Титул»",
+        "targetPageIndex": 0,
+        "targetSelector": null
+      },
+      {
+        "label": "Страница II — «Предисловие. Сведения о стандарте»",
+        "targetPageIndex": 1,
+        "targetSelector": null
+      },
+      {
+        "label": "Страница III — «Информационные сведения»",
+        "targetPageIndex": 2,
+        "targetSelector": null
+      },
+      {
+        "label": "Страница IV — «Введение»",
+        "targetPageIndex": 3,
+        "targetSelector": null
+      },
+      {
+        "label": "1. Область применения",
+        "targetPageIndex": 4,
+        "targetSelector": "#section-1-scope"
+      },
+      {
+        "label": "2. Нормативные ссылки",
+        "targetPageIndex": 4,
+        "targetSelector": "#section-2-normative"
+      },
+      {
+        "label": "3. Термины и определения",
+        "targetPageIndex": 5,
+        "targetSelector": "#section-3-terms"
+      },
+      {
+        "label": "4. Требования к освещению для сравнения цвета",
+        "targetPageIndex": 5,
+        "targetSelector": "#section-4-lighting"
+      },
+      {
+        "label": "5. Требования к специалисту",
+        "targetPageIndex": 6,
+        "targetSelector": "#section-5-specialist"
+      },
+      {
+        "label": "6. Требования к образцам и эталонам",
+        "targetPageIndex": 7,
+        "targetSelector": "#section-6-samples"
+      },
+      {
+        "label": "Раздел 6 (продолжение)",
+        "targetPageIndex": 8,
+        "targetSelector": "#section-6-continued"
+      },
+      {
+        "label": "7. Проведение испытаний",
+        "targetPageIndex": 9,
+        "targetSelector": "#section-7-tests"
+      },
+      {
+        "label": "8. Оценка метамерии",
+        "targetPageIndex": 10,
+        "targetSelector": "#section-8-metamerism"
+      },
+      {
+        "label": "9. Обработка результатов",
+        "targetPageIndex": 11,
+        "targetSelector": "#section-9-results"
+      },
+      {
+        "label": "10. Прецизионность",
+        "targetPageIndex": 11,
+        "targetSelector": "#section-10-precision"
+      },
+      {
+        "label": "11. Протокол испытаний",
+        "targetPageIndex": 11,
+        "targetSelector": "#section-11-report"
+      },
+      {
+        "label": "Приложение А (справочное) — «Идентификация цвета образцов»",
+        "targetPageIndex": 12,
+        "targetSelector": "#appendix-a"
+      },
+      {
+        "label": "Приложение А (продолжение)",
+        "targetPageIndex": 13,
+        "targetSelector": "#appendix-a-continued"
+      },
+      {
+        "label": "Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»",
+        "targetPageIndex": 14,
+        "targetSelector": "#appendix-b"
+      },
+      {
+        "label": "Приложение В (справочное) — «Метамерия и метамерные соответствия»",
+        "targetPageIndex": 15,
+        "targetSelector": "#appendix-v"
+      },
+      {
+        "label": "Библиография",
+        "targetPageIndex": 16,
+        "targetSelector": "#section-bibliography"
+      },
+      {
+        "label": "Ключевые слова",
+        "targetPageIndex": 17,
+        "targetSelector": "#section-keywords"
+      },
+      {
+        "label": "Издательские сведения",
+        "targetPageIndex": 18,
+        "targetSelector": "#section-imprint"
+      },
+      {
+        "label": "Страница 20",
+        "targetPageIndex": 19,
+        "targetSelector": null
+      }
+    ]
+  },
+  {
+    "id": "gost-8784-75",
+    "slug": "gost-8784-75",
+    "gostNumber": "ГОСТ 8784—75",
+    "title": "Материалы лакокрасочные. Методы определения укрывистости",
+    "shortTitle": "Методы определения укрывистости",
+    "year": 1975,
+    "status": "active",
+    "language": "ru",
+    "pages": 16,
+    "viewerUrl": "/docs/gost-8784-75/viewer.html",
+    "metaUrl": "/docs/gost-8784-75/meta.json",
+    "previewUrl": "/docs/gost-8784-75/preview.png",
+    "searchTextUrl": "/data/search-index.json",
+    "tags": [
+      "ГОСТ",
+      "Материалы лакокрасочные",
+      "Методы определения укрывистости"
+    ],
+    "sourceType": "html-viewer",
+    "importedAt": "2026-04-05T08:58:43.871Z",
+    "updatedAt": "2026-04-05T08:59:59.143Z",
+    "fileHash": "sha256-9cbea6e9d4bc9685a66fffc855213a9ab4cfe401927d33b2e500e06c7a70c2fa",
+    "viewerVersion": "1.0.0",
+    "hasInternalSearch": true,
+    "hasThemeToggle": true,
+    "hasPrintMode": true,
+    "hasQuickNav": true,
+    "hasBackNavigation": true,
+    "description": "Автономный viewer ГОСТ 8784—75.",
+    "navItemsCount": 21,
+    "navItems": [
+      {
+        "label": "Обложка",
+        "targetPageIndex": 0,
+        "targetSelector": "#cover-page"
+      },
+      {
+        "label": "Титульная страница и 1. Визуальный метод определения укрывистости",
+        "targetPageIndex": 1,
+        "targetSelector": "#page1-start"
+      },
+      {
+        "label": "1.1. Сущность метода",
+        "targetPageIndex": 1,
+        "targetSelector": "#section-1-1"
+      },
+      {
+        "label": "1.2. Аппаратура и материалы",
+        "targetPageIndex": 1,
+        "targetSelector": "#section-1-2"
+      },
+      {
+        "label": "1.3. Проведение испытания",
+        "targetPageIndex": 2,
+        "targetSelector": "#section-1-3"
+      },
+      {
+        "label": "1.4. Обработка результатов",
+        "targetPageIndex": 2,
+        "targetSelector": "#section-1-4"
+      },
+      {
+        "label": "2. Инструментальный метод определения укрывистости",
+        "targetPageIndex": 3,
+        "targetSelector": "#section-2"
+      },
+      {
+        "label": "2.1. Сущность метода",
+        "targetPageIndex": 3,
+        "targetSelector": "#section-2-1"
+      },
+      {
+        "label": "2.2. Аппаратура и материалы",
+        "targetPageIndex": 3,
+        "targetSelector": "#section-2-2"
+      },
+      {
+        "label": "2.3. Проведение испытания",
+        "targetPageIndex": 4,
+        "targetSelector": "#section-2-3"
+      },
+      {
+        "label": "2.4. Обработка результатов",
+        "targetPageIndex": 4,
+        "targetSelector": "#section-2-4"
+      },
+      {
+        "label": "3. Инструментально-математический метод определения укрывистости",
+        "targetPageIndex": 5,
+        "targetSelector": "#section-3"
+      },
+      {
+        "label": "3.1. Сущность метода",
+        "targetPageIndex": 5,
+        "targetSelector": "#section-3-1"
+      },
+      {
+        "label": "3.2. Аппаратура и материалы",
+        "targetPageIndex": 5,
+        "targetSelector": "#section-3-2"
+      },
+      {
+        "label": "3.3. Проведение испытания",
+        "targetPageIndex": 5,
+        "targetSelector": "#section-3-3"
+      },
+      {
+        "label": "3.4. Обработка результатов",
+        "targetPageIndex": 5,
+        "targetSelector": "#section-3-4"
+      },
+      {
+        "label": "3.4.3. Перевод величины укрывистости",
+        "targetPageIndex": 6,
+        "targetSelector": "#section-3-4-3"
+      },
+      {
+        "label": "Приложение 1 — определение толщины покрытия весовым методом",
+        "targetPageIndex": 7,
+        "targetSelector": "#appendix-1"
+      },
+      {
+        "label": "Приложение 2 — блок-схема расчета укрывистости",
+        "targetPageIndex": 8,
+        "targetSelector": "#appendix-2"
+      },
+      {
+        "label": "Информационные данные",
+        "targetPageIndex": 9,
+        "targetSelector": "#section-info"
+      },
+      {
+        "label": "Издательские сведения",
+        "targetPageIndex": 10,
+        "targetSelector": "#section-imprint"
+      }
+    ]
+  }
+]

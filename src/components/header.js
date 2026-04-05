@@ -1,0 +1,20 @@
+export function renderHeader(currentPath) {
+  const isHome = currentPath === '/';
+  const isCatalog = currentPath.startsWith('/catalog');
+
+  return `
+    <header class="site-header shell">
+      <a class="brand" href="/" data-link>
+        <span class="brand-mark">N</span>
+        <span class="brand-copy">
+          <strong>Normosvod</strong>
+          <small>HTML-viewer каталог ГОСТ</small>
+        </span>
+      </a>
+      <nav class="site-nav" aria-label="Основная навигация">
+        <a class="${isHome ? 'is-active' : ''}" href="/" data-link>Главная</a>
+        <a class="${isCatalog ? 'is-active' : ''}" href="/catalog" data-link>Каталог</a>
+      </nav>
+    </header>
+  `;
+}

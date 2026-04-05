@@ -1,0 +1,3188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ГОСТ 29319-2025 — исправленная версия A4</title>
+  <style>
+    :root{
+      --page-w: 210mm;
+      --page-h: 297mm;
+      --sidebar-w: 296px;
+      --screen-bg: #d8d8d8;
+      --sidebar-bg: #1f2329;
+      --sidebar-fg: #f3f5f7;
+      --sidebar-muted: #c4cad4;
+      --sidebar-btn: #2c323a;
+      --sidebar-btn-hover: #39414b;
+      --sidebar-border: rgba(255,255,255,.08);
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ margin:0; padding:0; height:100%; }
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background:var(--screen-bg);
+      color:#111;
+      overflow:hidden;
+    }
+
+    .app{
+      display:flex;
+      width:100%;
+      height:100%;
+    }
+
+    .sidebar{
+      width:var(--sidebar-w);
+      min-width:var(--sidebar-w);
+      height:100%;
+      background:var(--sidebar-bg);
+      color:var(--sidebar-fg);
+      border-right:1px solid var(--sidebar-border);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    .sidebar-head{
+      padding:18px 18px 14px;
+      border-bottom:1px solid var(--sidebar-border);
+    }
+    .sidebar-title{
+      margin:0 0 6px;
+      font-size:18px;
+      line-height:1.15;
+      font-weight:700;
+    }
+    .sidebar-subtitle{
+      margin:0;
+      font-size:13px;
+      line-height:1.35;
+      color:var(--sidebar-muted);
+    }
+    .sidebar-section{
+      padding:14px 18px;
+      border-bottom:1px solid var(--sidebar-border);
+    }
+    .sidebar-row{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .sidebar-row:last-child{ margin-bottom:0; }
+    .sidebar button,
+    .sidebar input{
+      font:600 10px/1 Arial, Helvetica, sans-serif;
+      border:0;
+      border-radius:8px;
+      outline:none;
+    }
+    .sidebar button{
+      min-height:40px;
+      padding:0 12px;
+      cursor:pointer;
+      background:var(--sidebar-btn);
+      color:var(--sidebar-fg);
+      transition:background .15s ease;
+    }
+    .sidebar button:hover{ background:var(--sidebar-btn-hover); }
+    .sidebar button:disabled{
+      opacity:.45;
+      cursor:default;
+    }
+    .sidebar .grow{ flex:1 1 auto; }
+    .sidebar input[type="number"]{
+      width:88px;
+      height:40px;
+      background:#fff;
+      color:#111;
+      padding:0 10px;
+    }
+    .indicator{
+      font-size:14px;
+      line-height:1.35;
+      font-weight:700;
+      color:var(--sidebar-muted);
+      margin-bottom:12px;
+    }
+    .zoom-readout{
+      min-width:72px;
+      text-align:center;
+      font-size:14px;
+      line-height:40px;
+      font-weight:700;
+      color:var(--sidebar-muted);
+      background:rgba(255,255,255,.04);
+      border-radius:8px;
+      padding:0 8px;
+    }
+    .page-list-wrap{
+      min-height:0;
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      margin-top:2px;
+    }
+    .page-list-wrap,
+    .page-list-title,
+    .page-list{
+      position:relative;
+      z-index:1;
+    }
+    .page-list-title{
+      padding:14px 18px 10px;
+      font-size:13px;
+      line-height:1.2;
+      color:var(--sidebar-muted);
+      font-weight:700;
+      border-bottom:1px solid var(--sidebar-border);
+      position:relative;
+      z-index:1;
+    }
+    .page-list{
+      padding:10px 10px 18px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .page-jump{
+      width:100%;
+      text-align:left;
+      justify-content:flex-start;
+      white-space:normal;
+      line-height:1.3;
+      padding-top:10px;
+      padding-bottom:10px;
+    }
+    .page-jump.active{
+      background:#4a5663;
+      color:#fff;
+    }
+    .page-jump-label{
+      display:block;
+      width:100%;
+    }
+
+    .search-panel{
+      position:relative;
+      z-index:14;
+      flex:0 0 auto;
+      padding:14px 18px 20px;
+      margin-bottom:10px;
+      border-bottom:1px solid var(--sidebar-border);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:0;
+      overflow:visible;
+    }
+    .search-title{
+      margin:0;
+      font-size:13px;
+      line-height:1.2;
+      color:var(--sidebar-muted);
+      font-weight:700;
+    }
+    .search-box{
+      position:relative;
+      min-width:0;
+      z-index:24;
+      isolation:isolate;
+      margin-bottom:8px;
+    }
+    .search-input{
+      width:100%;
+      min-height:40px;
+      padding:10px 34px 10px 12px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#fff;
+      color:#111;
+      font:600 14px/1.2 Arial, Helvetica, sans-serif;
+    }
+    .search-input::placeholder{
+      color:#6f7782;
+      font-weight:500;
+    }
+    .search-input::-webkit-search-cancel-button{
+      cursor:pointer;
+    }
+    .search-dropdown{
+      position:absolute;
+      top:calc(100% + 8px);
+      left:0;
+      right:0;
+      z-index:200;
+      display:none;
+      min-width:0;
+      width:100%;
+      max-width:100%;
+      max-height:min(400px, calc(100vh - 196px));
+      background:#262c34;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      box-shadow:0 18px 42px rgba(0,0,0,.32);
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      scrollbar-gutter:stable;
+    }
+    .search-dropdown[hidden]{
+      display:none !important;
+    }
+    .search-dropdown.is-open{
+      display:block;
+    }
+    .search-suggestions,
+    .search-results{
+      min-width:0;
+      width:100%;
+      background:transparent;
+      border:0;
+      border-radius:0;
+      overflow:visible;
+    }
+    .search-suggestions{
+      display:none;
+      max-height:none;
+    }
+    .search-suggestions.has-items{
+      display:block;
+    }
+    .search-dropdown.has-suggestions .search-suggestions{
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .search-suggestion,
+    .search-result{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:4px;
+      width:100%;
+      min-width:0;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      color:var(--sidebar-fg);
+      text-align:left;
+      padding:10px 12px;
+      min-height:unset;
+      font:600 13px/1.45 Arial, Helvetica, sans-serif;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      white-space:normal;
+      word-break:normal;
+      overflow-wrap:anywhere;
+    }
+    .search-suggestion:last-child,
+    .search-result:last-child{
+      border-bottom:0;
+    }
+    .search-suggestion:hover,
+    .search-result:hover{
+      background:rgba(255,255,255,.08);
+    }
+    .search-result-page{
+      display:block;
+      font-size:11px;
+      line-height:1.3;
+      font-weight:700;
+      color:var(--sidebar-muted);
+      margin:0;
+    }
+    .search-result-context{
+      display:block;
+      width:100%;
+      font-size:12px;
+      line-height:1.45;
+      font-weight:500;
+      color:#e4e8ed;
+      white-space:normal;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+    .search-results{
+      max-height:none;
+      display:block;
+    }
+    .search-results-empty{
+      padding:10px 12px;
+      font-size:12px;
+      line-height:1.45;
+      color:var(--sidebar-muted);
+    }
+
+    .search-inline-match,
+    .search-target{
+      background:rgba(255,228,120,.34);
+      box-shadow:0 0 0 1px rgba(177,132,0,.22);
+      border-radius:3px;
+      color:inherit;
+      transition:background .25s ease, box-shadow .25s ease;
+    }
+    .search-inline-match{
+      padding:0 .08em;
+    }
+    .search-target{
+      padding:0 .08em;
+    }
+    .sidebar-note{
+      padding:12px 18px 18px;
+      font-size:12px;
+      line-height:1.4;
+      color:var(--sidebar-muted);
+      border-top:1px solid var(--sidebar-border);
+    }
+
+    .workspace{
+      flex:1 1 auto;
+      height:100%;
+      overflow:auto;
+      background:var(--screen-bg);
+      overscroll-behavior:contain;
+    }
+    .workspace-scroll{
+      min-height:100%;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:30px 28px 50px;
+    }
+    .page-frame{
+      transform-origin: top center;
+      will-change: transform;
+      transition: transform .12s ease;
+    }
+
+    .page{
+      position:relative;
+      width:var(--page-w);
+      height:var(--page-h);
+      margin:0 auto;
+      background:#fff;
+      box-shadow:0 20px 56px rgba(0,0,0,.22);
+      overflow:hidden;
+      display:none;
+    }
+    .page.active{ display:block; }
+
+    .head-left,
+    .head-right{
+      position:absolute;
+      top:8.8mm;
+      font-size:5.3mm;
+      line-height:1;
+      font-weight:700;
+      z-index:2;
+    }
+    .head-left{ left:10.8mm; }
+    .head-right{ right:10.8mm; }
+
+    .folio-left,
+    .folio-right{
+      position:absolute;
+      bottom:6.2mm;
+      font-size:4.9mm;
+      line-height:1;
+      z-index:2;
+    }
+    .folio-left{ left:10.8mm; }
+    .folio-right{ right:10.8mm; }
+
+    .content{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      top:23mm;
+      bottom:19mm;
+      z-index:1;
+    }
+
+    .doc{
+      font-size:3.42mm;
+      line-height:1.18;
+      text-align:justify;
+      text-justify:inter-word;
+    }
+    .doc p{ margin:0 0 1.85mm; }
+    .doc .center{ text-align:center; }
+    .doc .left{ text-align:left; }
+    .doc .right{ text-align:right; }
+    .doc .italic{ font-style:italic; }
+    .doc .small{ font-size:2.92mm; line-height:1.16; }
+    .doc .tiny{ font-size:2.78mm; line-height:1.14; }
+    .doc .bold{ font-weight:700; }
+
+    .doc .section{
+      margin:3.2mm 0 1.85mm;
+      font-size:4.76mm;
+      line-height:1.12;
+      font-weight:700;
+      text-align:left;
+    }
+    .doc .subsection{
+      margin:2.38mm 0 1.6mm;
+      font-size:4.07mm;
+      line-height:1.12;
+      font-weight:700;
+      text-align:left;
+    }
+    .doc .title-lg{
+      font-size:6.09mm;
+      line-height:1.08;
+      font-weight:700;
+      text-align:center;
+      margin:0 0 3.2mm;
+    }
+    .doc .title-md{
+      font-size:4.71mm;
+      line-height:1.12;
+      font-weight:700;
+      text-align:center;
+      margin:0 0 2.65mm;
+    }
+
+    .spaced{
+      letter-spacing:.42em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .std-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:3.25mm;
+      line-height:1.14;
+      table-layout:fixed;
+    }
+    .std-table th,
+    .std-table td{
+      border:1.4px solid #444;
+      padding:4px 6px;
+      vertical-align:middle;
+    }
+    .std-table th{
+      font-weight:400;
+      text-align:center;
+    }
+
+    .mask-table{
+      width:100%;
+      border-collapse:collapse;
+      table-layout:fixed;
+      font-size:3.25mm;
+      line-height:1.14;
+      margin:1.32mm 0 2.12mm;
+    }
+    .mask-table th,
+    .mask-table td{
+      border:1.4px solid #444;
+      padding:5px 7px;
+      text-align:center;
+    }
+    .mask-table th{ font-weight:400; }
+
+    .t-center{ text-align:center; }
+
+
+    .doc-ref,
+    .doc-ref:visited{
+      color:#1c4f8a;
+      text-decoration:underline;
+      text-decoration-thickness:1px;
+      text-underline-offset:.08em;
+      transition:color .15s ease, text-decoration-thickness .15s ease;
+    }
+    .doc-ref:hover,
+    .doc-ref:active{
+      color:#0f3b6b;
+      text-decoration-thickness:1.5px;
+    }
+    .doc-ref:focus-visible{
+      outline:1px solid rgba(28,79,138,.45);
+      outline-offset:1px;
+      border-radius:2px;
+    }
+
+    .note-label{
+      letter-spacing:.24em;
+      white-space:nowrap;
+    }
+
+    .footnote-rule{
+      width:82px;
+      border:0;
+      border-top:1.6px solid #333;
+      margin:7px 0 6px;
+      height:0;
+    }
+
+    .footer-line{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      bottom:13.3mm;
+      border-top:1.6px solid #333;
+      height:0;
+    }
+    .official-left{
+      position:absolute;
+      left:17.5mm;
+      bottom:7.2mm;
+      font-size:13.4px;
+      font-weight:700;
+      line-height:1;
+    }
+    .page-num-bottom-right{
+      position:absolute;
+      right:10.8mm;
+      bottom:6.3mm;
+      font-size:4.9mm;
+      line-height:1;
+    }
+
+    .tbl-caption{
+      margin:1.06mm 0 1.06mm;
+      text-align:left;
+    }
+
+    .fig-caption{
+      text-align:center;
+      font-size:3.39mm;
+      line-height:1.14;
+      margin-top:1.32mm;
+    }
+
+    .copyright-block {
+    position: absolute;
+    left: 30mm;
+    right: 30mm;
+    bottom: 20mm;
+    text-align: center;
+    font-size: 3.70mm;
+    line-height: 1.2;
+}
+
+    .rst-logo{
+      position:absolute;
+      left:7.5mm;
+      bottom:11.5mm;
+      width:27mm;
+      height:27mm;
+    }
+
+    .cover{
+      position:absolute;
+      inset:0;
+    }
+    .cover-top-line{
+      position:absolute;
+      left:6.5mm;
+      right:6.5mm;
+      top:13.5mm;
+      height:2mm;
+      background:#111;
+    }
+    .cover-top-text {
+    position: absolute;
+    left: 10mm;
+    right: 10mm;
+    top: 25mm;
+    text-align: center;
+    font-size: 4.05mm;
+    line-height: 1.04;
+    font-weight: 700;
+}
+    .cover-top-text .en {
+    display: block;
+    margin-top: 1.1mm;
+    font-size: 4.05mm;
+    line-height: 1.03;
+    font-weight: 700;
+}
+    .cover-mid-line {
+    position: absolute;
+    left: 6.5mm;
+    right: 6.5mm;
+    top: 50mm;
+    height: 2mm;
+    background: #111;
+}
+    .cover-std-label {
+    position: absolute;
+    left: 26mm;
+    right: 72mm;
+    top: 74mm;
+    text-align: center;
+    font-size: 6.2mm;
+    line-height: 1.56;
+    font-weight: 700;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+}
+    .cover-gost {
+    position: absolute;
+    right: 18mm;
+    top: 70mm;
+    width: 36mm;
+    text-align: left;
+    font-size: 8mm;
+    line-height: 1.14;
+    font-weight: 700;
+}
+    .cover-low-line {
+    position: absolute;
+    left: 6.5mm;
+    right: 6.5mm;
+    top: 115mm;
+    height: 1.4mm;
+    background: #111;
+}
+    .cover-main-title{
+      position:absolute;
+      left:18mm;
+      right:18mm;
+      top:135mm;
+      text-align:center;
+      font-size:10.8mm;
+      line-height:1.13;
+      font-weight:700;
+    }
+    .cover-main-title .subtitle{
+      display:block;
+      margin-top:11.5mm;
+      font-size:9.2mm;
+      line-height:1.1;
+    }
+    .cover-main-title .iso{
+      display:block;
+      margin-top:9.5mm;
+      font-size:6.7mm;
+      line-height:1.1;
+      font-weight:700;
+    }
+    .cover-main-title .official{
+      display:block;
+      margin-top:20mm;
+      font-size:5.9mm;
+      line-height:1.08;
+      font-weight:700;
+    }
+    .cover-bottom{
+      position:absolute;
+      left:18mm;
+      right:18mm;
+      bottom:15mm;
+      text-align:center;
+      font-size:5.6mm;
+      line-height:1.1;
+      font-weight:700;
+    }
+
+    .main-std-banner{
+      text-align:center;
+      margin-top:1mm;
+    }
+    .main-std-banner .std-line{
+      margin:3.8mm 0 4mm;
+      border-top:2mm solid #111;
+    }
+    .main-std-banner .std-title{
+      font-size:6.2mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:0 0 4mm;
+      letter-spacing:.26em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .main-std-banner .material{
+      font-size:9.2mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:0 0 4mm;
+    }
+    .main-std-banner .method{
+      font-size:7.2mm;
+      line-height:1.12;
+      font-weight:700;
+      margin:0 0 4mm;
+    }
+    .main-std-banner .en{
+      font-size:6.6mm;
+      line-height:1.12;
+      margin:0 0 4.5mm;
+    }
+    .main-std-banner .bottom-line{
+      border-top:1.1px solid #222;
+      margin:0;
+    }
+    .page-five-date{
+      text-align:right;
+      font-size:6.9mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:5.5mm 0 11mm;
+    }
+    .doc-page5{
+      font-size:3.60mm;
+      line-height:1.19;
+    }
+
+    .appendix-title{
+      text-align:center;
+      font-size:7mm;
+      line-height:1.15;
+      font-weight:700;
+      margin:0 0 5.5mm;
+    }
+
+    .scale-svg{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+    .scale-block{
+      margin:8px 0 8px;
+    }
+
+    .biblio-list{
+      display:grid;
+      grid-template-columns:11.1mm 1fr;
+      gap:3.44mm 3.44mm;
+      margin-top:5.29mm;
+      font-size:4.07mm;
+      line-height:1.18;
+    }
+    .biblio-list .idx{
+      text-align:right;
+      white-space:nowrap;
+    }
+
+    .keywords-topline,
+    .keywords-bottomline{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      height:0;
+      border-top:1.4px solid #444;
+    }
+    .keywords-topline{ top:24mm; }
+    .keywords-bottomline{ top:57mm; }
+
+    .imprint-bottomline{
+      position:absolute;
+      left:7mm;
+      right:7mm;
+      bottom:18mm;
+      border-top:2px solid #222;
+    }
+    .imprint-center{
+      position:absolute;
+      left:20mm;
+      right:20mm;
+      bottom:20mm;
+      text-align:center;
+      font-size:3.65mm;
+      line-height:1.18;
+    }
+
+    .blank-page{ background:#fff; }
+
+
+    .sidebar-head{
+      padding:14px 14px 10px;
+    }
+    .sidebar-title{
+      margin:0 0 4px;
+      font-size:17px;
+    }
+    .sidebar-subtitle{
+      font-size:12px;
+      line-height:1.28;
+    }
+    .sidebar-section{
+      padding:10px 14px;
+    }
+    .sidebar-row{
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .sidebar button,
+    .sidebar input{
+      font:600 10px/1 Arial, Helvetica, sans-serif;
+      border-radius:7px;
+    }
+    .sidebar button{
+      min-height:34px;
+      padding:0 10px;
+    }
+    .sidebar input[type="number"]{
+      width:78px;
+      height:34px;
+      padding:0 8px;
+    }
+    .indicator{
+      font-size:13px;
+      line-height:1.25;
+      margin-bottom:8px;
+    }
+    .zoom-readout{
+      min-width:64px;
+      font-size:13px;
+      line-height:34px;
+      border-radius:7px;
+      padding:0 6px;
+    }
+    .page-list-title{
+      padding:12px 14px 8px;
+      font-size:12px;
+    }
+    .page-list{
+      padding:8px 8px 12px;
+      gap:5px;
+    }
+    .page-jump{
+      line-height:1.25;
+      padding:8px 10px;
+    }
+    .search-panel{
+      padding:10px 14px 18px;
+      margin-bottom:10px;
+      gap:8px;
+    }
+    .search-title{
+      font-size:12px;
+    }
+    .search-input{
+      min-height:34px;
+      padding:8px 30px 8px 10px;
+      border-radius:7px;
+      font:600 13px/1.2 Arial, Helvetica, sans-serif;
+    }
+    .search-dropdown{
+      top:calc(100% + 6px);
+      border-radius:10px;
+      max-height:min(340px, calc(100vh - 188px));
+    }
+    .search-suggestions{
+      max-height:none;
+    }
+    .search-suggestion,
+    .search-result{
+      gap:3px;
+      padding:8px 10px;
+      font:600 12.5px/1.45 Arial, Helvetica, sans-serif;
+    }
+    .search-result-page{
+      font-size:10.5px;
+      margin:0;
+    }
+    .search-result-context{
+      font-size:11.5px;
+      line-height:1.42;
+    }
+    .search-results{
+      max-height:none;
+    }
+    .search-results-empty{
+      padding:8px 10px;
+      font-size:11.5px;
+      line-height:1.42;
+    }
+    .sidebar-note{
+      padding:10px 14px 12px;
+      font-size:11.5px;
+      line-height:1.35;
+    }
+
+    :root{
+      --viewer-bg: var(--screen-bg);
+      --viewer-bg-dark: #282828;
+      --viewer-panel-bg: rgba(255,255,255,.88);
+      --viewer-panel-border: rgba(17,17,17,.12);
+      --viewer-panel-fg: #1b222b;
+      --viewer-panel-fg-muted: #5b6470;
+      --doc-page-bg: #ffffff;
+      --doc-text: #111111;
+      --doc-line: #444444;
+      --doc-line-strong: #222222;
+    }
+
+    .workspace{
+      position:relative;
+      background:var(--viewer-bg);
+    }
+    .workspace-scroll{
+      padding:26px 28px 46px;
+    }
+
+    .viewer-tools{
+      position:absolute;
+      top:14px;
+      right:16px;
+      z-index:20;
+      pointer-events:none;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+    }
+    .theme-toggle,
+    .viewer-back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:36px;
+      padding:0 12px;
+      border:1px solid var(--viewer-panel-border);
+      border-radius:999px;
+      background:var(--viewer-panel-bg);
+      color:var(--viewer-panel-fg);
+      box-shadow:0 8px 24px rgba(0,0,0,.14);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      font:600 13px/1 Arial, Helvetica, sans-serif;
+      cursor:pointer;
+      pointer-events:auto;
+      transition:background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease;
+    }
+    .theme-toggle:hover,
+    .viewer-back-btn:hover{
+      background:rgba(255,255,255,.96);
+      box-shadow:0 10px 28px rgba(0,0,0,.18);
+    }
+    .theme-toggle:active,
+    .viewer-back-btn:active{
+      transform:translateY(1px);
+    }
+    .theme-toggle:focus-visible,
+    .viewer-back-btn:focus-visible{
+      outline:2px solid rgba(28,79,138,.35);
+      outline-offset:2px;
+    }
+    .theme-toggle-icon,
+    .viewer-back-btn-icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      font-size:14px;
+      line-height:1;
+    }
+    .theme-toggle-label,
+    .viewer-back-btn-label{
+      white-space:nowrap;
+    }
+    .viewer-back-btn[hidden]{
+      display:none !important;
+    }
+
+    body[data-theme="dark"]{
+      --screen-bg: #4c535c;
+      --viewer-bg: var(--viewer-bg-dark);
+      --viewer-panel-bg: rgba(31,35,40,.88);
+      --viewer-panel-border: rgba(214,219,224,.18);
+      --viewer-panel-fg: #e6ebf0;
+      --viewer-panel-fg-muted: #c4ccd4;
+      --doc-page-bg: #050505;
+      --doc-text: #d7dcdf;
+      --doc-line: #aeb6bd;
+      --doc-line-strong: #c4ccd3;
+      background:var(--screen-bg);
+      color:var(--doc-text);
+    }
+    body[data-theme="dark"] .workspace{
+      background:var(--viewer-bg);
+    }
+    body[data-theme="dark"] .page{
+      background:var(--doc-page-bg);
+      color:var(--doc-text);
+      box-shadow:0 24px 64px rgba(0,0,0,.62);
+    }
+    body[data-theme="dark"] .blank-page{
+      background:var(--doc-page-bg);
+    }
+    body[data-theme="dark"] .std-table th,
+    body[data-theme="dark"] .std-table td,
+    body[data-theme="dark"] .mask-table th,
+    body[data-theme="dark"] .mask-table td{
+      border-color:var(--doc-line);
+    }
+    body[data-theme="dark"] .footnote-rule,
+    body[data-theme="dark"] .footer-line,
+    body[data-theme="dark"] .keywords-topline,
+    body[data-theme="dark"] .keywords-bottomline{
+      border-color:var(--doc-line);
+    }
+    body[data-theme="dark"] .imprint-bottomline,
+    body[data-theme="dark"] .main-std-banner .bottom-line{
+      border-color:var(--doc-line-strong);
+    }
+    body[data-theme="dark"] .cover-top-line,
+    body[data-theme="dark"] .cover-mid-line,
+    body[data-theme="dark"] .cover-low-line,
+    body[data-theme="dark"] .main-std-banner .std-line{
+      background:var(--doc-line-strong);
+    }
+    body[data-theme="dark"] .doc-ref,
+    body[data-theme="dark"] .doc-ref:visited{
+      color:#8fb6dc;
+    }
+    body[data-theme="dark"] .doc-ref:hover,
+    body[data-theme="dark"] .doc-ref:active{
+      color:#b6d0e6;
+    }
+    body[data-theme="dark"] .doc-ref:focus-visible{
+      outline-color:rgba(182,208,230,.45);
+    }
+    body[data-theme="dark"] .search-inline-match,
+    body[data-theme="dark"] .search-target{
+      background:rgba(202,160,68,.24);
+      box-shadow:0 0 0 1px rgba(202,160,68,.3);
+    }
+    body[data-theme="dark"] .viewer-tools .theme-toggle,
+    body[data-theme="dark"] .viewer-tools .viewer-back-btn{
+      box-shadow:0 10px 28px rgba(0,0,0,.28);
+    }
+    body[data-theme="dark"] .viewer-tools .theme-toggle:hover,
+    body[data-theme="dark"] .viewer-tools .viewer-back-btn:hover{
+      background:rgba(39,44,49,.96);
+      box-shadow:0 12px 32px rgba(0,0,0,.34);
+    }
+    body[data-theme="dark"] .page svg text{
+      fill:var(--doc-text) !important;
+    }
+    body[data-theme="dark"] .page svg [fill="#111"]{
+      fill:var(--doc-text) !important;
+    }
+    body[data-theme="dark"] .page svg [stroke="#444"],
+    body[data-theme="dark"] .page svg [stroke="#666"],
+    body[data-theme="dark"] .page svg [stroke="#8c8c8c"]{
+      stroke:var(--doc-line) !important;
+    }
+
+    @media print{
+      html,
+      body{
+        width:210mm !important;
+        min-width:210mm !important;
+        margin:0 !important;
+        padding:0 !important;
+        height:auto !important;
+        overflow:visible !important;
+        background:#fff !important;
+      }
+
+      body{
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .app,
+      .workspace,
+      .workspace-scroll,
+      .page-frame{
+        display:block !important;
+        width:auto !important;
+        min-width:0 !important;
+        max-width:none !important;
+        height:auto !important;
+        min-height:0 !important;
+        margin:0 !important;
+        padding:0 !important;
+        overflow:visible !important;
+        background:#fff !important;
+        transform:none !important;
+      }
+
+      .sidebar{
+        display:none !important;
+      }
+
+
+      .viewer-tools{
+        display:none !important;
+      }
+
+      body[data-theme="dark"]{
+        background:#fff !important;
+        color:#111 !important;
+      }
+
+      body[data-theme="dark"] .page,
+      body[data-theme="dark"] .blank-page{
+        background:#fff !important;
+        color:#111 !important;
+        box-shadow:none !important;
+      }
+
+      body[data-theme="dark"] .std-table th,
+      body[data-theme="dark"] .std-table td,
+      body[data-theme="dark"] .mask-table th,
+      body[data-theme="dark"] .mask-table td{
+        border-color:#444 !important;
+      }
+
+      body[data-theme="dark"] .footnote-rule,
+      body[data-theme="dark"] .footer-line{
+        border-color:#333 !important;
+      }
+
+      body[data-theme="dark"] .keywords-topline,
+      body[data-theme="dark"] .keywords-bottomline{
+        border-color:#444 !important;
+      }
+
+      body[data-theme="dark"] .imprint-bottomline,
+      body[data-theme="dark"] .main-std-banner .bottom-line{
+        border-color:#222 !important;
+      }
+
+      body[data-theme="dark"] .cover-top-line,
+      body[data-theme="dark"] .cover-mid-line,
+      body[data-theme="dark"] .cover-low-line,
+      body[data-theme="dark"] .main-std-banner .std-line{
+        background:#111 !important;
+      }
+
+      body[data-theme="dark"] .doc-ref,
+      body[data-theme="dark"] .doc-ref:visited,
+      body[data-theme="dark"] .doc-ref:hover,
+      body[data-theme="dark"] .doc-ref:active{
+        color:inherit !important;
+        text-decoration:none !important;
+      }
+
+      body[data-theme="dark"] .search-target{
+        background:transparent !important;
+        box-shadow:none !important;
+      }
+
+      body[data-theme="dark"] .page svg text,
+      body[data-theme="dark"] .page svg [fill="#111"]{
+        fill:#111 !important;
+      }
+
+      body[data-theme="dark"] .page svg [stroke="#444"]{
+        stroke:#444 !important;
+      }
+
+      body[data-theme="dark"] .page svg [stroke="#666"]{
+        stroke:#666 !important;
+      }
+
+      body[data-theme="dark"] .page svg [stroke="#8c8c8c"]{
+        stroke:#8c8c8c !important;
+      }
+
+
+      .page{
+        display:block !important;
+        width:210mm !important;
+        min-width:210mm !important;
+        max-width:210mm !important;
+        height:297mm !important;
+        min-height:297mm !important;
+        max-height:297mm !important;
+        margin:0 !important;
+        box-shadow:none !important;
+        overflow:hidden !important;
+        page-break-after:always !important;
+        break-after:page !important;
+        page-break-inside:avoid !important;
+        break-inside:avoid !important;
+      }
+
+      .page:last-child{
+        page-break-after:auto !important;
+        break-after:auto !important;
+      }
+
+      .doc-ref,
+      .doc-ref:visited,
+      .doc-ref:hover,
+      .doc-ref:active{
+        color:inherit !important;
+        text-decoration:none !important;
+      }
+
+      .search-target{
+        background:transparent !important;
+        box-shadow:none !important;
+      }
+
+      @page{
+        size:A4;
+        margin:0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h1 class="sidebar-title">ГОСТ 29319—2025</h1>
+        <p class="sidebar-subtitle">Перелистывание, масштаб и печать — слева. Колесо мыши только прокручивает правую область.</p>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="indicator" id="pageIndicator">Страница 1 из 20</div>
+        <div class="sidebar-row">
+          <button id="prevBtn" type="button" class="grow">Назад</button>
+          <button id="nextBtn" type="button" class="grow">Вперед</button>
+        </div>
+        <div class="sidebar-row">
+          <input id="pageInput" type="number" min="1" step="1" value="1" aria-label="Номер страницы" />
+          <button id="goBtn" type="button" class="grow">Перейти</button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-row">
+          <button id="zoomOutBtn" type="button">−</button>
+          <div id="zoomReadout" class="zoom-readout">100%</div>
+          <button id="zoomInBtn" type="button">+</button>
+        </div>
+        <div class="sidebar-row">
+          <button id="zoomResetBtn" type="button" class="grow">Масштаб 100%</button>
+          <button id="printBtn" type="button" class="grow">Печать</button>
+        </div>
+      </div>
+
+      <section class="search-panel" aria-label="Поиск по документу">
+        <h2 class="search-title">Поиск по документу</h2>
+        <div class="search-box" id="docSearchBox">
+          <input id="docSearchInput" class="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="ГОСТ, ISO, ASTM, МКО, D65, термин..." aria-label="Поиск по документу" aria-controls="docSearchDropdown" aria-expanded="false" />
+          <div id="docSearchDropdown" class="search-dropdown" aria-live="polite" hidden>
+            <div id="docSearchSuggestions" class="search-suggestions" role="listbox" aria-label="Автоподсказки поиска"></div>
+            <div id="docSearchResults" class="search-results">
+              <div class="search-results-empty">Начните вводить запрос, чтобы найти упоминания по всему документу.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="page-list-wrap">
+        <div class="page-list-title">Быстрый переход</div>
+        <div class="page-list" id="pageList"></div>
+      </div>
+
+      <div class="sidebar-note">
+        Клавиши: ← → — страницы, PageUp / PageDown — страницы, Home / End — первая / последняя.
+      </div>
+    </aside>
+
+    <main class="workspace" id="workspace">
+      <div class="viewer-tools" aria-label="Параметры просмотра">
+        <button id="biblioBackBtn" class="viewer-back-btn" type="button" hidden aria-hidden="true" aria-label="Вернуться к месту, откуда был выполнен переход по библиографической ссылке" title="Вернуться к месту, откуда был выполнен переход">
+          <span class="viewer-back-btn-icon" aria-hidden="true">←</span>
+          <span class="viewer-back-btn-label">Назад</span>
+        </button>
+        <button id="themeToggleBtn" class="theme-toggle" type="button" aria-pressed="false" aria-label="Включена дневная тема. Переключить на ночную тему" title="Переключить дневную и ночную тему">
+          <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+          <span class="theme-toggle-label">Ночная тема</span>
+        </button>
+      </div>
+      <div class="workspace-scroll">
+        <div class="page-frame" id="pageFrame">
+
+          <section class="page page-1 active" data-page="1" aria-label="Страница 1">
+            <div class="cover">
+              <div class="cover-top-line"></div>
+              <div class="cover-top-text">
+                МЕЖГОСУДАРСТВЕННЫЙ СОВЕТ ПО СТАНДАРТИЗАЦИИ, МЕТРОЛОГИИ И СЕРТИФИКАЦИИ<br>
+                (МГС)
+                <span class="en">INTERSTATE COUNCIL FOR STANDARDIZATION, METROLOGY AND CERTIFICATION<br>(ISC)</span>
+              </div>
+              <div class="cover-mid-line"></div>
+
+              <div class="cover-std-label">
+                МЕЖГОСУДАРСТВЕННЫЙ<br>
+                СТАНДАРТ
+              </div>
+
+              <div class="cover-gost">
+                ГОСТ<br>
+                29319—<br>
+                2025
+              </div>
+
+              <div class="cover-low-line"></div>
+
+              <div class="cover-main-title">
+                МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ
+                <span class="subtitle">Метод визуального сравнения цвета</span>
+                <span class="iso">(ISO 3668:2017, NEQ)</span>
+                <span class="official">Издание официальное</span>
+              </div>
+
+              <div class="cover-bottom">
+                Москва<br>
+                Российский институт стандартизации<br>
+                2026
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="2" aria-label="Страница 2">
+            <div class="head-left">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <div class="title-lg">Предисловие</div>
+
+              <p>Цели, основные принципы и общие правила проведения работ по межгосударственной стандартизации установлены ГОСТ&nbsp;1.0 «Межгосударственная система стандартизации. Основные положения» и ГОСТ&nbsp;1.2 «Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Правила разработки, принятия, обновления и отмены»</p>
+
+              <div class="section">Сведения о стандарте</div>
+
+              <p>1&nbsp;РАЗРАБОТАН Автономной некоммерческой организацией «Сертификационный центр «ЯрТЕСТ лакокрасочной продукции и тары» (АНО&nbsp;СЦ «ЯрТЕСТ ЛКП и тары»)</p>
+
+              <p>2&nbsp;ВНЕСЕН Межгосударственным техническим комитетом по стандартизации МТК&nbsp;195 «Материалы и покрытия лакокрасочные»</p>
+
+              <p>3&nbsp;ПРИНЯТ Межгосударственным советом по стандартизации, метрологии и сертификации (протокол от 28 ноября 2025&nbsp;г. №&nbsp;191-П)</p>
+
+              <p class="left">За принятие проголосовали:</p>
+
+              <table class="std-table" style="margin-top:4px; margin-bottom:10px;">
+                <colgroup>
+                  <col style="width:27%;">
+                  <col style="width:28%;">
+                  <col style="width:45%;">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Краткое наименование страны<br>по МК (ИСО&nbsp;3166) 004—97</th>
+                    <th>Код страны<br>по МК (ИСО&nbsp;3166) 004—97</th>
+                    <th>Сокращенное наименование национального органа<br>по стандартизации</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Азербайджан</td><td class="t-center">AZ</td><td>Азстандарт</td></tr>
+                  <tr><td>Армения</td><td class="t-center">AM</td><td>ЗАО «Национальный орган по стандартизации и метрологии» Республики Армения</td></tr>
+                  <tr><td>Беларусь</td><td class="t-center">BY</td><td>Госстандарт Республики Беларусь</td></tr>
+                  <tr><td>Киргизия</td><td class="t-center">KG</td><td>Кыргызстандарт</td></tr>
+                  <tr><td>Россия</td><td class="t-center">RU</td><td>Росстандарт</td></tr>
+                  <tr><td>Узбекистан</td><td class="t-center">UZ</td><td>Узбекское агентство по техническому регулированию</td></tr>
+                </tbody>
+              </table>
+
+              <p>4&nbsp;Приказом Федерального агентства по техническому регулированию и метрологии от 15 декабря 2025&nbsp;г. №&nbsp;1725-ст межгосударственный стандарт ГОСТ&nbsp;29319—2025 введен в действие в качестве национального стандарта Российской Федерации с 1 апреля 2026&nbsp;г.</p>
+
+              <p>5&nbsp;Настоящий стандарт разработан с учетом основных нормативных положений международного стандарта ISO&nbsp;3668:2017 «Материалы лакокрасочные. Визуальное сравнение цвета красок» («Paints and varnishes — Visual comparison of colour of paints», NEQ)</p>
+
+              <p>6&nbsp;ВЗАМЕН ГОСТ&nbsp;29319—92 (ИСО&nbsp;3668—76)</p>
+            </div>
+            <div class="folio-left">II</div>
+          </section>
+
+          <section class="page page-3" data-page="3" aria-label="Страница 3">
+            <div class="head-right">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <p class="italic center" style="margin-top:0;">
+                Информация о введении в действие (прекращении действия) настоящего стандарта и изменений к нему на территории указанных выше государств публикуется в указателях национальных стандартов, издаваемых в этих государствах, а также в сети Интернет на сайтах соответствующих национальных органов по стандартизации.
+              </p>
+
+              <p class="italic center" style="margin-top:2px;">
+                В случае пересмотра, изменения или отмены настоящего стандарта соответствующая информация будет опубликована на официальном интернет-сайте Межгосударственного совета по стандартизации, метрологии и сертификации в каталоге «Межгосударственные стандарты»
+              </p>
+            </div>
+
+            <svg class="rst-logo" viewBox="0 0 1200 1200" aria-hidden="true">
+              <g fill="#111">
+                <path d="M480.2,126.1c119,0,254.7,37,365.3,99.3v118.9c-71-38.5-161.3-63.3-234.7-63.3c-120.1,0-217.7,98.8-217.7,220.1c0,121.4,97.7,220.1,217.7,220.1c81.6,0,166.8-21.1,234.7-57.4v110.5c-110.6,62.3-246.3,99.3-365.3,99.3c-152.9,0-271.3-37.1-351.9-110.1c-71.3-64.6-109-155.8-109-263.6c0-107.7,37.8-198.8,109.4-263.6C208.4,164.2,329.9,126.1,480.2,126.1L480.2,126.1z M480.2,106.7C148.7,106.7,0,282.7,0,499.8C0,717,147.5,893,480.2,893c127.7,0,270.7-40.8,384.7-107.4V629.9c-66.9,44-162.7,72-254,72c-109.6,0-198.4-89.9-198.4-200.8c0-110.9,88.8-200.8,198.4-200.8c78.5,0,181.6,30.5,254,78V214.1C750.9,147.5,607.9,106.7,480.2,106.7L480.2,106.7z"/>
+                <path d="M980.6,422.8v45.1H936h-19.4v19.4v95.3h-99.5v-95.3v-19.4h-19.4h-44.6v-45.1H980.6L980.6,422.8z M1000,403.4H733.8v83.8h64v114.7H936V487.2h64V403.4L1000,403.4z"/>
+                <path d="M237.4,280.9c-76,0-137.5,61.6-137.5,137.5v244.7c0,0,16.6,57.3,76.1,57.3c0-64.3,0-302,0-302c0-33.9,27.6-61.3,61.5-61.3s61.3,27.5,61.3,61.3s-27.5,61.3-61.3,61.3c-11.3,0-21.9-3.1-31-8.5v81.1c10,2.3,20.3,3.5,31,3.5c76,0,137.5-61.6,137.5-137.5C375,342.5,313.4,280.9,237.4,280.9z"/>
+              </g>
+            </svg>
+
+            <div class="copyright-block">
+              ©&nbsp;Оформление. ФГБУ «Институт стандартизации», 2026<br><br>
+              В Российской Федерации настоящий стандарт не может быть полностью или<br>
+              частично воспроизведен, тиражирован и распространен в качестве официального<br>
+              издания без разрешения Федерального агентства по техническому регулированию<br>
+              и метрологии
+            </div>
+
+            <div class="folio-right">III</div>
+          </section>
+
+          <section class="page" data-page="4" aria-label="Страница 4">
+            <div class="head-left">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <div class="title-lg">Введение</div>
+
+              <p>Для стандартного определения цвета методом визуального сравнения необходимы специалист с нормальным цветовым зрением, воспроизводимое освещение и условия осмотра. Цвет покрытия для большинства лакокрасочных материалов подлежит сравнению с эталоном при дневном свете, однако спектральный состав дневного света может заметно изменяться в течение светового дня. Рекомендуется использовать источники искусственного дневного освещения, так как они более стабильны в течение ограниченного периода времени по сравнению с дневным светом и обеспечивают лучшую воспроизводимость при сравнении цвета.</p>
+
+              <p>Как правило, если нет других указаний, для сравнения цвета используют рассеянный дневной свет или источник искусственного освещения, соответствующий дневному свету с коррелированной цветовой температурой 6500&nbsp;К (МКО, стандартный источник освещения D<sub>65</sub>). В случае разногласий контрольное испытание всегда проводят при искусственном освещении.</p>
+
+              <p>Контроль характеристик осветительных устройств представляет трудности в связи с отсутствием согласованного метода, позволяющего проверить, что освещение в камере сравнения цвета имеет спектральный состав, близкий к составу стандартного источника освещения D<sub>65</sub>. При проведении испытаний в протоколе рекомендуется дополнительно указывать метод контроля спектрального состава источника излучения.</p>
+            </div>
+            <div class="folio-left">IV</div>
+          </section>
+
+          <section class="page page-5" data-page="5" aria-label="Страница 5">
+            <div class="head-right">ГОСТ 29319—2025</div>
+            <div class="content doc doc-page5" style="top:18mm; bottom:26mm;">
+              <div class="main-std-banner">
+                <div class="std-title">МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</div>
+                <div class="std-line"></div>
+                <div class="material">МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ</div>
+                <div class="method">Метод визуального сравнения цвета</div>
+                <div class="en">Coating materials. Visual color comparison method</div>
+                <hr class="bottom-line">
+              </div>
+
+              <div class="page-five-date">Дата введения — 2026—04—01</div>
+
+              <div class="section" id="section-1-scope">1&nbsp;Область применения</div>
+
+              <p>Настоящий стандарт распространяется на лакокрасочные материалы и устанавливает метод визуального сравнения цвета лакокрасочных покрытий с эталоном сравнения при естественном или искусственном дневном освещении.</p>
+
+              <p class="left"><span class="note-label">Примечания</span><br>
+                1&nbsp;В качестве эталона сравнения может использоваться контрольный образец цвета, образец цвета каталога или образец цвета, принятый заинтересованными сторонами.<br>
+                2&nbsp;Испытания при естественном дневном освещении проводят при обычном дневном свете на открытом воздухе или в помещении у окна.
+              </p>
+
+              <p>Данный метод обеспечивает получение сопоставимых результатов на основе установленных стандартных требований к источникам освещения, выбору освещения и условий наблюдения, к специалисту по испытаниям, к размерам образцов и эталонов сравнения.</p>
+
+              <p>Допускается методом визуального сравнения проводить определение цвета для пигментов, колеровочных и пигментных паст.</p>
+
+              <p><span class="note-label">Примечание</span> — Для лакокрасочных покрытий с явной цветовой однородностью и покрытий, полностью укрывающих непрозрачную подложку (окрашиваемую поверхность), рекомендовано инструментальное измерение цвета с помощью спектрофотометров или спектроколориметров согласно нормативным документам, действующим на территории государства, принявшего стандарт<sup>1)</sup>.</p>
+
+              <p>Допускается при отсутствии эталона сравнения проводить визуальный осмотр образцов для идентификации цвета лакокрасочного покрытия. Справочная информация по идентификации цвета приведена в приложении&nbsp;А.</p>
+
+              <div class="section" id="section-2-normative">2&nbsp;Нормативные ссылки</div>
+
+              <p>В настоящем стандарте использованы нормативные ссылки на следующие межгосударственные стандарты:</p>
+
+              <p>ГОСТ&nbsp;8784 Материалы лакокрасочные. Методы определения укрывистости<br>
+              ГОСТ&nbsp;8832 Материалы лакокрасочные. Методы получения лакокрасочного покрытия для испытания<br>
+              ГОСТ&nbsp;9980.2 (ISO&nbsp;1513:2010, ISO&nbsp;15528:2013) Материалы лакокрасочные и сырье для них. Отбор проб, контроль и подготовка образцов для испытаний</p>
+
+              <hr class="footnote-rule">
+              <p class="small left">1)&nbsp;В Российской Федерации действует ГОСТ&nbsp;Р&nbsp;71216—2024 «Материалы лакокрасочные. Колориметрия. Измерение цвета. Расчет цветовых различий и индекса метамерии».</p>
+            </div>
+
+            <div class="footer-line"></div>
+            <div class="official-left">Издание официальное</div>
+            <div class="page-num-bottom-right">1</div>
+          </section>
+
+          <section class="page" data-page="6" aria-label="Страница 6">
+            <div class="head-left">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <p>ГОСТ&nbsp;29317 (ИСО&nbsp;3270—84) Материалы лакокрасочные и сырье для них. Температуры и влажности для кондиционирования и испытания</p>
+
+              <p>ГОСТ&nbsp;31993 (ISO&nbsp;2808:2019) Материалы лакокрасочные. Определение толщины покрытия</p>
+
+              <p><span class="note-label">Примечание</span> — При пользовании настоящим стандартом целесообразно проверить действие ссылочных стандартов и классификаторов на официальном интернет-сайте Межгосударственного совета по стандартизации, метрологии и сертификации (www.easc.by) или по указателям национальных стандартов, издаваемым в государствах, указанных в предисловии, или на официальных сайтах соответствующих национальных органов по стандартизации. Если на документ дана недатированная ссылка, то следует использовать документ, действующий на текущий момент, с учетом всех внесенных в него изменений. Если заменен ссылочный документ, на который дана датированная ссылка, то следует использовать указанную версию этого документа. Если после принятия настоящего стандарта в ссылочный документ, на который дана датированная ссылка, внесено изменение, затрагивающее положение, на которое дана ссылка, то это положение применяется без учета данного изменения. Если ссылочный документ отменен без замены, то положение, в котором дана ссылка на него, применяется в части, не затрагивающей эту ссылку.</p>
+
+              <div class="section" id="section-3-terms">3&nbsp;Термины и определения</div>
+
+              <p>В настоящем стандарте применены следующие термины с соответствующими определениями:</p>
+
+              <p>3.1 <span class="bold">цвет лакокрасочного покрытия:</span> Свойство излучаемого, прошедшего через объект рассеянного или отраженного света вызывать определенные зрительные ощущения в соответствии с его спектральным составом.</p>
+
+              <p>3.2 <span class="bold">визуальное цветовое различие:</span> Различие между двумя цветами, каким его видит человеческий глаз.</p>
+
+              <p><span class="note-label">Примечание</span> — Описывается в терминах субъективных цветовых характеристик (темнее, светлее, насыщеннее, краснее, желтее и&nbsp;др.).</p>
+
+              <p>3.3 <span class="bold">контрольный образец цвета; КОЦ:</span> Мера цвета — инструмент, используемый для нормирования и воспроизведения цвета лакокрасочных материалов.</p>
+
+              <p>3.4 <span class="bold">метамерия (между двумя цветами):</span> Свойство зрения, при котором свет различного спектрального состава может вызывать ощущение одинакового цвета.</p>
+
+              <div class="section" id="section-4-lighting">4&nbsp;Требования к освещению для сравнения цвета</div>
+
+              <div class="subsection">4.1&nbsp;Общие требования</div>
+
+              <p>Для визуального сравнения цвета используют естественное или искусственное дневное освещение. Для арбитражных целей необходимо использовать точно контролируемое искусственное дневное освещение в камере сравнения цвета, так как качество естественного дневного света различно, и на мнение специалиста по испытаниям может оказать влияние наличие в поле зрения интенсивно окрашенных предметов. В области осмотра не должно быть ярких предметов, за исключением испытуемых образцов.</p>
+
+              <div class="subsection">4.2&nbsp;Естественное дневное освещение</div>
+
+              <p>Следует использовать рассеянный дневной свет частично покрытого облаками северного неба в северном полушарии и частично покрытого облаками южного неба в южном полушарии, не отражаемый от каких-либо интенсивно окрашенных объектов (например, таких как красная кирпичная стена или зеленое дерево).</p>
+
+              <p>Освещение должно быть равномерным по всей площади расположения испытуемых образцов и не менее 1000&nbsp;лк. Следует избегать попадания прямых солнечных лучей.</p>
+
+              <p><span class="note-label">Примечание</span> — Уровень освещения при обычном дневном свете на открытом воздухе составляет от 1700 до 2000&nbsp;лк, в помещении у окна — от 1000 до 1600&nbsp;лк.</p>
+            </div>
+            <div class="folio-left">2</div>
+          </section>
+
+          <section class="page" data-page="7" aria-label="Страница 7">
+            <div class="head-right">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <div class="subsection">4.3&nbsp;Искусственное дневное освещение в камере сравнения цвета</div>
+
+              <p>Камера сравнения цвета представляет собой устройство, в которое не проникает извне посторонний свет. Устройство освещается источником со спектральным распределением энергии, падающей на испытуемый образец, приблизительно равным распределению энергии стандартного источника освещения D<sub>65</sub>. Использование источника света с отличным спектральным распределением должно быть согласовано между заинтересованными сторонами.</p>
+
+              <p>Метод проверки соответствия спектрального распределения осветительного устройства стандартному источнику освещения D<sub>65</sub> должен быть указан или согласован. Для контроля освещения D<sub>65</sub> применяют специальные индикаторы, например, такие как PANTONE Lighting Indicator Stickers D65, — простой в использовании инструмент с двумя цветными плашками, совпадающими по цвету при идеальных условиях освещения, соответствующих D<sub>65</sub>, и различающимися при плохих условиях, то есть не соответствующих излучению источника D<sub>65</sub>.</p>
+
+              <p>Уровень освещенности в камере сравнения цвета должен быть от 1000 до 4000&nbsp;лк<sup>1)</sup>, при этом значения, приближающиеся к верхнему пределу, следует использовать для темных цветов.</p>
+
+              <p>Внутренняя поверхность камеры общего назначения должна быть окрашена в нейтральный серый матовый цвет<sup>2)</sup> с коэффициентом отражения от 30&nbsp;% до 35&nbsp;% (например, эталон Манселла №&nbsp;6).</p>
+
+              <p><span class="note-label">Примечание</span> — Современные камеры для визуальной оценки цвета (световые кабины) соответствуют требованиям основных международных стандартов визуального контроля цвета, включая <a href="#biblio-1" class="doc-ref">[1]</a>.</p>
+
+              <p>Для обеспечения надлежащих условий сравнения цвета внутренняя поверхность дна в камере должна иметь коэффициент отражения, близкий к коэффициенту отражения образцов, подлежащих сравнению.</p>
+
+              <p>При сравнении образцов светлых цветов и цветов, близких к белому, дно камеры закрывают специальной панелью с коэффициентом отражения не менее 50&nbsp;% (например, нейтральный серый цвет с координатами цвета: L* 50&nbsp;±&nbsp;5; a* ±&nbsp;0,5; b* ±&nbsp;0,5 в соответствии с <a href="#biblio-2" class="doc-ref">[2]</a>).</p>
+
+              <p>При сравнении образцов темных цветов, текстурированных покрытий и покрытий «металлик», «перламутр», «хамелеон» дно камеры закрывают специальной панелью с черным матовым покрытием. Допускается использовать камеру, внутренняя часть которой окрашена в черный матовый цвет.</p>
+
+              <p>Рекомендуется использовать рассеивающий экран, чтобы избежать отражения изображения лампы от испытуемого образца. Характеристики спектрального распределения источника освещения должны включать прохождение спектра через экран.</p>
+
+              <p>Изготовитель источника искусственного дневного освещения должен указать количество часов непрерывной работы, в течение которых его изделие будет соответствовать требованиям настоящего стандарта.</p>
+
+              <p>Рекомендуется каждые 500&nbsp;ч работы камеры проверять уровень освещенности в камере и соответствие излучения заявленному источнику освещения МКО.</p>
+
+              <div class="section" id="section-5-specialist">5&nbsp;Требования к специалисту</div>
+
+              <p>Необходимо с большой ответственностью подходить к выбору специалиста, проводящего испытания, так как значительное число людей неправильно воспринимают и различают цвета. Некоторые отклонения можно обнаружить с помощью таблицы для определения цветоощущения<sup>3)</sup>, но для окончательного контрольного определения цветоощущения специалисту рекомендуется пройти более чувствительные тесты, например с применением аномалоскопа<sup>4)</sup>.</p>
+
+              <p>При необходимости специалист по испытаниям может носить очки, обеспечивающие однородную спектральную передачу в отношении видимого спектра.</p>
+
+              <p>Восприятие цвета значительно меняется с возрастом, поэтому рекомендуется специалистам старше 40&nbsp;лет пройти специальные тесты с применением аномалоскопа или тест, при котором специалисту предлагают выбрать наилучший эталон из метамерного ряда цветов.</p>
+
+              <hr class="footnote-rule">
+              <p class="small left">
+                1)&nbsp;Обычно используют уровень освещенности от 1000 до 2500&nbsp;лк.<br>
+                2)&nbsp;Для нейтрального серого цвета координаты цвета a* и b* должны быть менее 1,0 по <a href="#biblio-2" class="doc-ref">[2]</a>.<br>
+                3)&nbsp;«Таблица для определения цветоощущения» Е.Б.&nbsp;Рабкина.<br>
+                4)&nbsp;В международной практике используют тесты Ишихара и Фарнсворта—Манселла.
+              </p>
+            </div>
+            <div class="folio-right">3</div>
+          </section>
+
+          <section class="page" data-page="8" aria-label="Страница 8">
+            <div class="head-left">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <p>Чтобы избежать искаженного восприятия цвета из-за утомления глаз, пастельные или оттеночные тона не следует оценивать сразу после интенсивных цветов. Если при сравнении ярких интенсивных цветов невозможно провести быструю оценку, специалист должен перевести взгляд на несколько секунд на нейтральное серое поле прежде, чем перейти к дальнейшему сравнению.</p>
+
+              <p>Качество визуального анализа значительно снижается при длительной непрерывной работе. Поэтому в работе каждого специалиста должны быть частые перерывы на несколько минут.</p>
+
+              <p>Во время проведения испытаний на специалисте должна быть одежда нейтрального цвета. Не допускается проводить испытания в одежде ярких и насыщенных цветов.</p>
+
+              <div class="section" id="section-6-samples">6&nbsp;Требования к образцам и эталонам</div>
+
+              <div class="subsection">6.1&nbsp;Общие положения</div>
+
+              <p>Размер образцов и расстояние осмотра должны быть выбраны таким образом, чтобы обеспечить угол обзора для глаза примерно 10° в соответствии с рекомендацией МКО&nbsp;1964.</p>
+
+              <p>Испытуемые образцы и эталоны сравнения цвета должны быть плоскими, размером не более 150&nbsp;×&nbsp;100&nbsp;мм и не менее 120&nbsp;×&nbsp;50&nbsp;мм.</p>
+
+              <p>Для изготовления образцов применяют стандартные пластинки по ГОСТ&nbsp;8832 из стекла, листовой стали, белой жести, алюминия или алюминиевых сплавов. Допускается применять пластинки из других материалов в соответствии с нормативными документами или технической документацией на испытуемый лакокрасочный материал.</p>
+
+              <p>При использовании образцов большего размера поле обзора, соответствующее 10° для наблюдателя, должно быть сформировано с помощью серой маски<sup>1)</sup>. Рекомендуемые расстояния осмотра и размеры квадратных отверстий в маске приведены в таблице&nbsp;1.</p>
+
+              <div class="tbl-caption">Т а б л и ц а&nbsp;&nbsp;1</div>
+              <table class="mask-table">
+                <colgroup>
+                  <col style="width:50%">
+                  <col style="width:50%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Расстояние осмотра, мм</th>
+                    <th>Размер отверстия, мм × мм</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>300</td><td>54 × 54</td></tr>
+                  <tr><td>500</td><td>87 × 87</td></tr>
+                  <tr><td>700</td><td>123 × 123</td></tr>
+                  <tr><td>900</td><td>158 × 158</td></tr>
+                </tbody>
+              </table>
+
+              <p>Для оценки цвета полупрозрачных и лессирующих лакокрасочных покрытий, не обеспечивающих полную укрывистость, необходимо, чтобы и эталон и испытуемый образец были нанесены на одинаковую однотонную стандартизированную подложку.</p>
+
+              <p><span class="note-label">Примечание</span> — Полную укрывистость определяют при коэффициенте контрастности более 0,98 по ГОСТ&nbsp;8784.</p>
+
+              <div class="subsection">6.2&nbsp;Эталоны сравнения</div>
+
+              <p>В качестве эталонов сравнения могут быть использованы только цветовые эталоны с соответствующей степенью устойчивости цвета. Эталоны сравнения должны быть по возможности одинакового размера с испытуемыми образцами, а также иметь одинаковую текстуру и структуру поверхности.</p>
+
+              <p>В качестве эталона сравнения выбирают эталон цвета, наиболее близкий по блеску к испытуемому образцу.</p>
+
+              <p>Наиболее достоверные результаты можно получить при сравнении цвета однофактурных материалов с одинаковым показателем блеска.</p>
+
+              <hr class="footnote-rule">
+              <p class="small left">1)&nbsp;Серой маской может быть лист картона нейтрального серого цвета с квадратным отверстием.</p>
+            </div>
+            <div class="folio-left">4</div>
+          </section>
+
+          <section class="page" data-page="9" aria-label="Страница 9">
+            <div class="head-right">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <p><span class="note-label">Примечание</span> — Для контрольных образцов цвета и образцов цвета, которые используют в качестве эталона сравнения, могут быть установлены требования к изготовлению и оформлению согласно нормативным документам, действующим на территории государства, принявшего стандарт<sup>1)</sup>.</p>
+
+              <div class="subsection" id="section-6-continued">6.3&nbsp;Подготовка пластинок и получение покрытия</div>
+
+              <p>Для испытаний отбирают пробу лакокрасочного материала по ГОСТ&nbsp;9980.2. Пробу материала подготавливают к испытанию в соответствии с нормативными документами или технической документацией на испытуемый лакокрасочный материал.</p>
+
+              <p>Подготовку пластинок осуществляют по ГОСТ&nbsp;8832.</p>
+
+              <p>Метод нанесения лакокрасочного материала, условия сушки и выдержки лакокрасочного покрытия должны быть выбраны в соответствии с нормативными документами или технической документацией на испытуемый лакокрасочный материал, технологией или регламентом окраски изделия. Данные условия должны быть согласованы между заинтересованными сторонами, так как метод нанесения и толщина покрытия могут в значительной степени повлиять на цвет образца.</p>
+
+              <p>Если лакокрасочный материал наносят методом, отличным от указанного в нормативных документах или технической документации на испытуемый лакокрасочный материал, то этот метод должен быть согласован и подробно изложен.</p>
+
+              <p>Если испытуемый образец необходимо сравнить со стандартным образцом лакокрасочного материала, на пластинку наносят испытуемый лакокрасочный материал или систему покрытия, на аналогичную пластинку — стандартный материал или систему покрытия.</p>
+
+              <p>Для сравниваемых образцов метод нанесения лакокрасочного материала и толщина высушенного покрытия по возможности должны быть одинаковыми.</p>
+
+              <p>При разногласиях в оценке цвета лакокрасочный материал наносят методом, указанным в нормативном документе или технической документации на испытуемый лакокрасочный материал, обеспечивающим наиболее ровное нанесение и минимальное отклонение по толщине высушенного покрытия.</p>
+
+              <p>Оптимальным является метод пневматического распыления, если в нормативном документе или технической документации на испытуемый лакокрасочный материал не предусмотрен принципиально другой метод нанесения.</p>
+
+              <div class="subsection">6.4&nbsp;Сушка испытуемого образца</div>
+
+              <p>Образцы сушат в определенных условиях в соответствии с требованиями нормативного документа или технической документации на испытуемый лакокрасочный материал, технологией или регламентом окрашивания изделия в течение указанного времени.</p>
+
+              <p>Если в нормативных документах или технической документации нет других указаний, то после естественной сушки выдержка высушенного лакокрасочного покрытия не требуется, после горячей сушки покрытие выдерживают в стандартных атмосферных условиях по ГОСТ&nbsp;29317 при свободной циркуляции воздуха, исключая возможность попадания прямых солнечных лучей, не менее 1&nbsp;ч (до охлаждения).</p>
+
+              <p><span class="note-label">Примечание</span> — Если цвет лакокрасочного покрытия зависит от температуры, то испытуемый образец должен храниться при температуре (20&nbsp;±&nbsp;2)&nbsp;°С, при этом температуру поддерживают, например, с помощью термостата. Лакокрасочные покрытия, которые меняют цвет в зависимости от температуры, необходимо кондиционировать до тех пор, пока цвет не перестанет изменяться.</p>
+
+              <div class="subsection">6.5&nbsp;Толщина покрытия</div>
+
+              <p>Толщина высушенного покрытия должна соответствовать требованиям нормативного документа или технической документации на испытуемый лакокрасочный материал, технологии или регламенту окрашивания изделия.</p>
+
+              <p>При нанесении лакокрасочного материала на пластинки из стекла толщина покрытия должна обеспечивать полное укрытие пластинки для исключения влияния цвета поверхности, на которой располагают образцы при осмотре.</p>
+
+              <p>В соответствии с нормативным документом или технической документацией на испытуемый лакокрасочный материал или по согласованию сторон для лакокрасочного покрытия может быть указана</p>
+
+              <hr class="footnote-rule">
+              <p class="small left">1)&nbsp;В Российской Федерации действует ГОСТ&nbsp;Р&nbsp;59953—2021 «Материалы лакокрасочные. Цветовой ассортимент. Нормирование цвета. Образцы цвета. Изготовление, учет и хранение».</p>
+            </div>
+            <div class="folio-right">5</div>
+          </section>
+
+          <section class="page" data-page="10" aria-label="Страница 10">
+            <div class="head-left">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <p>толщина невысушенного «мокрого» покрытия или расход лакокрасочного материала на невысушенное покрытие.</p>
+
+              <p>Толщину покрытия определяют по ГОСТ&nbsp;31993 или по нормативному документу, действующему на территории государства, принявшего стандарт.</p>
+
+              <div class="subsection">6.6&nbsp;Отбор образцов для испытаний</div>
+
+              <p>Из окрашенных пластинок отбирают образцы, поверхность и размеры которых подходят для проведения испытаний в соответствии с 6.1. Поверхность образцов должна быть чистой и ровной.</p>
+
+              <p>Для испытаний используют один образец или согласовывают количество образцов между заинтересованными сторонами.</p>
+
+              <div class="section" id="section-7-tests">7&nbsp;Проведение испытаний</div>
+
+              <p>7.1&nbsp;Испытания проводят при температуре (23&nbsp;±&nbsp;2)&nbsp;°С и относительной влажности (50&nbsp;±&nbsp;5)&nbsp;% по ГОСТ&nbsp;29317, если другие условия не установлены в документе по стандартизации на лакокрасочный материал.</p>
+
+              <div class="subsection">7.2&nbsp;Основной метод</div>
+
+              <p>Осматривают образец и эталон или два образца сравнения при естественном дневном освещении по 4.2 или при искусственном дневном освещении в камере сравнения цвета по 4.3.</p>
+
+              <p>Образцы располагают рядом, при этом они должны соприкасаться сторонами или заходить один на другой в одной плоскости на расстоянии приблизительно 500&nbsp;мм от глаз.</p>
+
+              <p>Образцы осматривают под углом 45° при освещении под углом 0°. Сравнивают цвет испытуемого покрытия с цветом эталона или цветом покрытия из стандартного материала.</p>
+
+              <p>Чтобы обеспечить большую точность сравнения, время от времени меняют расположение образцов.</p>
+
+              <div class="subsection">7.3&nbsp;Метод оценки цвета образцов с разным блеском покрытия</div>
+
+              <p>При сравнении образцов, сильно различающихся по блеску, используют специальную методику визуального осмотра.</p>
+
+              <p>Образцы могут быть осмотрены:<br>
+              а)&nbsp;при естественном дневном освещении;<br>
+              б)&nbsp;при искусственном дневном освещении в камере сравнения цвета.</p>
+
+              <p>Образцы осматривают под углом зрения, который обеспечивает минимальные различия в блеске. Например, взгляд должен попадать на поверхность почти перпендикулярно, чтобы зеркальное отражение не достигало глаза.</p>
+
+              <div class="subsection">7.4&nbsp;Метод оценки цвета текстурированных покрытий и покрытий «металлик», «перламутр», «хамелеон»</div>
+
+              <p>Для текстурированных покрытий и покрытий «металлик», «перламутр», «хамелеон» метод оценки цвета согласовывают между заинтересованными сторонами.</p>
+
+              <p>Если метод не согласован, то необходимо проводить испытания по 7.2, соблюдая при этом ряд условий:<br>
+              а)&nbsp;текстура, рисунок и структура сравниваемых образцов должны быть примерно одинаковыми;<br>
+              б)&nbsp;при осмотре образцы должны располагаться так, чтобы направление ориентации структуры было одинаковым;<br>
+              в)&nbsp;покрытия «металлик», «перламутр», «хамелеон» осматривают дополнительно под прямым углом к поверхности образцов для оценки верхнего (фейс) тона и под острым углом к поверхности (практически скользящим) для оценки нижнего (флоп) тона;<br>
+              г)&nbsp;важным параметром покрытий «металлик» и «перламутр» является искристость. Для оценки искристости при осмотре образцов необходимо использовать стандартный источник освещения А<sup>1)</sup>, при котором искристость проявляется в наибольшей степени;</p>
+
+              <hr class="footnote-rule">
+              <p class="small left">1)&nbsp;Стандартный источник освещения А, соответствующий свету вольфрамовой лампы накаливания с коррелированной цветовой температурой, равной 2856&nbsp;К, предназначен для определения метамерного соответствия и индекса метамерии.</p>
+            </div>
+            <div class="folio-left">6</div>
+          </section>
+
+          <section class="page" data-page="11" aria-label="Страница 11">
+            <div class="head-right">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <p>д)&nbsp;при сравнении образца текстурированного или фактурного покрытия с гладким однородным эталоном цвета необходимо выбирать угол осмотра, максимально исключающий влияние текстуры, но при этом оценка будет носить очень субъективный характер (похоже/непохоже). Однозначно определить соответствие цвета эталону в данном случае невозможно.</p>
+
+              <div class="subsection">7.5&nbsp;Метод оценки цвета крупногабаритных изделий</div>
+
+              <p>Для оценки соответствия цвета крупногабаритных изделий эталону, при отсутствии возможности проводить испытания по 7.2 с помощью серой маски, необходимо выбрать плоскую грань изделия размером не менее 120&nbsp;×&nbsp;50&nbsp;мм и закрепить на этой грани эталон в той же плоскости.</p>
+
+              <p>Рекомендуется положить изделие горизонтально испытуемой плоскости и проводить осмотр на расстоянии не менее 500&nbsp;мм от глаз под углом 45° при освещении 0°. Если нет такой возможности, то осмотр проводят при рассеянном свете под прямым углом, затем отходят вправо и влево, обеспечивая угол осмотра 45°.</p>
+
+              <p>При значительном превышении размеров испытуемого изделия (образца), указанных в 6.1, необходимо увеличить расстояние для осмотра пропорционально размерам изделия.</p>
+
+              <p>В случае разногласий при оценке соответствия цвета крупногабаритных изделий испытания проводят сначала основным методом по 7.2, а затем при необходимости арбитражным методом по 7.7.</p>
+
+              <div class="subsection">7.6&nbsp;Метод оценки визуальных цветовых различий</div>
+
+              <p>Оценку визуальных цветовых различий проводят в дополнение к основному методу по 7.2. Данный метод основан на оценке различий по отдельным компонентам: «светлота», «оттенок» и «насыщенность».</p>
+
+              <p>Образцы осматривают по 7.2 и проводят оценку визуальных цветовых различий по схеме в соответствии с приложением&nbsp;Б.</p>
+
+              <p>По согласованию заинтересованных сторон допускается использовать упрощенную схему оценки. При этом для исключения разногласий значение индивидуальных оценок по приложению&nbsp;Б не должно изменяться.</p>
+
+              <div class="subsection">7.7&nbsp;Арбитражный метод</div>
+
+              <p>При разногласиях в оценке сравнение цвета проводят по 7.2 на образцах одинакового размера при искусственном дневном освещении с помощью стандартного источника освещения D<sub>65</sub>, если по согласованию заинтересованных сторон не предусмотрен другой источник света.</p>
+
+              <p>В испытаниях по арбитражному методу должно участвовать не менее трех специалистов.</p>
+
+              <p><span class="note-label">Примечание</span> — Инструментальное измерение цвета с помощью спектрофотометров или спектроколориметров является наиболее точным методом для оценки цвета, так как не зависит от субъективных факторов.</p>
+
+              <div class="section" id="section-8-metamerism">8&nbsp;Оценка метамерии</div>
+
+              <p>Оценку метамерии (метамерного соответствия) проводят в том случае, если известно, что стандартные и испытуемые образцы содержат разнородные смеси пигментов или по согласованию заинтересованных сторон. Такие образцы могут соответствовать друг другу в условиях освещения стандартным источником и не будут соответствовать при другом освещении.</p>
+
+              <p>Оценку метамерии проводят при искусственном дневном освещении с помощью стандартных источников освещения D<sub>65</sub> и&nbsp;А.</p>
+
+              <p>Два образца не являются метамерными, если они соответствуют друг другу по цвету при оценке с помощью стандартных источников освещения D<sub>65</sub> и&nbsp;А. Если же при этих условиях сравниваемые образцы не соответствуют друг другу, но степень метамерии незначительна (сравнительно незаметна), это может служить гарантией, что при свете обычно применяемых источников естественного и искусственного освещения с длительным спектром степень метамерии между материалами не увеличится.</p>
+
+              <p>Допустимую степень метамерии устанавливают по согласованию заинтересованных сторон в тех случаях, когда значительное совпадение цвета при разных условиях освещения имеет существенное значение.</p>
+
+              <p><span class="note-label">Примечание</span> — Для объективной оценки метамерии определяют цветовые различия и индекс метамерии инструментальным методом.</p>
+            </div>
+            <div class="folio-right">7</div>
+          </section>
+
+          <section class="page" data-page="12" aria-label="Страница 12">
+            <div class="head-left">ГОСТ 29319—2025</div>
+            <div class="content doc">
+              <p>Дополнительная информация о метамерии и метамерном соответствии приведена в приложении&nbsp;В.</p>
+
+              <div class="section" id="section-9-results">9&nbsp;Обработка результатов</div>
+
+              <p>9.1&nbsp;При определении цвета методом визуального сравнения за результат испытания принимают соответствие/несоответствие образца лакокрасочного покрытия эталону сравнения.</p>
+
+              <p>9.2&nbsp;При оценке визуальных цветовых различий результаты указывают по отдельным компонентам в соответствии с приложением&nbsp;Б.</p>
+
+              <p>9.3&nbsp;При оценке метамерии за результат испытания принимают наличие/отсутствие метамерии между образцом лакокрасочного покрытия и эталоном сравнения. При наличии метамерии может быть указана степень метамерии: незначительная или значительная.</p>
+
+              <div class="section" id="section-10-precision">10&nbsp;Прецизионность</div>
+
+              <p>В настоящем стандарте не указаны значения предела повторяемости r и предела воспроизводимости R, так как получаемые результаты не указываются в виде числовых значений, а сама оценка является субъективной.</p>
+
+              <div class="section" id="section-11-report">11&nbsp;Протокол испытаний</div>
+
+              <p>Протокол испытаний должен содержать:</p>
+
+              <p>а)&nbsp;все сведения, необходимые для полной идентификации испытуемого образца;</p>
+              <p>б)&nbsp;ссылку на настоящий стандарт и метод оценки;</p>
+              <p>в)&nbsp;условия сравнения цвета: естественный дневной свет или искусственное дневное освещение с указанием стандартного источника освещения;</p>
+              <p>г)&nbsp;любые отклонения от используемого метода оценки (по согласованию или по другим причинам);</p>
+              <p>д)&nbsp;описание испытуемого образца с указанием размера образца и толщины лакокрасочного покрытия;</p>
+              <p>е)&nbsp;информацию о подготовке образца для испытания (материал подложки (окрашиваемой поверхности), метод нанесения, условия сушки, количество слоев, условия выдержки) при наличии;</p>
+              <p>ж)&nbsp;описание эталона сравнения;</p>
+              <p>и)&nbsp;условия проведения испытаний (температура и относительная влажность);</p>
+              <p>к)&nbsp;результаты испытания в соответствии с разделом&nbsp;9;</p>
+              <p>л)&nbsp;любые особенности, наблюдаемые во время проведения испытаний;</p>
+              <p>м)&nbsp;дату проведения испытаний.</p>
+            </div>
+            <div class="folio-left">8</div>
+          </section>
+
+          <section class="page" data-page="13" aria-label="Страница 13">
+            <div class="head-right">ГОСТ 29319—2025</div>
+            <div class="content doc" style="top:18mm; bottom:16mm;">
+              <div class="appendix-title" id="appendix-a">Приложение А<br><span style="font-size:5.7mm;">(справочное)</span></div>
+
+              <div class="title-md">Идентификация цвета образцов</div>
+
+              <p>Осмотр образцов покрытия с целью идентификации цвета проводят при естественном дневном освещении по 4.2 или при искусственном дневном освещении в камере сравнения цвета по 4.3.</p>
+
+              <p>Для идентификации цвет описывают с помощью трех компонентов:<br>
+              а)&nbsp;основного цвета (цветового тона);<br>
+              б)&nbsp;оттенка, указывающего на степень светлоты или отклонения в сторону от основного цвета;<br>
+              в)&nbsp;яркости и насыщенности.</p>
+
+              <p>В большинстве случаев для описания цвета достаточно использовать только основной цвет, без учета оттенка, яркости и насыщенности.</p>
+
+              <p>Для определения основного цвета при осмотре образца устанавливают групповую принадлежность цвета в соответствии с таблицей&nbsp;А.1.</p>
+
+              <div class="tbl-caption">Т а б л и ц а&nbsp;&nbsp;А.1</div>
+              <table class="std-table" style="margin-bottom:8px;">
+                <colgroup>
+                  <col style="width:34%">
+                  <col style="width:66%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Группы наименований<br>основных цветов</th>
+                    <th>Описание цвета</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td class="t-center">Белый</td><td>Цвет снега, молока, мела</td></tr>
+                  <tr><td class="t-center">Черный</td><td>Цвет сажи, угля</td></tr>
+                  <tr><td class="t-center">Серый</td><td>Цвет пепла, пыли</td></tr>
+                  <tr><td class="t-center">Красный</td><td>Цвет алой артериальной крови</td></tr>
+                  <tr><td class="t-center">Оранжевый</td><td>Цвет апельсина, красно-желтый</td></tr>
+                  <tr><td class="t-center">Желтый</td><td>Цвет яичного желтка, перьев канарейки</td></tr>
+                  <tr><td class="t-center">Зеленый</td><td>Цвет сочной травы, листвы</td></tr>
+                  <tr><td class="t-center">Голубой</td><td>Цвет ясного неба, светло-синий</td></tr>
+                  <tr><td class="t-center">Синий</td><td>Цвет синьки, василька, темно-голубой</td></tr>
+                  <tr><td class="t-center">Фиолетовый</td><td>Цвет темной фиалки, синий с красноватым оттенком, среднее между лиловым и сливовым</td></tr>
+                  <tr><td class="t-center">Розовый</td><td>Цвет бледно-красной розы</td></tr>
+                  <tr><td class="t-center">Коричневый</td><td>Цвет каштана, горького шоколада</td></tr>
+                </tbody>
+              </table>
+
+              <p>Основные цвета разделяют на ахроматические — черный, белый, серый и хроматические — красный, оранжевый, желтый, зеленый, голубой, синий, фиолетовый, розовый и коричневый.</p>
+
+              <p>Для ахроматических цветов, не имеющих оттенка, цвет определяют по шкале изменения светлоты, показанной на рисунке&nbsp;А.1.</p>
+
+              <div class="scale-block">
+                <svg class="scale-svg" viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" aria-label="Шкала изменения светлоты">
+                  <defs>
+                    <linearGradient id="grayScaleA1" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#000000"/>
+                      <stop offset="18%" stop-color="#444444"/>
+                      <stop offset="50%" stop-color="#9f9f9f"/>
+                      <stop offset="78%" stop-color="#d8d8d8"/>
+                      <stop offset="100%" stop-color="#f2f2f2"/>
+                    </linearGradient>
+                  </defs>
+
+                  <g font-family="Arial, Helvetica, sans-serif" fill="#111">
+                    <text x="46" y="18" font-size="18" font-weight="700">Черные</text>
+                    <text x="340" y="18" font-size="18" font-weight="700">Серые</text>
+                    <text x="680" y="18" font-size="18" font-weight="700">Белые</text>
+                  </g>
+
+                  <g stroke="#444" stroke-width="2" fill="none" shape-rendering="crispEdges">
+                    <path d="M22 46 V34 H140 V46"/>
+                    <line x1="81" y1="22" x2="81" y2="34"/>
+                    <path d="M146 46 V34 H615 V46"/>
+                    <line x1="370.5" y1="22" x2="370.5" y2="34"/>
+                    <path d="M620 46 V34 H798 V46"/>
+                    <line x1="709" y1="22" x2="709" y2="34"/>
+                  </g>
+
+                  <rect x="22" y="54" width="776" height="40" fill="url(#grayScaleA1)" stroke="#666" stroke-width="1.5"/>
+
+                  <g stroke="#8c8c8c" stroke-width="2" fill="none" shape-rendering="crispEdges">
+                    <line x1="22" y1="120" x2="798" y2="120"/>
+                    <line x1="22" y1="120" x2="22" y2="130"/>
+                    <line x1="100" y1="120" x2="100" y2="130"/>
+                    <line x1="177.2" y1="120" x2="177.2" y2="130"/>
+                    <line x1="254.4" y1="120" x2="254.4" y2="130"/>
+                    <line x1="331.6" y1="120" x2="331.6" y2="130"/>
+                    <line x1="408.8" y1="120" x2="408.8" y2="130"/>
+                    <line x1="486" y1="120" x2="486" y2="130"/>
+                    <line x1="563.2" y1="120" x2="563.2" y2="130"/>
+                    <line x1="640.4" y1="120" x2="640.4" y2="130"/>
+                    <line x1="717.6" y1="120" x2="717.6" y2="130"/>
+                    <line x1="798" y1="120" x2="798" y2="130"/>
+                  </g>
+
+                  <g font-family="Arial, Helvetica, sans-serif" fill="#111" font-size="18" font-weight="700">
+                    <text x="14" y="160">0</text>
+                    <text x="88" y="160">10</text>
+                    <text x="160" y="160">20</text>
+                    <text x="238" y="160">30</text>
+                    <text x="315" y="160">40</text>
+                    <text x="392" y="160">50</text>
+                    <text x="469" y="160">60</text>
+                    <text x="546" y="160">70</text>
+                    <text x="623" y="160">80</text>
+                    <text x="700" y="160">90</text>
+                    <text x="773" y="160">100</text>
+                  </g>
+
+                  <text x="410" y="208" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#111">
+                    Рисунок А.1 — Шкала изменения светлоты
+                  </text>
+                </svg>
+              </div>
+
+              <p>Для хроматических цветов цвет определяют по шкале длин волн видимого диапазона электромагнитного спектра, приведенной на рисунке&nbsp;А.2.</p>
+            </div>
+            <div class="folio-right">9</div>
+          </section>
+
+          <section class="page page-14" data-page="14" aria-label="Страница 14">
+            <div class="head-left">ГОСТ 29319—2025</div>
+            <div class="content doc" style="top:15mm; bottom:17mm;">
+              <div class="scale-block" id="appendix-a-continued" style="margin-top:0;">
+                <svg class="scale-svg" viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" aria-label="Шкала длин волн видимого диапазона электромагнитного спектра">
+                  <defs>
+                    <linearGradient id="spectrumA2" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#6d31ab"/>
+                      <stop offset="12%" stop-color="#4941b0"/>
+                      <stop offset="25%" stop-color="#3b68c3"/>
+                      <stop offset="38%" stop-color="#49abd3"/>
+                      <stop offset="50%" stop-color="#38c97b"/>
+                      <stop offset="62%" stop-color="#b4df12"/>
+                      <stop offset="72%" stop-color="#f0e50c"/>
+                      <stop offset="82%" stop-color="#f7b40f"/>
+                      <stop offset="91%" stop-color="#f56a1a"/>
+                      <stop offset="100%" stop-color="#ff2530"/>
+                    </linearGradient>
+                  </defs>
+
+                  <g font-family="Arial, Helvetica, sans-serif" fill="#111">
+                    <text x="20" y="18" font-size="12" font-weight="700">Фиолетовые</text>
+                    <text x="135" y="18" font-size="12" font-weight="700">Синие</text>
+                    <text x="249" y="18" font-size="12" font-weight="700">Голубые</text>
+                    <text x="395" y="18" font-size="12" font-weight="700">Зеленые</text>
+                    <text x="545" y="18" font-size="12" font-weight="700">Желтые</text>
+                    <text x="638" y="18" font-size="12" font-weight="700">Оранжевые</text>
+                    <text x="785" y="18" font-size="12" font-weight="700" text-anchor="end">Красные</text>
+                  </g>
+
+                  <g stroke="#444" stroke-width="2" fill="none" shape-rendering="crispEdges">
+                    <path d="M22 46 V34 H95 V46"/>
+                    <line x1="59.5" y1="22" x2="59.5" y2="34"/>
+
+                    <path d="M101 46 V34 H206 V46"/>
+                    <line x1="154" y1="22" x2="154" y2="34"/>
+
+                    <path d="M211 46 V34 H333 V46"/>
+                    <line x1="272" y1="22" x2="272" y2="34"/>
+
+                    <path d="M339 46 V34 H503 V46"/>
+                    <line x1="421" y1="22" x2="421" y2="34"/>
+
+                    <path d="M509 46 V34 H627 V46"/>
+                    <line x1="568" y1="22" x2="568" y2="34"/>
+
+                    <path d="M632 46 V34 H713 V46"/>
+                    <line x1="672.5" y1="22" x2="672.5" y2="34"/>
+
+                    <path d="M719 46 V34 H798 V46"/>
+                    <line x1="758.5" y1="22" x2="758.5" y2="34"/>
+                  </g>
+
+                  <rect x="22" y="54" width="776" height="40" fill="url(#spectrumA2)" stroke="#666" stroke-width="1.5"/>
+
+                  <g stroke="#8c8c8c" stroke-width="2" fill="none" shape-rendering="crispEdges">
+                    <line x1="22" y1="120" x2="798" y2="120"/>
+                    <line x1="22" y1="120" x2="22" y2="130"/>
+                    <line x1="132.857" y1="120" x2="132.857" y2="130"/>
+                    <line x1="243.714" y1="120" x2="243.714" y2="130"/>
+                    <line x1="354.571" y1="120" x2="354.571" y2="130"/>
+                    <line x1="465.428" y1="120" x2="465.428" y2="130"/>
+                    <line x1="576.285" y1="120" x2="576.285" y2="130"/>
+                    <line x1="687.142" y1="120" x2="687.142" y2="130"/>
+                    <line x1="798" y1="120" x2="798" y2="130"/>
+                  </g>
+
+                  <g font-family="Arial, Helvetica, sans-serif" fill="#111" font-size="18" font-weight="700">
+                    <text x="11" y="160">400</text>
+                    <text x="120" y="160">450</text>
+                    <text x="231" y="160">500</text>
+                    <text x="342" y="160">550</text>
+                    <text x="453" y="160">600</text>
+                    <text x="564" y="160">650</text>
+                    <text x="675" y="160">700</text>
+                    <text x="786" y="160">750</text>
+                  </g>
+
+                  <text x="410" y="208" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#111">
+                    Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра
+                  </text>
+                </svg>
+              </div>
+
+              <p>Группа светло-красных цветов принята за основной розовый.</p>
+              <p>Группа темно-оранжевых цветов принята за основной коричневый.</p>
+
+              <p>Для более точной идентификации цвету присваивают оттенок, который указывает на степень светлоты, воспринимаемой чистоты, отклонения в сторону от основного цвета:<br>
+              -&nbsp;при смещении цвета к черному — «темно-»;<br>
+              -&nbsp;при смещении цвета к белому — «светло-»;<br>
+              -&nbsp;при смещении от основного цвета в сторону другого цвета добавляют оттенок по цвету смещения, например «желто-зеленый», «красно-фиолетовый».</p>
+
+              <p>При необходимости может быть добавлено указание на яркость и насыщенность цвета, например «ярко-зеленый».</p>
+
+              <p><span class="note-label">Примечание</span> — Дополнительная информация и рекомендации по идентификации цвета образцов приведены в справочной литературе<sup>1), 2)</sup>.</p>
+
+              <hr class="footnote-rule">
+              <p class="small left">
+                1)&nbsp;Цвет и названия цвета в русском языке / А.П.&nbsp;Василевич, С.Н.&nbsp;Кузнецова, С.С.&nbsp;Мищенко; под общ. ред. А.П.&nbsp;Василевича, Изд.&nbsp;4, 2022.<br><br>
+                2)&nbsp;Цвет в промышленности / Под ред. Р.&nbsp;Мак-Дональда: Пер. с англ. И.В.&nbsp;Пеновой, П.П.&nbsp;Новосельцева. — М.: Логос, 2002.
+              </p>
+            </div>
+            <div class="folio-left">10</div>
+          </section>
+
+          <section class="page" data-page="15" aria-label="Страница 15">
+            <div class="head-right">ГОСТ 29319—2025</div>
+            <div class="content doc" style="top:18mm;">
+              <div class="appendix-title" id="appendix-b">Приложение Б<br><span style="font-size:5.7mm;">(обязательное)</span></div>
+
+              <div class="title-md">Схема визуальной оценки компонентов цветовых различий</div>
+
+              <p>Компонентами цветового различия являются:<br>
+              а)&nbsp;различие в светлоте, которое обозначают <span class="italic">DL<sub>vis</sub></span> и оценивают баллами от 0 до 5 со знаками «+» (более светлый или менее темный) или «—» (более темный или менее светлый);<br>
+              б)&nbsp;различие в оттенке, которое обозначают <span class="italic">DH<sub>vis</sub></span> и оценивают баллами от 0 до 5 с дополнительным указанием: более желтый (ye), более зеленый (gr), более красный (re), более синий (bl);<br>
+              в)&nbsp;различие в насыщенности цвета, которое обозначают <span class="italic">DC<sub>vis</sub></span> и оценивают баллами от 0 до 5 со знаками «+» (более насыщенный) или «—» (менее насыщенный).</p>
+
+              <p>Оценка компонентов цветового различия в баллах приведена в таблице&nbsp;Б.1.</p>
+
+              <div class="tbl-caption">Т а б л и ц а&nbsp;&nbsp;Б.1</div>
+              <table class="std-table" style="margin-bottom:12px;">
+                <colgroup>
+                  <col style="width:27%">
+                  <col style="width:73%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Оценка цветового различия<br>в баллах</th>
+                    <th>Описание цветового различия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td class="t-center">0</td><td>Нет заметного различия</td></tr>
+                  <tr><td class="t-center">1</td><td>Очень незначительное, то есть едва ощутимое различие</td></tr>
+                  <tr><td class="t-center">2</td><td>Небольшое, но отчетливо ощутимое различие</td></tr>
+                  <tr><td class="t-center">3</td><td>Умеренное, достаточно заметное различие</td></tr>
+                  <tr><td class="t-center">4</td><td>Значительное, явно выраженное различие</td></tr>
+                  <tr><td class="t-center">5</td><td>Очень существенное различие</td></tr>
+                </tbody>
+              </table>
+
+              <p class="bold italic left" style="margin-left:16px;">Примеры</p>
+              <p class="bold italic" style="margin-left:16px;">1&nbsp;Различие в светлоте «DL<sub>vis</sub> — 2» означает, что испытуемый образец имеет ощутимо более темный (или менее светлый) цвет по сравнению с эталоном.</p>
+              <p class="bold italic" style="margin-left:16px;">2&nbsp;Различие в оттенке «DH<sub>vis</sub> 5ye» означает, что испытуемый образец существенно более желтый по сравнению с эталоном.</p>
+              <p class="bold italic" style="margin-left:16px;">3&nbsp;Различие в насыщенности «DC<sub>vis</sub> + 3» означает, что испытуемый образец имеет достаточно заметную большую насыщенность цвета (заметно более интенсивный цвет) по сравнению с эталоном.</p>
+            </div>
+            <div class="folio-right">11</div>
+          </section>
+
+          <section class="page" data-page="16" aria-label="Страница 16">
+            <div class="head-left">ГОСТ 29319—2025</div>
+            <div class="content doc" style="top:18mm;">
+              <div class="appendix-title" id="appendix-v">Приложение В<br><span style="font-size:5.7mm;">(справочное)</span></div>
+
+              <div class="title-md">Метамерия и метамерные соответствия</div>
+
+              <p>Спектральное равенство — явление, когда два лакокрасочных покрытия имеют одинаковые спектральные кривые отражения. При визуальном осмотре они будут совпадать по цвету при любом источнике освещения, независимо от его спектральных характеристик.</p>
+
+              <p>Метамерное соответствие — это совпадение по цвету двух лакокрасочных материалов с различными спектральными кривыми отражения при одном источнике света и несовпадение при другом источнике с отличающимися спектральными характеристиками.</p>
+
+              <p>Если в двух сравниваемых материалах содержатся различные пигменты, некоторая метамерия является неизбежной; в ряде случаев может проявиться небольшая степень метамерии даже при использовании одних и тех же пигментов.</p>
+
+              <p>Метамерное соответствие, обнаруженное при искусственном дневном освещении, может не наблюдаться в определенных условиях естественного дневного освещения (например, северный свет с голубого неба или свет заходящего/восходящего солнца), но сохраняется в большинстве случаев во всех остальных условиях дневного освещения.</p>
+
+              <p>При использовании осветительных приборов с линейной эмиссией (например, натриевые и ртутно-паровые лампы) результаты могут оказаться иными.</p>
+
+              <p>В зависимости от назначения лакокрасочного материала допускается небольшая степень метамерии.</p>
+
+              <p>При оценке метамерии на решение о соответствии или несоответствии двух образцов может повлиять различие в восприятии цвета специалистом по испытаниям.</p>
+            </div>
+            <div class="folio-left">12</div>
+          </section>
+
+          <section class="page" data-page="17" aria-label="Страница 17">
+            <div class="head-right">ГОСТ 29319—2025</div>
+            <div class="content doc" style="top:25mm;">
+              <div class="title-lg" id="section-bibliography" style="margin-top:4px;">Библиография</div>
+
+              <div class="biblio-list">
+                <div class="idx" id="biblio-1">[1]</div>
+                <div>ASTM&nbsp;D1729-22&nbsp;&nbsp;&nbsp;Standard Practice for Visual Appraisal of Colors and Color Differences of Diffusely-Illuminated Opaque Materials (Стандартная практика визуальной оценки цветов и цветовых различий диффузно освещенных непрозрачных материалов)</div>
+
+                <div class="idx" id="biblio-2">[2]</div>
+                <div>ISO/CIE&nbsp;11664-4:2019&nbsp;&nbsp;&nbsp;Colorimetry. Part 4: CIE&nbsp;1976 L*a*b* colour space (Колориметрия. Часть&nbsp;4. Цветовое пространство CIE&nbsp;1976 L*a*b*)</div>
+              </div>
+            </div>
+            <div class="folio-right">13</div>
+          </section>
+
+          <section class="page" data-page="18" aria-label="Страница 18">
+            <div class="head-left">ГОСТ 29319—2025</div>
+
+            <div class="keywords-topline"></div>
+            <div class="keywords-bottomline"></div>
+
+            <div class="content doc" style="top:28mm;">
+              <table style="width:100%; border-collapse:collapse; table-layout:fixed; margin-bottom:18px; font-size:16.6px;">
+                <colgroup>
+                  <col style="width:33.333%">
+                  <col style="width:33.333%">
+                  <col style="width:33.333%">
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <td style="padding:0 2px 0 0; text-align:left;">УДК&nbsp;667-12:006.354</td>
+                    <td style="padding:0; text-align:center;">МКС&nbsp;87.040</td>
+                    <td style="padding:0 0 0 2px; text-align:right;">NEQ</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <p id="section-keywords" style="font-size:16px; line-height:1.22;">
+                Ключевые слова: лакокрасочные материалы, лакокрасочные покрытия, цвет покрытия, метод визуального сравнения цвета, эталон сравнения, контрольный образец цвета, визуальное цветовое различие, метамерия
+              </p>
+            </div>
+
+            <div class="folio-right">14</div>
+          </section>
+
+          <section class="page" data-page="19" aria-label="Страница 19">
+            <div class="content doc"></div>
+
+            <div class="imprint-center" id="section-imprint">
+              Редактор Н.В.&nbsp;Таланова<br>
+              Технический редактор В.Н.&nbsp;Прусакова<br>
+              Корректор Р.А.&nbsp;Ментова<br>
+              Компьютерная верстка А.Н.&nbsp;Золотаревой<br><br>
+
+              Сдано в набор 17.12.2025.&nbsp;&nbsp;&nbsp;Подписано в печать 28.01.2026.&nbsp;&nbsp;&nbsp;Формат 60×84<sup>1/8</sup>.&nbsp;&nbsp;&nbsp;Гарнитура Ариал.<br>
+              Усл. печ. л. 2,32.&nbsp;&nbsp;&nbsp;Уч.-изд. л. 2,12.<br><br>
+
+              Подготовлено на основе электронной версии, предоставленной разработчиком стандарта<br><br>
+
+              Создано в единичном исполнении в ФГБУ «Институт стандартизации»<br>
+              для комплектования Федерального информационного фонда стандартов, 117418 Москва, Нахимовский пр-т, д.&nbsp;31, к.&nbsp;2.<br>
+              www.gostinfo.ru&nbsp;&nbsp;&nbsp;info@gostinfo.ru
+            </div>
+
+            <div class="imprint-bottomline"></div>
+          </section>
+
+          <section class="page blank-page" data-page="20" aria-label="Страница 20">
+            <div class="content doc"></div>
+          </section>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    (() => {
+      const pages = Array.from(document.querySelectorAll('.page'));
+      const workspace = document.getElementById('workspace');
+      const pageFrame = document.getElementById('pageFrame');
+      const pageList = document.getElementById('pageList');
+
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const pageIndicator = document.getElementById('pageIndicator');
+      const pageInput = document.getElementById('pageInput');
+      const goBtn = document.getElementById('goBtn');
+      const zoomOutBtn = document.getElementById('zoomOutBtn');
+      const zoomResetBtn = document.getElementById('zoomResetBtn');
+      const zoomInBtn = document.getElementById('zoomInBtn');
+      const zoomReadout = document.getElementById('zoomReadout');
+      const printBtn = document.getElementById('printBtn');
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const biblioBackBtn = document.getElementById('biblioBackBtn');
+
+      const docSearchBox = document.getElementById('docSearchBox');
+      const docSearchInput = document.getElementById('docSearchInput');
+      const docSearchDropdown = document.getElementById('docSearchDropdown');
+      const docSearchSuggestions = document.getElementById('docSearchSuggestions');
+      const docSearchResults = document.getElementById('docSearchResults');
+
+      const NAV_ITEMS = [
+        { label: 'Страница I — «Титул»', targetPageIndex: 0 },
+        { label: 'Страница II — «Предисловие. Сведения о стандарте»', targetPageIndex: 1 },
+        { label: 'Страница III — «Информационные сведения»', targetPageIndex: 2 },
+        { label: 'Страница IV — «Введение»', targetPageIndex: 3 },
+        { label: '1. Область применения', targetPageIndex: 4, targetSelector: '#section-1-scope' },
+        { label: '2. Нормативные ссылки', targetPageIndex: 4, targetSelector: '#section-2-normative' },
+        { label: '3. Термины и определения', targetPageIndex: 5, targetSelector: '#section-3-terms' },
+        { label: '4. Требования к освещению для сравнения цвета', targetPageIndex: 5, targetSelector: '#section-4-lighting' },
+        { label: '5. Требования к специалисту', targetPageIndex: 6, targetSelector: '#section-5-specialist' },
+        { label: '6. Требования к образцам и эталонам', targetPageIndex: 7, targetSelector: '#section-6-samples' },
+        { label: 'Раздел 6 (продолжение)', targetPageIndex: 8, targetSelector: '#section-6-continued' },
+        { label: '7. Проведение испытаний', targetPageIndex: 9, targetSelector: '#section-7-tests' },
+        { label: '8. Оценка метамерии', targetPageIndex: 10, targetSelector: '#section-8-metamerism' },
+        { label: '9. Обработка результатов', targetPageIndex: 11, targetSelector: '#section-9-results' },
+        { label: '10. Прецизионность', targetPageIndex: 11, targetSelector: '#section-10-precision' },
+        { label: '11. Протокол испытаний', targetPageIndex: 11, targetSelector: '#section-11-report' },
+        { label: 'Приложение А (справочное) — «Идентификация цвета образцов»', targetPageIndex: 12, targetSelector: '#appendix-a' },
+        { label: 'Приложение А (продолжение)', targetPageIndex: 13, targetSelector: '#appendix-a-continued' },
+        { label: 'Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»', targetPageIndex: 14, targetSelector: '#appendix-b' },
+        { label: 'Приложение В (справочное) — «Метамерия и метамерные соответствия»', targetPageIndex: 15, targetSelector: '#appendix-v' },
+        { label: 'Библиография', targetPageIndex: 16, targetSelector: '#section-bibliography' },
+        { label: 'Ключевые слова', targetPageIndex: 17, targetSelector: '#section-keywords' },
+        { label: 'Издательские сведения', targetPageIndex: 18, targetSelector: '#section-imprint' },
+        { label: 'Страница 20', targetPageIndex: 19 }
+      ];
+
+      const SEARCHABLE_SELECTOR = [
+        '.cover-top-text',
+        '.cover-std-label',
+        '.cover-gost',
+        '.cover-main-title',
+        '.cover-bottom',
+        '.main-std-banner .std-title',
+        '.main-std-banner .material',
+        '.main-std-banner .method',
+        '.main-std-banner .en',
+        '.page-five-date',
+        '.title-lg',
+        '.title-md',
+        '.section',
+        '.subsection',
+        '.appendix-title',
+        '.doc p',
+        '.doc li',
+        '.std-table th',
+        '.std-table td',
+        '.mask-table th',
+        '.mask-table td',
+        '.tbl-caption',
+        '.fig-caption',
+        '.biblio-list > div',
+        '.copyright-block',
+        '.imprint-center'
+      ].join(', ');
+
+      const searchIndex = [];
+      const suggestionCandidates = [];
+      const suggestionKeys = new Set();
+
+      let currentPage = 0;
+      let zoom = 1;
+      let activeSearchElement = null;
+      let searchResults = [];
+      let activePageListScrollFrame = 0;
+      let generatedNavAnchorCounter = 0;
+
+      const bibliographyNavigationStack = [];
+      const THEME_STORAGE_KEY = 'gost29319.viewer.theme';
+
+      function updateThemeToggle(theme){
+        const isDark = theme === 'dark';
+        document.body.dataset.theme = isDark ? 'dark' : 'light';
+        themeToggleBtn.setAttribute('aria-pressed', String(isDark));
+        themeToggleBtn.setAttribute('aria-label', isDark
+          ? 'Включена ночная тема. Переключить на дневную тему'
+          : 'Включена дневная тема. Переключить на ночную тему');
+        themeToggleBtn.title = isDark ? 'Переключить на дневную тему' : 'Переключить на ночную тему';
+
+        const icon = themeToggleBtn.querySelector('.theme-toggle-icon');
+        const label = themeToggleBtn.querySelector('.theme-toggle-label');
+        if (icon) icon.textContent = isDark ? '☀' : '☾';
+        if (label) label.textContent = isDark ? 'Дневная тема' : 'Ночная тема';
+      }
+
+      function getStoredTheme(){
+        try {
+          const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+          return savedTheme === 'dark' ? 'dark' : 'light';
+        } catch (err) {
+          return 'light';
+        }
+      }
+
+      function applyTheme(theme){
+        const nextTheme = theme === 'dark' ? 'dark' : 'light';
+        updateThemeToggle(nextTheme);
+        try {
+          localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+        } catch (err) {}
+      }
+
+
+      function clampPage(index){
+        return Math.max(0, Math.min(pages.length - 1, index));
+      }
+
+      function normalizeSearchText(value){
+        return String(value || '')
+          .toLowerCase()
+          .replace(/ё/g, 'е')
+          .replace(/[\u00a0\u2000-\u200b\u202f\u205f\u3000]/g, ' ')
+          .replace(/[\u2010-\u2015\u2212\-‐‑‒–—―]/g, '-')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function plainText(value){
+        return String(value || '')
+          .replace(/[\u00a0\u202f]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function escapeHtml(value){
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function isWordChar(value){
+        return /[\p{L}\p{N}]/u.test(value || '');
+      }
+
+      function buildCompactSearchMap(text){
+        const source = String(text || '');
+        let compactText = '';
+        const indexMap = [];
+
+        for (let index = 0; index < source.length; index += 1) {
+          const char = source[index];
+          if (isWordChar(char)) {
+            compactText += char;
+            indexMap.push(index);
+          }
+        }
+
+        return { compactText, indexMap };
+      }
+
+      function findTextMatches(text, query){
+        if (!text || !query) return [];
+
+        const collected = [];
+        const seen = new Set();
+        let fromIndex = 0;
+
+        while (fromIndex <= text.length - query.length) {
+          const foundIndex = text.indexOf(query, fromIndex);
+          if (foundIndex < 0) break;
+
+          const key = `${foundIndex}:${foundIndex + query.length}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            collected.push({
+              start: foundIndex,
+              end: foundIndex + query.length
+            });
+          }
+
+          fromIndex = foundIndex + Math.max(query.length, 1);
+        }
+
+        const compactQuery = buildCompactSearchMap(query).compactText;
+        if (!compactQuery) {
+          return collected;
+        }
+
+        const compactTextData = buildCompactSearchMap(text);
+        let compactFromIndex = 0;
+
+        while (compactFromIndex <= compactTextData.compactText.length - compactQuery.length) {
+          const compactFoundIndex = compactTextData.compactText.indexOf(compactQuery, compactFromIndex);
+          if (compactFoundIndex < 0) break;
+
+          const start = compactTextData.indexMap[compactFoundIndex];
+          const end = compactTextData.indexMap[compactFoundIndex + compactQuery.length - 1] + 1;
+          const key = `${start}:${end}`;
+
+          if (!seen.has(key)) {
+            seen.add(key);
+            collected.push({ start, end });
+          }
+
+          compactFromIndex = compactFoundIndex + Math.max(compactQuery.length, 1);
+        }
+
+        collected.sort((a, b) => {
+          if (a.start !== b.start) return a.start - b.start;
+          return a.end - b.end;
+        });
+
+        return collected;
+      }
+
+      function getElementTextMap(element){
+        const textNodes = [];
+        const positions = [];
+        let combinedText = '';
+        let previousWasSpace = true;
+
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null);
+        let node = walker.nextNode();
+
+        while (node) {
+          const value = node.nodeValue || '';
+          for (let i = 0; i < value.length; i += 1) {
+            const char = value[i];
+            if (/\s/u.test(char)) {
+              if (!previousWasSpace && combinedText) {
+                combinedText += ' ';
+                positions.push({ node, offset: i });
+                previousWasSpace = true;
+              }
+            } else {
+              combinedText += char;
+              positions.push({ node, offset: i });
+              previousWasSpace = false;
+            }
+          }
+          textNodes.push(node);
+          node = walker.nextNode();
+        }
+
+        while (combinedText.endsWith(' ')) {
+          combinedText = combinedText.slice(0, -1);
+          positions.pop();
+        }
+
+        return { combinedText, positions };
+      }
+
+      function clearSearchHighlight(){
+        const marks = document.querySelectorAll('mark.search-target[data-search-highlight="true"]');
+        marks.forEach((mark) => {
+          const parent = mark.parentNode;
+          if (!parent) return;
+          while (mark.firstChild) {
+            parent.insertBefore(mark.firstChild, mark);
+          }
+          parent.removeChild(mark);
+          parent.normalize();
+        });
+        activeSearchElement = null;
+      }
+
+      function highlightMatchInElement(element, matchStart, matchEnd){
+        clearSearchHighlight();
+        if (!element || typeof matchStart !== 'number' || typeof matchEnd !== 'number' || matchEnd <= matchStart) return false;
+
+        const textMap = getElementTextMap(element);
+        if (!textMap.combinedText || !textMap.positions.length) return false;
+
+        const limitedStart = Math.max(0, Math.min(matchStart, textMap.positions.length - 1));
+        const limitedEnd = Math.max(limitedStart + 1, Math.min(matchEnd, textMap.positions.length));
+
+        const segments = [];
+        for (let idx = limitedStart; idx < limitedEnd; idx += 1) {
+          const current = textMap.positions[idx];
+          if (!current || !current.node) continue;
+          const previous = segments[segments.length - 1];
+          if (previous && previous.node === current.node && previous.endOffset === current.offset) {
+            previous.endOffset = current.offset + 1;
+          } else {
+            segments.push({
+              node: current.node,
+              startOffset: current.offset,
+              endOffset: current.offset + 1
+            });
+          }
+        }
+
+        if (!segments.length) return false;
+
+        const marks = [];
+        for (let idx = segments.length - 1; idx >= 0; idx -= 1) {
+          const segment = segments[idx];
+          const range = document.createRange();
+          range.setStart(segment.node, segment.startOffset);
+          range.setEnd(segment.node, segment.endOffset);
+          const mark = document.createElement('mark');
+          mark.className = 'search-target';
+          mark.dataset.searchHighlight = 'true';
+          range.surroundContents(mark);
+          marks.push(mark);
+        }
+
+        activeSearchElement = marks[marks.length - 1] || null;
+        return Boolean(activeSearchElement);
+      }
+
+      function addSuggestionCandidate(label, meta = {}){
+        const cleanLabel = plainText(label);
+        if (!cleanLabel) return;
+        const key = normalizeSearchText(cleanLabel);
+        if (!key || suggestionKeys.has(key)) return;
+        suggestionKeys.add(key);
+        suggestionCandidates.push({
+          label: cleanLabel,
+          normalized: key,
+          pageIndex: typeof meta.pageIndex === 'number' ? meta.pageIndex : null,
+          element: meta.element || null
+        });
+      }
+
+      function ensureStableNavigationHash(element, prefix = 'nav-anchor'){
+        if (!element) return '';
+        if (element.id) return `#${element.id}`;
+
+        generatedNavAnchorCounter += 1;
+        const nextId = `${prefix}-${generatedNavAnchorCounter}`;
+        element.id = nextId;
+        return `#${nextId}`;
+      }
+
+      function syncLocationHash(hash){
+        const cleanHash = hash && String(hash).startsWith('#') ? String(hash) : '';
+        const nextUrl = `${window.location.pathname}${window.location.search}${cleanHash}`;
+        try {
+          history.replaceState(null, '', nextUrl);
+        } catch (err) {
+          if (cleanHash) {
+            window.location.hash = cleanHash.slice(1);
+          }
+        }
+      }
+
+      function getActiveBibliographyNavigation(){
+        const state = bibliographyNavigationStack[bibliographyNavigationStack.length - 1] || null;
+        if (!state) return null;
+        return state.targetPageIndex === currentPage ? state : null;
+      }
+
+      function updateBibliographyBackButton(){
+        if (!biblioBackBtn) return;
+        const activeState = getActiveBibliographyNavigation();
+        const shouldShow = Boolean(activeState);
+        biblioBackBtn.hidden = !shouldShow;
+        biblioBackBtn.disabled = !shouldShow;
+        biblioBackBtn.setAttribute('aria-hidden', String(!shouldShow));
+      }
+
+      function rememberBibliographyNavigation(sourceElement, targetHash){
+        const targetPageIndex = getTargetPageIndex(targetHash);
+        if (!sourceElement || targetPageIndex < 0) return;
+
+        bibliographyNavigationStack.push({
+          sourceElement,
+          sourcePageIndex: currentPage,
+          sourceHash: ensureStableNavigationHash(sourceElement, 'doc-ref-source'),
+          targetHash,
+          targetPageIndex
+        });
+
+        if (bibliographyNavigationStack.length > 24) {
+          bibliographyNavigationStack.splice(0, bibliographyNavigationStack.length - 24);
+        }
+      }
+
+      function discardBibliographyNavigationForPageChange(previousPage, nextPage){
+        if (previousPage === nextPage) return;
+        const activeState = bibliographyNavigationStack[bibliographyNavigationStack.length - 1];
+        if (!activeState) return;
+        if (activeState.targetPageIndex === previousPage && previousPage !== nextPage) {
+          bibliographyNavigationStack.pop();
+        }
+      }
+
+      function goBackFromBibliographyReference(){
+        const state = bibliographyNavigationStack.pop();
+        updateBibliographyBackButton();
+        if (!state) return;
+
+        if (state.sourceElement && document.contains(state.sourceElement)) {
+          navigateToElement(state.sourceElement, {
+            pageIndex: state.sourcePageIndex,
+            syncUrl: false,
+            urlHash: state.sourceHash || ''
+          });
+          return;
+        }
+
+        if (state.sourceHash) {
+          navigateToSelector(state.sourceHash, false, { urlHash: state.sourceHash });
+          return;
+        }
+
+        goToPage(state.sourcePageIndex);
+        syncLocationHash('');
+      }
+
+      function scrollActivePageButtonIntoView(button){
+        if (!button || !pageList) return;
+
+        const container = pageList;
+        const maxScrollTop = Math.max(0, container.scrollHeight - container.clientHeight);
+        if (maxScrollTop <= 0) return;
+
+        const currentScrollTop = container.scrollTop;
+        const visibleTop = currentScrollTop;
+        const visibleBottom = currentScrollTop + container.clientHeight;
+        const buttonTop = button.offsetTop;
+        const buttonBottom = buttonTop + button.offsetHeight;
+        const edgeGap = 8;
+        const preferredTopBand = visibleTop + Math.min(42, Math.max(18, container.clientHeight * 0.22));
+
+        const fullyVisible = buttonTop >= visibleTop + edgeGap && buttonBottom <= visibleBottom - edgeGap;
+        const alreadyNearTop = buttonTop <= preferredTopBand + 14;
+
+        let nextScrollTop = null;
+
+        if (!fullyVisible) {
+          nextScrollTop = buttonTop - edgeGap;
+        } else if (!alreadyNearTop && buttonTop > preferredTopBand + 28) {
+          nextScrollTop = buttonTop - edgeGap;
+        }
+
+        if (nextScrollTop === null) return;
+
+        nextScrollTop = Math.max(0, Math.min(maxScrollTop, nextScrollTop));
+        if (Math.abs(nextScrollTop - currentScrollTop) < 6) return;
+
+        container.scrollTo({ top: nextScrollTop, behavior: 'smooth' });
+      }
+
+      function scheduleActivePageButtonScroll(button){
+        if (activePageListScrollFrame) {
+          cancelAnimationFrame(activePageListScrollFrame);
+        }
+
+        activePageListScrollFrame = requestAnimationFrame(() => {
+          activePageListScrollFrame = 0;
+          scrollActivePageButtonIntoView(button);
+        });
+      }
+
+      function buildPageList(){
+        pageList.innerHTML = '';
+        NAV_ITEMS.forEach((item, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'page-jump';
+          btn.dataset.navIndex = String(idx);
+          btn.dataset.pageIndex = String(item.targetPageIndex);
+
+          const label = document.createElement('span');
+          label.className = 'page-jump-label';
+          label.textContent = item.label;
+          btn.appendChild(label);
+
+          btn.addEventListener('click', () => {
+            closeSearchDropdown();
+            if (item.targetSelector) {
+              navigateToSelector(item.targetSelector);
+            } else {
+              goToPage(item.targetPageIndex);
+            }
+          });
+
+          pageList.appendChild(btn);
+        });
+      }
+
+      function updatePageButtons(){
+        let activeButton = null;
+
+        Array.from(pageList.querySelectorAll('.page-jump')).forEach((btn) => {
+          const targetPageIndex = Number(btn.dataset.pageIndex);
+          const isActive = targetPageIndex === currentPage;
+          btn.classList.toggle('active', isActive);
+          if (isActive && !activeButton) {
+            activeButton = btn;
+          }
+        });
+
+        if (activeButton) {
+          scheduleActivePageButtonScroll(activeButton);
+        }
+      }
+
+      function setZoom(nextZoom){
+        zoom = Math.max(0.55, Math.min(2.2, Number(nextZoom.toFixed(2))));
+        pageFrame.style.transform = `scale(${zoom})`;
+        zoomReadout.textContent = `${Math.round(zoom * 100)}%`;
+      }
+
+      function updatePage(){
+        pages.forEach((page, idx) => {
+          page.classList.toggle('active', idx === currentPage);
+        });
+
+        pageIndicator.textContent = `Страница ${currentPage + 1} из ${pages.length}`;
+        pageInput.value = currentPage + 1;
+        prevBtn.disabled = currentPage === 0;
+        nextBtn.disabled = currentPage === pages.length - 1;
+        updatePageButtons();
+        updateBibliographyBackButton();
+        workspace.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
+
+      function goToPage(index){
+        const previousPage = currentPage;
+        currentPage = clampPage(index);
+        discardBibliographyNavigationForPageChange(previousPage, currentPage);
+        updatePage();
+      }
+
+      function getTargetPageIndex(hash){
+        if (!hash || !hash.startsWith('#')) return -1;
+        const target = document.querySelector(hash);
+        if (!target) return -1;
+        const page = target.closest('.page');
+        return page ? pages.indexOf(page) : -1;
+      }
+
+      function navigateToElement(element, options = {}){
+        if (!element) return;
+        const page = element.closest('.page');
+        const pageIndex = page ? pages.indexOf(page) : (typeof options.pageIndex === 'number' ? options.pageIndex : -1);
+        if (pageIndex >= 0) {
+          goToPage(pageIndex);
+        }
+
+        requestAnimationFrame(() => {
+          if (typeof options.matchStart === 'number' && typeof options.matchEnd === 'number') {
+            highlightMatchInElement(element, options.matchStart, options.matchEnd);
+          } else {
+            clearSearchHighlight();
+          }
+
+          const focusTarget = activeSearchElement || element;
+          focusTarget.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' });
+
+          if (options.syncUrl && element.id) {
+            syncLocationHash(`#${element.id}`);
+          } else if (Object.prototype.hasOwnProperty.call(options, 'urlHash')) {
+            syncLocationHash(options.urlHash || '');
+          }
+        });
+      }
+
+      function navigateToSelector(selector, syncUrl = true, extraOptions = {}){
+        if (!selector) return;
+        const element = document.querySelector(selector);
+        if (!element) return;
+        navigateToElement(element, { ...extraOptions, syncUrl });
+      }
+
+      function navigateToHash(hash, syncUrl = true){
+        if (!hash || !hash.startsWith('#')) return;
+        const target = document.querySelector(hash);
+        if (!target) return;
+        navigateToElement(target, { syncUrl });
+      }
+
+      function nextPage(){ goToPage(currentPage + 1); }
+      function prevPage(){ goToPage(currentPage - 1); }
+
+      function buildSearchIndex(){
+        pages.forEach((page, pageIndex) => {
+          const elements = Array.from(page.querySelectorAll(SEARCHABLE_SELECTOR));
+          elements.forEach((element) => {
+            const text = plainText(element.textContent);
+            if (!text) return;
+            searchIndex.push({
+              pageIndex,
+              element,
+              text,
+              normalized: normalizeSearchText(text)
+            });
+          });
+        });
+
+        NAV_ITEMS.forEach((item) => {
+          const targetElement = item.targetSelector ? document.querySelector(item.targetSelector) : null;
+          addSuggestionCandidate(item.label, {
+            pageIndex: item.targetPageIndex,
+            element: targetElement
+          });
+        });
+
+        const referencePatterns = [
+          /\bГОСТ(?:\s*Р)?\s*[\d]+(?:[.\-—]\d+)*(?:\s*[—-]\s*\d{2,4})?/giu,
+          /\bISO\/CIE\s*\d+(?:-\d+)?(?::\d{4})?/giu,
+          /\bISO\s*\d+(?:-\d+)?(?::\d{4})?/giu,
+          /\bASTM\s*[A-Z]\d+(?:-\d+)*(?::\d{4})?/giu,
+          /\bМКО\b/giu,
+          /\bD\s*65\b/giu,
+          /PANTONE Lighting Indicator Stickers D65/giu
+        ];
+
+        searchIndex.forEach((entry) => {
+          referencePatterns.forEach((pattern) => {
+            const matches = entry.text.match(pattern);
+            if (!matches) return;
+            matches.forEach((match) => {
+              addSuggestionCandidate(match, { pageIndex: entry.pageIndex, element: entry.element });
+            });
+          });
+        });
+
+        suggestionCandidates.sort((a, b) => {
+          const aG = /^гост/i.test(a.label);
+          const bG = /^гост/i.test(b.label);
+          if (aG !== bG) return aG ? -1 : 1;
+          return a.label.localeCompare(b.label, 'ru');
+        });
+      }
+
+      function getSuggestions(query){
+        const normalizedQuery = normalizeSearchText(query);
+        if (!normalizedQuery) return [];
+
+        const compactQuery = buildCompactSearchMap(normalizedQuery).compactText;
+
+        return suggestionCandidates
+          .filter((item) => {
+            if (item.normalized.includes(normalizedQuery)) return true;
+            if (!compactQuery) return false;
+            return buildCompactSearchMap(item.normalized).compactText.includes(compactQuery);
+          })
+          .slice(0, 12);
+      }
+
+      function getDisplayMatchRange(text, query){
+        const normalizedText = normalizeSearchText(text);
+        const normalizedQuery = normalizeSearchText(query);
+
+        if (!normalizedText || !normalizedQuery) {
+          return null;
+        }
+
+        const directIndex = normalizedText.indexOf(normalizedQuery);
+        if (directIndex >= 0) {
+          return {
+            start: directIndex,
+            end: directIndex + normalizedQuery.length
+          };
+        }
+
+        const compactTextData = buildCompactSearchMap(normalizedText);
+        const compactQuery = buildCompactSearchMap(normalizedQuery).compactText;
+
+        if (!compactTextData.compactText || !compactQuery) {
+          return null;
+        }
+
+        const compactIndex = compactTextData.compactText.indexOf(compactQuery);
+        if (compactIndex < 0) {
+          return null;
+        }
+
+        return {
+          start: compactTextData.indexMap[compactIndex],
+          end: compactTextData.indexMap[compactIndex + compactQuery.length - 1] + 1
+        };
+      }
+
+      function buildContextSnippet(text, matchStart, matchEnd){
+        const compactText = plainText(text);
+        const sentenceStart = Math.max(
+          compactText.lastIndexOf('. ', Math.max(0, matchStart - 1)),
+          compactText.lastIndexOf('; ', Math.max(0, matchStart - 1)),
+          compactText.lastIndexOf(': ', Math.max(0, matchStart - 1))
+        );
+        const sentenceEndCandidates = [
+          compactText.indexOf('. ', matchEnd),
+          compactText.indexOf('; ', matchEnd),
+          compactText.indexOf(': ', matchEnd)
+        ].filter((value) => value >= 0);
+        const sentenceEnd = sentenceEndCandidates.length ? Math.min(...sentenceEndCandidates) : -1;
+
+        const start = Math.max(0, sentenceStart >= 0 ? sentenceStart + 2 : matchStart - 55);
+        const end = Math.min(compactText.length, sentenceEnd >= 0 ? sentenceEnd + 1 : matchEnd + 95);
+
+        const safeStart = Math.max(0, Math.min(start, compactText.length));
+        const safeEnd = Math.max(safeStart, Math.min(end, compactText.length));
+        const prefix = safeStart > 0 ? '…' : '';
+        const suffix = safeEnd < compactText.length ? '…' : '';
+        const snippetText = compactText.slice(safeStart, safeEnd);
+
+        return {
+          text: `${prefix}${snippetText}${suffix}`,
+          highlightStart: prefix.length + (matchStart - safeStart),
+          highlightEnd: prefix.length + (matchEnd - safeStart)
+        };
+      }
+
+      function renderHighlightedText(text, matchStart, matchEnd){
+        const safeStart = Math.max(0, Math.min(matchStart, text.length));
+        const safeEnd = Math.max(safeStart, Math.min(matchEnd, text.length));
+        return `${escapeHtml(text.slice(0, safeStart))}<mark class="search-inline-match">${escapeHtml(text.slice(safeStart, safeEnd))}</mark>${escapeHtml(text.slice(safeEnd))}`;
+      }
+
+      function performSearch(query){
+        const normalizedQuery = normalizeSearchText(query);
+        if (!normalizedQuery) return [];
+        if (normalizedQuery.length < 2) return [];
+
+        const results = [];
+
+        searchIndex.forEach((entry) => {
+          const matches = findTextMatches(entry.normalized, normalizedQuery);
+          matches.forEach((match) => {
+            results.push({
+              pageIndex: entry.pageIndex,
+              element: entry.element,
+              text: entry.text,
+              matchStart: match.start,
+              matchEnd: match.end
+            });
+          });
+        });
+
+        results.sort((a, b) => {
+          if (a.pageIndex !== b.pageIndex) return a.pageIndex - b.pageIndex;
+          if (a.matchStart !== b.matchStart) return a.matchStart - b.matchStart;
+          return a.matchEnd - b.matchEnd;
+        });
+
+        return results.slice(0, 160);
+      }
+
+      function openSearchDropdown(){
+        if (!docSearchDropdown) return;
+        docSearchDropdown.hidden = false;
+        docSearchDropdown.classList.add('is-open');
+        docSearchInput.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeSearchDropdown(){
+        if (!docSearchDropdown) return;
+        docSearchDropdown.classList.remove('is-open', 'has-suggestions');
+        docSearchDropdown.hidden = true;
+        docSearchInput.setAttribute('aria-expanded', 'false');
+      }
+
+      function navigateToSearchResult(result){
+        if (!result || !result.element) return;
+        closeSearchDropdown();
+        navigateToElement(result.element, {
+          matchStart: result.matchStart,
+          matchEnd: result.matchEnd,
+          syncUrl: false
+        });
+      }
+
+      function renderSuggestions(items, query){
+        docSearchSuggestions.innerHTML = '';
+        docSearchSuggestions.classList.toggle('has-items', items.length > 0);
+        if (docSearchDropdown) {
+          docSearchDropdown.classList.toggle('has-suggestions', items.length > 0);
+        }
+
+        const normalizedQuery = normalizeSearchText(query);
+
+        items.forEach((item) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'search-suggestion';
+          const matchRange = normalizedQuery ? getDisplayMatchRange(item.label, normalizedQuery) : null;
+          btn.innerHTML = matchRange
+            ? renderHighlightedText(item.label, matchRange.start, matchRange.end)
+            : escapeHtml(item.label);
+          btn.addEventListener('click', () => {
+            docSearchInput.value = item.label;
+            updateSearchUI(item.label);
+            if (searchResults.length) {
+              navigateToSearchResult(searchResults[0]);
+            } else if (item.element) {
+              closeSearchDropdown();
+              navigateToElement(item.element);
+            } else if (typeof item.pageIndex === 'number') {
+              closeSearchDropdown();
+              goToPage(item.pageIndex);
+            }
+          });
+          docSearchSuggestions.appendChild(btn);
+        });
+      }
+
+      function renderResults(results, query){
+        docSearchResults.innerHTML = '';
+
+        if (!query.trim()) {
+          docSearchResults.innerHTML = '<div class="search-results-empty">Начните вводить запрос, чтобы найти совпадения по документу.</div>';
+          return;
+        }
+
+        if (!results.length) {
+          docSearchResults.innerHTML = '<div class="search-results-empty">Совпадения не найдены.</div>';
+          return;
+        }
+
+        results.forEach((entry) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'search-result';
+
+          const pageLabel = document.createElement('span');
+          pageLabel.className = 'search-result-page';
+          pageLabel.textContent = `Страница ${entry.pageIndex + 1}`;
+
+          const contextData = buildContextSnippet(entry.text, entry.matchStart, entry.matchEnd);
+          const context = document.createElement('span');
+          context.className = 'search-result-context';
+          context.innerHTML = renderHighlightedText(contextData.text, contextData.highlightStart, contextData.highlightEnd);
+
+          btn.appendChild(pageLabel);
+          btn.appendChild(context);
+          btn.addEventListener('click', () => navigateToSearchResult(entry));
+
+          docSearchResults.appendChild(btn);
+        });
+      }
+
+      function updateSearchUI(query){
+        const cleanQuery = plainText(query);
+
+        if (!cleanQuery) {
+          searchResults = [];
+          renderSuggestions([], '');
+          renderResults([], '');
+          closeSearchDropdown();
+          clearSearchHighlight();
+          return;
+        }
+
+        if (normalizeSearchText(cleanQuery).length < 2) {
+          searchResults = [];
+          renderSuggestions(getSuggestions(cleanQuery), cleanQuery);
+          docSearchResults.innerHTML = '<div class="search-results-empty">Введите минимум 2 символа для точного поиска.</div>';
+          openSearchDropdown();
+          clearSearchHighlight();
+          return;
+        }
+
+        searchResults = performSearch(cleanQuery);
+        renderSuggestions(getSuggestions(cleanQuery), cleanQuery);
+        renderResults(searchResults, cleanQuery);
+
+        const hasSuggestions = docSearchSuggestions.children.length > 0;
+        const hasResults = searchResults.length > 0 || docSearchResults.querySelector('.search-results-empty');
+        if (hasSuggestions || hasResults) {
+          openSearchDropdown();
+        } else {
+          closeSearchDropdown();
+        }
+      }
+
+      prevBtn.addEventListener('click', prevPage);
+      nextBtn.addEventListener('click', nextPage);
+
+      goBtn.addEventListener('click', () => {
+        const val = parseInt(pageInput.value, 10);
+        if (!Number.isNaN(val)) goToPage(val - 1);
+      });
+
+      pageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = parseInt(pageInput.value, 10);
+          if (!Number.isNaN(val)) goToPage(val - 1);
+        }
+      });
+
+      zoomInBtn.addEventListener('click', () => setZoom(zoom + 0.1));
+      zoomOutBtn.addEventListener('click', () => setZoom(zoom - 0.1));
+      zoomResetBtn.addEventListener('click', () => setZoom(1));
+      printBtn.addEventListener('click', () => window.print());
+      themeToggleBtn.addEventListener('click', () => {
+        applyTheme(document.body.dataset.theme === 'dark' ? 'light' : 'dark');
+      });
+      biblioBackBtn.addEventListener('click', () => {
+        goBackFromBibliographyReference();
+      });
+
+      docSearchInput.addEventListener('input', () => {
+        updateSearchUI(docSearchInput.value);
+      });
+
+      docSearchInput.addEventListener('focus', () => {
+        if (plainText(docSearchInput.value)) {
+          updateSearchUI(docSearchInput.value);
+        }
+      });
+
+      docSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (searchResults.length) {
+            navigateToSearchResult(searchResults[0]);
+          } else {
+            const suggestions = getSuggestions(docSearchInput.value);
+            if (suggestions.length) {
+              const first = suggestions[0];
+              docSearchInput.value = first.label;
+              updateSearchUI(first.label);
+              if (searchResults.length) {
+                navigateToSearchResult(searchResults[0]);
+              } else if (first.element) {
+                closeSearchDropdown();
+                navigateToElement(first.element);
+              } else if (typeof first.pageIndex === 'number') {
+                closeSearchDropdown();
+                goToPage(first.pageIndex);
+              }
+            }
+          }
+        } else if (e.key === 'Escape') {
+          closeSearchDropdown();
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a.doc-ref[href^="#"]');
+        if (link) {
+          const hash = link.getAttribute('href');
+          if (!hash) return;
+          e.preventDefault();
+          closeSearchDropdown();
+          if (/^#biblio-/i.test(hash)) {
+            rememberBibliographyNavigation(link, hash);
+          }
+          navigateToHash(hash);
+          return;
+        }
+
+        const insideSearch = e.target.closest('.search-panel');
+        if (!insideSearch) {
+          closeSearchDropdown();
+        }
+      });
+
+      window.addEventListener('hashchange', () => {
+        if (window.location.hash) {
+          navigateToHash(window.location.hash, false);
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        const tag = (document.activeElement && document.activeElement.tagName) || '';
+        const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag);
+        if (editing) return;
+
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+          e.preventDefault();
+          nextPage();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          prevPage();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goToPage(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goToPage(pages.length - 1);
+        } else if (e.key === '+') {
+          e.preventDefault();
+          setZoom(zoom + 0.1);
+        } else if (e.key === '-') {
+          e.preventDefault();
+          setZoom(zoom - 0.1);
+        } else if (e.key === '0') {
+          e.preventDefault();
+          setZoom(1);
+        }
+      });
+
+      buildPageList();
+      buildSearchIndex();
+      updateThemeToggle(getStoredTheme());
+      setZoom(1);
+      updateBibliographyBackButton();
+      updatePage();
+
+      if (window.location.hash) {
+        navigateToHash(window.location.hash, false);
+      }
+    })();
+  </script>
+</body>
+</html>

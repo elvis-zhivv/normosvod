@@ -1,0 +1,3670 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ГОСТ 8784-75 — автономный HTML-viewer</title>
+  <style>
+    :root{
+      --page-w: 210mm;
+      --page-h: 297mm;
+      --sidebar-w: 296px;
+      --screen-bg: #d8d8d8;
+      --sidebar-bg: #1f2329;
+      --sidebar-fg: #f3f5f7;
+      --sidebar-muted: #c4cad4;
+      --sidebar-btn: #2c323a;
+      --sidebar-btn-hover: #39414b;
+      --sidebar-border: rgba(255,255,255,.08);
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ margin:0; padding:0; height:100%; }
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background:var(--screen-bg);
+      color:#111;
+      overflow:hidden;
+    }
+
+    .app{
+      display:flex;
+      width:100%;
+      height:100%;
+    }
+
+    .sidebar{
+      width:var(--sidebar-w);
+      min-width:var(--sidebar-w);
+      height:100%;
+      background:var(--sidebar-bg);
+      color:var(--sidebar-fg);
+      border-right:1px solid var(--sidebar-border);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    .sidebar-head{
+      padding:18px 18px 14px;
+      border-bottom:1px solid var(--sidebar-border);
+    }
+    .sidebar-title{
+      margin:0 0 6px;
+      font-size:18px;
+      line-height:1.15;
+      font-weight:700;
+    }
+    .sidebar-subtitle{
+      margin:0;
+      font-size:13px;
+      line-height:1.35;
+      color:var(--sidebar-muted);
+    }
+    .sidebar-section{
+      padding:14px 18px;
+      border-bottom:1px solid var(--sidebar-border);
+    }
+    .sidebar-row{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .sidebar-row:last-child{ margin-bottom:0; }
+    .sidebar button,
+    .sidebar input{
+      font:600 10px/1 Arial, Helvetica, sans-serif;
+      border:0;
+      border-radius:8px;
+      outline:none;
+    }
+    .sidebar button{
+      min-height:40px;
+      padding:0 12px;
+      cursor:pointer;
+      background:var(--sidebar-btn);
+      color:var(--sidebar-fg);
+      transition:background .15s ease;
+    }
+    .sidebar button:hover{ background:var(--sidebar-btn-hover); }
+    .sidebar button:disabled{
+      opacity:.45;
+      cursor:default;
+    }
+    .sidebar .grow{ flex:1 1 auto; }
+    .sidebar input[type="number"]{
+      width:88px;
+      height:40px;
+      background:#fff;
+      color:#111;
+      padding:0 10px;
+    }
+    .indicator{
+      font-size:14px;
+      line-height:1.35;
+      font-weight:700;
+      color:var(--sidebar-muted);
+      margin-bottom:12px;
+    }
+    .zoom-readout{
+      min-width:72px;
+      text-align:center;
+      font-size:14px;
+      line-height:40px;
+      font-weight:700;
+      color:var(--sidebar-muted);
+      background:rgba(255,255,255,.04);
+      border-radius:8px;
+      padding:0 8px;
+    }
+    .page-list-wrap{
+      min-height:0;
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      margin-top:2px;
+    }
+    .page-list-wrap,
+    .page-list-title,
+    .page-list{
+      position:relative;
+      z-index:1;
+    }
+    .page-list-title{
+      padding:14px 18px 10px;
+      font-size:13px;
+      line-height:1.2;
+      color:var(--sidebar-muted);
+      font-weight:700;
+      border-bottom:1px solid var(--sidebar-border);
+      position:relative;
+      z-index:1;
+    }
+    .page-list{
+      padding:10px 10px 18px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .page-jump{
+      width:100%;
+      text-align:left;
+      justify-content:flex-start;
+      white-space:normal;
+      line-height:1.3;
+      padding-top:10px;
+      padding-bottom:10px;
+    }
+    .page-jump.active{
+      background:#4a5663;
+      color:#fff;
+    }
+    .page-jump-label{
+      display:block;
+      width:100%;
+    }
+
+    .search-panel{
+      position:relative;
+      z-index:14;
+      flex:0 0 auto;
+      padding:14px 18px 20px;
+      margin-bottom:10px;
+      border-bottom:1px solid var(--sidebar-border);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:0;
+      overflow:visible;
+    }
+    .search-title{
+      margin:0;
+      font-size:13px;
+      line-height:1.2;
+      color:var(--sidebar-muted);
+      font-weight:700;
+    }
+    .search-box{
+      position:relative;
+      min-width:0;
+      z-index:24;
+      isolation:isolate;
+      margin-bottom:8px;
+    }
+    .search-input{
+      width:100%;
+      min-height:40px;
+      padding:10px 34px 10px 12px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#fff;
+      color:#111;
+      font:600 14px/1.2 Arial, Helvetica, sans-serif;
+    }
+    .search-input::placeholder{
+      color:#6f7782;
+      font-weight:500;
+    }
+    .search-input::-webkit-search-cancel-button{
+      cursor:pointer;
+    }
+    .search-dropdown{
+      position:absolute;
+      top:calc(100% + 8px);
+      left:0;
+      right:0;
+      z-index:200;
+      display:none;
+      min-width:0;
+      width:100%;
+      max-width:100%;
+      max-height:min(400px, calc(100vh - 196px));
+      background:#262c34;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      box-shadow:0 18px 42px rgba(0,0,0,.32);
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      scrollbar-gutter:stable;
+    }
+    .search-dropdown[hidden]{
+      display:none !important;
+    }
+    .search-dropdown.is-open{
+      display:block;
+    }
+    .search-suggestions,
+    .search-results{
+      min-width:0;
+      width:100%;
+      background:transparent;
+      border:0;
+      border-radius:0;
+      overflow:visible;
+    }
+    .search-suggestions{
+      display:none;
+      max-height:none;
+    }
+    .search-suggestions.has-items{
+      display:block;
+    }
+    .search-dropdown.has-suggestions .search-suggestions{
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .search-suggestion,
+    .search-result{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:4px;
+      width:100%;
+      min-width:0;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      color:var(--sidebar-fg);
+      text-align:left;
+      padding:10px 12px;
+      min-height:unset;
+      font:600 13px/1.45 Arial, Helvetica, sans-serif;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      white-space:normal;
+      word-break:normal;
+      overflow-wrap:anywhere;
+    }
+    .search-suggestion:last-child,
+    .search-result:last-child{
+      border-bottom:0;
+    }
+    .search-suggestion:hover,
+    .search-result:hover{
+      background:rgba(255,255,255,.08);
+    }
+    .search-result-page{
+      display:block;
+      font-size:11px;
+      line-height:1.3;
+      font-weight:700;
+      color:var(--sidebar-muted);
+      margin:0;
+    }
+    .search-result-context{
+      display:block;
+      width:100%;
+      font-size:12px;
+      line-height:1.45;
+      font-weight:500;
+      color:#e4e8ed;
+      white-space:normal;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+    .search-results{
+      max-height:none;
+      display:block;
+    }
+    .search-results-empty{
+      padding:10px 12px;
+      font-size:12px;
+      line-height:1.45;
+      color:var(--sidebar-muted);
+    }
+
+    .search-inline-match,
+    .search-target{
+      background:rgba(255,228,120,.34);
+      box-shadow:0 0 0 1px rgba(177,132,0,.22);
+      border-radius:3px;
+      color:inherit;
+      transition:background .25s ease, box-shadow .25s ease;
+    }
+    .search-inline-match{
+      padding:0 .08em;
+    }
+    .search-target{
+      padding:0 .08em;
+    }
+    .sidebar-note{
+      padding:12px 18px 18px;
+      font-size:12px;
+      line-height:1.4;
+      color:var(--sidebar-muted);
+      border-top:1px solid var(--sidebar-border);
+    }
+
+    .workspace{
+      flex:1 1 auto;
+      height:100%;
+      overflow:auto;
+      background:var(--screen-bg);
+      overscroll-behavior:contain;
+    }
+    .workspace-scroll{
+      min-height:100%;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:30px 28px 50px;
+    }
+    .page-frame{
+      transform-origin: top center;
+      will-change: transform;
+      transition: transform .12s ease;
+    }
+
+    .page{
+      position:relative;
+      width:var(--page-w);
+      height:var(--page-h);
+      margin:0 auto;
+      background:#fff;
+      box-shadow:0 20px 56px rgba(0,0,0,.22);
+      overflow:hidden;
+      display:none;
+    }
+    .page.active{ display:block; }
+
+    .head-left,
+    .head-right{
+      position:absolute;
+      top:8.8mm;
+      font-size:5.3mm;
+      line-height:1;
+      font-weight:700;
+      z-index:2;
+    }
+    .head-left{ left:10.8mm; }
+    .head-right{ right:10.8mm; }
+
+    .folio-left,
+    .folio-right{
+      position:absolute;
+      bottom:6.2mm;
+      font-size:4.9mm;
+      line-height:1;
+      z-index:2;
+    }
+    .folio-left{ left:10.8mm; }
+    .folio-right{ right:10.8mm; }
+
+    .content{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      top:23mm;
+      bottom:19mm;
+      z-index:1;
+    }
+
+    .doc{
+      font-size:3.42mm;
+      line-height:1.18;
+      text-align:justify;
+      text-justify:inter-word;
+    }
+    .doc p{ margin:0 0 1.85mm; }
+    .doc .center{ text-align:center; }
+    .doc .left{ text-align:left; }
+    .doc .right{ text-align:right; }
+    .doc .italic{ font-style:italic; }
+    .doc .small{ font-size:2.92mm; line-height:1.16; }
+    .doc .tiny{ font-size:2.78mm; line-height:1.14; }
+    .doc .bold{ font-weight:700; }
+
+    .doc .section{
+      margin:3.2mm 0 1.85mm;
+      font-size:4.76mm;
+      line-height:1.12;
+      font-weight:700;
+      text-align:left;
+    }
+    .doc .subsection{
+      margin:2.38mm 0 1.6mm;
+      font-size:4.07mm;
+      line-height:1.12;
+      font-weight:700;
+      text-align:left;
+    }
+    .doc .title-lg{
+      font-size:6.09mm;
+      line-height:1.08;
+      font-weight:700;
+      text-align:center;
+      margin:0 0 3.2mm;
+    }
+    .doc .title-md{
+      font-size:4.71mm;
+      line-height:1.12;
+      font-weight:700;
+      text-align:center;
+      margin:0 0 2.65mm;
+    }
+
+    .spaced{
+      letter-spacing:.42em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .std-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:3.25mm;
+      line-height:1.14;
+      table-layout:fixed;
+    }
+    .std-table th,
+    .std-table td{
+      border:1.4px solid #444;
+      padding:4px 6px;
+      vertical-align:middle;
+    }
+    .std-table th{
+      font-weight:400;
+      text-align:center;
+    }
+
+    .mask-table{
+      width:100%;
+      border-collapse:collapse;
+      table-layout:fixed;
+      font-size:3.25mm;
+      line-height:1.14;
+      margin:1.32mm 0 2.12mm;
+    }
+    .mask-table th,
+    .mask-table td{
+      border:1.4px solid #444;
+      padding:5px 7px;
+      text-align:center;
+    }
+    .mask-table th{ font-weight:400; }
+
+    .t-center{ text-align:center; }
+
+
+    .doc-ref,
+    .doc-ref:visited{
+      color:#1c4f8a;
+      text-decoration:underline;
+      text-decoration-thickness:1px;
+      text-underline-offset:.08em;
+      transition:color .15s ease, text-decoration-thickness .15s ease;
+    }
+    .doc-ref:hover,
+    .doc-ref:active{
+      color:#0f3b6b;
+      text-decoration-thickness:1.5px;
+    }
+    .doc-ref:focus-visible{
+      outline:1px solid rgba(28,79,138,.45);
+      outline-offset:1px;
+      border-radius:2px;
+    }
+
+    .note-label{
+      letter-spacing:.24em;
+      white-space:nowrap;
+    }
+
+    .footnote-rule{
+      width:82px;
+      border:0;
+      border-top:1.6px solid #333;
+      margin:7px 0 6px;
+      height:0;
+    }
+
+    .footer-line{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      bottom:13.3mm;
+      border-top:1.6px solid #333;
+      height:0;
+    }
+    .official-left{
+      position:absolute;
+      left:17.5mm;
+      bottom:7.2mm;
+      font-size:13.4px;
+      font-weight:700;
+      line-height:1;
+    }
+    .page-num-bottom-right{
+      position:absolute;
+      right:10.8mm;
+      bottom:6.3mm;
+      font-size:4.9mm;
+      line-height:1;
+    }
+
+    .tbl-caption{
+      margin:1.06mm 0 1.06mm;
+      text-align:left;
+    }
+
+    .fig-caption{
+      text-align:center;
+      font-size:3.39mm;
+      line-height:1.14;
+      margin-top:1.32mm;
+    }
+
+    .copyright-block {
+    position: absolute;
+    left: 30mm;
+    right: 30mm;
+    bottom: 20mm;
+    text-align: center;
+    font-size: 3.70mm;
+    line-height: 1.2;
+}
+
+    .rst-logo{
+      position:absolute;
+      left:7.5mm;
+      bottom:11.5mm;
+      width:27mm;
+      height:27mm;
+    }
+
+    .cover{
+      position:absolute;
+      inset:0;
+    }
+    .cover-top-line{
+      position:absolute;
+      left:6.5mm;
+      right:6.5mm;
+      top:13.5mm;
+      height:2mm;
+      background:#111;
+    }
+    .cover-top-text {
+    position: absolute;
+    left: 10mm;
+    right: 10mm;
+    top: 25mm;
+    text-align: center;
+    font-size: 4.05mm;
+    line-height: 1.04;
+    font-weight: 700;
+}
+    .cover-top-text .en {
+    display: block;
+    margin-top: 1.1mm;
+    font-size: 4.05mm;
+    line-height: 1.03;
+    font-weight: 700;
+}
+    .cover-mid-line {
+    position: absolute;
+    left: 6.5mm;
+    right: 6.5mm;
+    top: 50mm;
+    height: 2mm;
+    background: #111;
+}
+    .cover-std-label {
+    position: absolute;
+    left: 26mm;
+    right: 72mm;
+    top: 74mm;
+    text-align: center;
+    font-size: 6.2mm;
+    line-height: 1.56;
+    font-weight: 700;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+}
+    .cover-gost {
+    position: absolute;
+    right: 18mm;
+    top: 70mm;
+    width: 36mm;
+    text-align: left;
+    font-size: 8mm;
+    line-height: 1.14;
+    font-weight: 700;
+}
+    .cover-low-line {
+    position: absolute;
+    left: 6.5mm;
+    right: 6.5mm;
+    top: 115mm;
+    height: 1.4mm;
+    background: #111;
+}
+    .cover-main-title{
+      position:absolute;
+      left:18mm;
+      right:18mm;
+      top:135mm;
+      text-align:center;
+      font-size:10.8mm;
+      line-height:1.13;
+      font-weight:700;
+    }
+    .cover-main-title .subtitle{
+      display:block;
+      margin-top:11.5mm;
+      font-size:9.2mm;
+      line-height:1.1;
+    }
+    .cover-main-title .iso{
+      display:block;
+      margin-top:9.5mm;
+      font-size:6.7mm;
+      line-height:1.1;
+      font-weight:700;
+    }
+    .cover-main-title .official{
+      display:block;
+      margin-top:20mm;
+      font-size:5.9mm;
+      line-height:1.08;
+      font-weight:700;
+    }
+    .cover-bottom{
+      position:absolute;
+      left:18mm;
+      right:18mm;
+      bottom:15mm;
+      text-align:center;
+      font-size:5.6mm;
+      line-height:1.1;
+      font-weight:700;
+    }
+
+    .main-std-banner{
+      text-align:center;
+      margin-top:1mm;
+    }
+    .main-std-banner .std-line{
+      margin:3.8mm 0 4mm;
+      border-top:2mm solid #111;
+    }
+    .main-std-banner .std-title{
+      font-size:6.2mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:0 0 4mm;
+      letter-spacing:.26em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .main-std-banner .material{
+      font-size:9.2mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:0 0 4mm;
+    }
+    .main-std-banner .method{
+      font-size:7.2mm;
+      line-height:1.12;
+      font-weight:700;
+      margin:0 0 4mm;
+    }
+    .main-std-banner .en{
+      font-size:6.6mm;
+      line-height:1.12;
+      margin:0 0 4.5mm;
+    }
+    .main-std-banner .bottom-line{
+      border-top:1.1px solid #222;
+      margin:0;
+    }
+    .page-five-date{
+      text-align:right;
+      font-size:6.9mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:5.5mm 0 11mm;
+    }
+    .doc-page5{
+      font-size:3.60mm;
+      line-height:1.19;
+    }
+
+    .appendix-title{
+      text-align:center;
+      font-size:7mm;
+      line-height:1.15;
+      font-weight:700;
+      margin:0 0 5.5mm;
+    }
+
+    .scale-svg{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+    .scale-block{
+      margin:8px 0 8px;
+    }
+
+    .biblio-list{
+      display:grid;
+      grid-template-columns:11.1mm 1fr;
+      gap:3.44mm 3.44mm;
+      margin-top:5.29mm;
+      font-size:4.07mm;
+      line-height:1.18;
+    }
+    .biblio-list .idx{
+      text-align:right;
+      white-space:nowrap;
+    }
+
+    .keywords-topline,
+    .keywords-bottomline{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      height:0;
+      border-top:1.4px solid #444;
+    }
+    .keywords-topline{ top:24mm; }
+    .keywords-bottomline{ top:57mm; }
+
+    .imprint-bottomline{
+      position:absolute;
+      left:7mm;
+      right:7mm;
+      bottom:18mm;
+      border-top:2px solid #222;
+    }
+    .imprint-center{
+      position:absolute;
+      left:20mm;
+      right:20mm;
+      bottom:20mm;
+      text-align:center;
+      font-size:3.65mm;
+      line-height:1.18;
+    }
+
+    .blank-page{ background:#fff; }
+
+
+    .sidebar-head{
+      padding:14px 14px 10px;
+    }
+    .sidebar-title{
+      margin:0 0 4px;
+      font-size:17px;
+    }
+    .sidebar-subtitle{
+      font-size:12px;
+      line-height:1.28;
+    }
+    .sidebar-section{
+      padding:10px 14px;
+    }
+    .sidebar-row{
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .sidebar button,
+    .sidebar input{
+      font:600 10px/1 Arial, Helvetica, sans-serif;
+      border-radius:7px;
+    }
+    .sidebar button{
+      min-height:34px;
+      padding:0 10px;
+    }
+    .sidebar input[type="number"]{
+      width:78px;
+      height:34px;
+      padding:0 8px;
+    }
+    .indicator{
+      font-size:13px;
+      line-height:1.25;
+      margin-bottom:8px;
+    }
+    .zoom-readout{
+      min-width:64px;
+      font-size:13px;
+      line-height:34px;
+      border-radius:7px;
+      padding:0 6px;
+    }
+    .page-list-title{
+      padding:12px 14px 8px;
+      font-size:12px;
+    }
+    .page-list{
+      padding:8px 8px 12px;
+      gap:5px;
+    }
+    .page-jump{
+      line-height:1.25;
+      padding:8px 10px;
+    }
+    .search-panel{
+      padding:10px 14px 18px;
+      margin-bottom:10px;
+      gap:8px;
+    }
+    .search-title{
+      font-size:12px;
+    }
+    .search-input{
+      min-height:34px;
+      padding:8px 30px 8px 10px;
+      border-radius:7px;
+      font:600 13px/1.2 Arial, Helvetica, sans-serif;
+    }
+    .search-dropdown{
+      top:calc(100% + 6px);
+      border-radius:10px;
+      max-height:min(340px, calc(100vh - 188px));
+    }
+    .search-suggestions{
+      max-height:none;
+    }
+    .search-suggestion,
+    .search-result{
+      gap:3px;
+      padding:8px 10px;
+      font:600 12.5px/1.45 Arial, Helvetica, sans-serif;
+    }
+    .search-result-page{
+      font-size:10.5px;
+      margin:0;
+    }
+    .search-result-context{
+      font-size:11.5px;
+      line-height:1.42;
+    }
+    .search-results{
+      max-height:none;
+    }
+    .search-results-empty{
+      padding:8px 10px;
+      font-size:11.5px;
+      line-height:1.42;
+    }
+    .sidebar-note{
+      padding:10px 14px 12px;
+      font-size:11.5px;
+      line-height:1.35;
+    }
+
+    :root{
+      --viewer-bg: var(--screen-bg);
+      --viewer-bg-dark: #282828;
+      --viewer-panel-bg: rgba(255,255,255,.88);
+      --viewer-panel-border: rgba(17,17,17,.12);
+      --viewer-panel-fg: #1b222b;
+      --viewer-panel-fg-muted: #5b6470;
+      --doc-page-bg: #ffffff;
+      --doc-text: #111111;
+      --doc-line: #444444;
+      --doc-line-strong: #222222;
+    }
+
+    .workspace{
+      position:relative;
+      background:var(--viewer-bg);
+    }
+    .workspace-scroll{
+      padding:26px 28px 46px;
+    }
+
+    .viewer-tools{
+      position:absolute;
+      top:14px;
+      right:16px;
+      z-index:20;
+      pointer-events:none;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+    }
+    .theme-toggle,
+    .viewer-back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:36px;
+      padding:0 12px;
+      border:1px solid var(--viewer-panel-border);
+      border-radius:999px;
+      background:var(--viewer-panel-bg);
+      color:var(--viewer-panel-fg);
+      box-shadow:0 8px 24px rgba(0,0,0,.14);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      font:600 13px/1 Arial, Helvetica, sans-serif;
+      cursor:pointer;
+      pointer-events:auto;
+      transition:background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease;
+    }
+    .theme-toggle:hover,
+    .viewer-back-btn:hover{
+      background:rgba(255,255,255,.96);
+      box-shadow:0 10px 28px rgba(0,0,0,.18);
+    }
+    .theme-toggle:active,
+    .viewer-back-btn:active{
+      transform:translateY(1px);
+    }
+    .theme-toggle:focus-visible,
+    .viewer-back-btn:focus-visible{
+      outline:2px solid rgba(28,79,138,.35);
+      outline-offset:2px;
+    }
+    .theme-toggle-icon,
+    .viewer-back-btn-icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      font-size:14px;
+      line-height:1;
+    }
+    .theme-toggle-label,
+    .viewer-back-btn-label{
+      white-space:nowrap;
+    }
+    .viewer-back-btn[hidden]{
+      display:none !important;
+    }
+
+    body[data-theme="dark"]{
+      --screen-bg: #4c535c;
+      --viewer-bg: var(--viewer-bg-dark);
+      --viewer-panel-bg: rgba(31,35,40,.88);
+      --viewer-panel-border: rgba(214,219,224,.18);
+      --viewer-panel-fg: #e6ebf0;
+      --viewer-panel-fg-muted: #c4ccd4;
+      --doc-page-bg: #050505;
+      --doc-text: #d7dcdf;
+      --doc-line: #aeb6bd;
+      --doc-line-strong: #c4ccd3;
+      background:var(--screen-bg);
+      color:var(--doc-text);
+    }
+    body[data-theme="dark"] .workspace{
+      background:var(--viewer-bg);
+    }
+    body[data-theme="dark"] .page{
+      background:var(--doc-page-bg);
+      color:var(--doc-text);
+      box-shadow:0 24px 64px rgba(0,0,0,.62);
+    }
+    body[data-theme="dark"] .blank-page{
+      background:var(--doc-page-bg);
+    }
+    body[data-theme="dark"] .std-table th,
+    body[data-theme="dark"] .std-table td,
+    body[data-theme="dark"] .mask-table th,
+    body[data-theme="dark"] .mask-table td{
+      border-color:var(--doc-line);
+    }
+    body[data-theme="dark"] .footnote-rule,
+    body[data-theme="dark"] .footer-line,
+    body[data-theme="dark"] .keywords-topline,
+    body[data-theme="dark"] .keywords-bottomline{
+      border-color:var(--doc-line);
+    }
+    body[data-theme="dark"] .imprint-bottomline,
+    body[data-theme="dark"] .main-std-banner .bottom-line{
+      border-color:var(--doc-line-strong);
+    }
+    body[data-theme="dark"] .cover-top-line,
+    body[data-theme="dark"] .cover-mid-line,
+    body[data-theme="dark"] .cover-low-line,
+    body[data-theme="dark"] .main-std-banner .std-line{
+      background:var(--doc-line-strong);
+    }
+    body[data-theme="dark"] .doc-ref,
+    body[data-theme="dark"] .doc-ref:visited{
+      color:#8fb6dc;
+    }
+    body[data-theme="dark"] .doc-ref:hover,
+    body[data-theme="dark"] .doc-ref:active{
+      color:#b6d0e6;
+    }
+    body[data-theme="dark"] .doc-ref:focus-visible{
+      outline-color:rgba(182,208,230,.45);
+    }
+    body[data-theme="dark"] .search-inline-match,
+    body[data-theme="dark"] .search-target{
+      background:rgba(202,160,68,.24);
+      box-shadow:0 0 0 1px rgba(202,160,68,.3);
+    }
+    body[data-theme="dark"] .viewer-tools .theme-toggle,
+    body[data-theme="dark"] .viewer-tools .viewer-back-btn{
+      box-shadow:0 10px 28px rgba(0,0,0,.28);
+    }
+    body[data-theme="dark"] .viewer-tools .theme-toggle:hover,
+    body[data-theme="dark"] .viewer-tools .viewer-back-btn:hover{
+      background:rgba(39,44,49,.96);
+      box-shadow:0 12px 32px rgba(0,0,0,.34);
+    }
+    body[data-theme="dark"] .page svg text{
+      fill:var(--doc-text) !important;
+    }
+    body[data-theme="dark"] .page svg [fill="#111"]{
+      fill:var(--doc-text) !important;
+    }
+    body[data-theme="dark"] .page svg [stroke="#444"],
+    body[data-theme="dark"] .page svg [stroke="#666"],
+    body[data-theme="dark"] .page svg [stroke="#8c8c8c"]{
+      stroke:var(--doc-line) !important;
+    }
+
+    @media print{
+      html,
+      body{
+        width:210mm !important;
+        min-width:210mm !important;
+        margin:0 !important;
+        padding:0 !important;
+        height:auto !important;
+        overflow:visible !important;
+        background:#fff !important;
+      }
+
+      body{
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .app,
+      .workspace,
+      .workspace-scroll,
+      .page-frame{
+        display:block !important;
+        width:auto !important;
+        min-width:0 !important;
+        max-width:none !important;
+        height:auto !important;
+        min-height:0 !important;
+        margin:0 !important;
+        padding:0 !important;
+        overflow:visible !important;
+        background:#fff !important;
+        transform:none !important;
+      }
+
+      .sidebar{
+        display:none !important;
+      }
+
+
+      .viewer-tools{
+        display:none !important;
+      }
+
+      body[data-theme="dark"]{
+        background:#fff !important;
+        color:#111 !important;
+      }
+
+      body[data-theme="dark"] .page,
+      body[data-theme="dark"] .blank-page{
+        background:#fff !important;
+        color:#111 !important;
+        box-shadow:none !important;
+      }
+
+      body[data-theme="dark"] .std-table th,
+      body[data-theme="dark"] .std-table td,
+      body[data-theme="dark"] .mask-table th,
+      body[data-theme="dark"] .mask-table td{
+        border-color:#444 !important;
+      }
+
+      body[data-theme="dark"] .footnote-rule,
+      body[data-theme="dark"] .footer-line{
+        border-color:#333 !important;
+      }
+
+      body[data-theme="dark"] .keywords-topline,
+      body[data-theme="dark"] .keywords-bottomline{
+        border-color:#444 !important;
+      }
+
+      body[data-theme="dark"] .imprint-bottomline,
+      body[data-theme="dark"] .main-std-banner .bottom-line{
+        border-color:#222 !important;
+      }
+
+      body[data-theme="dark"] .cover-top-line,
+      body[data-theme="dark"] .cover-mid-line,
+      body[data-theme="dark"] .cover-low-line,
+      body[data-theme="dark"] .main-std-banner .std-line{
+        background:#111 !important;
+      }
+
+      body[data-theme="dark"] .doc-ref,
+      body[data-theme="dark"] .doc-ref:visited,
+      body[data-theme="dark"] .doc-ref:hover,
+      body[data-theme="dark"] .doc-ref:active{
+        color:inherit !important;
+        text-decoration:none !important;
+      }
+
+      body[data-theme="dark"] .search-target{
+        background:transparent !important;
+        box-shadow:none !important;
+      }
+
+      body[data-theme="dark"] .page svg text,
+      body[data-theme="dark"] .page svg [fill="#111"]{
+        fill:#111 !important;
+      }
+
+      body[data-theme="dark"] .page svg [stroke="#444"]{
+        stroke:#444 !important;
+      }
+
+      body[data-theme="dark"] .page svg [stroke="#666"]{
+        stroke:#666 !important;
+      }
+
+      body[data-theme="dark"] .page svg [stroke="#8c8c8c"]{
+        stroke:#8c8c8c !important;
+      }
+
+
+      .page{
+        display:block !important;
+        width:210mm !important;
+        min-width:210mm !important;
+        max-width:210mm !important;
+        height:297mm !important;
+        min-height:297mm !important;
+        max-height:297mm !important;
+        margin:0 !important;
+        box-shadow:none !important;
+        overflow:hidden !important;
+        page-break-after:always !important;
+        break-after:page !important;
+        page-break-inside:avoid !important;
+        break-inside:avoid !important;
+      }
+
+      .page:last-child{
+        page-break-after:auto !important;
+        break-after:auto !important;
+      }
+
+      .doc-ref,
+      .doc-ref:visited,
+      .doc-ref:hover,
+      .doc-ref:active{
+        color:inherit !important;
+        text-decoration:none !important;
+      }
+
+      .search-target{
+        background:transparent !important;
+        box-shadow:none !important;
+      }
+
+      @page{
+        size:A4;
+        margin:0;
+      }
+    }
+  
+
+    .g8784-cover .cover-top-text{
+      top:22mm;
+      font-size:4.8mm;
+      line-height:1.08;
+      letter-spacing:.42em;
+      text-transform:uppercase;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .g8784-cover .cover-top-line{
+      top:41mm;
+      height:2.1mm;
+    }
+    .g8784-cover .cover-gost{
+      top:11mm;
+      right:18mm;
+      width:auto;
+      font-size:7.2mm;
+      line-height:1;
+      text-align:right;
+    }
+    .g8784-cover .cover-main-title{
+      top:84mm;
+      left:16mm;
+      right:16mm;
+      font-size:9.8mm;
+      line-height:1.14;
+    }
+    .g8784-cover .cover-main-title .subtitle{
+      margin-top:12mm;
+      font-size:7.2mm;
+      line-height:1.12;
+      font-weight:700;
+    }
+    .g8784-cover .cover-main-title .official{
+      margin-top:18mm;
+      font-size:4.8mm;
+      font-weight:700;
+    }
+    .g8784-cover .cover-bottom{
+      bottom:16mm;
+      font-size:4.6mm;
+      line-height:1.1;
+      letter-spacing:.06em;
+    }
+    .g8784-meta{
+      position:absolute;
+      top:8.8mm;
+      font-size:3.45mm;
+      line-height:1;
+      font-weight:700;
+    }
+    .g8784-meta.left{ left:10.8mm; }
+    .g8784-meta.right{ right:10.8mm; }
+    .g8784-title-block{
+      text-align:center;
+      margin-top:1mm;
+    }
+    .g8784-title-block .line{
+      border-top:1.9mm solid #111;
+      margin:3.2mm 0 5mm;
+    }
+    .g8784-title-block .material{
+      font-size:6.3mm;
+      line-height:1.1;
+      font-weight:700;
+      margin:0 0 2.2mm;
+      text-transform:uppercase;
+    }
+    .g8784-title-block .method{
+      font-size:5.4mm;
+      line-height:1.12;
+      font-weight:700;
+      margin:0 0 2.3mm;
+    }
+    .g8784-title-block .en{
+      font-size:4.2mm;
+      line-height:1.15;
+      margin:0 0 2.2mm;
+    }
+    .g8784-title-block .gost-no{
+      position:absolute;
+      right:0;
+      top:24mm;
+      text-align:right;
+      font-size:6.6mm;
+      font-weight:700;
+      line-height:1.05;
+    }
+    .g8784-okstu{
+      font-size:4mm;
+      margin:0 0 2.5mm;
+    }
+    .g8784-date{
+      text-align:right;
+      font-size:4mm;
+      font-weight:700;
+      margin:2.2mm 0 4.2mm;
+    }
+    .doc .lead-8784{
+      font-size:3.55mm;
+      line-height:1.18;
+    }
+    .formula-row{
+      display:flex;
+      align-items:flex-end;
+      gap:6mm;
+      margin:1.2mm 0 1.2mm;
+    }
+    .formula-main{
+      flex:1 1 auto;
+      text-align:center;
+      font-style:italic;
+      font-size:5.75mm;
+      line-height:1.2;
+    }
+    .formula-num{
+      flex:0 0 11mm;
+      text-align:right;
+      font-size:3.35mm;
+      line-height:1.1;
+    }
+    .formula-note{
+      margin-left:8mm;
+      font-size:3.28mm;
+      line-height:1.16;
+    }
+    .figure-row{
+      display:flex;
+      gap:7mm;
+      align-items:flex-start;
+    }
+    .figure-text{
+      flex:1 1 auto;
+      min-width:0;
+    }
+    .figure-side{
+      flex:0 0 63mm;
+    }
+    .figure-side svg,
+    .graph-figure svg,
+    .flowchart svg{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+    .graph-layout{
+      display:flex;
+      gap:7mm;
+      align-items:flex-start;
+      margin:1mm 0;
+    }
+    .graph-figure{ flex:0 0 57mm; }
+    .graph-text{ flex:1 1 auto; }
+    .smallcaps{ letter-spacing:.22em; }
+    .appendix-corner{
+      position:absolute;
+      top:16mm;
+      right:17.5mm;
+      text-align:right;
+      font-size:3.7mm;
+      line-height:1.12;
+      font-style:italic;
+    }
+    .appendix-corner .top{
+      display:block;
+      font-style:normal;
+      font-weight:700;
+      font-size:4.05mm;
+      margin-bottom:1mm;
+      text-transform:uppercase;
+    }
+    .appendix-center-title{
+      text-align:center;
+      font-size:5mm;
+      line-height:1.15;
+      font-weight:700;
+      margin:25mm 0 5mm;
+      text-transform:uppercase;
+    }
+    .info-title{
+      text-align:center;
+      font-size:5.4mm;
+      line-height:1.12;
+      font-weight:700;
+      margin:0 0 6mm;
+      text-transform:uppercase;
+    }
+    .info-list p{ margin:0 0 3.1mm; }
+    .imprint-page .imprint-center{
+      left:22mm;
+      right:22mm;
+      bottom:18.5mm;
+      font-size:3.22mm;
+      line-height:1.22;
+    }
+    .imprint-page .imprint-bottomline{
+      left:17mm;
+      right:17mm;
+      bottom:16.5mm;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h1 class="sidebar-title">ГОСТ 8784—75</h1>
+        <p class="sidebar-subtitle">Автономный viewer: одна страница на экране, поиск по тексту, быстрый переход, внутренняя навигация, темы и печать A4.</p>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="indicator" id="pageIndicator">Страница 1 из 11</div>
+        <div class="sidebar-row">
+          <button id="prevBtn" type="button" class="grow">Назад</button>
+          <button id="nextBtn" type="button" class="grow">Вперед</button>
+        </div>
+        <div class="sidebar-row">
+          <input id="pageInput" type="number" min="1" step="1" value="1" aria-label="Номер страницы" />
+          <button id="goBtn" type="button" class="grow">Перейти</button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-row">
+          <button id="zoomOutBtn" type="button">−</button>
+          <div id="zoomReadout" class="zoom-readout">100%</div>
+          <button id="zoomInBtn" type="button">+</button>
+        </div>
+        <div class="sidebar-row">
+          <button id="zoomResetBtn" type="button" class="grow">Масштаб 100%</button>
+          <button id="printBtn" type="button" class="grow">Печать</button>
+        </div>
+      </div>
+
+      <section class="search-panel" aria-label="Поиск по документу">
+        <h2 class="search-title">Поиск по документу</h2>
+        <div class="search-box" id="docSearchBox">
+          <input id="docSearchInput" class="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="ГОСТ, укрывистость, приложение, формула..." aria-label="Поиск по документу" aria-controls="docSearchDropdown" aria-expanded="false" />
+          <div id="docSearchDropdown" class="search-dropdown" aria-live="polite" hidden>
+            <div id="docSearchSuggestions" class="search-suggestions" role="listbox" aria-label="Автоподсказки поиска"></div>
+            <div id="docSearchResults" class="search-results">
+              <div class="search-results-empty">Начните вводить запрос, чтобы найти совпадения по всему ГОСТ.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="page-list-wrap">
+        <div class="page-list-title">Быстрый переход</div>
+        <div class="page-list" id="pageList"></div>
+      </div>
+
+      <div class="sidebar-note">Клавиши: ← → — страницы, PageUp / PageDown — страницы, Home / End — первая / последняя.</div>
+    </aside>
+
+    <main class="workspace" id="workspace">
+      <div class="viewer-tools" aria-label="Параметры просмотра">
+        <button id="biblioBackBtn" class="viewer-back-btn" type="button" hidden aria-hidden="true" aria-label="Вернуться к месту, откуда был выполнен внутренний переход" title="Вернуться к месту перехода">
+          <span class="viewer-back-btn-icon" aria-hidden="true">←</span>
+          <span class="viewer-back-btn-label">Назад</span>
+        </button>
+        <button id="themeToggleBtn" class="theme-toggle" type="button" aria-pressed="false" aria-label="Включена дневная тема. Переключить на ночную тему" title="Переключить дневную и ночную тему">
+          <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+          <span class="theme-toggle-label">Ночная тема</span>
+        </button>
+      </div>
+      <div class="workspace-scroll">
+        <div class="page-frame" id="pageFrame">
+
+          <section class="page page-1 active g8784-cover" data-page="1" aria-label="Обложка" id="cover-page">
+            <div class="cover">
+              <div class="cover-gost">ГОСТ 8784—75</div>
+              <div class="cover-top-text">МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</div>
+              <div class="cover-top-line"></div>
+              <div class="cover-main-title">
+                МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ
+                <span class="subtitle">МЕТОДЫ ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</span>
+                <span class="official">Издание официальное</span>
+              </div>
+              <div class="cover-bottom">ИПК ИЗДАТЕЛЬСТВО СТАНДАРТОВ<br>Москва</div>
+            </div>
+          </section>
+
+          <section class="page" data-page="2" aria-label="Страница С.1">
+            <div class="g8784-meta left">УДК 667.63.001.4:006.354</div>
+            <div class="g8784-meta right">Группа Л19</div>
+            <div class="content doc" id="page1-start" style="top:18mm; bottom:18mm;">
+              <div class="g8784-title-block">
+                <div class="spaced" style="font-size:4.4mm; font-weight:700;">МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</div>
+                <div class="line"></div>
+                <div class="material">МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ</div>
+                <div class="method">Методы определения укрывистости</div>
+                <div class="en">Paint materials.<br>Methods for determination of hiding power</div>
+                <div class="gost-no">ГОСТ<br>8784—75</div>
+              </div>
+              <p class="g8784-okstu left">ОКСТУ 2310</p>
+              <hr class="bottom-line" style="border-top:1.2px solid #222; margin:0 0 2.4mm;">
+              <p class="g8784-date">Дата введения 01.01.76</p>
+
+              <p class="lead-8784">Настоящий стандарт распространяется на лакокрасочные материалы (эмали, краски) и неорганические пигменты и устанавливает визуальный, инструментальный и инструментально-математический методы определения укрывистости.</p>
+              <p class="lead-8784">За укрывистость принимают способность лакокрасочного материала делать невидимым цвет или цветовые различия окрашиваемой поверхности.</p>
+              <p class="lead-8784">(Измененная редакция, Изм. № 2).</p>
+
+              <div class="section" id="section-1-visual">1. ВИЗУАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</div>
+              <div class="subsection" id="section-1-1">1.1. Сущность метода</div>
+              <p>Метод заключается в нанесении слоев лакокрасочного материала на стеклянную пластинку до тех пор, пока контуры черно-белой контрастной пластинки или шахматной доски, подложенной под стеклянную пластинку, станут невидимыми.</p>
+              <p>Метод предназначается для определения укрывистости эмалей и красок в высушенных и невысушенных покрытиях, а также пигментов в невысушенной краске.</p>
+
+              <div class="subsection" id="section-1-2">1.2. Аппаратура и материалы</div>
+              <div class="figure-row">
+                <div class="figure-text">
+                  <p>Пластинки стеклянные (стекло для фотографических пластинок размером 9 × 12—1,2 по ТУ 6—43—0205133—03, допускается применять стеклянные пластинки размером 180 × 240 мм, на которых закрашивается площадь размером 180 × 225 мм).</p>
+                  <p>Пульверизатор, кисть, аппликатор или другое оборудование, позволяющее наносить на стеклянные пластинки слои лакокрасочного материала толщиной каждого слоя не более 20 мкм.</p>
+                  <p>Доска шахматная (черт. 1) изготавливается следующим образом: кусок белой чертежной (ГОСТ 597) или матовой типографской (ГОСТ 9095) бумаги размером 90 × 120 мм расчерчивают на 12 квадратов размером 30 × 30 мм (допускается размер квадратов 45 × 45 мм при применении стеклянной пластинки размером 180 × 240 мм) и закрашивают их в шахматном порядке черной тушью; после высыхания туши лист бумаги наклеивают на стеклянную пластинку или гладкую деревянную дощечку размером 90 × 120 мм (180 × 225 мм).</p>
+                  <p>Пластинка черно-белая контрастная из гладкого материала (бумаги, картона, пластмассы и т. д.); коэффициент яркости черно-белой пластинки и шахматной доски, измеренный на белом поле, должен быть 0,80—0,85, на черном поле — не более 0,05.</p>
+                </div>
+                <div class="figure-side">
+                  <div class="center" style="font-size:3.4mm; margin-bottom:2mm;">Шахматная доска</div>
+                  <svg viewBox="0 0 230 320" aria-label="Чертеж шахматной доски">
+                    <g fill="none" stroke="#444" stroke-width="2">
+                      <rect x="50" y="40" width="120" height="160" fill="#fff"/>
+                      <rect x="50" y="40" width="40" height="40" fill="#111" stroke="#444"/>
+                      <rect x="130" y="40" width="40" height="40" fill="#111" stroke="#444"/>
+                      <rect x="90" y="80" width="40" height="40" fill="#111" stroke="#444"/>
+                      <rect x="50" y="120" width="40" height="40" fill="#111" stroke="#444"/>
+                      <rect x="130" y="120" width="40" height="40" fill="#111" stroke="#444"/>
+                      <rect x="90" y="160" width="40" height="40" fill="#111" stroke="#444"/>
+                      <line x1="50" y1="40" x2="50" y2="200"/>
+                      <line x1="90" y1="20" x2="90" y2="200"/>
+                      <line x1="130" y1="20" x2="130" y2="200"/>
+                      <line x1="170" y1="40" x2="170" y2="200"/>
+                      <line x1="50" y1="40" x2="170" y2="40"/>
+					  <line x1="90" y1="30" x2="130" y2="30"></line>
+                      <line x1="50" y1="80" x2="170" y2="80"/>
+                      <line x1="50" y1="120" x2="170" y2="120"/>
+                      <line x1="50" y1="160" x2="170" y2="160"/>
+                      <line x1="50" y1="200" x2="170" y2="200"/>
+                      <line x1="180" y1="40" x2="180" y2="200"/>
+                      <line x1="170" y1="40" x2="190" y2="40"/>
+                      <line x1="170" y1="200" x2="190" y2="200"/>
+                      <line x1="50" y1="210" x2="170" y2="210"/>
+                      <line x1="50" y1="220" x2="50" y2="200"/>
+                      <line x1="170" y1="220" x2="170" y2="200"/>
+                    </g>
+                    <g font-family="Arial, Helvetica, sans-serif" font-size="14" fill="#111">
+                      <text x="102" y="24">30</text>
+                      <text x="102" y="236">90</text>
+                      <text x="194" y="128" transform="rotate(-90 194 128)">120</text>
+                      <text x="89" y="258">Черт. 1</text>
+                    </g>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="official-left">Издание официальное</div>
+            <div class="page-num-bottom-right" style="left:auto; right:17.5mm; font-weight:700;">Перепечатка воспрещена</div>
+            <div class="copyright-block" style="bottom:10mm; left:110mm; right:17.5mm; text-align:right; font-size:3.2mm; line-height:1.15;">© Издательство стандартов, 1975<br>© ИПК Издательство стандартов, 2002</div>
+          </section>
+
+          <section class="page" data-page="3" aria-label="Страница С.2">
+            <div class="head-left">С. 2 ГОСТ 8784—75</div>
+            <div class="content doc" style="top:18mm; bottom:16mm;">
+              <p>Весы аналитические с погрешностью взвешивания не более 0,0002 г.</p>
+              <p>(Измененная редакция, Изм. № 1, 2).</p>
+              <div class="subsection" id="section-1-3">1.3. Проведение испытания</div>
+              <p>Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Пигменты предварительно растирают с натуральной олифой (ГОСТ 7931), затем пигментную пасту разбавляют олифой до получения готовой к применению краски.</p>
+              <p>На стеклянную пластинку, подготовленную по ГОСТ 8832, разд. 3, и взвешенную с точностью до четвертого десятичного знака, наносят один или два слоя лакокрасочного материала. Стеклянную пластинку с лакокрасочным материалом кладут на контрастную пластинку или шахматную доску и наблюдают при рассеянном дневном свете, просвечивают ли белые и черные поля. Если поля просвечивают, наносят на пластинку последовательно новые слои материала до тех пор, пока полностью не исчезнет разница между белыми и черными полями. После полного укрытия стеклянную пластинку взвешивают с точностью до четвертого десятичного знака, сушат и снова взвешивают. Перед высушиванием и взвешиванием удаляют потеки лакокрасочного материала с обратной стороны и с ребер пластинки. Каждый раз перед нанесением нового слоя лакокрасочный материал перемешивают. Пластинки размером 180 × 240 мм взвешивают с точностью до второго десятичного знака.</p>
+              <p>Испытания проводят не менее чем на трех пластинках.</p>
+              <p>Вид продукта для разбавления лакокрасочного материала до рабочей вязкости, величина рабочей вязкости, количество олифы и пигмента, метод нанесения лакокрасочного материала на стеклянные пластинки, режим сушки или отсутствие сушки должны быть указаны в нормативно-технической документации на лакокрасочный материал или пигмент.</p>
+              <p>(Измененная редакция, Изм. № 2).</p>
+
+              <div class="subsection" id="section-1-4">1.4. Обработка результатов</div>
+              <p>1.4.1. Укрывистость высушенной пленки (<i>D</i>), г/м², вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>D</mi>
+      <mo>=</mo>
+      <mfrac>
+        <mrow>
+          <mo>(</mo>
+          <msub><mi>m</mi><mn>1</mn></msub>
+          <mo>&minus;</mo>
+          <msub><mi>m</mi><mn>0</mn></msub>
+          <mo>)</mo>
+          <mo>&middot;</mo>
+          <msup><mn>10</mn><mn>6</mn></msup>
+        </mrow>
+        <mi>S</mi>
+      </mfrac>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(1)</div></div>
+              <p class="formula-note">где m₀ — масса неокрашенной стеклянной пластинки, г; <br>m₁ — масса пластинки с высушенной пленкой, г; <br>S — площадь стеклянной пластинки, мм².</p>
+              <p>(Измененная редакция, Изм. № 1).</p>
+
+              <p>1.4.1а. Укрывистость невысушенной лакокрасочной пленки (<i>D<sub>н</sub></i>), г/м², вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <msub>
+        <mi>D</mi>
+        <mtext>н</mtext>
+      </msub>
+      <mo>=</mo>
+      <mfrac>
+        <mrow>
+          <msubsup>
+            <mi>m</mi>
+            <mn>1</mn>
+            <mo>&prime;</mo>
+          </msubsup>
+          <mo>&minus;</mo>
+          <msub>
+            <mi>m</mi>
+            <mn>0</mn>
+          </msub>
+        </mrow>
+        <mi>S</mi>
+      </mfrac>
+      <mo>&middot;</mo>
+      <msup>
+        <mn>10</mn>
+        <mn>6</mn>
+      </msup>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(1а)</div></div>
+              <p class="formula-note">где m′₁ — масса пластинки с невысушенным лакокрасочным материалом, г.</p>
+              <p>(Введен дополнительно, Изм. № 1).</p>
+
+              <p>1.4.2. Для пластинки размером 90 × 120 мм укрывистость (<i>D</i> и <i>D<sub>н</sub></i>) вычисляют по формулам:</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>D</mi>
+      <mo>=</mo>
+      <mo>(</mo>
+      <msub><mi>m</mi><mn>1</mn></msub>
+      <mo>&minus;</mo>
+      <msub><mi>m</mi><mn>0</mn></msub>
+      <mo>)</mo>
+      <mo>&middot;</mo>
+      <mn>92,6</mn>
+      <mo>;</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(2)</div></div>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <msub>
+        <mi>D</mi>
+        <mtext>н</mtext>
+      </msub>
+      <mo>=</mo>
+      <mo>(</mo>
+      <msubsup>
+        <mi>m</mi>
+        <mn>1</mn>
+        <mo>&prime;</mo>
+      </msubsup>
+      <mo>&minus;</mo>
+      <msub>
+        <mi>m</mi>
+        <mn>0</mn>
+      </msub>
+      <mo>)</mo>
+      <mo>&middot;</mo>
+      <mn>92,6</mn>
+      <mo>.</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(2а)</div></div>
+              <p>(Измененная редакция, Изм. № 1).</p>
+
+              <p>1.4.3. Укрывистость высушенной пленки в пересчете на лакокрасочный материал (<i>D<sub>м</sub></i>), г/м², вычисляют по формуле</p>
+              <div class="formula-row" id="formula-3"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <msub>
+        <mi>D</mi>
+        <mtext>м</mtext>
+      </msub>
+      <mo>=</mo>
+      <mfrac>
+        <mrow>
+          <mi>D</mi>
+          <mo>&middot;</mo>
+          <mn>100</mn>
+        </mrow>
+        <mi>X</mi>
+      </mfrac>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(3)</div></div>
+              <p class="formula-note">где X — массовая доля нелетучих веществ в лакокрасочном материале, определенная по ГОСТ 17537, %.</p>
+              <p>(Измененная редакция, Изм. № 1, 2).</p>
+            </div>
+          </section>
+
+          <section class="page" data-page="4" aria-label="Страница С.3">
+            <div class="head-right">ГОСТ 8784—75 С. 3</div>
+            <div class="content doc" style="top:18mm; bottom:15mm;">
+              <p>1.4.4. Укрывистость масляных красок в пересчете на густотертую краску <i>D<sub>г</sub></i>, г/м², вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <msub>
+        <mi>D</mi>
+        <mtext>г</mtext>
+      </msub>
+      <mo>=</mo>
+      <mfrac>
+        <mrow>
+          <mo>(</mo>
+          <msubsup>
+            <mi>m</mi>
+            <mn>1</mn>
+            <mo>&prime;</mo>
+          </msubsup>
+          <mo>&minus;</mo>
+          <msub>
+            <mi>m</mi>
+            <mn>0</mn>
+          </msub>
+          <mo>)</mo>
+          <mo>(</mo>
+          <mn>100</mn>
+          <mo>&minus;</mo>
+          <msub>
+            <mi>m</mi>
+            <mn>2</mn>
+          </msub>
+          <mo>)</mo>
+          <mo>&middot;</mo>
+          <msup>
+            <mn>10</mn>
+            <mn>6</mn>
+          </msup>
+        </mrow>
+        <mrow>
+          <mi>S</mi>
+          <mo>&middot;</mo>
+          <mn>100</mn>
+        </mrow>
+      </mfrac>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(4)</div></div>
+              <p class="formula-note">где m₂ — масса олифы, израсходованная для получения окраски, готовой к применению, из густотертой краски, %.</p>
+              <p>(Измененная редакция, Изм. № 1).</p>
+
+              <p>1.4.5. Укрывистость пигмента (<i>D<sub>п</sub></i>), г/м², вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <msub>
+        <mi>D</mi>
+        <mtext>п</mtext>
+      </msub>
+      <mo>=</mo>
+      <mfrac>
+        <mrow>
+          <mo>(</mo>
+          <msubsup>
+            <mi>m</mi>
+            <mn>1</mn>
+            <mo>&prime;</mo>
+          </msubsup>
+          <mo>&minus;</mo>
+          <msub>
+            <mi>m</mi>
+            <mn>0</mn>
+          </msub>
+          <mo>)</mo>
+          <msub>
+            <mi>m</mi>
+            <mtext>п</mtext>
+          </msub>
+        </mrow>
+        <mrow>
+          <mi>S</mi>
+          <mo>(</mo>
+          <msub>
+            <mi>m</mi>
+            <mn>3</mn>
+          </msub>
+          <mo>+</mo>
+          <msub>
+            <mi>m</mi>
+            <mtext>п</mtext>
+          </msub>
+          <mo>)</mo>
+        </mrow>
+      </mfrac>
+      <mo>&middot;</mo>
+      <msup>
+        <mn>10</mn>
+        <mn>6</mn>
+      </msup>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(5)</div></div>
+              <p class="formula-note">где m<sub>п</sub> — масса пигмента в краске, г; <br>m₃ — масса олифы, израсходованная для приготовления краски из пигмента, г.</p>
+              <p>За результат испытания принимают среднеарифметическое трех параллельных определений, допускаемые расхождения между которыми не должны превышать 5 % среднеарифметического значения.</p>
+              <p>(Измененная редакция, Изм. № 1, 2).</p>
+
+              <div class="section" id="section-2">2. ИНСТРУМЕНТАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</div>
+              <div class="subsection" id="section-2-1">2.1. Сущность метода</div>
+              <p>Сущность метода заключается в определении коэффициента контрастности измерением коэффициентов яркости покрытий разной толщины, помещенных на белую и черную подложки.</p>
+              <p>Метод предназначается для определения укрывистости эмалей и красок белых и светлых тонов в высушенных покрытиях (коэффициент яркости не менее 0,6).</p>
+              <p>Коэффициент яркости (<i>R</i>) — отношение яркости покрытия к яркости эталона, измеренных в одинаковых условиях освещения с углом падения света 45°.</p>
+              <p>Коэффициент контрастности (<i>C</i>) — отношение коэффициента яркости покрытия от черной подложки (<i>R<sub>ч</sub></i>) к коэффициенту яркости покрытия от белой подложки (<i>R<sub>б</sub></i>):</p>
+              <div class="formula-row" id="formula-6"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>C</mi>
+      <mo>=</mo>
+      <mfrac>
+        <msub>
+          <mi>R</mi>
+          <mtext>ч</mtext>
+        </msub>
+        <msub>
+          <mi>R</mi>
+          <mtext>б</mtext>
+        </msub>
+      </mfrac>
+      <mo>.</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(6)</div></div>
+              <p>Полную укрывистость определяют при коэффициенте контрастности 0,98.</p>
+
+              <div class="subsection" id="section-2-2">2.2. Аппаратура и материалы</div>
+              <p>Приборы оптические с измерительной геометрией углов 45°, обеспечивающие измерение коэффициента яркости с точностью до 0,01 при зеленом светофильтре или длине волны 560 нм (компараторы, фотометры, спектрофотометры с отражающей приставкой ПДО-1, колориметр).</p>
+              <p>Толщиномер с погрешностью измерения не более 5 %.</p>
+              <p>Пластинки стеклянные (стекло для фотографических пластинок размером 9 × 12—1,2 по ТУ 6—43—0205133—03) или пленка полиэфирная (полиэтилентерефталатная пленка толщиной от 50 до 100 мкм по ГОСТ 24234), используемые в качестве промежуточного слоя. Толщина пленки должна быть указана в НТД на лакокрасочный материал. Для удобства нанесения лакокрасочного материала полиэфирную пленку разравнивают на твердой (стеклянной, керамической) подложке толщиной не менее 6 мм, предварительно смоченной несколькими каплями уайт-спирита, который не должен попадать на наружную поверхность пленки.</p>
+              <p>Пульверизатор, кисть, аппликатор или другое оборудование, позволяющее наносить на стеклянные пластинки слои лакокрасочного материала толщиной не более 20 мкм.</p>
+              <p>Пластинка черная, представляющая собой кусок белой бумаги (ГОСТ 597 или ГОСТ 9095) размером 90 × 120 мм, закрашенный черной тушью; коэффициент яркости черной пластинки должен быть не более 0,05.</p>
+              <p>Пластинка белая, представляющая собой кусок белой бумаги (ГОСТ 597 или ГОСТ 9095) размером 90 × 120 мм; коэффициент яркости должен составлять 0,80—0,85.</p>
+              <p>Пластинка черно-белая контрастная (п. 1.2). Весы аналитические с погрешностью взвешивания не более 0,0002 г.</p>
+              <p>2.1, 2.2. (Измененная редакция, Изм. № 1, 2).</p>
+            </div>
+          </section>
+
+          <section class="page" data-page="5" aria-label="Страница С.4">
+            <div class="head-left">С. 4 ГОСТ 8784—75</div>
+            <div class="content doc" style="top:18mm; bottom:15mm;">
+              <div class="subsection" id="section-2-3">2.3. Проведение испытания</div>
+              <p>Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Шесть подготовленных пластинок (контрастных или промежуточных) взвешивают с точностью до четвертого десятичного знака и определяют их площадь с точностью до 1 мм². Наносят на пластинки лакокрасочный материал с постепенно увеличивающейся толщиной (толщина покрытия на первой пластинке не должна превышать 20 мкм). Пластинки высушивают и затем определяют на них коэффициенты яркости покрытий, при этом в случае промежуточных пластинок с покрытием кладут их на черно-белые поля покрытием вниз. При использовании колориметров или компараторов измерения проводят при зеленом фильтре, при использовании спектрофотометров — при длине волны 560 нм. Коэффициент яркости определяют для трех—пяти точек каждого покрытия на черном и белом полях. За результат испытания принимают среднеарифметическое результатов измерений, если отклонение результатов отдельных измерений от среднеарифметического не превышает 0,5 %.</p>
+              <p>Пластинки с покрытием взвешивают с точностью до четвертого десятичного знака.</p>
+              <p>Вид продукта для разбавления лакокрасочного материала до рабочей вязкости, величина рабочей вязкости, метод нанесения лакокрасочного материала на стеклянные пластинки, режим сушки и кондиционирования должны быть указаны в нормативно-технической документации на лакокрасочный материал. При отсутствии указаний образцы до начала испытания выдерживают в течение 24 ч при температуре (20 ± 2) °С и относительной влажности воздуха (65 ± 5) %.</p>
+
+              <div class="subsection" id="section-2-4">2.4. Обработка результатов</div>
+              <p>По величинам коэффициентов яркости вычисляют коэффициент контрастности по формуле (6). Массу единицы площади покрытия (<i>m</i>) в граммах на квадратный метр поверхности с известным коэффициентом контрастности вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>m</mi>
+      <mo>=</mo>
+      <msub><mi>m</mi><mn>2</mn></msub>
+      <mo>&minus;</mo>
+      <msub><mi>m</mi><mn>1</mn></msub>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(7)</div></div>
+              <p class="formula-note">где m₁ — масса единицы площади пластинки, г/м²; <br>m₂ — масса единицы площади пластинки с покрытием, г/м².</p>
+
+              <div class="graph-layout">
+                <div class="graph-figure">
+                  <div class="small left" style="margin-bottom:2mm;">График для определения укрывистости</div>
+                  <svg viewBox="0 0 260 260" aria-label="Чертеж 2">
+                    <g fill="none" stroke="#444" stroke-width="2">
+                      <line x1="35" y1="20" x2="35" y2="210"/>
+                      <line x1="35" y1="210" x2="230" y2="210"/>
+                      <line x1="35" y1="185" x2="230" y2="185" stroke="#8c8c8c"/>
+                      <line x1="35" y1="140" x2="230" y2="140" stroke="#8c8c8c"/>
+                      <line x1="35" y1="52" x2="230" y2="52" stroke="#8c8c8c" stroke-dasharray="6 4"/>
+                      <line x1="145" y1="30" x2="145" y2="210" stroke="#8c8c8c" stroke-dasharray="6 4"/>
+                      <path d="M40 200 C55 90, 100 45, 230 40" stroke="#8a8a8a" stroke-width="3" fill="none"/>
+                    </g>
+                    <g font-family="Arial, Helvetica, sans-serif" fill="#111" font-size="16">
+                      <text x="45" y="15">C</text>
+                      <text x="0" y="188">0,80</text>
+                      <text x="0" y="143">0,90</text>
+                      <text x="0" y="52">0,98</text>
+                      <text x="0" y="20">1,00</text>
+                      <text x="142" y="228">D</text>
+                      <text x="198" y="228">m, г/м²</text>
+                      <text x="148" y="80">a</text>
+                      <text x="107" y="252">Черт. 2</text>
+                    </g>
+                  </svg>
+                </div>
+                <div class="graph-text">
+                  <p>Затем строят график (черт. 2): на оси ординат откладывают величины коэффициентов контрастности <i>C</i>, а на оси абсцисс — соответствующие каждому <i>C</i> значения <i>m</i> и проводят кривую. Из точки на оси ординат, соответствующей величине <i>C</i>, равной 0,98, проводят прямую, параллельную оси абсцисс, до пересечения с кривой (точка <i>a</i>). Из точки <i>a</i> опускают перпендикуляр к оси абсцисс и находят значение <i>m</i>, которое соответствует укрывистости высушенного лакокрасочного материала (<i>D</i>), г/м².</p>
+                  <p>Укрывистость лакокрасочного материала, готового к применению, вычисляют по формуле (3). Толщину сырого слоя покрытия (<i>d</i>) в миллиметрах вычисляют по формуле</p>
+                  <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>d</mi>
+      <mo>=</mo>
+      <mfrac>
+        <mi>D</mi>
+        <mrow>
+          <mi>&rho;</mi>
+          <mo>&middot;</mo>
+          <mi>x</mi>
+        </mrow>
+      </mfrac>
+      <mo>&middot;</mo>
+      <msup>
+        <mn>10</mn>
+        <mn>5</mn>
+      </msup>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(7а)</div></div>
+                  <p class="formula-note">где ρ — плотность лакокрасочного материала, г/см³; <br>D — укрывистость высушенного лакокрасочного покрытия, г/м²; <br>x — массовая доля нелетучих веществ, %.</p>
+                  <p>Расход лакокрасочного материала при нанесении (<i>P</i>) в квадратных метрах на кубический дециметр вычисляют по формуле</p>
+                  <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>P</mi>
+      <mo>=</mo>
+      <mfrac>
+        <mn>1</mn>
+        <mi>d</mi>
+      </mfrac>
+      <mo>=</mo>
+      <mfrac>
+        <mrow>
+          <mi>&rho;</mi>
+          <mo>&middot;</mo>
+          <mi>x</mi>
+        </mrow>
+        <mi>D</mi>
+      </mfrac>
+      <mo>&middot;</mo>
+      <msup>
+        <mn>10</mn>
+        <mrow>
+          <mo>&minus;</mo>
+          <mn>5</mn>
+        </mrow>
+      </msup>
+      <mo>.</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(7б)</div></div>
+                </div>
+              </div>
+
+              <p>Коэффициент контрастности для установленного расхода лакокрасочного материала 20 м²/дм³ определяют линейной интерполяцией на графике зависимости коэффициентов контрастности от расхода материала.</p>
+              <p>2.3, 2.4. (Измененная редакция, Изм. № 2).</p>
+            </div>
+          </section>
+
+          <section class="page" data-page="6" aria-label="Страница С.5">
+            <div class="head-right">ГОСТ 8784—75 С. 5</div>
+            <div class="content doc" style="top:18mm; bottom:15mm;">
+              <div class="section" id="section-3">3. ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</div>
+              <div class="subsection" id="section-3-1">3.1. Сущность метода</div>
+              <p>Сущность метода заключается в определении коэффициентов яркости неукрывающего и переукрывающего покрытий, помещенных на черную и белую подложки.</p>
+              <p>Метод предназначается для определения укрывистости эмалей и красок белых и светлых тонов в высушенных покрытиях (коэффициент яркости не менее 0,6).</p>
+
+              <div class="subsection" id="section-3-2">3.2. Аппаратура и материалы</div>
+              <p>Машина цифровая электронно-вычислительная. Приборы оптические по п. 2.2.</p>
+              <p>Пульверизатор, кисть, аппликатор или другое оборудование, позволяющее наносить на стеклянные пластинки равномерные слои лакокрасочного материала толщиной не более 20 мкм.</p>
+              <p>Пластинка черная, приготовленная по п. 2.2. Пластинка белая, приготовленная по п. 2.2. Толщиномер с погрешностью измерения не более 5 %.</p>
+              <p>(Измененная редакция, Изм. № 1, 2).</p>
+
+              <div class="subsection" id="section-3-3">3.3. Проведение испытания</div>
+              <p>Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Две стеклянные пластинки подготавливают по ГОСТ 8832 и на одну из них наносят покрытие, не укрывающее подложку, а на другую — покрытие, значительно переукрывающее контрастную подложку (контроль проводят визуальным методом по шахматной доске). После высушивания определяют коэффициенты яркости неукрывающего (<i>R<sub>0</sub></i>) и переукрывающего (<i>R<sub>&infin;</sub></i>) покрытий.</p>
+              <p>Измерение коэффициентов яркости проводят по п. 2.3 настоящего стандарта. Величины коэффициентов яркости от черной и белой подложек для пластинки с переукрывающим слоем должны быть одинаковы. После определения коэффициентов яркости определяют толщину неукрывающего слоя (<i>H</i>) в миллиметрах при помощи микрометра или методом, указанным в <a href="#appendix-1" class="doc-ref">приложении 1</a>.</p>
+              <p>Вид продукта для разбавления лакокрасочного материала до рабочей вязкости, величина рабочей вязкости, метод нанесения лакокрасочного материала на стеклянные пластинки, режим сушки должны быть указаны в нормативно-технической документации на лакокрасочный материал.</p>
+
+              <div class="subsection" id="section-3-4">3.4. Обработка результатов</div>
+              <p>3.4.1. Укрывистость (<i>Y</i>), м²/л, вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>y</mi>
+      <mo>=</mo>
+      <msubsup>
+        <mi>N</mi>
+        <mtext>к</mtext>
+        <mrow>
+          <mo>&minus;</mo>
+          <mn>1</mn>
+        </mrow>
+      </msubsup>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(8)</div></div>
+              <p class="formula-note">где H<sub>к</sub> — толщина покрытия с коэффициентом контрастности 0,98, обеспечивающего полное укрытие черно-белой контрастной подложки, мм.</p>
+
+              <p>3.4.2. Толщину укрывающего слоя (H<sub>к</sub>) в миллиметрах вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <msub>
+        <mi>H</mi>
+        <mtext>к</mtext>
+      </msub>
+      <mo>=</mo>
+      <mi>H</mi>
+      <mo>&middot;</mo>
+      <mfrac>
+        <mrow>
+          <mi>ln</mi>
+          <mfrac>
+            <mrow>
+              <mn>1</mn>
+              <mo>&minus;</mo>
+              <msub>
+                <mi>R</mi>
+                <mtext>ок</mtext>
+              </msub>
+              <mo>&middot;</mo>
+              <msub>
+                <mi>R</mi>
+                <mo>&infin;</mo>
+              </msub>
+            </mrow>
+            <mrow>
+              <mn>1</mn>
+              <mo>&minus;</mo>
+              <mfrac>
+                <msub>
+                  <mi>R</mi>
+                  <mtext>ок</mtext>
+                </msub>
+                <msub>
+                  <mi>R</mi>
+                  <mo>&infin;</mo>
+                </msub>
+              </mfrac>
+            </mrow>
+          </mfrac>
+        </mrow>
+        <mrow>
+          <mi>ln</mi>
+          <mfrac>
+            <mrow>
+              <mn>1</mn>
+              <mo>&minus;</mo>
+              <msub>
+                <mi>R</mi>
+                <mn>0</mn>
+              </msub>
+              <mo>&middot;</mo>
+              <msub>
+                <mi>R</mi>
+                <mo>&infin;</mo>
+              </msub>
+            </mrow>
+            <mrow>
+              <mn>1</mn>
+              <mo>&minus;</mo>
+              <mfrac>
+                <msub>
+                  <mi>R</mi>
+                  <mn>0</mn>
+                </msub>
+                <msub>
+                  <mi>R</mi>
+                  <mo>&infin;</mo>
+                </msub>
+              </mfrac>
+            </mrow>
+          </mfrac>
+        </mrow>
+      </mfrac>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(9)</div></div>
+              <p class="formula-note">где H — толщина неукрывающего слоя, мм; <br>R<sub>ок</sub> — коэффициент яркости покрытия толщиной H<sub>к</sub>, который вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <msub>
+        <mi>R</mi>
+        <mtext>ок</mtext>
+      </msub>
+      <mo>=</mo>
+      <mrow>
+        <mo>(</mo>
+        <mi>C</mi>
+        <mo>&middot;</mo>
+        <mi>a</mi>
+        <mo>+</mo>
+        <mfrac>
+          <mrow>
+            <mn>1</mn>
+            <mo>&minus;</mo>
+            <mi>C</mi>
+          </mrow>
+          <mrow>
+            <mn>2</mn>
+            <msub>
+              <mi>R</mi>
+              <mtext>g</mtext>
+            </msub>
+          </mrow>
+        </mfrac>
+        <mo>)</mo>
+      </mrow>
+      <mo>&minus;</mo>
+      <msqrt>
+        <mrow>
+          <msup>
+            <mrow>
+              <mo>(</mo>
+              <mi>C</mi>
+              <mo>&middot;</mo>
+              <mi>a</mi>
+              <mo>+</mo>
+              <mfrac>
+                <mrow>
+                  <mn>1</mn>
+                  <mo>&minus;</mo>
+                  <mi>C</mi>
+                </mrow>
+                <mrow>
+                  <mn>2</mn>
+                  <msub>
+                    <mi>R</mi>
+                    <mtext>g</mtext>
+                  </msub>
+                </mrow>
+              </mfrac>
+              <mo>)</mo>
+            </mrow>
+            <mn>2</mn>
+          </msup>
+          <mo>&minus;</mo>
+          <mi>C</mi>
+        </mrow>
+      </msqrt>
+    </mrow>
+  </math>
+</div><div class="formula-num">(10)</div></div>
+              <p class="formula-note">где R<sub>g</sub> — коэффициент яркости белой пластинки; <br>a — оптическая константа, которую вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>a</mi>
+      <mo>=</mo>
+      <mfrac>
+        <mrow>
+          <mfrac>
+            <mn>1</mn>
+            <msub>
+              <mi>R</mi>
+              <mo>&infin;</mo>
+            </msub>
+          </mfrac>
+          <mo>+</mo>
+          <msub>
+            <mi>R</mi>
+            <mo>&infin;</mo>
+          </msub>
+        </mrow>
+        <mn>2</mn>
+      </mfrac>
+    </mrow>
+  </math>
+</div><div class="formula-num">(11)</div></div>
+            </div>
+          </section>
+
+          <section class="page" data-page="7" aria-label="Страница С.6">
+            <div class="head-left">С. 6 ГОСТ 8784—75</div>
+            <div class="content doc" style="top:18mm; bottom:16mm;">
+              <p id="section-3-4-3">3.4.3. Перевод величины укрывистости (м²/л) в размерность г/м² осуществляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>D</mi>
+      <mo>=</mo>
+
+      <mfrac>
+        <mrow>
+          <mi>&rho;</mi>
+          <mo>&middot;</mo>
+          <msup>
+            <mn>10</mn>
+            <mn>3</mn>
+          </msup>
+        </mrow>
+        <mi>y</mi>
+      </mfrac>
+
+      <mo>=</mo>
+
+      <mi>&rho;</mi>
+      <mo>&middot;</mo>
+      <mi>H</mi>
+
+      <mfrac>
+        <mrow>
+          <mi>ln</mi>
+          <mfrac>
+            <mrow>
+              <mn>1</mn>
+              <mo>&minus;</mo>
+              <msub>
+                <mi>R</mi>
+                <mtext>ок</mtext>
+              </msub>
+              <mo>&middot;</mo>
+              <msub>
+                <mi>R</mi>
+                <mo>&infin;</mo>
+              </msub>
+            </mrow>
+            <mrow>
+              <mn>1</mn>
+              <mo>&minus;</mo>
+              <mfrac>
+                <msub>
+                  <mi>R</mi>
+                  <mtext>ок</mtext>
+                </msub>
+                <msub>
+                  <mi>R</mi>
+                  <mo>&infin;</mo>
+                </msub>
+              </mfrac>
+            </mrow>
+          </mfrac>
+        </mrow>
+
+        <mrow>
+          <mi>ln</mi>
+          <mfrac>
+            <mrow>
+              <mn>1</mn>
+              <mo>&minus;</mo>
+              <msub>
+                <mi>R</mi>
+                <mn>0</mn>
+              </msub>
+              <mo>&middot;</mo>
+              <msub>
+                <mi>R</mi>
+                <mo>&infin;</mo>
+              </msub>
+            </mrow>
+            <mrow>
+              <mn>1</mn>
+              <mo>&minus;</mo>
+              <mfrac>
+                <msub>
+                  <mi>R</mi>
+                  <mn>0</mn>
+                </msub>
+                <msub>
+                  <mi>R</mi>
+                  <mo>&infin;</mo>
+                </msub>
+              </mfrac>
+            </mrow>
+          </mfrac>
+        </mrow>
+      </mfrac>
+
+      <mo>&times;</mo>
+      <msup>
+        <mn>10</mn>
+        <mn>3</mn>
+      </msup>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(12)</div></div>
+              <p class="formula-note">где ρ — плотность пленки, определенная по ГОСТ 267 или по ГОСТ 15139, г/см³.</p>
+              <p>За результат испытания принимают среднеарифметическое трех параллельных определений, допускаемые расхождения между которыми не должны превышать 3 %.</p>
+              <p>Для ускорения расчета и обработки данных для целой серии образцов одновременно следует применять электронно-вычислительную машину. Универсальная блок-схема расчета укрывистости приведена в <a href="#appendix-2" class="doc-ref">приложении 2</a>.</p>
+            </div>
+          </section>
+
+          <section class="page" data-page="8" aria-label="Приложение 1">
+            <div class="head-right">ГОСТ 8784—75 С. 7</div>
+            <div class="appendix-corner"><span class="top">ПРИЛОЖЕНИЕ 1</span>Рекомендуемое</div>
+            <div class="content doc" style="top:34mm; bottom:18mm;" id="appendix-1">
+              <div class="appendix-center-title">ОПРЕДЕЛЕНИЕ ТОЛЩИНЫ ПОКРЫТИЯ ВЕСОВЫМ МЕТОДОМ</div>
+              <p>Стеклянную пластинку с покрытием взвешивают с погрешностью не более 0,0001 г. Затем на пластинке тщательно отмечают квадрат размером 50 × 50 мм; аккуратно механическим способом освобождают квадрат от лакокрасочной пленки и пластинку снова взвешивают.</p>
+              <p>Толщину покрытия (<i>H</i>) в миллиметрах вычисляют по формуле</p>
+              <div class="formula-row"><div class="formula-main">
+  <math xmlns="http://www.w3.org/1998/Math/MathML" display="inline">
+    <mrow>
+      <mi>H</mi>
+      <mo>=</mo>
+      <mfrac>
+        <mrow>
+          <mo>(</mo>
+          <msub><mi>m</mi><mn>1</mn></msub>
+          <mo>&minus;</mo>
+          <msub><mi>m</mi><mn>4</mn></msub>
+          <mo>)</mo>
+          <mo>&middot;</mo>
+          <msup><mn>10</mn><mn>3</mn></msup>
+        </mrow>
+        <mrow>
+          <mi>S</mi>
+          <mo>&middot;</mo>
+          <mi>&rho;</mi>
+        </mrow>
+      </mfrac>
+      <mo>,</mo>
+    </mrow>
+  </math>
+</div><div class="formula-num">(1)</div></div>
+              <p class="formula-note">где m₁ — масса пластинки с покрытием, г; <br>m₄ — масса пластинки с частично удаленным покрытием (с квадрата размером 50 × 50 мм), г; <br>S — площадь удаленного покрытия, мм² (в данном случае 2500 мм²); <br>ρ — плотность сухого покрытия, г/см³.</p>
+              <p>Плотность пленок определяют по ГОСТ 267 или по ГОСТ 15139. Свободные лакокрасочные пленки для определения плотности получают по ГОСТ 14243.</p>
+              <p>В качестве рабочей жидкости применяют гексан (ТУ 6—09—3375) или другую жидкость, в которой лакокрасочная пленка не набухает и не растворяется.</p>
+            </div>
+          </section>
+
+          <section class="page" data-page="9" aria-label="Приложение 2">
+            <div class="head-left">С. 8 ГОСТ 8784—75</div>
+            <div class="appendix-corner"><span class="top">ПРИЛОЖЕНИЕ 2</span>Рекомендуемое</div>
+            <div class="content doc" style="top:34mm; bottom:18mm;" id="appendix-2">
+              <div class="appendix-center-title" style="margin-top:8mm; font-size:4.8mm;">БЛОК-СХЕМА РАСЧЕТА УКРЫВИСТОСТИ<br>ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИМ МЕТОДОМ</div>
+              <div class="flowchart" style="margin:8mm auto 0; width:150mm;">
+                <svg viewBox="0 0 600 800" aria-label="Блок-схема расчета укрывистости">
+                  <g fill="none" stroke="#444" stroke-width="2.5">
+                    <rect x="180" y="20" width="180" height="48"/>
+                    <rect x="140" y="90" width="260" height="62"/>
+                    <rect x="90" y="90" width="40" height="62"/>
+                    <rect x="140" y="170" width="260" height="50"/>
+                    <rect x="90" y="170" width="40" height="50"/>
+                    <rect x="140" y="238" width="260" height="50"/>
+                    <rect x="90" y="238" width="40" height="50"/>
+                    <rect x="140" y="306" width="260" height="62"/>
+                    <rect x="90" y="306" width="40" height="62"/>
+                    <rect x="140" y="386" width="260" height="62"/>
+                    <rect x="90" y="386" width="40" height="62"/>
+                    <rect x="140" y="466" width="260" height="54"/>
+                    <rect x="90" y="466" width="40" height="54"/>
+                    <rect x="180" y="556" width="180" height="44" transform="translate(0,-20)"/>
+                    <line x1="270" y1="68" x2="270" y2="90"/>
+                    <line x1="270" y1="152" x2="270" y2="170"/>
+                    <line x1="270" y1="220" x2="270" y2="238"/>
+                    <line x1="270" y1="288" x2="270" y2="306"/>
+                    <line x1="270" y1="368" x2="270" y2="386"/>
+                    <line x1="270" y1="448" x2="270" y2="466"/>
+                    <line x1="270" y1="520" x2="270" y2="536"></line>
+                    <line x1="90" y1="493" x2="40" y2="493"/>
+                    <line x1="40" y1="493" x2="40" y2="195"/>
+                    <line x1="40" y1="195" x2="90" y2="195"/>
+                    <polygon points="265,84 270,90 275,84" fill="#444"/>
+                    <polygon points="265,164 270,170 275,164" fill="#444"/>
+                    <polygon points="265,232 270,238 275,232" fill="#444"/>
+                    <polygon points="265,300 270,306 275,300" fill="#444"/>
+                    <polygon points="265,380 270,386 275,380" fill="#444"/>
+                    <polygon points="265,460 270,466 275,460" fill="#444"/>
+                    <polygon points="265,530 270,536 275,530" fill="#444"/>
+                    <polygon points="84,190 90,195 84,200" fill="#444"/>
+                  </g>
+<<g font-family="Arial, Helvetica, sans-serif" fill="#111">
+  <!-- НАЧАЛО -->
+  <text x="270" y="44" font-size="13" font-weight="600" text-anchor="middle" dominant-baseline="middle">
+    НАЧАЛО
+  </text>
+
+  <!-- Номера слева -->
+  <text x="110" y="121" font-size="13" font-weight="600" text-anchor="middle" dominant-baseline="middle">1</text>
+  <text x="110" y="195" font-size="13" font-weight="600" text-anchor="middle" dominant-baseline="middle">2</text>
+  <text x="110" y="263" font-size="13" font-weight="600" text-anchor="middle" dominant-baseline="middle">3</text>
+  <text x="110" y="337" font-size="13" font-weight="600" text-anchor="middle" dominant-baseline="middle">4</text>
+  <text x="110" y="417" font-size="13" font-weight="600" text-anchor="middle" dominant-baseline="middle">5</text>
+  <text x="110" y="493" font-size="13" font-weight="600" text-anchor="middle" dominant-baseline="middle">6</text>
+
+  <!-- Блок 1 -->
+  <text x="270" y="108" font-size="10.5" font-weight="600" text-anchor="middle">
+    <tspan x="270" dy="0">ВВОД ИСХОДНЫХ ДАННЫХ</tspan>
+    <tspan x="270" dy="13">
+      (<tspan font-style="italic">R</tspan><tspan baseline-shift="sub" font-size="7.5">0</tspan>) <tspan font-style="italic">j</tspan>,
+      (<tspan font-style="italic">R</tspan><tspan baseline-shift="sub" font-size="7.5">&#8734;</tspan>) <tspan font-style="italic">j</tspan>,
+    </tspan>
+    <tspan x="270" dy="13">
+      <tspan font-style="italic">H</tspan>,
+      <tspan font-style="italic">R</tspan><tspan baseline-shift="sub" font-size="7.5">g</tspan>,
+      <tspan font-style="italic">C</tspan> (равно 0,98)
+    </tspan>
+  </text>
+
+  <!-- Блок 2 -->
+  <text x="270" y="195" font-size="10.5" font-weight="600" text-anchor="middle" dominant-baseline="middle">
+    РАСЧЕТ <tspan font-style="italic">a</tspan> ПО ФОРМУЛЕ (11)
+  </text>
+
+  <!-- Блок 3 -->
+  <text x="270" y="263" font-size="10.5" font-weight="600" text-anchor="middle" dominant-baseline="middle">
+    РАСЧЕТ <tspan font-style="italic">R</tspan><tspan baseline-shift="sub" font-size="7.5">ок</tspan> ПО ФОРМУЛЕ (10)
+  </text>
+
+  <!-- Блок 4 -->
+  <text x="270" y="330" font-size="10.5" font-weight="600" text-anchor="middle">
+    <tspan x="270" dy="0">РАСЧЕТ ТОЛЩИНЫ КРОЮЩЕГО СЛОЯ</tspan>
+    <tspan x="270" dy="13"><tspan font-style="italic">H</tspan><tspan baseline-shift="sub" font-size="7.5">к</tspan> ПО ФОРМУЛЕ (9)</tspan>
+  </text>
+
+  <!-- Блок 5 -->
+  <text x="270" y="410" font-size="10.5" font-weight="600" text-anchor="middle">
+    <tspan x="270" dy="0">РАСЧЕТ ВЕЛИЧИНЫ УКРЫВИСТОСТИ</tspan>
+    <tspan x="270" dy="13">ПО ФОРМУЛЕ (8)</tspan>
+  </text>
+
+  <!-- Блок 6 -->
+  <text x="270" y="493" font-size="10.5" font-weight="600" text-anchor="middle" dominant-baseline="middle">
+    ПРОВЕРКА НА КОНЕЦ ЦИКЛА
+  </text>
+
+  <!-- ОСТАНОВКА -->
+  <text x="270" y="558" font-size="13" font-weight="600" text-anchor="middle" dominant-baseline="middle">
+    ОСТАНОВКА
+  </text>
+
+  <!-- Да / Нет -->
+  <text x="58" y="486" font-size="13">Нет</text>
+  <text x="282" y="532" font-size="13">Да</text>
+</g>
+                </svg>
+              </div>
+            </div>
+          </section>
+
+          <section class="page" data-page="10" aria-label="Информационные данные">
+            <div class="head-right">ГОСТ 8784—75 С. 9</div>
+            <div class="content doc info-list" style="top:18mm; bottom:16mm;" id="section-info">
+              <div class="info-title">ИНФОРМАЦИОННЫЕ ДАННЫЕ</div>
+              <p>1. РАЗРАБОТАН И ВНЕСЕН Министерством химической промышленности СССР</p>
+              <p>2. УТВЕРЖДЕН И ВВЕДЕН В ДЕЙСТВИЕ Постановлением Государственного комитета стандартов Совета Министров СССР от 17.07.75 № 1831</p>
+              <p>3. Стандарт содержит все требования СТ СЭВ 5904—87</p>
+              <p>4. Стандарт полностью соответствует международным стандартам ИСО 3905—80, ИСО 3906—80, ИСО 2814—73 и соответствует ИСО 6504-1—83 в части принципа оценки инструментального метода</p>
+              <p>5. ВЗАМЕН ГОСТ 8784—58</p>
+              <p>6. ССЫЛОЧНЫЕ НОРМАТИВНО-ТЕХНИЧЕСКИЕ ДОКУМЕНТЫ</p>
+              <table class="std-table" style="margin-top:2mm; margin-bottom:4mm; font-size:3.05mm;">
+                <colgroup>
+                  <col style="width:54%"><col style="width:46%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Обозначение НТД, на который дана ссылка</th>
+                    <th>Номер пункта, подпункта, приложения</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>ГОСТ 267—73</td><td>3.4.3, приложение 1</td></tr>
+                  <tr><td>ГОСТ 597—73</td><td>1.2, 2.2</td></tr>
+                  <tr><td>ГОСТ 7931—76</td><td>1.3</td></tr>
+                  <tr><td>ГОСТ 8832—76</td><td>1.3, 3.3</td></tr>
+                  <tr><td>ГОСТ 9095—89</td><td>1.2, 2.2</td></tr>
+                  <tr><td>ГОСТ 14243—78</td><td>Приложение 1</td></tr>
+                  <tr><td>ГОСТ 15139—69</td><td>3.4.3, приложение 1</td></tr>
+                  <tr><td>ГОСТ 17537—72</td><td>1.4.3</td></tr>
+                  <tr><td>ГОСТ 24234—80</td><td>2.2</td></tr>
+                  <tr><td>ТУ 6—09—3375—78</td><td>Приложение 1</td></tr>
+                  <tr><td>ТУ 6—43—0205133—03—91</td><td>1.2, 2.2</td></tr>
+                </tbody>
+              </table>
+              <p>7. Ограничение срока действия снято по протоколу № 7—95 Межгосударственного Совета по стандартизации, метрологии и сертификации (ИУС 11—95)</p>
+              <p>8. ИЗДАНИЕ (сентябрь 2002 г.) с Изменениями № 1, 2, утвержденными в январе 1981 г., мае 1988 г. (ИУС 4—81, 9—88)</p>
+            </div>
+          </section>
+
+          <section class="page imprint-page" data-page="11" aria-label="Издательские сведения">
+            <div class="content doc" id="section-imprint" style="top:24mm; bottom:20mm;">
+            </div>
+            <div class="imprint-bottomline"></div>
+            <div class="imprint-center">
+              Редактор В. Н. Колосов<br>
+              Технический редактор Л. А. Гусева<br>
+              Корректор В. И. Варенцов<br>
+              Компьютерная верстка Л. А. Круговой<br><br>
+              Изд. лиц. № 02354 от 14.07.2000.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Сдано в набор 04.11.2002.&nbsp; Подписано в печать 26.11.2002.&nbsp;&nbsp;&nbsp; Усл. печ. л. 1,40.<br>
+              Уч.-изд. л. 0,80.&nbsp; Тираж 87 экз.&nbsp; С 8643.&nbsp; Зак. 347.<br><br>
+              ИПК Издательство стандартов, 107076 Москва, Колодезный пер., 14.<br>
+              http://www.standards.ru &nbsp;&nbsp;&nbsp; e-mail: info@standards.ru<br>
+              Набрано и отпечатано в ИПК Издательство стандартов
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+
+    (() => {
+      const pages = Array.from(document.querySelectorAll('.page'));
+      const workspace = document.getElementById('workspace');
+      const pageFrame = document.getElementById('pageFrame');
+      const pageList = document.getElementById('pageList');
+
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const pageIndicator = document.getElementById('pageIndicator');
+      const pageInput = document.getElementById('pageInput');
+      const goBtn = document.getElementById('goBtn');
+      const zoomOutBtn = document.getElementById('zoomOutBtn');
+      const zoomResetBtn = document.getElementById('zoomResetBtn');
+      const zoomInBtn = document.getElementById('zoomInBtn');
+      const zoomReadout = document.getElementById('zoomReadout');
+      const printBtn = document.getElementById('printBtn');
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const biblioBackBtn = document.getElementById('biblioBackBtn');
+
+      const docSearchBox = document.getElementById('docSearchBox');
+      const docSearchInput = document.getElementById('docSearchInput');
+      const docSearchDropdown = document.getElementById('docSearchDropdown');
+      const docSearchSuggestions = document.getElementById('docSearchSuggestions');
+      const docSearchResults = document.getElementById('docSearchResults');
+
+            const NAV_ITEMS = [
+        { label: 'Обложка', targetPageIndex: 0, targetSelector: '#cover-page' },
+        { label: 'Титульная страница и 1. Визуальный метод определения укрывистости', targetPageIndex: 1, targetSelector: '#page1-start' },
+        { label: '1.1. Сущность метода', targetPageIndex: 1, targetSelector: '#section-1-1' },
+        { label: '1.2. Аппаратура и материалы', targetPageIndex: 1, targetSelector: '#section-1-2' },
+        { label: '1.3. Проведение испытания', targetPageIndex: 2, targetSelector: '#section-1-3' },
+        { label: '1.4. Обработка результатов', targetPageIndex: 2, targetSelector: '#section-1-4' },
+        { label: '2. Инструментальный метод определения укрывистости', targetPageIndex: 3, targetSelector: '#section-2' },
+        { label: '2.1. Сущность метода', targetPageIndex: 3, targetSelector: '#section-2-1' },
+        { label: '2.2. Аппаратура и материалы', targetPageIndex: 3, targetSelector: '#section-2-2' },
+        { label: '2.3. Проведение испытания', targetPageIndex: 4, targetSelector: '#section-2-3' },
+        { label: '2.4. Обработка результатов', targetPageIndex: 4, targetSelector: '#section-2-4' },
+        { label: '3. Инструментально-математический метод определения укрывистости', targetPageIndex: 5, targetSelector: '#section-3' },
+        { label: '3.1. Сущность метода', targetPageIndex: 5, targetSelector: '#section-3-1' },
+        { label: '3.2. Аппаратура и материалы', targetPageIndex: 5, targetSelector: '#section-3-2' },
+        { label: '3.3. Проведение испытания', targetPageIndex: 5, targetSelector: '#section-3-3' },
+        { label: '3.4. Обработка результатов', targetPageIndex: 5, targetSelector: '#section-3-4' },
+        { label: '3.4.3. Перевод величины укрывистости', targetPageIndex: 6, targetSelector: '#section-3-4-3' },
+        { label: 'Приложение 1 — определение толщины покрытия весовым методом', targetPageIndex: 7, targetSelector: '#appendix-1' },
+        { label: 'Приложение 2 — блок-схема расчета укрывистости', targetPageIndex: 8, targetSelector: '#appendix-2' },
+        { label: 'Информационные данные', targetPageIndex: 9, targetSelector: '#section-info' },
+        { label: 'Издательские сведения', targetPageIndex: 10, targetSelector: '#section-imprint' }
+      ];
+
+            const SEARCHABLE_SELECTOR = [
+        '.cover-top-text',
+        '.cover-gost',
+        '.cover-main-title',
+        '.cover-bottom',
+        '.g8784-meta',
+        '.g8784-title-block',
+        '.g8784-okstu',
+        '.g8784-date',
+        '.title-lg',
+        '.title-md',
+        '.section',
+        '.subsection',
+        '.appendix-title',
+        '.doc p',
+        '.doc li',
+        '.std-table th',
+        '.std-table td',
+        '.mask-table th',
+        '.mask-table td',
+        '.tbl-caption',
+        '.fig-caption',
+        '.copyright-block',
+        '.imprint-center'
+      ].join(', ');
+
+      const searchIndex = [];
+      const suggestionCandidates = [];
+      const suggestionKeys = new Set();
+
+      let currentPage = 0;
+      let zoom = 1;
+      let activeSearchElement = null;
+      let searchResults = [];
+      let currentNavigationElement = null;
+      let currentNavigationHash = '';
+      let activePageListScrollFrame = 0;
+      let generatedNavAnchorCounter = 0;
+
+      const bibliographyNavigationStack = [];
+      const THEME_STORAGE_KEY = 'gost8784.viewer.theme';
+
+      function updateThemeToggle(theme){
+        const isDark = theme === 'dark';
+        document.body.dataset.theme = isDark ? 'dark' : 'light';
+        themeToggleBtn.setAttribute('aria-pressed', String(isDark));
+        themeToggleBtn.setAttribute('aria-label', isDark
+          ? 'Включена ночная тема. Переключить на дневную тему'
+          : 'Включена дневная тема. Переключить на ночную тему');
+        themeToggleBtn.title = isDark ? 'Переключить на дневную тему' : 'Переключить на ночную тему';
+
+        const icon = themeToggleBtn.querySelector('.theme-toggle-icon');
+        const label = themeToggleBtn.querySelector('.theme-toggle-label');
+        if (icon) icon.textContent = isDark ? '☀' : '☾';
+        if (label) label.textContent = isDark ? 'Дневная тема' : 'Ночная тема';
+      }
+
+      function getStoredTheme(){
+        try {
+          const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+          return savedTheme === 'dark' ? 'dark' : 'light';
+        } catch (err) {
+          return 'light';
+        }
+      }
+
+      function applyTheme(theme){
+        const nextTheme = theme === 'dark' ? 'dark' : 'light';
+        updateThemeToggle(nextTheme);
+        try {
+          localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+        } catch (err) {}
+      }
+
+
+      function clampPage(index){
+        return Math.max(0, Math.min(pages.length - 1, index));
+      }
+
+      function normalizeSearchText(value){
+        return String(value || '')
+          .toLowerCase()
+          .replace(/ё/g, 'е')
+          .replace(/[\u00a0\u2000-\u200b\u202f\u205f\u3000]/g, ' ')
+          .replace(/[\u2010-\u2015\u2212\-‐‑‒–—―]/g, '-')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function plainText(value){
+        return String(value || '')
+          .replace(/[\u00a0\u202f]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function escapeHtml(value){
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function isWordChar(value){
+        return /[\p{L}\p{N}]/u.test(value || '');
+      }
+
+      function buildCompactSearchMap(text){
+        const source = String(text || '');
+        let compactText = '';
+        const indexMap = [];
+
+        for (let index = 0; index < source.length; index += 1) {
+          const char = source[index];
+          if (isWordChar(char)) {
+            compactText += char;
+            indexMap.push(index);
+          }
+        }
+
+        return { compactText, indexMap };
+      }
+
+      function findTextMatches(text, query){
+        if (!text || !query) return [];
+
+        const collected = [];
+        const seen = new Set();
+        let fromIndex = 0;
+
+        while (fromIndex <= text.length - query.length) {
+          const foundIndex = text.indexOf(query, fromIndex);
+          if (foundIndex < 0) break;
+
+          const key = `${foundIndex}:${foundIndex + query.length}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            collected.push({
+              start: foundIndex,
+              end: foundIndex + query.length
+            });
+          }
+
+          fromIndex = foundIndex + Math.max(query.length, 1);
+        }
+
+        const compactQuery = buildCompactSearchMap(query).compactText;
+        if (!compactQuery) {
+          return collected;
+        }
+
+        const compactTextData = buildCompactSearchMap(text);
+        let compactFromIndex = 0;
+
+        while (compactFromIndex <= compactTextData.compactText.length - compactQuery.length) {
+          const compactFoundIndex = compactTextData.compactText.indexOf(compactQuery, compactFromIndex);
+          if (compactFoundIndex < 0) break;
+
+          const start = compactTextData.indexMap[compactFoundIndex];
+          const end = compactTextData.indexMap[compactFoundIndex + compactQuery.length - 1] + 1;
+          const key = `${start}:${end}`;
+
+          if (!seen.has(key)) {
+            seen.add(key);
+            collected.push({ start, end });
+          }
+
+          compactFromIndex = compactFoundIndex + Math.max(compactQuery.length, 1);
+        }
+
+        collected.sort((a, b) => {
+          if (a.start !== b.start) return a.start - b.start;
+          return a.end - b.end;
+        });
+
+        return collected;
+      }
+
+      function getElementTextMap(element){
+        const textNodes = [];
+        const positions = [];
+        let combinedText = '';
+        let previousWasSpace = true;
+
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null);
+        let node = walker.nextNode();
+
+        while (node) {
+          const value = node.nodeValue || '';
+          for (let i = 0; i < value.length; i += 1) {
+            const char = value[i];
+            if (/\s/u.test(char)) {
+              if (!previousWasSpace && combinedText) {
+                combinedText += ' ';
+                positions.push({ node, offset: i });
+                previousWasSpace = true;
+              }
+            } else {
+              combinedText += char;
+              positions.push({ node, offset: i });
+              previousWasSpace = false;
+            }
+          }
+          textNodes.push(node);
+          node = walker.nextNode();
+        }
+
+        while (combinedText.endsWith(' ')) {
+          combinedText = combinedText.slice(0, -1);
+          positions.pop();
+        }
+
+        return { combinedText, positions };
+      }
+
+      function clearSearchHighlight(){
+        const marks = document.querySelectorAll('mark.search-target[data-search-highlight="true"]');
+        marks.forEach((mark) => {
+          const parent = mark.parentNode;
+          if (!parent) return;
+          while (mark.firstChild) {
+            parent.insertBefore(mark.firstChild, mark);
+          }
+          parent.removeChild(mark);
+          parent.normalize();
+        });
+        activeSearchElement = null;
+      }
+
+      function highlightMatchInElement(element, matchStart, matchEnd){
+        clearSearchHighlight();
+        if (!element || typeof matchStart !== 'number' || typeof matchEnd !== 'number' || matchEnd <= matchStart) return false;
+
+        const textMap = getElementTextMap(element);
+        if (!textMap.combinedText || !textMap.positions.length) return false;
+
+        const limitedStart = Math.max(0, Math.min(matchStart, textMap.positions.length - 1));
+        const limitedEnd = Math.max(limitedStart + 1, Math.min(matchEnd, textMap.positions.length));
+
+        const segments = [];
+        for (let idx = limitedStart; idx < limitedEnd; idx += 1) {
+          const current = textMap.positions[idx];
+          if (!current || !current.node) continue;
+          const previous = segments[segments.length - 1];
+          if (previous && previous.node === current.node && previous.endOffset === current.offset) {
+            previous.endOffset = current.offset + 1;
+          } else {
+            segments.push({
+              node: current.node,
+              startOffset: current.offset,
+              endOffset: current.offset + 1
+            });
+          }
+        }
+
+        if (!segments.length) return false;
+
+        const marks = [];
+        for (let idx = segments.length - 1; idx >= 0; idx -= 1) {
+          const segment = segments[idx];
+          const range = document.createRange();
+          range.setStart(segment.node, segment.startOffset);
+          range.setEnd(segment.node, segment.endOffset);
+          const mark = document.createElement('mark');
+          mark.className = 'search-target';
+          mark.dataset.searchHighlight = 'true';
+          range.surroundContents(mark);
+          marks.push(mark);
+        }
+
+        activeSearchElement = marks[marks.length - 1] || null;
+        return Boolean(activeSearchElement);
+      }
+
+      function addSuggestionCandidate(label, meta = {}){
+        const cleanLabel = plainText(label);
+        if (!cleanLabel) return;
+        const key = normalizeSearchText(cleanLabel);
+        if (!key || suggestionKeys.has(key)) return;
+        suggestionKeys.add(key);
+        suggestionCandidates.push({
+          label: cleanLabel,
+          normalized: key,
+          pageIndex: typeof meta.pageIndex === 'number' ? meta.pageIndex : null,
+          element: meta.element || null
+        });
+      }
+
+      function ensureStableNavigationHash(element, prefix = 'nav-anchor'){
+        if (!element) return '';
+        if (element.id) return `#${element.id}`;
+
+        generatedNavAnchorCounter += 1;
+        const nextId = `${prefix}-${generatedNavAnchorCounter}`;
+        element.id = nextId;
+        return `#${nextId}`;
+      }
+
+      function syncLocationHash(hash){
+        const cleanHash = hash && String(hash).startsWith('#') ? String(hash) : '';
+        const nextUrl = `${window.location.pathname}${window.location.search}${cleanHash}`;
+        try {
+          history.replaceState(null, '', nextUrl);
+        } catch (err) {
+          if (cleanHash) {
+            window.location.hash = cleanHash.slice(1);
+          }
+        }
+      }
+
+      function normalizeHash(hash){
+        return hash && String(hash).startsWith('#') ? String(hash) : '';
+      }
+
+      function resolveNavItemElement(item){
+        if (!item || !item.targetSelector) return null;
+        try {
+          return document.querySelector(item.targetSelector);
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function isDocumentOrderBeforeOrEqual(baseElement, targetElement){
+        if (!baseElement || !targetElement) return false;
+        if (baseElement === targetElement) return true;
+        const relation = baseElement.compareDocumentPosition(targetElement);
+        return Boolean(relation & Node.DOCUMENT_POSITION_FOLLOWING);
+      }
+
+      function findBestActiveNavIndex(){
+        const exactHash = normalizeHash(currentNavigationHash) || normalizeHash(window.location.hash);
+        if (exactHash) {
+          const exactIndex = NAV_ITEMS.findIndex((item) => normalizeHash(item.targetSelector) === exactHash);
+          if (exactIndex >= 0) return exactIndex;
+        }
+
+        const candidates = NAV_ITEMS
+          .map((item, index) => ({
+            index,
+            item,
+            element: resolveNavItemElement(item)
+          }))
+          .filter((entry) => entry.item.targetPageIndex === currentPage);
+
+        if (!candidates.length) return -1;
+
+        if (currentNavigationElement) {
+          let bestMatch = null;
+          candidates.forEach((entry) => {
+            if (!entry.element) return;
+            if (isDocumentOrderBeforeOrEqual(entry.element, currentNavigationElement)) {
+              if (!bestMatch || isDocumentOrderBeforeOrEqual(bestMatch.element, entry.element)) {
+                bestMatch = entry;
+              }
+            }
+          });
+          if (bestMatch) return bestMatch.index;
+        }
+
+        return candidates[0].index;
+      }
+
+      function enhanceInternalDocumentLinks(){
+        const paragraphRules = [
+          {
+            match: (text) => text.includes('Пластинка черно-белая контрастная (п. 1.2).'),
+            replacements: [
+              { pattern: /п\.\s*1\.2/g, replacement: '<a href="#section-1-2" class="doc-ref">п. 1.2</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('Приборы оптические по п. 2.2.'),
+            replacements: [
+              { pattern: /п\.\s*2\.2/g, replacement: '<a href="#section-2-2" class="doc-ref">п. 2.2</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('Пластинка черная, приготовленная по п. 2.2.'),
+            replacements: [
+              { pattern: /п\.\s*2\.2/g, replacement: '<a href="#section-2-2" class="doc-ref">п. 2.2</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('Измерение коэффициентов яркости проводят по п. 2.3 настоящего стандарта.'),
+            replacements: [
+              { pattern: /п\.\s*2\.3/g, replacement: '<a href="#section-2-3" class="doc-ref">п. 2.3</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('По величинам коэффициентов яркости вычисляют коэффициент контрастности по формуле (6).'),
+            replacements: [
+              { pattern: /формуле\s*\(6\)/g, replacement: '<a href="#formula-6" class="doc-ref">формуле (6)</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('Укрывистость лакокрасочного материала, готового к применению, вычисляют по формуле (3).'),
+            replacements: [
+              { pattern: /формуле\s*\(3\)/g, replacement: '<a href="#formula-3" class="doc-ref">формуле (3)</a>' }
+            ]
+          }
+        ];
+
+        document.querySelectorAll('.doc p').forEach((paragraph) => {
+          const plain = plainText(paragraph.textContent);
+          const rule = paragraphRules.find((item) => item.match(plain));
+          if (!rule) return;
+
+          let nextHtml = paragraph.innerHTML;
+          rule.replacements.forEach((item) => {
+            nextHtml = nextHtml.replace(item.pattern, item.replacement);
+          });
+          paragraph.innerHTML = nextHtml;
+        });
+      }
+
+      function getActiveBibliographyNavigation(){
+        const state = bibliographyNavigationStack[bibliographyNavigationStack.length - 1] || null;
+        if (!state) return null;
+        return state.targetPageIndex === currentPage ? state : null;
+      }
+
+      function updateBibliographyBackButton(){
+        if (!biblioBackBtn) return;
+        const activeState = getActiveBibliographyNavigation();
+        const shouldShow = Boolean(activeState);
+        biblioBackBtn.hidden = !shouldShow;
+        biblioBackBtn.disabled = !shouldShow;
+        biblioBackBtn.setAttribute('aria-hidden', String(!shouldShow));
+      }
+
+      function rememberBibliographyNavigation(sourceElement, targetHash){
+        const targetPageIndex = getTargetPageIndex(targetHash);
+        if (!sourceElement || targetPageIndex < 0) return;
+
+        bibliographyNavigationStack.push({
+          sourceElement,
+          sourcePageIndex: currentPage,
+          sourceHash: ensureStableNavigationHash(sourceElement, 'doc-ref-source'),
+          targetHash,
+          targetPageIndex
+        });
+
+        if (bibliographyNavigationStack.length > 24) {
+          bibliographyNavigationStack.splice(0, bibliographyNavigationStack.length - 24);
+        }
+      }
+
+      function discardBibliographyNavigationForPageChange(previousPage, nextPage){
+        if (previousPage === nextPage) return;
+        const activeState = bibliographyNavigationStack[bibliographyNavigationStack.length - 1];
+        if (!activeState) return;
+        if (activeState.targetPageIndex === previousPage && previousPage !== nextPage) {
+          bibliographyNavigationStack.pop();
+        }
+      }
+
+      function goBackFromBibliographyReference(){
+        const state = bibliographyNavigationStack.pop();
+        updateBibliographyBackButton();
+        if (!state) return;
+
+        if (state.sourceElement && document.contains(state.sourceElement)) {
+          navigateToElement(state.sourceElement, {
+            pageIndex: state.sourcePageIndex,
+            syncUrl: false,
+            urlHash: state.sourceHash || ''
+          });
+          return;
+        }
+
+        if (state.sourceHash) {
+          navigateToSelector(state.sourceHash, false, { urlHash: state.sourceHash });
+          return;
+        }
+
+        goToPage(state.sourcePageIndex);
+        syncLocationHash('');
+      }
+
+      function scrollActivePageButtonIntoView(button){
+        if (!button || !pageList) return;
+
+        const container = pageList;
+        const maxScrollTop = Math.max(0, container.scrollHeight - container.clientHeight);
+        if (maxScrollTop <= 0) return;
+
+        const currentScrollTop = container.scrollTop;
+        const visibleTop = currentScrollTop;
+        const visibleBottom = currentScrollTop + container.clientHeight;
+        const buttonTop = button.offsetTop;
+        const buttonBottom = buttonTop + button.offsetHeight;
+        const edgeGap = 8;
+        const preferredTopBand = visibleTop + Math.min(42, Math.max(18, container.clientHeight * 0.22));
+
+        const fullyVisible = buttonTop >= visibleTop + edgeGap && buttonBottom <= visibleBottom - edgeGap;
+        const alreadyNearTop = buttonTop <= preferredTopBand + 14;
+
+        let nextScrollTop = null;
+
+        if (!fullyVisible) {
+          nextScrollTop = buttonTop - edgeGap;
+        } else if (!alreadyNearTop && buttonTop > preferredTopBand + 28) {
+          nextScrollTop = buttonTop - edgeGap;
+        }
+
+        if (nextScrollTop === null) return;
+
+        nextScrollTop = Math.max(0, Math.min(maxScrollTop, nextScrollTop));
+        if (Math.abs(nextScrollTop - currentScrollTop) < 6) return;
+
+        container.scrollTo({ top: nextScrollTop, behavior: 'smooth' });
+      }
+
+      function scheduleActivePageButtonScroll(button){
+        if (activePageListScrollFrame) {
+          cancelAnimationFrame(activePageListScrollFrame);
+        }
+
+        activePageListScrollFrame = requestAnimationFrame(() => {
+          activePageListScrollFrame = 0;
+          scrollActivePageButtonIntoView(button);
+        });
+      }
+
+      function buildPageList(){
+        pageList.innerHTML = '';
+        NAV_ITEMS.forEach((item, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'page-jump';
+          btn.dataset.navIndex = String(idx);
+          btn.dataset.pageIndex = String(item.targetPageIndex);
+          btn.dataset.targetHash = item.targetSelector && item.targetSelector.startsWith('#') ? item.targetSelector : '';
+
+          const label = document.createElement('span');
+          label.className = 'page-jump-label';
+          label.textContent = item.label;
+          btn.appendChild(label);
+
+          btn.addEventListener('click', () => {
+            closeSearchDropdown();
+            if (item.targetSelector) {
+              navigateToSelector(item.targetSelector);
+            } else {
+              goToPage(item.targetPageIndex);
+            }
+          });
+
+          pageList.appendChild(btn);
+        });
+      }
+
+      function updatePageButtons(){
+        const activeNavIndex = findBestActiveNavIndex();
+        let activeButton = null;
+
+        Array.from(pageList.querySelectorAll('.page-jump')).forEach((btn) => {
+          const navIndex = Number(btn.dataset.navIndex);
+          const isActive = navIndex === activeNavIndex;
+          btn.classList.toggle('active', isActive);
+          if (isActive) {
+            activeButton = btn;
+          }
+        });
+
+        if (activeButton) {
+          scheduleActivePageButtonScroll(activeButton);
+        }
+      }
+
+      function setZoom(nextZoom){
+        zoom = Math.max(0.55, Math.min(2.2, Number(nextZoom.toFixed(2))));
+        pageFrame.style.transform = `scale(${zoom})`;
+        zoomReadout.textContent = `${Math.round(zoom * 100)}%`;
+      }
+
+      function updatePage(){
+        pages.forEach((page, idx) => {
+          page.classList.toggle('active', idx === currentPage);
+        });
+
+        pageIndicator.textContent = `Страница ${currentPage + 1} из ${pages.length}`;
+        pageInput.value = currentPage + 1;
+        prevBtn.disabled = currentPage === 0;
+        nextBtn.disabled = currentPage === pages.length - 1;
+        updatePageButtons();
+        updateBibliographyBackButton();
+        workspace.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
+
+      function goToPage(index, options = {}){
+        const previousPage = currentPage;
+        currentPage = clampPage(index);
+
+        if (!options.preserveNavigationContext) {
+          currentNavigationElement = null;
+          currentNavigationHash = '';
+        }
+
+        discardBibliographyNavigationForPageChange(previousPage, currentPage);
+        updatePage();
+      }
+
+      function getTargetPageIndex(hash){
+        if (!hash || !hash.startsWith('#')) return -1;
+        const target = document.querySelector(hash);
+        if (!target) return -1;
+        const page = target.closest('.page');
+        return page ? pages.indexOf(page) : -1;
+      }
+
+      function navigateToElement(element, options = {}){
+        if (!element) return;
+        const page = element.closest('.page');
+        const pageIndex = page ? pages.indexOf(page) : (typeof options.pageIndex === 'number' ? options.pageIndex : -1);
+        const resolvedHash = Object.prototype.hasOwnProperty.call(options, 'urlHash')
+          ? normalizeHash(options.urlHash)
+          : (element.id ? `#${element.id}` : '');
+
+        currentNavigationElement = element;
+        currentNavigationHash = resolvedHash;
+
+        if (pageIndex >= 0) {
+          goToPage(pageIndex, { preserveNavigationContext: true });
+        }
+
+        requestAnimationFrame(() => {
+          if (typeof options.matchStart === 'number' && typeof options.matchEnd === 'number') {
+            highlightMatchInElement(element, options.matchStart, options.matchEnd);
+          } else {
+            clearSearchHighlight();
+          }
+
+          const focusTarget = activeSearchElement || element;
+          focusTarget.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' });
+
+          if (options.syncUrl && element.id) {
+            syncLocationHash(`#${element.id}`);
+          } else if (Object.prototype.hasOwnProperty.call(options, 'urlHash')) {
+            syncLocationHash(options.urlHash || '');
+          }
+
+          updatePageButtons();
+        });
+      }
+
+      function navigateToSelector(selector, syncUrl = true, extraOptions = {}){
+        if (!selector) return;
+        const element = document.querySelector(selector);
+        if (!element) return;
+        navigateToElement(element, { ...extraOptions, syncUrl });
+      }
+
+      function navigateToHash(hash, syncUrl = true){
+        if (!hash || !hash.startsWith('#')) return;
+        const target = document.querySelector(hash);
+        if (!target) return;
+        navigateToElement(target, { syncUrl });
+      }
+
+      function nextPage(){ goToPage(currentPage + 1); }
+      function prevPage(){ goToPage(currentPage - 1); }
+
+      function buildSearchIndex(){
+        pages.forEach((page, pageIndex) => {
+          const elements = Array.from(page.querySelectorAll(SEARCHABLE_SELECTOR));
+          elements.forEach((element) => {
+            const text = plainText(element.textContent);
+            if (!text) return;
+            searchIndex.push({
+              pageIndex,
+              element,
+              text,
+              normalized: normalizeSearchText(text)
+            });
+          });
+        });
+
+        NAV_ITEMS.forEach((item) => {
+          const targetElement = item.targetSelector ? document.querySelector(item.targetSelector) : null;
+          addSuggestionCandidate(item.label, {
+            pageIndex: item.targetPageIndex,
+            element: targetElement
+          });
+        });
+
+        const referencePatterns = [
+          /\bГОСТ(?:\s*Р)?\s*[\d]+(?:[.\-—]\d+)*(?:\s*[—-]\s*\d{2,4})?/giu,
+          /\bISO\/CIE\s*\d+(?:-\d+)?(?::\d{4})?/giu,
+          /\bISO\s*\d+(?:-\d+)?(?::\d{4})?/giu,
+          /\bASTM\s*[A-Z]\d+(?:-\d+)*(?::\d{4})?/giu,
+          /\bМКО\b/giu,
+          /\bD\s*65\b/giu,
+          /PANTONE Lighting Indicator Stickers D65/giu
+        ];
+
+        searchIndex.forEach((entry) => {
+          referencePatterns.forEach((pattern) => {
+            const matches = entry.text.match(pattern);
+            if (!matches) return;
+            matches.forEach((match) => {
+              addSuggestionCandidate(match, { pageIndex: entry.pageIndex, element: entry.element });
+            });
+          });
+        });
+
+        suggestionCandidates.sort((a, b) => {
+          const aG = /^гост/i.test(a.label);
+          const bG = /^гост/i.test(b.label);
+          if (aG !== bG) return aG ? -1 : 1;
+          return a.label.localeCompare(b.label, 'ru');
+        });
+      }
+
+      function getSuggestions(query){
+        const normalizedQuery = normalizeSearchText(query);
+        if (!normalizedQuery) return [];
+
+        const compactQuery = buildCompactSearchMap(normalizedQuery).compactText;
+
+        return suggestionCandidates
+          .filter((item) => {
+            if (item.normalized.includes(normalizedQuery)) return true;
+            if (!compactQuery) return false;
+            return buildCompactSearchMap(item.normalized).compactText.includes(compactQuery);
+          })
+          .slice(0, 12);
+      }
+
+      function getDisplayMatchRange(text, query){
+        const normalizedText = normalizeSearchText(text);
+        const normalizedQuery = normalizeSearchText(query);
+
+        if (!normalizedText || !normalizedQuery) {
+          return null;
+        }
+
+        const directIndex = normalizedText.indexOf(normalizedQuery);
+        if (directIndex >= 0) {
+          return {
+            start: directIndex,
+            end: directIndex + normalizedQuery.length
+          };
+        }
+
+        const compactTextData = buildCompactSearchMap(normalizedText);
+        const compactQuery = buildCompactSearchMap(normalizedQuery).compactText;
+
+        if (!compactTextData.compactText || !compactQuery) {
+          return null;
+        }
+
+        const compactIndex = compactTextData.compactText.indexOf(compactQuery);
+        if (compactIndex < 0) {
+          return null;
+        }
+
+        return {
+          start: compactTextData.indexMap[compactIndex],
+          end: compactTextData.indexMap[compactIndex + compactQuery.length - 1] + 1
+        };
+      }
+
+      function buildContextSnippet(text, matchStart, matchEnd){
+        const compactText = plainText(text);
+        const sentenceStart = Math.max(
+          compactText.lastIndexOf('. ', Math.max(0, matchStart - 1)),
+          compactText.lastIndexOf('; ', Math.max(0, matchStart - 1)),
+          compactText.lastIndexOf(': ', Math.max(0, matchStart - 1))
+        );
+        const sentenceEndCandidates = [
+          compactText.indexOf('. ', matchEnd),
+          compactText.indexOf('; ', matchEnd),
+          compactText.indexOf(': ', matchEnd)
+        ].filter((value) => value >= 0);
+        const sentenceEnd = sentenceEndCandidates.length ? Math.min(...sentenceEndCandidates) : -1;
+
+        const start = Math.max(0, sentenceStart >= 0 ? sentenceStart + 2 : matchStart - 55);
+        const end = Math.min(compactText.length, sentenceEnd >= 0 ? sentenceEnd + 1 : matchEnd + 95);
+
+        const safeStart = Math.max(0, Math.min(start, compactText.length));
+        const safeEnd = Math.max(safeStart, Math.min(end, compactText.length));
+        const prefix = safeStart > 0 ? '…' : '';
+        const suffix = safeEnd < compactText.length ? '…' : '';
+        const snippetText = compactText.slice(safeStart, safeEnd);
+
+        return {
+          text: `${prefix}${snippetText}${suffix}`,
+          highlightStart: prefix.length + (matchStart - safeStart),
+          highlightEnd: prefix.length + (matchEnd - safeStart)
+        };
+      }
+
+      function renderHighlightedText(text, matchStart, matchEnd){
+        const safeStart = Math.max(0, Math.min(matchStart, text.length));
+        const safeEnd = Math.max(safeStart, Math.min(matchEnd, text.length));
+        return `${escapeHtml(text.slice(0, safeStart))}<mark class="search-inline-match">${escapeHtml(text.slice(safeStart, safeEnd))}</mark>${escapeHtml(text.slice(safeEnd))}`;
+      }
+
+      function performSearch(query){
+        const normalizedQuery = normalizeSearchText(query);
+        if (!normalizedQuery) return [];
+        if (normalizedQuery.length < 2) return [];
+
+        const results = [];
+
+        searchIndex.forEach((entry) => {
+          const matches = findTextMatches(entry.normalized, normalizedQuery);
+          matches.forEach((match) => {
+            results.push({
+              pageIndex: entry.pageIndex,
+              element: entry.element,
+              text: entry.text,
+              matchStart: match.start,
+              matchEnd: match.end
+            });
+          });
+        });
+
+        results.sort((a, b) => {
+          if (a.pageIndex !== b.pageIndex) return a.pageIndex - b.pageIndex;
+          if (a.matchStart !== b.matchStart) return a.matchStart - b.matchStart;
+          return a.matchEnd - b.matchEnd;
+        });
+
+        return results.slice(0, 160);
+      }
+
+      function openSearchDropdown(){
+        if (!docSearchDropdown) return;
+        docSearchDropdown.hidden = false;
+        docSearchDropdown.classList.add('is-open');
+        docSearchInput.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeSearchDropdown(){
+        if (!docSearchDropdown) return;
+        docSearchDropdown.classList.remove('is-open', 'has-suggestions');
+        docSearchDropdown.hidden = true;
+        docSearchInput.setAttribute('aria-expanded', 'false');
+      }
+
+      function navigateToSearchResult(result){
+        if (!result || !result.element) return;
+        closeSearchDropdown();
+        navigateToElement(result.element, {
+          matchStart: result.matchStart,
+          matchEnd: result.matchEnd,
+          syncUrl: false
+        });
+      }
+
+      function renderSuggestions(items, query){
+        docSearchSuggestions.innerHTML = '';
+        docSearchSuggestions.classList.toggle('has-items', items.length > 0);
+        if (docSearchDropdown) {
+          docSearchDropdown.classList.toggle('has-suggestions', items.length > 0);
+        }
+
+        const normalizedQuery = normalizeSearchText(query);
+
+        items.forEach((item) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'search-suggestion';
+          const matchRange = normalizedQuery ? getDisplayMatchRange(item.label, normalizedQuery) : null;
+          btn.innerHTML = matchRange
+            ? renderHighlightedText(item.label, matchRange.start, matchRange.end)
+            : escapeHtml(item.label);
+          btn.addEventListener('click', () => {
+            docSearchInput.value = item.label;
+            updateSearchUI(item.label);
+            if (searchResults.length) {
+              navigateToSearchResult(searchResults[0]);
+            } else if (item.element) {
+              closeSearchDropdown();
+              navigateToElement(item.element);
+            } else if (typeof item.pageIndex === 'number') {
+              closeSearchDropdown();
+              goToPage(item.pageIndex);
+            }
+          });
+          docSearchSuggestions.appendChild(btn);
+        });
+      }
+
+      function renderResults(results, query){
+        docSearchResults.innerHTML = '';
+
+        if (!query.trim()) {
+          docSearchResults.innerHTML = '<div class="search-results-empty">Начните вводить запрос, чтобы найти совпадения по документу.</div>';
+          return;
+        }
+
+        if (!results.length) {
+          docSearchResults.innerHTML = '<div class="search-results-empty">Совпадения не найдены.</div>';
+          return;
+        }
+
+        results.forEach((entry) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'search-result';
+
+          const pageLabel = document.createElement('span');
+          pageLabel.className = 'search-result-page';
+          pageLabel.textContent = `Страница ${entry.pageIndex + 1}`;
+
+          const contextData = buildContextSnippet(entry.text, entry.matchStart, entry.matchEnd);
+          const context = document.createElement('span');
+          context.className = 'search-result-context';
+          context.innerHTML = renderHighlightedText(contextData.text, contextData.highlightStart, contextData.highlightEnd);
+
+          btn.appendChild(pageLabel);
+          btn.appendChild(context);
+          btn.addEventListener('click', () => navigateToSearchResult(entry));
+
+          docSearchResults.appendChild(btn);
+        });
+      }
+
+      function updateSearchUI(query){
+        const cleanQuery = plainText(query);
+
+        if (!cleanQuery) {
+          searchResults = [];
+          renderSuggestions([], '');
+          renderResults([], '');
+          closeSearchDropdown();
+          clearSearchHighlight();
+          return;
+        }
+
+        if (normalizeSearchText(cleanQuery).length < 2) {
+          searchResults = [];
+          renderSuggestions(getSuggestions(cleanQuery), cleanQuery);
+          docSearchResults.innerHTML = '<div class="search-results-empty">Введите минимум 2 символа для точного поиска.</div>';
+          openSearchDropdown();
+          clearSearchHighlight();
+          return;
+        }
+
+        searchResults = performSearch(cleanQuery);
+        renderSuggestions(getSuggestions(cleanQuery), cleanQuery);
+        renderResults(searchResults, cleanQuery);
+
+        const hasSuggestions = docSearchSuggestions.children.length > 0;
+        const hasResults = searchResults.length > 0 || docSearchResults.querySelector('.search-results-empty');
+        if (hasSuggestions || hasResults) {
+          openSearchDropdown();
+        } else {
+          closeSearchDropdown();
+        }
+      }
+
+      prevBtn.addEventListener('click', prevPage);
+      nextBtn.addEventListener('click', nextPage);
+
+      goBtn.addEventListener('click', () => {
+        const val = parseInt(pageInput.value, 10);
+        if (!Number.isNaN(val)) goToPage(val - 1);
+      });
+
+      pageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = parseInt(pageInput.value, 10);
+          if (!Number.isNaN(val)) goToPage(val - 1);
+        }
+      });
+
+      zoomInBtn.addEventListener('click', () => setZoom(zoom + 0.1));
+      zoomOutBtn.addEventListener('click', () => setZoom(zoom - 0.1));
+      zoomResetBtn.addEventListener('click', () => setZoom(1));
+      printBtn.addEventListener('click', () => window.print());
+      themeToggleBtn.addEventListener('click', () => {
+        applyTheme(document.body.dataset.theme === 'dark' ? 'light' : 'dark');
+      });
+      biblioBackBtn.addEventListener('click', () => {
+        goBackFromBibliographyReference();
+      });
+
+      docSearchInput.addEventListener('input', () => {
+        updateSearchUI(docSearchInput.value);
+      });
+
+      docSearchInput.addEventListener('focus', () => {
+        if (plainText(docSearchInput.value)) {
+          updateSearchUI(docSearchInput.value);
+        }
+      });
+
+      docSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (searchResults.length) {
+            navigateToSearchResult(searchResults[0]);
+          } else {
+            const suggestions = getSuggestions(docSearchInput.value);
+            if (suggestions.length) {
+              const first = suggestions[0];
+              docSearchInput.value = first.label;
+              updateSearchUI(first.label);
+              if (searchResults.length) {
+                navigateToSearchResult(searchResults[0]);
+              } else if (first.element) {
+                closeSearchDropdown();
+                navigateToElement(first.element);
+              } else if (typeof first.pageIndex === 'number') {
+                closeSearchDropdown();
+                goToPage(first.pageIndex);
+              }
+            }
+          }
+        } else if (e.key === 'Escape') {
+          closeSearchDropdown();
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a.doc-ref[href^="#"]');
+        if (link) {
+          const hash = link.getAttribute('href');
+          if (!hash) return;
+          e.preventDefault();
+          closeSearchDropdown();
+          rememberBibliographyNavigation(link, hash);
+          navigateToHash(hash);
+          return;
+        }
+
+        const insideSearch = e.target.closest('.search-panel');
+        if (!insideSearch) {
+          closeSearchDropdown();
+        }
+      });
+
+      window.addEventListener('hashchange', () => {
+        if (window.location.hash) {
+          navigateToHash(window.location.hash, false);
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        const tag = (document.activeElement && document.activeElement.tagName) || '';
+        const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag);
+        if (editing) return;
+
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+          e.preventDefault();
+          nextPage();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          prevPage();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goToPage(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goToPage(pages.length - 1);
+        } else if (e.key === '+') {
+          e.preventDefault();
+          setZoom(zoom + 0.1);
+        } else if (e.key === '-') {
+          e.preventDefault();
+          setZoom(zoom - 0.1);
+        } else if (e.key === '0') {
+          e.preventDefault();
+          setZoom(1);
+        }
+      });
+
+      enhanceInternalDocumentLinks();
+      buildPageList();
+      buildSearchIndex();
+      updateThemeToggle(getStoredTheme());
+      setZoom(1);
+      updateBibliographyBackButton();
+      updatePage();
+
+      if (window.location.hash) {
+        navigateToHash(window.location.hash, false);
+      }
+    })();
+  
+  </script>
+</body>
+</html>

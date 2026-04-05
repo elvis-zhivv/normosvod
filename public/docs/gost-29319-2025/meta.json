@@ -1,0 +1,154 @@
+{
+  "id": "gost-29319-2025",
+  "slug": "gost-29319-2025",
+  "gostNumber": "ГОСТ 29319—2025",
+  "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
+  "shortTitle": "Метод визуального сравнения цвета",
+  "year": 2025,
+  "status": "active",
+  "language": "ru",
+  "pages": 26,
+  "viewerUrl": "/docs/gost-29319-2025/viewer.html",
+  "metaUrl": "/docs/gost-29319-2025/meta.json",
+  "previewUrl": "/docs/gost-29319-2025/preview.png",
+  "searchTextUrl": "/data/search-index.json",
+  "tags": [
+    "ГОСТ",
+    "Материалы лакокрасочные",
+    "Метод визуального сравнения цвета"
+  ],
+  "sourceType": "html-viewer",
+  "importedAt": "2026-04-05T08:58:44.039Z",
+  "updatedAt": "2026-04-05T08:59:59.232Z",
+  "fileHash": "sha256-bd4e609ad1720bf1e167bd2eff11567aa6c4584dc8c04e549628e2116f019db0",
+  "viewerVersion": "1.0.0",
+  "hasInternalSearch": true,
+  "hasThemeToggle": true,
+  "hasPrintMode": true,
+  "hasQuickNav": true,
+  "hasBackNavigation": true,
+  "description": "Автономный viewer ГОСТ 29319—2025.",
+  "navItemsCount": 24,
+  "navItems": [
+    {
+      "label": "Страница I — «Титул»",
+      "targetPageIndex": 0,
+      "targetSelector": null
+    },
+    {
+      "label": "Страница II — «Предисловие. Сведения о стандарте»",
+      "targetPageIndex": 1,
+      "targetSelector": null
+    },
+    {
+      "label": "Страница III — «Информационные сведения»",
+      "targetPageIndex": 2,
+      "targetSelector": null
+    },
+    {
+      "label": "Страница IV — «Введение»",
+      "targetPageIndex": 3,
+      "targetSelector": null
+    },
+    {
+      "label": "1. Область применения",
+      "targetPageIndex": 4,
+      "targetSelector": "#section-1-scope"
+    },
+    {
+      "label": "2. Нормативные ссылки",
+      "targetPageIndex": 4,
+      "targetSelector": "#section-2-normative"
+    },
+    {
+      "label": "3. Термины и определения",
+      "targetPageIndex": 5,
+      "targetSelector": "#section-3-terms"
+    },
+    {
+      "label": "4. Требования к освещению для сравнения цвета",
+      "targetPageIndex": 5,
+      "targetSelector": "#section-4-lighting"
+    },
+    {
+      "label": "5. Требования к специалисту",
+      "targetPageIndex": 6,
+      "targetSelector": "#section-5-specialist"
+    },
+    {
+      "label": "6. Требования к образцам и эталонам",
+      "targetPageIndex": 7,
+      "targetSelector": "#section-6-samples"
+    },
+    {
+      "label": "Раздел 6 (продолжение)",
+      "targetPageIndex": 8,
+      "targetSelector": "#section-6-continued"
+    },
+    {
+      "label": "7. Проведение испытаний",
+      "targetPageIndex": 9,
+      "targetSelector": "#section-7-tests"
+    },
+    {
+      "label": "8. Оценка метамерии",
+      "targetPageIndex": 10,
+      "targetSelector": "#section-8-metamerism"
+    },
+    {
+      "label": "9. Обработка результатов",
+      "targetPageIndex": 11,
+      "targetSelector": "#section-9-results"
+    },
+    {
+      "label": "10. Прецизионность",
+      "targetPageIndex": 11,
+      "targetSelector": "#section-10-precision"
+    },
+    {
+      "label": "11. Протокол испытаний",
+      "targetPageIndex": 11,
+      "targetSelector": "#section-11-report"
+    },
+    {
+      "label": "Приложение А (справочное) — «Идентификация цвета образцов»",
+      "targetPageIndex": 12,
+      "targetSelector": "#appendix-a"
+    },
+    {
+      "label": "Приложение А (продолжение)",
+      "targetPageIndex": 13,
+      "targetSelector": "#appendix-a-continued"
+    },
+    {
+      "label": "Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»",
+      "targetPageIndex": 14,
+      "targetSelector": "#appendix-b"
+    },
+    {
+      "label": "Приложение В (справочное) — «Метамерия и метамерные соответствия»",
+      "targetPageIndex": 15,
+      "targetSelector": "#appendix-v"
+    },
+    {
+      "label": "Библиография",
+      "targetPageIndex": 16,
+      "targetSelector": "#section-bibliography"
+    },
+    {
+      "label": "Ключевые слова",
+      "targetPageIndex": 17,
+      "targetSelector": "#section-keywords"
+    },
+    {
+      "label": "Издательские сведения",
+      "targetPageIndex": 18,
+      "targetSelector": "#section-imprint"
+    },
+    {
+      "label": "Страница 20",
+      "targetPageIndex": 19,
+      "targetSelector": null
+    }
+  ]
+}

@@ -1,0 +1,3357 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ГОСТ 1.0—2015 — автономный HTML-viewer</title>
+  <style>
+
+    :root{
+      --page-w: 210mm;
+      --page-h: 297mm;
+      --sidebar-w: 296px;
+      --screen-bg: #d8d8d8;
+      --sidebar-bg: #1f2329;
+      --sidebar-fg: #f3f5f7;
+      --sidebar-muted: #c4cad4;
+      --sidebar-btn: #2c323a;
+      --sidebar-btn-hover: #39414b;
+      --sidebar-border: rgba(255,255,255,.08);
+    }
+
+    *{ box-sizing:border-box; }
+    html, body{ margin:0; padding:0; height:100%; }
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background:var(--screen-bg);
+      color:#111;
+      overflow:hidden;
+    }
+
+    .app{
+      display:flex;
+      width:100%;
+      height:100%;
+    }
+
+    .sidebar{
+      width:var(--sidebar-w);
+      min-width:var(--sidebar-w);
+      height:100%;
+      background:var(--sidebar-bg);
+      color:var(--sidebar-fg);
+      border-right:1px solid var(--sidebar-border);
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+    }
+    .sidebar-head{
+      padding:18px 18px 14px;
+      border-bottom:1px solid var(--sidebar-border);
+    }
+    .sidebar-title{
+      margin:0 0 6px;
+      font-size:18px;
+      line-height:1.15;
+      font-weight:700;
+    }
+    .sidebar-subtitle{
+      margin:0;
+      font-size:13px;
+      line-height:1.35;
+      color:var(--sidebar-muted);
+    }
+    .sidebar-section{
+      padding:14px 18px;
+      border-bottom:1px solid var(--sidebar-border);
+    }
+    .sidebar-row{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+    .sidebar-row:last-child{ margin-bottom:0; }
+    .sidebar button,
+    .sidebar input{
+      font:600 10px/1 Arial, Helvetica, sans-serif;
+      border:0;
+      border-radius:8px;
+      outline:none;
+    }
+    .sidebar button{
+      min-height:40px;
+      padding:0 12px;
+      cursor:pointer;
+      background:var(--sidebar-btn);
+      color:var(--sidebar-fg);
+      transition:background .15s ease;
+    }
+    .sidebar button:hover{ background:var(--sidebar-btn-hover); }
+    .sidebar button:disabled{
+      opacity:.45;
+      cursor:default;
+    }
+    .sidebar .grow{ flex:1 1 auto; }
+    .sidebar input[type="number"]{
+      width:88px;
+      height:40px;
+      background:#fff;
+      color:#111;
+      padding:0 10px;
+    }
+    .indicator{
+      font-size:14px;
+      line-height:1.35;
+      font-weight:700;
+      color:var(--sidebar-muted);
+      margin-bottom:12px;
+    }
+    .zoom-readout{
+      min-width:72px;
+      text-align:center;
+      font-size:14px;
+      line-height:40px;
+      font-weight:700;
+      color:var(--sidebar-muted);
+      background:rgba(255,255,255,.04);
+      border-radius:8px;
+      padding:0 8px;
+    }
+    .page-list-wrap{
+      min-height:0;
+      flex:1 1 auto;
+      display:flex;
+      flex-direction:column;
+      overflow:hidden;
+      margin-top:2px;
+    }
+    .page-list-wrap,
+    .page-list-title,
+    .page-list{
+      position:relative;
+      z-index:1;
+    }
+    .page-list-title{
+      padding:14px 18px 10px;
+      font-size:13px;
+      line-height:1.2;
+      color:var(--sidebar-muted);
+      font-weight:700;
+      border-bottom:1px solid var(--sidebar-border);
+      position:relative;
+      z-index:1;
+    }
+    .page-list{
+      padding:10px 10px 18px;
+      overflow:auto;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .page-jump{
+      width:100%;
+      text-align:left;
+      justify-content:flex-start;
+      white-space:normal;
+      line-height:1.3;
+      padding-top:10px;
+      padding-bottom:10px;
+    }
+    .page-jump.active{
+      background:#4a5663;
+      color:#fff;
+    }
+    .page-jump-label{
+      display:block;
+      width:100%;
+    }
+
+    .search-panel{
+      position:relative;
+      z-index:14;
+      flex:0 0 auto;
+      padding:14px 18px 20px;
+      margin-bottom:10px;
+      border-bottom:1px solid var(--sidebar-border);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      min-height:0;
+      overflow:visible;
+    }
+    .search-title{
+      margin:0;
+      font-size:13px;
+      line-height:1.2;
+      color:var(--sidebar-muted);
+      font-weight:700;
+    }
+    .search-box{
+      position:relative;
+      min-width:0;
+      z-index:24;
+      isolation:isolate;
+      margin-bottom:8px;
+    }
+    .search-input{
+      width:100%;
+      min-height:40px;
+      padding:10px 34px 10px 12px;
+      border-radius:8px;
+      border:1px solid rgba(255,255,255,.08);
+      background:#fff;
+      color:#111;
+      font:600 14px/1.2 Arial, Helvetica, sans-serif;
+    }
+    .search-input::placeholder{
+      color:#6f7782;
+      font-weight:500;
+    }
+    .search-input::-webkit-search-cancel-button{
+      cursor:pointer;
+    }
+    .search-dropdown{
+      position:absolute;
+      top:calc(100% + 8px);
+      left:0;
+      right:0;
+      z-index:200;
+      display:none;
+      min-width:0;
+      width:100%;
+      max-width:100%;
+      max-height:min(400px, calc(100vh - 196px));
+      background:#262c34;
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:12px;
+      box-shadow:0 18px 42px rgba(0,0,0,.32);
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      scrollbar-gutter:stable;
+    }
+    .search-dropdown[hidden]{
+      display:none !important;
+    }
+    .search-dropdown.is-open{
+      display:block;
+    }
+    .search-suggestions,
+    .search-results{
+      min-width:0;
+      width:100%;
+      background:transparent;
+      border:0;
+      border-radius:0;
+      overflow:visible;
+    }
+    .search-suggestions{
+      display:none;
+      max-height:none;
+    }
+    .search-suggestions.has-items{
+      display:block;
+    }
+    .search-dropdown.has-suggestions .search-suggestions{
+      border-bottom:1px solid rgba(255,255,255,.07);
+    }
+    .search-suggestion,
+    .search-result{
+      display:flex;
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:4px;
+      width:100%;
+      min-width:0;
+      border:0;
+      border-radius:0;
+      background:transparent;
+      color:var(--sidebar-fg);
+      text-align:left;
+      padding:10px 12px;
+      min-height:unset;
+      font:600 13px/1.45 Arial, Helvetica, sans-serif;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      white-space:normal;
+      word-break:normal;
+      overflow-wrap:anywhere;
+    }
+    .search-suggestion:last-child,
+    .search-result:last-child{
+      border-bottom:0;
+    }
+    .search-suggestion:hover,
+    .search-result:hover{
+      background:rgba(255,255,255,.08);
+    }
+    .search-result-page{
+      display:block;
+      font-size:11px;
+      line-height:1.3;
+      font-weight:700;
+      color:var(--sidebar-muted);
+      margin:0;
+    }
+    .search-result-context{
+      display:block;
+      width:100%;
+      font-size:12px;
+      line-height:1.45;
+      font-weight:500;
+      color:#e4e8ed;
+      white-space:normal;
+      word-break:break-word;
+      overflow-wrap:anywhere;
+    }
+    .search-results{
+      max-height:none;
+      display:block;
+    }
+    .search-results-empty{
+      padding:10px 12px;
+      font-size:12px;
+      line-height:1.45;
+      color:var(--sidebar-muted);
+    }
+
+    .search-inline-match,
+    .search-target{
+      background:rgba(255,228,120,.34);
+      box-shadow:0 0 0 1px rgba(177,132,0,.22);
+      border-radius:3px;
+      color:inherit;
+      transition:background .25s ease, box-shadow .25s ease;
+    }
+    .search-inline-match{
+      padding:0 .08em;
+    }
+    .search-target{
+      padding:0 .08em;
+    }
+    .sidebar-note{
+      padding:12px 18px 18px;
+      font-size:12px;
+      line-height:1.4;
+      color:var(--sidebar-muted);
+      border-top:1px solid var(--sidebar-border);
+    }
+
+    .workspace{
+      flex:1 1 auto;
+      height:100%;
+      overflow:auto;
+      background:var(--screen-bg);
+      overscroll-behavior:contain;
+    }
+    .workspace-scroll{
+      min-height:100%;
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:30px 28px 50px;
+    }
+    .page-frame{
+      transform-origin: top center;
+      will-change: transform;
+      transition: transform .12s ease;
+    }
+
+    .page{
+      position:relative;
+      width:var(--page-w);
+      height:var(--page-h);
+      margin:0 auto;
+      background:#fff;
+      box-shadow:0 20px 56px rgba(0,0,0,.22);
+      overflow:hidden;
+      display:none;
+    }
+    .page.active{ display:block; }
+
+    .head-left,
+    .head-right{
+      position:absolute;
+      top:8.8mm;
+      font-size:5.3mm;
+      line-height:1;
+      font-weight:700;
+      z-index:2;
+    }
+    .head-left{ left:10.8mm; }
+    .head-right{ right:10.8mm; }
+
+    .folio-left,
+    .folio-right{
+      position:absolute;
+      bottom:6.2mm;
+      font-size:4.9mm;
+      line-height:1;
+      z-index:2;
+    }
+    .folio-left{ left:10.8mm; }
+    .folio-right{ right:10.8mm; }
+
+    .content{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      top:23mm;
+      bottom:19mm;
+      z-index:1;
+    }
+
+    .doc{
+      font-size:3.42mm;
+      line-height:1.18;
+      text-align:justify;
+      text-justify:inter-word;
+    }
+    .doc p{ margin:0 0 1.85mm; }
+    .doc .center{ text-align:center; }
+    .doc .left{ text-align:left; }
+    .doc .right{ text-align:right; }
+    .doc .italic{ font-style:italic; }
+    .doc .small{ font-size:2.92mm; line-height:1.16; }
+    .doc .tiny{ font-size:2.78mm; line-height:1.14; }
+    .doc .bold{ font-weight:700; }
+
+    .doc .section{
+      margin:3.2mm 0 1.85mm;
+      font-size:4.76mm;
+      line-height:1.12;
+      font-weight:700;
+      text-align:left;
+    }
+    .doc .subsection{
+      margin:2.38mm 0 1.6mm;
+      font-size:4.07mm;
+      line-height:1.12;
+      font-weight:700;
+      text-align:left;
+    }
+    .doc .title-lg{
+      font-size:6.09mm;
+      line-height:1.08;
+      font-weight:700;
+      text-align:center;
+      margin:0 0 3.2mm;
+    }
+    .doc .title-md{
+      font-size:4.71mm;
+      line-height:1.12;
+      font-weight:700;
+      text-align:center;
+      margin:0 0 2.65mm;
+    }
+
+    .spaced{
+      letter-spacing:.42em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+
+    .std-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:3.25mm;
+      line-height:1.14;
+      table-layout:fixed;
+    }
+    .std-table th,
+    .std-table td{
+      border:1.4px solid #444;
+      padding:4px 6px;
+      vertical-align:middle;
+    }
+    .std-table th{
+      font-weight:400;
+      text-align:center;
+    }
+
+    .mask-table{
+      width:100%;
+      border-collapse:collapse;
+      table-layout:fixed;
+      font-size:3.25mm;
+      line-height:1.14;
+      margin:1.32mm 0 2.12mm;
+    }
+    .mask-table th,
+    .mask-table td{
+      border:1.4px solid #444;
+      padding:5px 7px;
+      text-align:center;
+    }
+    .mask-table th{ font-weight:400; }
+
+    .t-center{ text-align:center; }
+
+
+    .doc-ref,
+    .doc-ref:visited{
+      color:#1c4f8a;
+      text-decoration:underline;
+      text-decoration-thickness:1px;
+      text-underline-offset:.08em;
+      transition:color .15s ease, text-decoration-thickness .15s ease;
+    }
+    .doc-ref:hover,
+    .doc-ref:active{
+      color:#0f3b6b;
+      text-decoration-thickness:1.5px;
+    }
+    .doc-ref:focus-visible{
+      outline:1px solid rgba(28,79,138,.45);
+      outline-offset:1px;
+      border-radius:2px;
+    }
+
+    .note-label{
+      letter-spacing:.24em;
+      white-space:nowrap;
+    }
+
+    .footnote-rule{
+      width:82px;
+      border:0;
+      border-top:1.6px solid #333;
+      margin:7px 0 6px;
+      height:0;
+    }
+
+    .footer-line{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      bottom:13.3mm;
+      border-top:1.6px solid #333;
+      height:0;
+    }
+    .official-left{
+      position:absolute;
+      left:17.5mm;
+      bottom:7.2mm;
+      font-size:13.4px;
+      font-weight:700;
+      line-height:1;
+    }
+    .page-num-bottom-right{
+      position:absolute;
+      right:10.8mm;
+      bottom:6.3mm;
+      font-size:4.9mm;
+      line-height:1;
+    }
+
+    .tbl-caption{
+      margin:1.06mm 0 1.06mm;
+      text-align:left;
+    }
+
+    .fig-caption{
+      text-align:center;
+      font-size:3.39mm;
+      line-height:1.14;
+      margin-top:1.32mm;
+    }
+
+    .copyright-block {
+    position: absolute;
+    left: 30mm;
+    right: 30mm;
+    bottom: 20mm;
+    text-align: center;
+    font-size: 3.70mm;
+    line-height: 1.2;
+}
+
+    .rst-logo{
+      position:absolute;
+      left:7.5mm;
+      bottom:11.5mm;
+      width:27mm;
+      height:27mm;
+    }
+
+    .cover{
+      position:absolute;
+      inset:0;
+    }
+    .cover-top-line{
+      position:absolute;
+      left:6.5mm;
+      right:6.5mm;
+      top:13.5mm;
+      height:2mm;
+      background:#111;
+    }
+    .cover-top-text {
+    position: absolute;
+    left: 10mm;
+    right: 10mm;
+    top: 25mm;
+    text-align: center;
+    font-size: 4.05mm;
+    line-height: 1.04;
+    font-weight: 700;
+}
+    .cover-top-text .en {
+    display: block;
+    margin-top: 1.1mm;
+    font-size: 4.05mm;
+    line-height: 1.03;
+    font-weight: 700;
+}
+    .cover-mid-line {
+    position: absolute;
+    left: 6.5mm;
+    right: 6.5mm;
+    top: 50mm;
+    height: 2mm;
+    background: #111;
+}
+    .cover-std-label {
+    position: absolute;
+    left: 26mm;
+    right: 72mm;
+    top: 74mm;
+    text-align: center;
+    font-size: 6.2mm;
+    line-height: 1.56;
+    font-weight: 700;
+    letter-spacing: .32em;
+    text-transform: uppercase;
+}
+    .cover-gost {
+    position: absolute;
+    right: 18mm;
+    top: 70mm;
+    width: 36mm;
+    text-align: left;
+    font-size: 8mm;
+    line-height: 1.14;
+    font-weight: 700;
+}
+    .cover-low-line {
+    position: absolute;
+    left: 6.5mm;
+    right: 6.5mm;
+    top: 115mm;
+    height: 1.4mm;
+    background: #111;
+}
+    .cover-main-title{
+      position:absolute;
+      left:18mm;
+      right:18mm;
+      top:135mm;
+      text-align:center;
+      font-size:10.8mm;
+      line-height:1.13;
+      font-weight:700;
+    }
+    .cover-main-title .subtitle{
+      display:block;
+      margin-top:11.5mm;
+      font-size:9.2mm;
+      line-height:1.1;
+    }
+    .cover-main-title .iso{
+      display:block;
+      margin-top:9.5mm;
+      font-size:6.7mm;
+      line-height:1.1;
+      font-weight:700;
+    }
+    .cover-main-title .official{
+      display:block;
+      margin-top:20mm;
+      font-size:5.9mm;
+      line-height:1.08;
+      font-weight:700;
+    }
+    .cover-bottom{
+      position:absolute;
+      left:18mm;
+      right:18mm;
+      bottom:15mm;
+      text-align:center;
+      font-size:5.6mm;
+      line-height:1.1;
+      font-weight:700;
+    }
+
+    .main-std-banner{
+      text-align:center;
+      margin-top:1mm;
+    }
+    .main-std-banner .std-line{
+      margin:3.8mm 0 4mm;
+      border-top:2mm solid #111;
+    }
+    .main-std-banner .std-title{
+      font-size:6.2mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:0 0 4mm;
+      letter-spacing:.26em;
+      text-transform:uppercase;
+      white-space:nowrap;
+    }
+    .main-std-banner .material{
+      font-size:9.2mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:0 0 4mm;
+    }
+    .main-std-banner .method{
+      font-size:7.2mm;
+      line-height:1.12;
+      font-weight:700;
+      margin:0 0 4mm;
+    }
+    .main-std-banner .en{
+      font-size:6.6mm;
+      line-height:1.12;
+      margin:0 0 4.5mm;
+    }
+    .main-std-banner .bottom-line{
+      border-top:1.1px solid #222;
+      margin:0;
+    }
+    .page-five-date{
+      text-align:right;
+      font-size:6.9mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:5.5mm 0 11mm;
+    }
+    .doc-page5{
+      font-size:3.60mm;
+      line-height:1.19;
+    }
+
+    .appendix-title{
+      text-align:center;
+      font-size:7mm;
+      line-height:1.15;
+      font-weight:700;
+      margin:0 0 5.5mm;
+    }
+
+    .scale-svg{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+    .scale-block{
+      margin:8px 0 8px;
+    }
+
+    .biblio-list{
+      display:grid;
+      grid-template-columns:11.1mm 1fr;
+      gap:3.44mm 3.44mm;
+      margin-top:5.29mm;
+      font-size:4.07mm;
+      line-height:1.18;
+    }
+    .biblio-list .idx{
+      text-align:right;
+      white-space:nowrap;
+    }
+
+    .keywords-topline,
+    .keywords-bottomline{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      height:0;
+      border-top:1.4px solid #444;
+    }
+    .keywords-topline{ top:24mm; }
+    .keywords-bottomline{ top:57mm; }
+
+    .imprint-bottomline{
+      position:absolute;
+      left:7mm;
+      right:7mm;
+      bottom:18mm;
+      border-top:2px solid #222;
+    }
+    .imprint-center{
+      position:absolute;
+      left:20mm;
+      right:20mm;
+      bottom:20mm;
+      text-align:center;
+      font-size:3.65mm;
+      line-height:1.18;
+    }
+
+    .blank-page{ background:#fff; }
+
+
+    .sidebar-head{
+      padding:14px 14px 10px;
+    }
+    .sidebar-title{
+      margin:0 0 4px;
+      font-size:17px;
+    }
+    .sidebar-subtitle{
+      font-size:12px;
+      line-height:1.28;
+    }
+    .sidebar-section{
+      padding:10px 14px;
+    }
+    .sidebar-row{
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .sidebar button,
+    .sidebar input{
+      font:600 10px/1 Arial, Helvetica, sans-serif;
+      border-radius:7px;
+    }
+    .sidebar button{
+      min-height:34px;
+      padding:0 10px;
+    }
+    .sidebar input[type="number"]{
+      width:78px;
+      height:34px;
+      padding:0 8px;
+    }
+    .indicator{
+      font-size:13px;
+      line-height:1.25;
+      margin-bottom:8px;
+    }
+    .zoom-readout{
+      min-width:64px;
+      font-size:13px;
+      line-height:34px;
+      border-radius:7px;
+      padding:0 6px;
+    }
+    .page-list-title{
+      padding:12px 14px 8px;
+      font-size:12px;
+    }
+    .page-list{
+      padding:8px 8px 12px;
+      gap:5px;
+    }
+    .page-jump{
+      line-height:1.25;
+      padding:8px 10px;
+    }
+    .search-panel{
+      padding:10px 14px 18px;
+      margin-bottom:10px;
+      gap:8px;
+    }
+    .search-title{
+      font-size:12px;
+    }
+    .search-input{
+      min-height:34px;
+      padding:8px 30px 8px 10px;
+      border-radius:7px;
+      font:600 13px/1.2 Arial, Helvetica, sans-serif;
+    }
+    .search-dropdown{
+      top:calc(100% + 6px);
+      border-radius:10px;
+      max-height:min(340px, calc(100vh - 188px));
+    }
+    .search-suggestions{
+      max-height:none;
+    }
+    .search-suggestion,
+    .search-result{
+      gap:3px;
+      padding:8px 10px;
+      font:600 12.5px/1.45 Arial, Helvetica, sans-serif;
+    }
+    .search-result-page{
+      font-size:10.5px;
+      margin:0;
+    }
+    .search-result-context{
+      font-size:11.5px;
+      line-height:1.42;
+    }
+    .search-results{
+      max-height:none;
+    }
+    .search-results-empty{
+      padding:8px 10px;
+      font-size:11.5px;
+      line-height:1.42;
+    }
+    .sidebar-note{
+      padding:10px 14px 12px;
+      font-size:11.5px;
+      line-height:1.35;
+    }
+
+    :root{
+      --viewer-bg: var(--screen-bg);
+      --viewer-bg-dark: #282828;
+      --viewer-panel-bg: rgba(255,255,255,.88);
+      --viewer-panel-border: rgba(17,17,17,.12);
+      --viewer-panel-fg: #1b222b;
+      --viewer-panel-fg-muted: #5b6470;
+      --doc-page-bg: #ffffff;
+      --doc-text: #111111;
+      --doc-line: #444444;
+      --doc-line-strong: #222222;
+    }
+
+    .workspace{
+      position:relative;
+      background:var(--viewer-bg);
+    }
+    .workspace-scroll{
+      padding:26px 28px 46px;
+    }
+
+    .viewer-tools{
+      position:absolute;
+      top:14px;
+      right:16px;
+      z-index:20;
+      pointer-events:none;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+    }
+    .theme-toggle,
+    .viewer-back-btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      min-height:36px;
+      padding:0 12px;
+      border:1px solid var(--viewer-panel-border);
+      border-radius:999px;
+      background:var(--viewer-panel-bg);
+      color:var(--viewer-panel-fg);
+      box-shadow:0 8px 24px rgba(0,0,0,.14);
+      backdrop-filter:blur(8px);
+      -webkit-backdrop-filter:blur(8px);
+      font:600 13px/1 Arial, Helvetica, sans-serif;
+      cursor:pointer;
+      pointer-events:auto;
+      transition:background .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease;
+    }
+    .theme-toggle:hover,
+    .viewer-back-btn:hover{
+      background:rgba(255,255,255,.96);
+      box-shadow:0 10px 28px rgba(0,0,0,.18);
+    }
+    .theme-toggle:active,
+    .viewer-back-btn:active{
+      transform:translateY(1px);
+    }
+    .theme-toggle:focus-visible,
+    .viewer-back-btn:focus-visible{
+      outline:2px solid rgba(28,79,138,.35);
+      outline-offset:2px;
+    }
+    .theme-toggle-icon,
+    .viewer-back-btn-icon{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      font-size:14px;
+      line-height:1;
+    }
+    .theme-toggle-label,
+    .viewer-back-btn-label{
+      white-space:nowrap;
+    }
+    .viewer-back-btn[hidden]{
+      display:none !important;
+    }
+
+    body[data-theme="dark"]{
+      --screen-bg: #4c535c;
+      --viewer-bg: var(--viewer-bg-dark);
+      --viewer-panel-bg: rgba(31,35,40,.88);
+      --viewer-panel-border: rgba(214,219,224,.18);
+      --viewer-panel-fg: #e6ebf0;
+      --viewer-panel-fg-muted: #c4ccd4;
+      --doc-page-bg: #050505;
+      --doc-text: #d7dcdf;
+      --doc-line: #aeb6bd;
+      --doc-line-strong: #c4ccd3;
+      background:var(--screen-bg);
+      color:var(--doc-text);
+    }
+    body[data-theme="dark"] .workspace{
+      background:var(--viewer-bg);
+    }
+    body[data-theme="dark"] .page{
+      background:var(--doc-page-bg);
+      color:var(--doc-text);
+      box-shadow:0 24px 64px rgba(0,0,0,.62);
+    }
+    body[data-theme="dark"] .blank-page{
+      background:var(--doc-page-bg);
+    }
+    body[data-theme="dark"] .std-table th,
+    body[data-theme="dark"] .std-table td,
+    body[data-theme="dark"] .mask-table th,
+    body[data-theme="dark"] .mask-table td{
+      border-color:var(--doc-line);
+    }
+    body[data-theme="dark"] .footnote-rule,
+    body[data-theme="dark"] .footer-line,
+    body[data-theme="dark"] .keywords-topline,
+    body[data-theme="dark"] .keywords-bottomline{
+      border-color:var(--doc-line);
+    }
+    body[data-theme="dark"] .imprint-bottomline,
+    body[data-theme="dark"] .main-std-banner .bottom-line{
+      border-color:var(--doc-line-strong);
+    }
+    body[data-theme="dark"] .cover-top-line,
+    body[data-theme="dark"] .cover-mid-line,
+    body[data-theme="dark"] .cover-low-line,
+    body[data-theme="dark"] .main-std-banner .std-line{
+      background:var(--doc-line-strong);
+    }
+    body[data-theme="dark"] .cover-logo-box svg{
+      color:var(--doc-text);
+    }
+    body[data-theme="dark"] .doc-ref,
+    body[data-theme="dark"] .doc-ref:visited{
+      color:#8fb6dc;
+    }
+    body[data-theme="dark"] .doc-ref:hover,
+    body[data-theme="dark"] .doc-ref:active{
+      color:#b6d0e6;
+    }
+    body[data-theme="dark"] .doc-ref:focus-visible{
+      outline-color:rgba(182,208,230,.45);
+    }
+    body[data-theme="dark"] .search-inline-match,
+    body[data-theme="dark"] .search-target{
+      background:rgba(202,160,68,.24);
+      box-shadow:0 0 0 1px rgba(202,160,68,.3);
+    }
+    body[data-theme="dark"] .viewer-tools .theme-toggle,
+    body[data-theme="dark"] .viewer-tools .viewer-back-btn{
+      box-shadow:0 10px 28px rgba(0,0,0,.28);
+    }
+    body[data-theme="dark"] .viewer-tools .theme-toggle:hover,
+    body[data-theme="dark"] .viewer-tools .viewer-back-btn:hover{
+      background:rgba(39,44,49,.96);
+      box-shadow:0 12px 32px rgba(0,0,0,.34);
+    }
+    body[data-theme="dark"] .page svg text{
+      fill:var(--doc-text) !important;
+    }
+    body[data-theme="dark"] .page svg [fill="#111"]{
+      fill:var(--doc-text) !important;
+    }
+    body[data-theme="dark"] .page svg [stroke="#444"],
+    body[data-theme="dark"] .page svg [stroke="#666"],
+    body[data-theme="dark"] .page svg [stroke="#8c8c8c"]{
+      stroke:var(--doc-line) !important;
+    }
+
+    @media print{
+      html,
+      body{
+        width:210mm !important;
+        min-width:210mm !important;
+        margin:0 !important;
+        padding:0 !important;
+        height:auto !important;
+        overflow:visible !important;
+        background:#fff !important;
+      }
+
+      body{
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .app,
+      .workspace,
+      .workspace-scroll,
+      .page-frame{
+        display:block !important;
+        width:auto !important;
+        min-width:0 !important;
+        max-width:none !important;
+        height:auto !important;
+        min-height:0 !important;
+        margin:0 !important;
+        padding:0 !important;
+        overflow:visible !important;
+        background:#fff !important;
+        transform:none !important;
+      }
+
+      .sidebar{
+        display:none !important;
+      }
+
+
+      .viewer-tools{
+        display:none !important;
+      }
+
+      body[data-theme="dark"]{
+        background:#fff !important;
+        color:#111 !important;
+      }
+
+      body[data-theme="dark"] .page,
+      body[data-theme="dark"] .blank-page{
+        background:#fff !important;
+        color:#111 !important;
+        box-shadow:none !important;
+      }
+
+      body[data-theme="dark"] .std-table th,
+      body[data-theme="dark"] .std-table td,
+      body[data-theme="dark"] .mask-table th,
+      body[data-theme="dark"] .mask-table td{
+        border-color:#444 !important;
+      }
+
+      body[data-theme="dark"] .footnote-rule,
+      body[data-theme="dark"] .footer-line{
+        border-color:#333 !important;
+      }
+
+      body[data-theme="dark"] .keywords-topline,
+      body[data-theme="dark"] .keywords-bottomline{
+        border-color:#444 !important;
+      }
+
+      body[data-theme="dark"] .imprint-bottomline,
+      body[data-theme="dark"] .main-std-banner .bottom-line{
+        border-color:#222 !important;
+      }
+
+      body[data-theme="dark"] .cover-top-line,
+      body[data-theme="dark"] .cover-mid-line,
+      body[data-theme="dark"] .cover-low-line,
+      body[data-theme="dark"] .main-std-banner .std-line{
+        background:#111 !important;
+      }
+
+      body[data-theme="dark"] .doc-ref,
+      body[data-theme="dark"] .doc-ref:visited,
+      body[data-theme="dark"] .doc-ref:hover,
+      body[data-theme="dark"] .doc-ref:active{
+        color:inherit !important;
+        text-decoration:none !important;
+      }
+
+      body[data-theme="dark"] .search-target{
+        background:transparent !important;
+        box-shadow:none !important;
+      }
+
+      body[data-theme="dark"] .page svg text,
+      body[data-theme="dark"] .page svg [fill="#111"]{
+        fill:#111 !important;
+      }
+
+      body[data-theme="dark"] .page svg [stroke="#444"]{
+        stroke:#444 !important;
+      }
+
+      body[data-theme="dark"] .page svg [stroke="#666"]{
+        stroke:#666 !important;
+      }
+
+      body[data-theme="dark"] .page svg [stroke="#8c8c8c"]{
+        stroke:#8c8c8c !important;
+      }
+
+
+      .page{
+        display:block !important;
+        width:210mm !important;
+        min-width:210mm !important;
+        max-width:210mm !important;
+        height:297mm !important;
+        min-height:297mm !important;
+        max-height:297mm !important;
+        margin:0 !important;
+        box-shadow:none !important;
+        overflow:hidden !important;
+        page-break-after:always !important;
+        break-after:page !important;
+        page-break-inside:avoid !important;
+        break-inside:avoid !important;
+      }
+
+      .page:last-child{
+        page-break-after:auto !important;
+        break-after:auto !important;
+      }
+
+      .doc-ref,
+      .doc-ref:visited,
+      .doc-ref:hover,
+      .doc-ref:active{
+        color:inherit !important;
+        text-decoration:none !important;
+      }
+
+      .search-target{
+        background:transparent !important;
+        box-shadow:none !important;
+      }
+
+      @page{
+        size:A4;
+        margin:0;
+      }
+    }
+  
+
+    .g8784-cover .cover-top-text{
+      top:22mm;
+      font-size:4.8mm;
+      line-height:1.08;
+      letter-spacing:.42em;
+      text-transform:uppercase;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .g8784-cover .cover-top-line{
+      top:41mm;
+      height:2.1mm;
+    }
+    .g8784-cover .cover-gost{
+      top:11mm;
+      right:18mm;
+      width:auto;
+      font-size:7.2mm;
+      line-height:1;
+      text-align:right;
+    }
+    .g8784-cover .cover-main-title{
+      top:84mm;
+      left:16mm;
+      right:16mm;
+      font-size:9.8mm;
+      line-height:1.14;
+    }
+    .g8784-cover .cover-main-title .subtitle{
+      margin-top:12mm;
+      font-size:7.2mm;
+      line-height:1.12;
+      font-weight:700;
+    }
+    .g8784-cover .cover-main-title .official{
+      margin-top:18mm;
+      font-size:4.8mm;
+      font-weight:700;
+    }
+    .g8784-cover .cover-bottom{
+      bottom:16mm;
+      font-size:4.6mm;
+      line-height:1.1;
+      letter-spacing:.06em;
+    }
+    .g8784-meta{
+      position:absolute;
+      top:8.8mm;
+      font-size:3.45mm;
+      line-height:1;
+      font-weight:700;
+    }
+    .g8784-meta.left{ left:10.8mm; }
+    .g8784-meta.right{ right:10.8mm; }
+    .g8784-title-block{
+      text-align:center;
+      margin-top:1mm;
+    }
+    .g8784-title-block .line{
+      border-top:1.9mm solid #111;
+      margin:3.2mm 0 5mm;
+    }
+    .g8784-title-block .material{
+      font-size:6.3mm;
+      line-height:1.1;
+      font-weight:700;
+      margin:0 0 2.2mm;
+      text-transform:uppercase;
+    }
+    .g8784-title-block .method{
+      font-size:5.4mm;
+      line-height:1.12;
+      font-weight:700;
+      margin:0 0 2.3mm;
+    }
+    .g8784-title-block .en{
+      font-size:4.2mm;
+      line-height:1.15;
+      margin:0 0 2.2mm;
+    }
+    .g8784-title-block .gost-no{
+      position:absolute;
+      right:0;
+      top:24mm;
+      text-align:right;
+      font-size:6.6mm;
+      font-weight:700;
+      line-height:1.05;
+    }
+    .g8784-okstu{
+      font-size:4mm;
+      margin:0 0 2.5mm;
+    }
+    .g8784-date{
+      text-align:right;
+      font-size:4mm;
+      font-weight:700;
+      margin:2.2mm 0 4.2mm;
+    }
+    .doc .lead-8784{
+      font-size:3.55mm;
+      line-height:1.18;
+    }
+    .formula-row{
+      display:flex;
+      align-items:flex-end;
+      gap:6mm;
+      margin:1.2mm 0 1.2mm;
+    }
+    .formula-main{
+      flex:1 1 auto;
+      text-align:center;
+      font-style:italic;
+      font-size:5.75mm;
+      line-height:1.2;
+    }
+    .formula-num{
+      flex:0 0 11mm;
+      text-align:right;
+      font-size:3.35mm;
+      line-height:1.1;
+    }
+    .formula-note{
+      margin-left:8mm;
+      font-size:3.28mm;
+      line-height:1.16;
+    }
+    .figure-row{
+      display:flex;
+      gap:7mm;
+      align-items:flex-start;
+    }
+    .figure-text{
+      flex:1 1 auto;
+      min-width:0;
+    }
+    .figure-side{
+      flex:0 0 63mm;
+    }
+    .figure-side svg,
+    .graph-figure svg,
+    .flowchart svg{
+      display:block;
+      width:100%;
+      height:auto;
+    }
+    .graph-layout{
+      display:flex;
+      gap:7mm;
+      align-items:flex-start;
+      margin:1mm 0;
+    }
+    .graph-figure{ flex:0 0 57mm; }
+    .graph-text{ flex:1 1 auto; }
+    .smallcaps{ letter-spacing:.22em; }
+    .appendix-corner{
+      position:absolute;
+      top:16mm;
+      right:17.5mm;
+      text-align:right;
+      font-size:3.7mm;
+      line-height:1.12;
+      font-style:italic;
+    }
+    .appendix-corner .top{
+      display:block;
+      font-style:normal;
+      font-weight:700;
+      font-size:4.05mm;
+      margin-bottom:1mm;
+      text-transform:uppercase;
+    }
+    .appendix-center-title{
+      text-align:center;
+      font-size:5mm;
+      line-height:1.15;
+      font-weight:700;
+      margin:25mm 0 5mm;
+      text-transform:uppercase;
+    }
+    .info-title{
+      text-align:center;
+      font-size:5.4mm;
+      line-height:1.12;
+      font-weight:700;
+      margin:0 0 6mm;
+      text-transform:uppercase;
+    }
+    .info-list p{ margin:0 0 3.1mm; }
+    .imprint-page .imprint-center{
+      left:22mm;
+      right:22mm;
+      bottom:18.5mm;
+      font-size:3.22mm;
+      line-height:1.22;
+    }
+    .imprint-page .imprint-bottomline{
+      left:17mm;
+      right:17mm;
+      bottom:16.5mm;
+    }
+
+  
+
+    .g10-cover .cover-top-line{
+      top:18mm;
+      height:1.8mm;
+    }
+    .g10-cover .cover-mid-line{
+      top:47mm;
+      height:1.8mm;
+    }
+    .g10-cover .cover-low-line{
+      top:86mm;
+      height:1.2mm;
+    }
+    .g10-cover .cover-top-text{
+      top:24mm;
+      left:12mm;
+      right:12mm;
+      font-size:4.15mm;
+      line-height:1.08;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.01em;
+    }
+    .g10-cover .cover-gost{
+      right:18mm;
+      top:56mm;
+      width:32mm;
+      text-align:left;
+      font-size:8.8mm;
+      line-height:1.02;
+      font-weight:700;
+    }
+    .g10-cover .cover-std-label{
+      position:absolute;
+      left:28mm;
+      right:60mm;
+      top:60mm;
+      text-align:center;
+      font-size:5.1mm;
+      line-height:1.28;
+      font-weight:700;
+      letter-spacing:.36em;
+      text-transform:uppercase;
+    }
+    .g10-cover .cover-main-title{
+      top:112mm;
+      left:18mm;
+      right:18mm;
+      font-size:8.3mm;
+      line-height:1.18;
+      font-weight:700;
+    }
+    .g10-cover .cover-main-title .subtitle{
+      margin-top:11mm;
+      font-size:7.6mm;
+      line-height:1.14;
+      font-weight:700;
+    }
+    .g10-cover .cover-main-title .official{
+      margin-top:17mm;
+      font-size:4.8mm;
+      line-height:1.08;
+      font-weight:700;
+    }
+    .g10-cover .cover-bottom{
+      bottom:20mm;
+      font-size:4.2mm;
+      line-height:1.08;
+      font-weight:700;
+    }
+    .cover-logo-box{
+      position:absolute;
+      left:79mm;
+      bottom:28mm;
+      width:52mm;
+      height:22mm;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:5mm;
+    }
+    .cover-logo-box svg{
+      width:18mm;
+      height:18mm;
+      flex:0 0 auto;
+      color:#111;
+    }
+    .cover-logo-box .cover-bottom-text{
+      font-size:4.05mm;
+      line-height:1.08;
+      font-weight:700;
+      text-align:left;
+    }
+
+    .roman-folio{
+      font-size:4.5mm;
+      line-height:1;
+    }
+
+    .preface-title{
+      text-align:center;
+      font-size:5.8mm;
+      line-height:1.1;
+      font-weight:700;
+      margin:2mm 0 5.6mm;
+    }
+    .std-subtitle{
+      font-size:4.25mm;
+      line-height:1.14;
+      font-weight:700;
+      margin:5mm 0 3mm;
+      text-align:left;
+    }
+    .country-table{
+      width:100%;
+      border-collapse:collapse;
+      table-layout:fixed;
+      margin:2.2mm 0 2.6mm;
+      font-size:3.0mm;
+      line-height:1.14;
+    }
+    .country-table th,
+    .country-table td{
+      border:1.2px solid #444;
+      padding:2.1px 4px;
+      vertical-align:top;
+    }
+    .country-table th{
+      text-align:center;
+      font-weight:400;
+    }
+    .copyright-right{
+      position:absolute;
+      right:17.5mm;
+      bottom:28mm;
+      font-size:3.95mm;
+      line-height:1.1;
+      text-align:right;
+    }
+    .legal-bottom{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      bottom:9.8mm;
+      font-size:3.65mm;
+      line-height:1.16;
+    }
+
+    .toc-title{
+      text-align:center;
+      font-size:5.4mm;
+      line-height:1.12;
+      font-weight:700;
+      margin:4mm 0 7mm;
+    }
+    .toc-grid{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:2.2mm 2mm;
+      font-size:4.1mm;
+      line-height:1.18;
+      align-items:end;
+    }
+    .toc-grid .num{
+      white-space:nowrap;
+    }
+    .toc-grid .leader{
+      border-bottom:1px dotted #444;
+      height:.7em;
+      transform:translateY(-.13em);
+    }
+    .toc-grid .toc-page-num{
+      display:block;
+      position:static;
+      width:auto;
+      height:auto;
+      margin:0;
+      box-shadow:none;
+      overflow:visible;
+      background:transparent;
+      font-size:inherit;
+      line-height:inherit;
+      text-align:right;
+    }
+    .toc-grid a.doc-ref{
+      text-decoration:none;
+      color:inherit;
+    }
+    .toc-grid a.doc-ref:hover{
+      text-decoration:underline;
+      color:#0f3b6b;
+    }
+
+    .standard-banner{
+      text-align:center;
+      margin-top:2mm;
+    }
+    .standard-banner .top-line,
+    .standard-banner .bottom-line{
+      border-top:1.35px solid #222;
+      margin:0 0 4.2mm;
+    }
+    .standard-banner .bottom-line{
+      margin:6.4mm 0 4mm;
+    }
+    .standard-banner .std-name{
+      font-size:5.2mm;
+      line-height:1.08;
+      letter-spacing:.34em;
+      text-transform:uppercase;
+      font-weight:700;
+      margin:0 0 6mm;
+    }
+    .standard-banner .doc-name{
+      font-size:5.35mm;
+      line-height:1.18;
+      font-weight:700;
+      margin:0 0 4mm;
+    }
+    .standard-banner .doc-sub{
+      font-size:4.8mm;
+      line-height:1.16;
+      font-weight:700;
+      margin:0 0 4mm;
+    }
+    .standard-banner .doc-en{
+      font-size:3.9mm;
+      line-height:1.16;
+      margin:0;
+    }
+    .intro-date{
+      text-align:right;
+      font-size:4.2mm;
+      line-height:1.08;
+      font-weight:700;
+      margin:1.8mm 0 6mm;
+    }
+    .official-bottom-left{
+      position:absolute;
+      left:17.5mm;
+      bottom:5.6mm;
+      font-size:3.7mm;
+      line-height:1;
+      font-weight:700;
+    }
+
+    .dash-list p,
+    p.dash-item{
+      margin-left:4.2mm;
+      text-indent:-4.2mm;
+    }
+    .small-note{
+      font-size:3.08mm;
+      line-height:1.18;
+    }
+    .subpoint{
+      font-weight:700;
+      margin-top:2mm;
+    }
+
+    .keywords-box{
+      margin-top:48mm;
+      border-top:1.2px solid #444;
+      border-bottom:1.2px solid #444;
+      padding:3.8mm 0 4.4mm;
+      font-size:3.5mm;
+      line-height:1.17;
+    }
+    .keywords-meta{
+      display:flex;
+      justify-content:space-between;
+      gap:10mm;
+      font-size:3.75mm;
+      line-height:1.12;
+      margin-bottom:5.6mm;
+    }
+    .biblio-grid{
+      display:grid;
+      grid-template-columns:11mm 24mm 1fr;
+      gap:2mm 3mm;
+      font-size:3.8mm;
+      line-height:1.18;
+      margin:2mm 0 0;
+    }
+    .biblio-grid .idx{
+      white-space:nowrap;
+      text-align:right;
+    }
+    .biblio-grid .code{
+      white-space:nowrap;
+    }
+    .imprint-page .imprint-staff{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      bottom:34mm;
+      text-align:center;
+      font-size:3.35mm;
+      line-height:1.22;
+    }
+    .imprint-page .imprint-meta{
+      position:absolute;
+      left:17.5mm;
+      right:17.5mm;
+      bottom:8mm;
+      text-align:center;
+      font-size:3.15mm;
+      line-height:1.5;
+      border-top:1.2px solid #444;
+      border-bottom:1.2px solid #444;
+      padding:2.2mm 0;
+    }
+    body[data-theme="dark"] .toc-grid .leader,
+    body[data-theme="dark"] .imprint-page .imprint-meta,
+    body[data-theme="dark"] .keywords-box,
+    body[data-theme="dark"] .country-table th,
+    body[data-theme="dark"] .country-table td{
+      border-color:var(--doc-line);
+    }
+
+    .doc{
+      font-size:3.22mm;
+      line-height:1.16;
+    }
+    .doc p{ margin:0 0 1.45mm; }
+    .doc .section{
+      margin:2.9mm 0 1.5mm;
+      font-size:4.5mm;
+      line-height:1.1;
+    }
+    .preface-title{ margin-top:1mm; margin-bottom:4.4mm; }
+    .country-table{ font-size:2.82mm; line-height:1.12; }
+
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h1 class="sidebar-title">ГОСТ 1.0—2015</h1>
+        <p class="sidebar-subtitle">Автономный viewer: одна страница на экране, полнотекстовый поиск, быстрый переход, внутренние ссылки, возврат, темы и печать A4.</p>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="indicator" id="pageIndicator">Страница 1 из 11</div>
+        <div class="sidebar-row">
+          <button id="prevBtn" type="button" class="grow">Назад</button>
+          <button id="nextBtn" type="button" class="grow">Вперед</button>
+        </div>
+        <div class="sidebar-row">
+          <input id="pageInput" type="number" min="1" step="1" value="1" aria-label="Номер страницы" />
+          <button id="goBtn" type="button" class="grow">Перейти</button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-row">
+          <button id="zoomOutBtn" type="button">−</button>
+          <div id="zoomReadout" class="zoom-readout">100%</div>
+          <button id="zoomInBtn" type="button">+</button>
+        </div>
+        <div class="sidebar-row">
+          <button id="zoomResetBtn" type="button" class="grow">Масштаб 100%</button>
+          <button id="printBtn" type="button" class="grow">Печать</button>
+        </div>
+      </div>
+
+      <section class="search-panel" aria-label="Поиск по документу">
+        <h2 class="search-title">Поиск по документу</h2>
+        <div class="search-box" id="docSearchBox">
+          <input id="docSearchInput" class="search-input" type="search" autocomplete="off" spellcheck="false" placeholder="МГС, ГОСТ 1.2, стандартизация, библиография..." aria-label="Поиск по документу" aria-controls="docSearchDropdown" aria-expanded="false" />
+          <div id="docSearchDropdown" class="search-dropdown" aria-live="polite" hidden>
+            <div id="docSearchSuggestions" class="search-suggestions" role="listbox" aria-label="Автоподсказки поиска"></div>
+            <div id="docSearchResults" class="search-results">
+              <div class="search-results-empty">Начните вводить запрос, чтобы найти совпадения по всему ГОСТ.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="page-list-wrap">
+        <div class="page-list-title">Быстрый переход</div>
+        <div class="page-list" id="pageList"></div>
+      </div>
+
+      <div class="sidebar-note">Клавиши: ← → — страницы, PageUp / PageDown — страницы, Home / End — первая / последняя.</div>
+    </aside>
+
+    <main class="workspace" id="workspace">
+      <div class="viewer-tools" aria-label="Параметры просмотра">
+        <button id="biblioBackBtn" class="viewer-back-btn" type="button" hidden aria-hidden="true" aria-label="Вернуться к месту, откуда был выполнен внутренний переход" title="Вернуться к месту перехода">
+          <span class="viewer-back-btn-icon" aria-hidden="true">←</span>
+          <span class="viewer-back-btn-label">Назад</span>
+        </button>
+        <button id="themeToggleBtn" class="theme-toggle" type="button" aria-pressed="false" aria-label="Включена дневная тема. Переключить на ночную тему" title="Переключить дневную и ночную тему">
+          <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+          <span class="theme-toggle-label">Ночная тема</span>
+        </button>
+      </div>
+      <div class="workspace-scroll">
+        <div class="page-frame" id="pageFrame">
+
+          <section class="page active g10-cover" data-page="1" aria-label="Обложка" id="cover-page">
+            <div class="cover">
+              <div class="cover-top-line"></div>
+              <div class="cover-top-text">
+                МЕЖГОСУДАРСТВЕННЫЙ СОВЕТ ПО СТАНДАРТИЗАЦИИ, МЕТРОЛОГИИ И СЕРТИФИКАЦИИ<br>
+                (МГС)<br>
+                INTERSTATE COUNCIL FOR STANDARDIZATION, METROLOGY AND CERTIFICATION<br>
+                (ISC)
+              </div>
+              <div class="cover-mid-line"></div>
+              <div class="cover-std-label">МЕЖГОСУДАРСТВЕННЫЙ<br>СТАНДАРТ</div>
+              <div class="cover-gost">ГОСТ<br>1.0—<br>2015</div>
+              <div class="cover-low-line"></div>
+              <div class="cover-main-title">
+                Межгосударственная система стандартизации
+                <span class="subtitle">Основные положения</span>
+                <span class="official">Издание официальное</span>
+              </div>
+              <div class="cover-logo-box" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="27 40 186 151" aria-label="Логотип Стандартинформ">
+                  <path fill="currentColor" fill-rule="evenodd" d="M209 40 L 207 42 L 206 42 L 204 44 L 203 44 L 202 45 L 201 45 L 199 47 L 198 47 L 197 48 L 196 48 L 195 49 L 194 49 L 193 50 L 192 50 L 191 51 L 190 51 L 189 52 L 188 52 L 187 53 L 185 53 L 184 54 L 183 54 L 182 55 L 180 55 L 179 56 L 178 56 L 177 57 L 175 57 L 174 58 L 172 58 L 171 59 L 169 59 L 168 60 L 165 60 L 164 61 L 161 61 L 160 62 L 157 62 L 156 63 L 152 63 L 151 64 L 146 64 L 145 65 L 138 65 L 137 66 L 121 66 L 120 65 L 114 65 L 113 64 L 110 64 L 109 63 L 106 63 L 105 62 L 102 62 L 101 61 L 99 61 L 98 60 L 95 60 L 94 59 L 91 59 L 90 58 L 86 58 L 85 57 L 81 57 L 80 56 L 75 56 L 74 55 L 51 55 L 50 56 L 46 56 L 45 57 L 42 57 L 41 58 L 39 58 L 38 59 L 37 59 L 36 60 L 34 60 L 33 61 L 32 61 L 31 62 L 30 62 L 29 63 L 28 63 L 27 64 L 27 186 L 124 186 L 127 189 L 128 189 L 129 190 L 131 190 L 132 189 L 133 189 L 136 186 L 212 186 L 210 184 L 210 183 L 208 181 L 208 180 L 206 178 L 206 177 L 205 176 L 206 175 L 209 175 L 210 174 L 210 40 Z M38 175 L 126 175 L 131 180 L 131 184 L 129 186 L 127 186 L 121 180 L 38 180 L 37 179 L 37 178 L 36 177 Z M116 106 L 117 105 L 147 105 L 148 106 L 148 114 L 147 115 L 139 115 L 138 116 L 138 130 L 137 131 L 128 131 L 126 129 L 126 115 L 117 115 L 116 114 Z M112 101 L 113 100 L 121 100 L 122 101 L 125 101 L 126 102 L 127 102 L 128 103 L 127 104 L 114 104 L 114 117 L 123 117 L 124 118 L 124 132 L 126 132 L 127 133 L 126 134 L 122 134 L 121 135 L 115 135 L 114 134 L 111 134 L 110 133 L 108 133 L 107 132 L 106 132 L 104 130 L 103 130 L 102 129 L 102 128 L 100 126 L 100 125 L 99 124 L 99 123 L 98 122 L 98 112 L 99 111 L 99 110 L 100 109 L 100 108 L 105 103 L 106 103 L 107 102 L 108 102 L 109 101 Z M141 91 L 142 90 L 159 90 L 160 91 L 160 119 L 162 119 L 163 118 L 163 117 L 164 116 L 164 114 L 165 113 L 165 112 L 166 111 L 166 110 L 167 109 L 167 107 L 168 106 L 168 105 L 169 104 L 169 103 L 170 102 L 170 100 L 171 99 L 171 98 L 172 97 L 172 95 L 173 94 L 173 93 L 174 92 L 174 91 L 175 90 L 192 90 L 193 91 L 193 144 L 192 145 L 176 145 L 175 144 L 175 118 L 174 118 L 173 117 L 172 118 L 172 119 L 171 120 L 171 121 L 170 122 L 170 123 L 169 124 L 169 126 L 168 127 L 168 128 L 167 129 L 167 130 L 166 131 L 166 132 L 165 133 L 165 135 L 164 136 L 164 137 L 163 138 L 163 139 L 162 140 L 162 141 L 161 142 L 161 143 L 159 145 L 142 145 L 141 144 L 141 118 L 142 117 L 150 117 L 150 104 L 142 104 L 141 103 Z M93 73 L 94 72 L 108 72 L 109 73 L 114 73 L 115 74 L 119 74 L 120 75 L 122 75 L 123 76 L 125 76 L 126 77 L 127 77 L 128 78 L 129 78 L 130 79 L 131 79 L 132 80 L 133 80 L 136 83 L 137 83 L 140 86 L 139 87 L 139 102 L 137 104 L 135 104 L 134 103 L 134 89 L 133 89 L 132 88 L 130 88 L 129 87 L 126 87 L 125 86 L 122 86 L 121 85 L 117 85 L 116 84 L 93 84 L 92 85 L 88 85 L 87 86 L 84 86 L 83 87 L 82 87 L 81 88 L 79 88 L 78 89 L 77 89 L 75 91 L 74 91 L 73 92 L 72 92 L 64 100 L 64 101 L 62 103 L 62 104 L 61 105 L 61 106 L 60 107 L 60 109 L 59 110 L 59 113 L 58 114 L 58 121 L 59 122 L 59 125 L 60 126 L 60 127 L 61 128 L 61 130 L 62 131 L 62 132 L 64 134 L 64 135 L 72 143 L 73 143 L 75 145 L 76 145 L 77 146 L 78 146 L 79 147 L 80 147 L 81 148 L 82 148 L 83 149 L 84 149 L 85 150 L 87 150 L 88 151 L 91 151 L 92 152 L 98 152 L 99 153 L 113 153 L 114 152 L 119 152 L 120 151 L 123 151 L 124 150 L 126 150 L 127 149 L 129 149 L 130 148 L 131 148 L 132 147 L 133 147 L 134 146 L 134 133 L 135 132 L 138 132 L 139 133 L 139 147 L 141 147 L 142 148 L 142 149 L 137 154 L 136 154 L 134 156 L 133 156 L 131 158 L 130 158 L 129 159 L 128 159 L 127 160 L 125 160 L 124 161 L 123 161 L 122 162 L 119 162 L 118 163 L 115 163 L 114 164 L 107 164 L 106 165 L 95 165 L 94 164 L 88 164 L 87 163 L 84 163 L 83 162 L 81 162 L 80 161 L 78 161 L 77 160 L 75 160 L 74 159 L 73 159 L 72 158 L 71 158 L 70 157 L 69 157 L 67 155 L 66 155 L 62 151 L 61 151 L 57 147 L 57 146 L 54 143 L 54 142 L 52 140 L 52 139 L 51 138 L 51 137 L 50 136 L 50 134 L 49 133 L 49 131 L 48 130 L 48 126 L 47 125 L 47 112 L 48 111 L 48 107 L 49 106 L 49 104 L 50 103 L 50 102 L 51 101 L 51 100 L 52 99 L 52 98 L 53 97 L 53 96 L 54 95 L 54 94 L 58 90 L 58 89 L 60 87 L 61 87 L 66 82 L 67 82 L 69 80 L 70 80 L 71 79 L 72 79 L 73 78 L 74 78 L 75 77 L 77 77 L 78 76 L 79 76 L 80 75 L 82 75 L 83 74 L 87 74 L 88 73 Z M202 50 L 203 49 L 204 49 L 205 50 L 205 170 L 204 171 L 124 171 L 123 170 L 124 169 L 125 169 L 126 168 L 127 168 L 128 167 L 129 167 L 131 165 L 132 165 L 134 163 L 135 163 L 138 160 L 139 160 L 146 153 L 146 152 L 151 147 L 162 147 L 162 146 L 163 145 L 163 144 L 164 143 L 164 142 L 165 141 L 165 140 L 166 139 L 166 137 L 167 136 L 167 135 L 168 134 L 168 133 L 169 132 L 169 131 L 170 130 L 170 128 L 172 126 L 173 127 L 173 147 L 195 147 L 195 87 L 173 87 L 173 88 L 172 89 L 172 90 L 171 91 L 171 93 L 170 94 L 170 95 L 169 96 L 169 97 L 168 98 L 168 100 L 167 101 L 167 102 L 166 103 L 166 104 L 165 105 L 165 107 L 164 108 L 164 109 L 163 110 L 162 109 L 162 87 L 148 87 L 145 84 L 145 83 L 139 77 L 138 77 L 135 74 L 134 74 L 133 73 L 132 73 L 130 71 L 131 70 L 144 70 L 145 69 L 153 69 L 154 68 L 158 68 L 159 67 L 163 67 L 164 66 L 167 66 L 168 65 L 170 65 L 171 64 L 173 64 L 174 63 L 175 63 L 176 62 L 178 62 L 179 61 L 180 61 L 181 60 L 182 60 L 183 59 L 185 59 L 186 58 L 187 58 L 188 57 L 189 57 L 191 55 L 192 55 L 193 54 L 194 54 L 195 53 L 196 53 L 197 52 L 198 52 L 199 51 L 200 51 L 201 50 Z"/>
+                </svg>
+                <div class="cover-bottom-text">Москва<br>Стандартинформ<br>2016</div>
+              </div>
+            </div>
+          </section>
+
+
+          <section class="page" data-page="2" aria-label="Предисловие" id="preface-page">
+            <div class="head-left">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:20mm; bottom:18mm;" id="preface">
+              <div class="preface-title">Предисловие</div>
+              <p>Цели, основные принципы и основной порядок проведения работ по межгосударственной стандартизации установлены в настоящем стандарте и ГОСТ 1.2—2015 «Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Правила разработки, принятия, обновления и отмены».</p>
+
+              <div class="std-subtitle">Сведения о стандарте</div>
+              <p>1 РАЗРАБОТАН Федеральным государственным унитарным предприятием «Всероссийский научно-исследовательский институт стандартизации и сертификации в машиностроении» (ВНИИНМАШ)</p>
+              <p>2 ВНЕСЕН Межгосударственным техническим комитетом по стандартизации МТК 536 «Методология межгосударственной стандартизации»</p>
+              <p>3 ПРИНЯТ Межгосударственным советом по стандартизации, метрологии и сертификации (протокол от 10 декабря 2015 г. № 48)</p>
+              <p>За принятие проголосовали:</p>
+
+              <table class="country-table" aria-label="Таблица голосования по стандарту">
+                <colgroup>
+                  <col style="width:31%">
+                  <col style="width:22%">
+                  <col style="width:47%">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Краткое наименование страны<br>по МК (ИСО 3166) 004—97</th>
+                    <th>Код страны<br>по МК (ИСО 3166) 004—97</th>
+                    <th>Сокращенное наименование национального органа<br>по стандартизации</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>Армения</td><td class="center">AM</td><td>Минэкономики Республики Армения</td></tr>
+                  <tr><td>Беларусь</td><td class="center">BY</td><td>Госстандарт Республики Беларусь</td></tr>
+                  <tr><td>Казахстан</td><td class="center">KZ</td><td>Госстандарт Республики Казахстан</td></tr>
+                  <tr><td>Киргизия</td><td class="center">KG</td><td>Кыргызстандарт</td></tr>
+                  <tr><td>Молдова</td><td class="center">MD</td><td>Молдова-Стандарт</td></tr>
+                  <tr><td>Россия</td><td class="center">RU</td><td>Росстандарт</td></tr>
+                  <tr><td>Таджикистан</td><td class="center">TJ</td><td>Таджикстандарт</td></tr>
+                  <tr><td>Узбекистан</td><td class="center">UZ</td><td>Узстандарт</td></tr>
+                  <tr><td>Украина</td><td class="center">UA</td><td>Минэкономразвития Украины</td></tr>
+                </tbody>
+              </table>
+
+              <p>4 Приказом Федерального агентства по техническому регулированию и метрологии от 11 декабря 2015 г. № 2156-ст межгосударственный стандарт ГОСТ 1.0—2015 введен в действие в качестве национального стандарта Российской Федерации с 1 июля 2016 г.</p>
+              <p>5 ВЗАМЕН ГОСТ 1.0—92</p>
+
+              <p class="italic">Информация об изменениях к настоящему стандарту публикуется в ежегодном информационном указателе «Национальные стандарты», а текст изменений и поправок — в ежемесячном информационном указателе «Национальные стандарты». В случае пересмотра (замены) или отмены настоящего стандарта соответствующее уведомление будет опубликовано в ежемесячном информационном указателе «Национальные стандарты». Соответствующая информация, уведомление и тексты размещаются также в информационной системе общего пользования — на официальном сайте Федерального агентства по техническому регулированию и метрологии в сети Интернет (www.gost.ru).</p>
+            </div>
+            <div class="copyright-right">© Стандартинформ, 2016</div>
+            <div class="legal-bottom">В Российской Федерации настоящий стандарт не может быть полностью или частично воспроизведен, тиражирован и распространен в качестве официального издания без разрешения Федерального агентства по техническому регулированию и метрологии</div>
+            <div class="folio-left roman-folio">II</div>
+          </section>
+
+
+          <section class="page" data-page="3" aria-label="Содержание" id="toc-page">
+            <div class="head-right">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:20mm; bottom:18mm;" id="toc">
+              <div class="toc-title">Содержание</div>
+              <div class="toc-grid">
+                <div class="num">1</div><a href="#section-1" class="doc-ref">Область применения</a><div class="toc-page-num">1</div>
+                <div class="num">2</div><a href="#section-2" class="doc-ref">Нормативные ссылки</a><div class="toc-page-num">1</div>
+                <div class="num">3</div><a href="#section-3" class="doc-ref">Цели межгосударственной стандартизации</a><div class="toc-page-num">2</div>
+                <div class="num">4</div><a href="#section-4" class="doc-ref">Основные принципы межгосударственной стандартизации</a><div class="toc-page-num">2</div>
+                <div class="num">5</div><a href="#section-5" class="doc-ref">Основные направления работ по межгосударственной стандартизации</a><div class="toc-page-num">2</div>
+                <div class="num">6</div><a href="#section-6" class="doc-ref">Организация работ по межгосударственной стандартизации</a><div class="toc-page-num">3</div>
+                <div class="num">7</div><a href="#section-7" class="doc-ref">Объекты межгосударственной стандартизации</a><div class="toc-page-num">4</div>
+                <div class="num">8</div><a href="#section-8" class="doc-ref">Документы по межгосударственной стандартизации и правила их применения</a><div class="toc-page-num">5</div>
+                <div class="num"> </div><a href="#bibliography" class="doc-ref">Библиография</a><div class="toc-page-num">8</div>
+              </div>
+            </div>
+            <div class="folio-right roman-folio">III</div>
+          </section>
+
+
+          <section class="page" data-page="4" aria-label="Страница 1">
+            <div class="head-right">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:18mm; bottom:16mm;">
+              <div class="standard-banner">
+                <div class="std-name">МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</div>
+                <div class="top-line"></div>
+                <div class="doc-name">Межгосударственная система стандартизации</div>
+                <div class="doc-sub">Основные положения</div>
+                <div class="doc-en">Interstate system for standardization. Basic principles</div>
+                <div class="bottom-line"></div>
+              </div>
+              <div class="intro-date">Дата введения — 2016—07—01*</div>
+
+              <div class="section" id="section-1">1 Область применения</div>
+              <p>Настоящий стандарт устанавливает цели и принципы межгосударственной стандартизации, основные направления работ и объекты межгосударственной стандартизации, организационные основы межгосударственной системы стандартизации, категории документов по межгосударственной стандартизации и правила их применения.</p>
+              <p>Примечание — В настоящем стандарте применены термины по ГОСТ 1.1.</p>
+              <p>Настоящий стандарт направлен на реализацию Соглашения о проведении согласованной политики в области стандартизации, метрологии и сертификации (далее — Соглашение).</p>
+              <p>Примечание — Данное Соглашение заключено правительствами стран Содружества Независимых Государств 13 марта 1992 г. в г. Москве (с дополнениями и изменениями от 22 ноября 2007 г., принятыми в г. Ашхабаде).</p>
+              <p>Настоящий стандарт не распространяется на деятельность в отношении межгосударственной стандартизации оборонной продукции и иной продукции, сведения о которой составляют государственную тайну или которую используют для защиты этих сведений.</p>
+
+              <div class="section" id="section-2">2 Нормативные ссылки</div>
+              <p>В настоящем стандарте использованы нормативные ссылки на следующие стандарты:</p>
+              <p>ГОСТ 1.1—2002 Межгосударственная система стандартизации. Термины и определения</p>
+              <p>ГОСТ 1.2—2015 Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Правила разработки, принятия, обновления и отмены</p>
+              <p>ГОСТ 1.3—2014 Межгосударственная система стандартизации. Стандарты межгосударственные. Правила разработки на основе международных и региональных стандартов</p>
+              <p>ГОСТ 1.4—2015 Межгосударственная система стандартизации. Межгосударственные технические комитеты по стандартизации. Правила создания и деятельности</p>
+              <p>ГОСТ 1.5—2001 Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Общие требования к построению, изложению, оформлению, содержанию и обозначению</p>
+
+              <hr class="footnote-rule">
+              <p class="small-note">* Данная дата является общей для всех государств, указанных в предисловии.</p>
+            </div>
+            <div class="footer-line"></div>
+            <div class="official-bottom-left">Издание официальное</div>
+            <div class="folio-right">1</div>
+          </section>
+
+
+          <section class="page" data-page="5" aria-label="Страница 2">
+            <div class="head-left">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:18mm; bottom:16mm;">
+              <p class="small-note">Примечание — При пользовании настоящим стандартом целесообразно проверить действие ссылочных стандартов в информационной системе общего пользования — на официальном сайте Федерального агентства по техническому регулированию и метрологии в сети Интернет или по ежегодному информационному указателю «Национальные стандарты», который опубликован по состоянию на 1 января текущего года, и по выпускам ежемесячного информационного указателя «Национальные стандарты» за текущий год. Если ссылочный документ заменен (изменен), то при пользовании настоящим стандартом следует руководствоваться заменяющим (измененным) стандартом. Если ссылочный стандарт отменен без замены, то положение, в котором дана ссылка на него, применяется в части, не затрагивающей эту ссылку.</p>
+
+              <div class="section" id="section-3">3 Цели межгосударственной стандартизации</div>
+              <p>Основными целями межгосударственной стандартизации являются:</p>
+              <div class="dash-list">
+                <p>- содействие устранению технических барьеров в торговле;</p>
+                <p>- обеспечение безопасности для жизни, здоровья и имущества населения;</p>
+                <p>- содействие охране окружающей среды;</p>
+                <p>- защита интересов потребителей в отношении качества продукции и услуг;</p>
+                <p>- обеспечение совместимости и взаимозаменяемости продукции;</p>
+                <p>- содействие экономии всех видов ресурсов;</p>
+                <p>- содействие повышению качества и конкурентоспособности продукции;</p>
+                <p>- содействие повышению безопасности хозяйственных объектов при возникновении природных и техногенных катастроф, а также других чрезвычайных ситуаций;</p>
+                <p>- обеспечение единства измерений.</p>
+              </div>
+
+              <div class="section" id="section-4">4 Основные принципы межгосударственной стандартизации</div>
+              <p>Основными принципами межгосударственной стандартизации являются:</p>
+              <div class="dash-list">
+                <p>- приоритетное использование международных и европейских стандартов при планировании разработки межгосударственных стандартов;</p>
+                <p>- принятие межгосударственных стандартов на основе консенсуса;</p>
+                <p>- недопустимость создания препятствий производству и обращению продукции, выполнению работ и оказанию услуг;</p>
+                <p>- взаимное стремление всех заинтересованных государств — участников Соглашения к достижению согласия по обеспечению качества взаимопоставляемой продукции;</p>
+                <p>- обеспечение соответствия межгосударственных стандартов современным достижениям науки, техники и технологий;</p>
+                <p>- комплексность стандартизации взаимосвязанных объектов, стандартизуемых на межгосударственном уровне, путем согласованности требований к этим объектам и увязки сроков разработки и введения межгосударственных стандартов в действие;</p>
+                <p>- приоритетное принятие в качестве межгосударственных стандартов национальных (государственных) стандартов, идентичных международным или европейским стандартам;</p>
+                <p>- обязательное введение в действие межгосударственных стандартов на национальном уровне в государствах — участниках Соглашения, которые голосовали за принятие этих стандартов или присоединились к ним в дальнейшем, с соблюдением правил, установленных в <a href="#section-8-3-1" class="doc-ref">8.3.1—8.3.4</a> и <a href="#section-8-4" class="doc-ref">8.4</a>;</p>
+                <p>- обеспечение права участия всех заинтересованных сторон в разработке межгосударственных документов по стандартизации.</p>
+              </div>
+
+              <div class="section" id="section-5">5 Основные направления работ по межгосударственной стандартизации</div>
+              <p><span class="bold" id="section-5-1">5.1</span> Основными направлениями проведения согласованной межгосударственной политики в области стандартизации являются:</p>
+              <div class="dash-list">
+                <p>- установление единых (согласованных, гармонизированных) требований к продукции, обеспечивающих ее безопасность для жизни, здоровья и имущества населения, охрану окружающей среды, совместимость и взаимозаменяемость, а также контролепригодность;</p>
+                <p>- установление единых (согласованных, гармонизированных) методов контроля (испытаний);</p>
+                <p>- стандартизация общетехнических требований, представляющих межгосударственный интерес;</p>
+                <p>- разработка межгосударственных стандартов, правил и рекомендаций по межгосударственной стандартизации в области методологии стандартизации, аккредитации, подтверждения соответствия и метрологии;</p>
+              </div>
+            </div>
+            <div class="folio-left">2</div>
+          </section>
+
+
+          <section class="page" data-page="6" aria-label="Страница 3">
+            <div class="head-right">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:18mm; bottom:16mm;">
+              <div class="dash-list">
+                <p>- разработка межгосударственных классификаторов технико-экономической и социальной информации и систем кодирования;</p>
+                <p>- расширение применения информационных технологий при планировании, разработке и распространении межгосударственных стандартов;</p>
+                <p>- формирование, хранение и ведение фонда документов по межгосударственной стандартизации, а также международных, региональных и национальных стандартов при наличии соответствующих соглашений и договоренностей, обеспечение государств — участников Соглашения этими стандартами;</p>
+                <p>- координация издания и распространения документов по межгосударственной стандартизации;</p>
+                <p>- координация программ подготовки и повышения квалификации кадров в области стандартизации;</p>
+                <p>- координация научно-технического сотрудничества государств — участников Соглашения в работах по международной стандартизации.</p>
+              </div>
+
+              <p><span class="bold" id="section-5-2">5.2</span> Кроме основных направлений проведения согласованной межгосударственной политики в области стандартизации Межгосударственный совет по стандартизации, метрологии и сертификации периодически принимает приоритетные направления работ по межгосударственной стандартизации на ближайшие пять лет.</p>
+
+              <div class="section" id="section-6">6 Организация работ по межгосударственной стандартизации</div>
+              <p><span class="bold">6.1</span> Организацию работ по межгосударственной стандартизации осуществляет Межгосударственный совет по стандартизации, метрологии и сертификации (далее — МГС), который образован на основе Соглашения и является руководящим органом региональной организации по стандартизации, которая признана Международной организацией по стандартизации (the International Organization for Standardization, далее — ISO) и зарегистрирована как Евразийский совет по стандартизации, метрологии и сертификации на основании резолюции Совета ISO 26/1996.</p>
+              <p>В документах по межгосударственной стандартизации применяют аббревиатуры Межгосударственного совета по стандартизации, метрологии и сертификации как региональной организации по стандартизации:</p>
+              <div class="dash-list">
+                <p>- на русском языке — «Евразийский совет по стандартизации, метрологии и сертификации (ЕАСС)»;</p>
+                <p>- на английском языке — «Euro-Asian Council for Standardization, Metrology and Certification (EASC)».</p>
+              </div>
+              <p id="section-6-1-1"><span class="bold">6.1.1</span> В состав МГС входят руководители национальных органов по стандартизации государств — участников Соглашения (далее — национальные органы).</p>
+              <p id="section-6-1-2"><span class="bold">6.1.2</span> МГС осуществляет свою деятельность на основании соответствующего положения и правил процедуры <a href="#biblio-1" class="doc-ref">[1]</a>, <a href="#biblio-2" class="doc-ref">[2]</a>.</p>
+              <p id="section-6-1-3"><span class="bold">6.1.3</span> Высшим органом МГС является заседание членов Совета.</p>
+              <p id="section-6-1-4"><span class="bold">6.1.4</span> Между заседаниями руководство работой МГС осуществляет председатель Совета, которого назначают поочередно из числа руководителей национальных органов на основе принципа ротации на срок не более одного года.</p>
+              <p id="section-6-2"><span class="bold">6.2</span> Рабочим органом МГС является Бюро по стандартам МГС, которое осуществляет свою деятельность на основании соответствующего положения <a href="#biblio-3" class="doc-ref">[3]</a>.</p>
+              <p id="section-6-3"><span class="bold">6.3</span> По основным направлениям деятельности МГС создаются научно-технические комиссии и рабочие группы.</p>
+              <p id="section-6-4"><span class="bold">6.4</span> МГС создает межгосударственные технические комитеты по стандартизации (МТК) и координирует их деятельность в соответствии с ГОСТ 1.4.</p>
+              <p id="section-6-5"><span class="bold">6.5</span> МГС принимает программу работ по межгосударственной стандартизации в соответствии с правилами ее разработки <a href="#biblio-4" class="doc-ref">[4]</a>.</p>
+              <p id="section-6-6"><span class="bold">6.6</span> МГС принимает межгосударственные стандарты, правила и рекомендации по межгосударственной стандартизации в соответствии с ГОСТ 1.2, а межгосударственные классификаторы технико-экономической и социальной информации — в соответствии с порядком, принятым МГС <a href="#biblio-5" class="doc-ref">[5]</a>.</p>
+              <p id="section-6-7"><span class="bold">6.7</span> Бюро по стандартам МГС осуществляет регистрацию принятых документов по межгосударственной стандартизации, а также размещение на издание в автоматизированной информационной системе МГС, хранение и ведение фонда этих документов в соответствии с правилами, принятыми МГС <a href="#biblio-6" class="doc-ref">[6]</a>.</p>
+              <p id="section-6-8"><span class="bold">6.8</span> Как руководящий орган региональной организации по стандартизации, МГС сотрудничает с ISO, Международной электротехнической комиссией (the International Electrotechnical Commission, далее — IEC), Европейским комитетом по стандартизации (European Committee for Standardization, далее — CEN) и Европейским комитетом по стандартизации в электротехнике (European Committee for Electrotechnical Standardization, далее — CENELEC), а также другими международными и региональными организациями по стандартизации, метрологии, сертификации и аккредитации.</p>
+            </div>
+            <div class="folio-right">3</div>
+          </section>
+
+
+          <section class="page" data-page="7" aria-label="Страница 4">
+            <div class="head-left">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:18mm; bottom:16mm;">
+              <div class="section" id="section-7">7 Объекты межгосударственной стандартизации</div>
+              <p><span class="bold" id="section-7-1">7.1</span> Объектами межгосударственной стандартизации являются:</p>
+              <div class="dash-list">
+                <p>- общетехнические нормы и требования, в том числе единый технический язык, типоразмерные ряды и типовые конструкции изделий общемашиностроительного применения (подшипники, крепеж и др.), совместимые программные и технические средства информационных технологий, справочные данные о свойствах материалов и веществ;</p>
+                <p>- объекты крупных промышленных и хозяйственных комплексов (транспорт, энергетика, связь и др.);</p>
+                <p>- объекты крупных межгосударственных социально-экономических и научно-технических программ;</p>
+                <p>- взаимопоставляемая продукция и услуги.</p>
+              </div>
+
+              <p><span class="bold" id="section-7-2">7.2</span> В межгосударственные стандарты включают:</p>
+              <div class="dash-list">
+                <p>- требования безопасности для жизни, здоровья и имущества населения;</p>
+                <p>- основные потребительские (эксплуатационные) свойства продукции, требования к ее упаковке, маркировке, транспортированию, хранению и утилизации;</p>
+                <p>- другие требования к качеству продукции;</p>
+                <p>- требования к качеству услуг;</p>
+                <p>- требования охраны окружающей среды;</p>
+                <p>- требования к совместимости и взаимозаменяемости продукции;</p>
+                <p>- параметрические ряды и типовые конструкции изделий;</p>
+                <p>- методы контроля продукции и услуг;</p>
+                <p>- требования, обеспечивающие техническое единство при разработке, производстве, эксплуатации (применении) продукции и оказании услуг, в том числе правила оформления технической документации;</p>
+                <p>- термины и их определения, условные обозначения и знаки;</p>
+                <p>- метрологические и другие общетехнические правила и нормы;</p>
+                <p>- требования к сохранению и рациональному использованию всех видов ресурсов;</p>
+                <p>- требования к компетентности персонала в выполнении определенных работ и оказании услуг, а также требования к компетентности юридических лиц в выполнении работ по оценке соответствия техническим требованиям.</p>
+              </div>
+
+              <p><span class="bold" id="section-7-3">7.3</span> В зависимости от специфики объекта стандартизации и содержания устанавливаемых к нему требований применяют следующие основные виды межгосударственных стандартов:</p>
+              <div class="dash-list">
+                <p>- стандарты основополагающие;</p>
+                <p>- стандарты на продукцию;</p>
+                <p>- стандарты на услуги;</p>
+                <p>- стандарты на процессы;</p>
+                <p>- стандарты на методы контроля (испытаний, измерений, анализа);</p>
+                <p>- стандарты на термины и определения.</p>
+              </div>
+
+              <p id="section-7-3-1"><span class="bold">7.3.1</span> Основополагающие межгосударственные стандарты устанавливают общие организационно-методические положения для определенной области деятельности, а также общетехнические требования (нормы, правила), обеспечивающие проведение согласованной политики в области межгосударственной стандартизации, техническое единство и взаимосвязь различных областей науки, техники и производства в процессе создания и использования продукции, охрану окружающей среды, охрану труда и другие общетехнические требования.</p>
+              <p id="section-7-3-2"><span class="bold">7.3.2</span> Межгосударственные стандарты на продукцию устанавливают требования к группам однородной продукции и, при необходимости, к конкретной продукции.</p>
+              <p id="section-7-3-3"><span class="bold">7.3.3</span> Межгосударственные стандарты на услуги устанавливают требования к группам однородных услуг и, при необходимости, к конкретной услуге.</p>
+            </div>
+            <div class="folio-left">4</div>
+          </section>
+
+
+          <section class="page" data-page="8" aria-label="Страница 5">
+            <div class="head-right">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:18mm; bottom:18mm;">
+              <p id="section-7-3-4"><span class="bold">7.3.4</span> Межгосударственные стандарты на процессы устанавливают требования к методам (способам, приемам, режимам, нормам) выполнения различного рода работ в технологических процессах разработки, изготовления, хранения, транспортирования, эксплуатации, ремонта и утилизации продукции.</p>
+              <p id="section-7-3-5"><span class="bold">7.3.5</span> Межгосударственные стандарты на методы контроля устанавливают методы (способы, приемы, режимы и др.) проведения испытаний продукции при ее создании, оценке соответствия и использовании (эксплуатации или ином применении).</p>
+              <p id="section-7-3-6"><span class="bold">7.3.6</span> Межгосударственные стандарты на термины и определения устанавливают научно-технические термины и их определения, многократно используемые в науке, технике, технологии, в различных отраслях экономики и иных областях деятельности.</p>
+
+              <div class="section" id="section-8">8 Документы по межгосударственной стандартизации и правила их применения</div>
+              <p><span class="bold" id="section-8-1">8.1</span> К документам по межгосударственной стандартизации относятся:</p>
+              <div class="dash-list">
+                <p>- межгосударственные стандарты;</p>
+                <p>- правила по межгосударственной стандартизации;</p>
+                <p>- рекомендации по межгосударственной стандартизации;</p>
+                <p>- межгосударственные классификаторы технико-экономической и социальной информации.</p>
+              </div>
+
+              <p><span class="bold" id="section-8-2">8.2</span> Межгосударственные стандарты, правила и рекомендации по межгосударственной стандартизации разрабатывают, принимают, обновляют и отменяют в соответствии с ГОСТ 1.2.</p>
+              <p>Построение, изложение, оформление и обозначение межгосударственных стандартов, правил и рекомендаций по межгосударственной стандартизации должно соответствовать требованиям, установленным в ГОСТ 1.5.</p>
+              <p>При применении в качестве основы для проектов межгосударственных стандартов международных и региональных стандартов, а также международных документов, не являющихся международными стандартами, соблюдают правила, установленные в ГОСТ 1.3.</p>
+
+              <p><span class="bold" id="section-8-3">8.3</span> Межгосударственные стандарты, правила и рекомендации по межгосударственной стандартизации применяют в качестве национальных стандартов, правил и рекомендаций по национальной стандартизации в государствах, чьи национальные органы приняли эти стандарты, правила и рекомендации (присоединились к ним), в порядке, установленном этими национальными органами и (или) национальным законодательством данных государств. Применение межгосударственных стандартов, правил и рекомендаций по межгосударственной стандартизации осуществляют непосредственно, без переоформления в национальные стандарты, правила и рекомендации по национальной стандартизации, если это не противоречит национальному законодательству государств — участников Соглашения.</p>
+              <p id="section-8-3-1"><span class="bold">8.3.1</span> Бюро по стандартам МГС размещает принятый и зарегистрированный межгосударственный стандарт (правила и рекомендации по межгосударственной стандартизации) в Интегрированной автоматизированной информационной системе Межгосударственного Совета по стандартизации, метрологии и сертификации (АИС МГС) на стадии «Издание».</p>
+              <p id="section-8-3-2"><span class="bold">8.3.2*</span> Заинтересованный национальный орган получает в АИС МГС зарегистрированный межгосударственный стандарт (правила и рекомендации по межгосударственной стандартизации) и вводит его в действие на территории своего государства в качестве национального стандарта (правил и рекомендаций по национальной стандартизации) путем принятия соответствующего организационно-распорядительного документа. При этом национальный орган устанавливает для стандарта (правил, рекомендаций) дату введения его в действие на территории своего государства и одновременно отменяет противоречащий ему (или дублирующий его) национальный стандарт (стандарты, правила и рекомендации). При этом стандарт (правила, рекомендации) может быть дополнен национальными информационными данными по ГОСТ 1.5 (подраздел 3.15).</p>
+              <p id="section-8-3-3"><span class="bold">8.3.3</span> Заинтересованный национальный орган устанавливает дату введения в действие межгосударственного стандарта в качестве национального стандарта не позднее двух лет со дня регистрации стандарта в Бюро по стандартам МГС. При этом учитывают соответствующие рекомендации национального органа государства-разработчика, которые изложены в пояснительной записке к проекту межгосударственного стандарта.</p>
+
+              <hr class="footnote-rule">
+              <p class="small-note">* Национальный орган может установить собственные правила введения в действие межгосударственных стандартов, если приведенные в 8.3.2 правила противоречат национальному законодательству государства — участника Соглашения.</p>
+            </div>
+            <div class="folio-right">5</div>
+          </section>
+
+
+          <section class="page" data-page="9" aria-label="Страница 6">
+            <div class="head-left">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:18mm; bottom:16mm;">
+              <p>Заинтересованный национальный орган устанавливает дату введения в действие правил (рекомендаций) по межгосударственной стандартизации в качестве национальных правил (рекомендаций) по стандартизации не позднее шести месяцев со дня регистрации правил (рекомендаций) по межгосударственной стандартизации в Бюро по стандартам МГС. При этом учитывают соответствующие рекомендации национального органа государства-разработчика, которые изложены в пояснительной записке к проекту правил (рекомендаций) по межгосударственной стандартизации.</p>
+              <p>После принятия, на этапе регистрации межгосударственного стандарта его библиографические данные Бюро по стандартам МГС (далее — Бюро по стандартам) переводит в информационно-поисковую систему «СНГСтандарт» (ИПС «СНГСтандарт»).</p>
+              <p>Примечание — На сайте МГС (www.easc.org), в разделе «Каталог межгосударственных стандартов» находятся межгосударственные стандарты, принятые по результатам голосования и на заседаниях МГС.</p>
+
+              <p id="section-8-3-4"><span class="bold">8.3.4</span> Для наиболее важных межгосударственных стандартов, правил и рекомендаций по межгосударственной стандартизации, затрагивающих интересы всех государств — участников Соглашения, МГС может установить единую для всех государств дату введения их в действие в качестве национальных стандартов, правил и рекомендаций по национальной стандартизации.</p>
+              <p id="section-8-3-5"><span class="bold">8.3.5</span> По решению национального органа правила и рекомендации по межгосударственной стандартизации могут не вводиться в действие для прямого применения на территории государства — участника Соглашения, а могут быть применены косвенно путем учета при разработке национальных стандартов в области методологии стандартизации и других видов деятельности.</p>
+              <p id="section-8-3-6"><span class="bold">8.3.6</span> Публикацию информации о введении межгосударственного стандарта (правил или рекомендаций по межгосударственной стандартизации) в действие для применения в качестве национального стандарта (правил или рекомендаций по национальной стандартизации), его издание и распространение на территории государства осуществляют в порядке, установленном его национальным органом и (или) национальным законодательством данного государства.</p>
+
+              <p id="section-8-4"><span class="bold">8.4</span> Изменение к межгосударственному стандарту (правилам или рекомендациям по межгосударственной стандартизации) вводят в действие на территории государств после размещения принятого изменения в АИС МГС на стадии «Издание». При этом заинтересованные национальные органы принимают соответствующие организационно-распорядительные документы, устанавливая дату введения в действие изменения к стандарту не ранее трех месяцев, но не позднее одного года со дня регистрации изменения в Бюро по стандартам МГС, если это не противоречит национальному законодательству государства — участника Соглашения.</p>
+              <p id="section-8-4-1"><span class="bold">8.4.1</span> Для изменения к основополагающему стандарту (правилам или рекомендациям по межгосударственной стандартизации), которые затрагивают интересы всех государств — участников Соглашения, МГС может установить единую для всех государств дату введения его в действие.</p>
+              <p id="section-8-4-2"><span class="bold">8.4.2</span> Публикацию информации о введении в действие изменения к межгосударственному стандарту (правилам или рекомендациям по межгосударственной стандартизации) в государстве, в котором применяют данный стандарт (правила и рекомендации), и при необходимости публикацию текста самого изменения осуществляют в порядке, установленном национальным органом этого государства. При этом публикацию текста изменения к стандарту (правилам, рекомендациям) осуществляют на тех языках, на которых издан данный стандарт (правила и рекомендации).</p>
+
+              <p id="section-8-5"><span class="bold">8.5</span> В случае применения национального стандарта государства — участника Соглашения (согласно ГОСТ 1.2, пункт 4.7) его оформление осуществляется в соответствии с ГОСТ 1.3 (раздел 6).</p>
+              <p id="section-8-6"><span class="bold">8.6</span> Если межгосударственный стандарт не введен в действие в качестве национального стандарта в каком-либо государстве — участнике Соглашения, то этот стандарт можно применять в экономических отношениях с предприятиями тех стран, в которых действует данный стандарт, для изготовления и поставки продукции на экспорт в эти страны или для оказания им услуг, а также в иных случаях, обусловленных договорами (контрактами) между заинтересованными сторонами.</p>
+              <p id="section-8-7"><span class="bold">8.7</span> Разработку и ведение межгосударственных классификаторов технико-экономической и социальной информации осуществляют в соответствии с порядком, принятым МГС <a href="#biblio-5" class="doc-ref">[5]</a>, а при их гармонизации соблюдают соответствующее положение <a href="#biblio-7" class="doc-ref">[7]</a>.</p>
+              <p>Межгосударственные классификаторы технико-экономической и социальной информации применяют в государствах — участниках Соглашения в качестве соответствующих национальных классификаторов при разработке различной документации, в том числе при указании установленных данными классификаторами кодов и наименований объектов классификации.</p>
+              <p id="section-8-8"><span class="bold">8.8</span> Национальный орган государства, в котором применяют межгосударственный стандарт, вправе прекратить его применение в качестве национального стандарта в одностороннем порядке в следующих случаях:</p>
+            </div>
+            <div class="folio-left">6</div>
+          </section>
+
+
+          <section class="page" data-page="10" aria-label="Страница 7">
+            <div class="head-right">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:18mm; bottom:16mm;">
+              <div class="dash-list">
+                <p>- при возникновении противоречий между требованиями (правилами), установленными в данном стандарте, и положениями законодательного акта (в том числе технического регламента), принятого в этом государстве;</p>
+                <p>- при несоответствии установленных в данном стандарте требований (правил) потребностям национальной экономики и/или безопасности;</p>
+                <p>- при несогласии с содержанием изменения, внесенного в данный межгосударственный стандарт, или содержанием межгосударственного стандарта, принятого взамен действовавшего стандарта, а также в других обоснованных случаях.</p>
+              </div>
+
+              <p id="section-8-8-1"><span class="bold">8.8.1</span> В случае принятия решения о прекращении применения межгосударственного стандарта в государстве — участнике Соглашения в качестве национального стандарта в одностороннем порядке национальный орган этого государства направляет соответствующее уведомление (с указанием причины) в Бюро по стандартам МГС и национальные органы других государств, применяющих данный стандарт, не позднее чем за два месяца до даты прекращения применения.</p>
+              <p id="section-8-8-2"><span class="bold">8.8.2</span> Информацию о прекращении применения межгосударственного стандарта в государстве — участнике Соглашения в качестве национального стандарта в одностороннем порядке направляют в Бюро по стандартам МГС для актуализации электронного каталога «Межгосударственные стандарты».</p>
+              <p id="section-8-9"><span class="bold">8.9</span> Решение о прекращении применения межгосударственного стандарта в качестве национального стандарта в связи с его отменой или в одностороннем порядке национальный орган оформляет принятием соответствующего организационно-распорядительного документа с публикацией официальной информации об этом решении в порядке, установленном этим национальным органом.</p>
+              <p id="section-8-10"><span class="bold">8.10</span> Одностороннее прекращение применения правил по межгосударственной стандартизации в государстве — участнике Соглашения не допускается, за исключением случая возникновения противоречий между положениями, установленными в них и в законодательных актах этого государства. При этом осуществляют процедуры, указанные в <a href="#section-8-8-1" class="doc-ref">8.8.1—8.8.3</a>.</p>
+              <p id="section-8-11"><span class="bold">8.11</span> Национальный орган государства, в котором применяют рекомендации по межгосударственной стандартизации, вправе прекратить их применение в одностороннем порядке, если их содержание не отвечает интересам этого государства. При этом осуществляют процедуры, указанные в <a href="#section-8-8-1" class="doc-ref">8.8.1—8.8.3</a>.</p>
+            </div>
+            <div class="folio-right">7</div>
+          </section>
+
+
+          <section class="page imprint-page" data-page="11" aria-label="Библиография и издательские сведения">
+            <div class="head-left">ГОСТ 1.0—2015</div>
+            <div class="content doc" style="top:20mm; bottom:70mm;" id="bibliography">
+              <div class="preface-title" style="font-size:5.2mm; margin-bottom:5mm;">Библиография</div>
+
+              <div class="biblio-grid">
+                <div class="idx" id="biblio-1">[1]</div><div class="code"></div><div>Положение о Межгосударственном совете по стандартизации, метрологии и сертификации</div>
+                <div class="idx" id="biblio-2">[2]</div><div class="code"></div><div>Правила процедуры Межгосударственного совета по стандартизации, метрологии и сертификации</div>
+                <div class="idx" id="biblio-3">[3]</div><div class="code"></div><div>Положение о Бюро по стандартам Межгосударственного совета по стандартизации, метрологии и сертификации</div>
+                <div class="idx" id="biblio-4">[4]</div><div class="code">ПМГ 22—2004</div><div>Правила разработки программы работ по межгосударственной стандартизации</div>
+                <div class="idx" id="biblio-5">[5]</div><div class="code">ПМГ 13—95</div><div>Порядок разработки и ведения межгосударственных классификаторов</div>
+                <div class="idx" id="biblio-6">[6]</div><div class="code">ПМГ 03—2011</div><div>Порядок регистрации, издания и обеспечения нормативными документами по межгосударственной стандартизации</div>
+                <div class="idx" id="biblio-7">[7]</div><div class="code">ПМГ 14—96</div><div>Положение о гармонизации классификаторов технико-экономической и социальной информации</div>
+              </div>
+
+              <div class="keywords-box">
+                <div class="keywords-meta">
+                  <div>УДК 006.05:006.354</div>
+                  <div>МКС 01.120</div>
+                </div>
+                <div id="keywords">
+                  Ключевые слова: стандартизация межгосударственная; цели, задачи, принципы, основные направления работ и объекты межгосударственной стандартизации; организационные основы межгосударственной системы стандартизации; категории документов по межгосударственной стандартизации; правила применения
+                </div>
+              </div>
+            </div>
+
+            <div class="imprint-staff" id="imprint">
+              Редактор А. А. Микрюков<br>
+              Технический редактор В. Ю. Фотиева<br>
+              Корректор М. М. Малахова<br>
+              Компьютерная верстка А. Н. Золотаревой
+            </div>
+            <div class="imprint-meta">
+              Сдано в набор 13.01.2016. Подписано в печать 11.02.2016. Формат 60×84 1/8. Гарнитура Ариал.<br>
+              Усл. печ. л. 1,40. Уч.-изд. л. 1,05. Тираж 165 экз. Зак. 463.<br>
+              Издано и отпечатано во ФГУП «СТАНДАРТИНФОРМ», 123995 Москва, Гранатный пер., 4.<br>
+              www.gostinfo.ru &nbsp;&nbsp;&nbsp;&nbsp; info@gostinfo.ru
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </main>
+  </div>
+  <script>
+
+
+    (() => {
+      const pages = Array.from(document.querySelectorAll('.page'));
+      const workspace = document.getElementById('workspace');
+      const pageFrame = document.getElementById('pageFrame');
+      const pageList = document.getElementById('pageList');
+
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const pageIndicator = document.getElementById('pageIndicator');
+      const pageInput = document.getElementById('pageInput');
+      const goBtn = document.getElementById('goBtn');
+      const zoomOutBtn = document.getElementById('zoomOutBtn');
+      const zoomResetBtn = document.getElementById('zoomResetBtn');
+      const zoomInBtn = document.getElementById('zoomInBtn');
+      const zoomReadout = document.getElementById('zoomReadout');
+      const printBtn = document.getElementById('printBtn');
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const biblioBackBtn = document.getElementById('biblioBackBtn');
+
+      const docSearchBox = document.getElementById('docSearchBox');
+      const docSearchInput = document.getElementById('docSearchInput');
+      const docSearchDropdown = document.getElementById('docSearchDropdown');
+      const docSearchSuggestions = document.getElementById('docSearchSuggestions');
+      const docSearchResults = document.getElementById('docSearchResults');
+
+            const NAV_ITEMS = [
+        { label: 'Обложка', targetPageIndex: 0, targetSelector: '#cover-page' },
+        { label: 'Предисловие и сведения о стандарте', targetPageIndex: 1, targetSelector: '#preface' },
+        { label: 'Содержание', targetPageIndex: 2, targetSelector: '#toc' },
+        { label: '1. Область применения', targetPageIndex: 3, targetSelector: '#section-1' },
+        { label: '2. Нормативные ссылки', targetPageIndex: 3, targetSelector: '#section-2' },
+        { label: '3. Цели межгосударственной стандартизации', targetPageIndex: 4, targetSelector: '#section-3' },
+        { label: '4. Основные принципы межгосударственной стандартизации', targetPageIndex: 4, targetSelector: '#section-4' },
+        { label: '5. Основные направления работ по межгосударственной стандартизации', targetPageIndex: 4, targetSelector: '#section-5' },
+        { label: '5.2. Приоритетные направления работ по межгосударственной стандартизации', targetPageIndex: 5, targetSelector: '#section-5-2' },
+        { label: '6. Организация работ по межгосударственной стандартизации', targetPageIndex: 5, targetSelector: '#section-6' },
+        { label: '7. Объекты межгосударственной стандартизации', targetPageIndex: 6, targetSelector: '#section-7' },
+        { label: '8. Документы по межгосударственной стандартизации и правила их применения', targetPageIndex: 7, targetSelector: '#section-8' },
+        { label: '8.3.4. Дата введения национальных стандартов', targetPageIndex: 8, targetSelector: '#section-8-3-4' },
+        { label: '8.8.1. Уведомление о прекращении применения МГС в государстве — участнике Соглашения', targetPageIndex: 9, targetSelector: '#section-8-8-1' },
+        { label: 'Библиография', targetPageIndex: 10, targetSelector: '#bibliography' },
+        { label: 'Издательские сведения', targetPageIndex: 10, targetSelector: '#imprint' }
+      ];
+
+            const SEARCHABLE_SELECTOR = [
+        '.cover-top-text',
+        '.cover-std-label',
+        '.cover-gost',
+        '.cover-main-title',
+        '.cover-bottom-text',
+        '.preface-title',
+        '.std-subtitle',
+        '.toc-title',
+        '.toc-grid',
+        '.standard-banner',
+        '.intro-date',
+        '.section',
+        '.subsection',
+        '.doc p',
+        '.doc li',
+        '.std-table th',
+        '.std-table td',
+        '.country-table th',
+        '.country-table td',
+        '.keywords-box',
+        '.biblio-grid',
+        '.imprint-staff',
+        '.imprint-meta',
+        '.legal-bottom',
+        '.copyright-right'
+      ].join(', ');
+
+      const searchIndex = [];
+      const suggestionCandidates = [];
+      const suggestionKeys = new Set();
+
+      let currentPage = 0;
+      let zoom = 1;
+      let activeSearchElement = null;
+      let searchResults = [];
+      let currentNavigationElement = null;
+      let currentNavigationHash = '';
+      let activePageListScrollFrame = 0;
+      let generatedNavAnchorCounter = 0;
+
+      const bibliographyNavigationStack = [];
+      const THEME_STORAGE_KEY = 'gost1_0_2015.viewer.theme';
+
+      function updateThemeToggle(theme){
+        const isDark = theme === 'dark';
+        document.body.dataset.theme = isDark ? 'dark' : 'light';
+        themeToggleBtn.setAttribute('aria-pressed', String(isDark));
+        themeToggleBtn.setAttribute('aria-label', isDark
+          ? 'Включена ночная тема. Переключить на дневную тему'
+          : 'Включена дневная тема. Переключить на ночную тему');
+        themeToggleBtn.title = isDark ? 'Переключить на дневную тему' : 'Переключить на ночную тему';
+
+        const icon = themeToggleBtn.querySelector('.theme-toggle-icon');
+        const label = themeToggleBtn.querySelector('.theme-toggle-label');
+        if (icon) icon.textContent = isDark ? '☀' : '☾';
+        if (label) label.textContent = isDark ? 'Дневная тема' : 'Ночная тема';
+      }
+
+      function getStoredTheme(){
+        try {
+          const savedTheme = localStorage.getItem(THEME_STORAGE_KEY);
+          return savedTheme === 'dark' ? 'dark' : 'light';
+        } catch (err) {
+          return 'light';
+        }
+      }
+
+      function applyTheme(theme){
+        const nextTheme = theme === 'dark' ? 'dark' : 'light';
+        updateThemeToggle(nextTheme);
+        try {
+          localStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+        } catch (err) {}
+      }
+
+
+      function clampPage(index){
+        return Math.max(0, Math.min(pages.length - 1, index));
+      }
+
+      function normalizeSearchText(value){
+        return String(value || '')
+          .toLowerCase()
+          .replace(/ё/g, 'е')
+          .replace(/[\u00a0\u2000-\u200b\u202f\u205f\u3000]/g, ' ')
+          .replace(/[\u2010-\u2015\u2212\-‐‑‒–—―]/g, '-')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function plainText(value){
+        return String(value || '')
+          .replace(/[\u00a0\u202f]+/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+      }
+
+      function escapeHtml(value){
+        return String(value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function isWordChar(value){
+        return /[\p{L}\p{N}]/u.test(value || '');
+      }
+
+      function buildCompactSearchMap(text){
+        const source = String(text || '');
+        let compactText = '';
+        const indexMap = [];
+
+        for (let index = 0; index < source.length; index += 1) {
+          const char = source[index];
+          if (isWordChar(char)) {
+            compactText += char;
+            indexMap.push(index);
+          }
+        }
+
+        return { compactText, indexMap };
+      }
+
+      function findTextMatches(text, query){
+        if (!text || !query) return [];
+
+        const collected = [];
+        const seen = new Set();
+        let fromIndex = 0;
+
+        while (fromIndex <= text.length - query.length) {
+          const foundIndex = text.indexOf(query, fromIndex);
+          if (foundIndex < 0) break;
+
+          const key = `${foundIndex}:${foundIndex + query.length}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            collected.push({
+              start: foundIndex,
+              end: foundIndex + query.length
+            });
+          }
+
+          fromIndex = foundIndex + Math.max(query.length, 1);
+        }
+
+        const compactQuery = buildCompactSearchMap(query).compactText;
+        if (!compactQuery) {
+          return collected;
+        }
+
+        const compactTextData = buildCompactSearchMap(text);
+        let compactFromIndex = 0;
+
+        while (compactFromIndex <= compactTextData.compactText.length - compactQuery.length) {
+          const compactFoundIndex = compactTextData.compactText.indexOf(compactQuery, compactFromIndex);
+          if (compactFoundIndex < 0) break;
+
+          const start = compactTextData.indexMap[compactFoundIndex];
+          const end = compactTextData.indexMap[compactFoundIndex + compactQuery.length - 1] + 1;
+          const key = `${start}:${end}`;
+
+          if (!seen.has(key)) {
+            seen.add(key);
+            collected.push({ start, end });
+          }
+
+          compactFromIndex = compactFoundIndex + Math.max(compactQuery.length, 1);
+        }
+
+        collected.sort((a, b) => {
+          if (a.start !== b.start) return a.start - b.start;
+          return a.end - b.end;
+        });
+
+        return collected;
+      }
+
+      function getElementTextMap(element){
+        const textNodes = [];
+        const positions = [];
+        let combinedText = '';
+        let previousWasSpace = true;
+
+        const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null);
+        let node = walker.nextNode();
+
+        while (node) {
+          const value = node.nodeValue || '';
+          for (let i = 0; i < value.length; i += 1) {
+            const char = value[i];
+            if (/\s/u.test(char)) {
+              if (!previousWasSpace && combinedText) {
+                combinedText += ' ';
+                positions.push({ node, offset: i });
+                previousWasSpace = true;
+              }
+            } else {
+              combinedText += char;
+              positions.push({ node, offset: i });
+              previousWasSpace = false;
+            }
+          }
+          textNodes.push(node);
+          node = walker.nextNode();
+        }
+
+        while (combinedText.endsWith(' ')) {
+          combinedText = combinedText.slice(0, -1);
+          positions.pop();
+        }
+
+        return { combinedText, positions };
+      }
+
+      function clearSearchHighlight(){
+        const marks = document.querySelectorAll('mark.search-target[data-search-highlight="true"]');
+        marks.forEach((mark) => {
+          const parent = mark.parentNode;
+          if (!parent) return;
+          while (mark.firstChild) {
+            parent.insertBefore(mark.firstChild, mark);
+          }
+          parent.removeChild(mark);
+          parent.normalize();
+        });
+        activeSearchElement = null;
+      }
+
+      function highlightMatchInElement(element, matchStart, matchEnd){
+        clearSearchHighlight();
+        if (!element || typeof matchStart !== 'number' || typeof matchEnd !== 'number' || matchEnd <= matchStart) return false;
+
+        const textMap = getElementTextMap(element);
+        if (!textMap.combinedText || !textMap.positions.length) return false;
+
+        const limitedStart = Math.max(0, Math.min(matchStart, textMap.positions.length - 1));
+        const limitedEnd = Math.max(limitedStart + 1, Math.min(matchEnd, textMap.positions.length));
+
+        const segments = [];
+        for (let idx = limitedStart; idx < limitedEnd; idx += 1) {
+          const current = textMap.positions[idx];
+          if (!current || !current.node) continue;
+          const previous = segments[segments.length - 1];
+          if (previous && previous.node === current.node && previous.endOffset === current.offset) {
+            previous.endOffset = current.offset + 1;
+          } else {
+            segments.push({
+              node: current.node,
+              startOffset: current.offset,
+              endOffset: current.offset + 1
+            });
+          }
+        }
+
+        if (!segments.length) return false;
+
+        const marks = [];
+        for (let idx = segments.length - 1; idx >= 0; idx -= 1) {
+          const segment = segments[idx];
+          const range = document.createRange();
+          range.setStart(segment.node, segment.startOffset);
+          range.setEnd(segment.node, segment.endOffset);
+          const mark = document.createElement('mark');
+          mark.className = 'search-target';
+          mark.dataset.searchHighlight = 'true';
+          range.surroundContents(mark);
+          marks.push(mark);
+        }
+
+        activeSearchElement = marks[marks.length - 1] || null;
+        return Boolean(activeSearchElement);
+      }
+
+      function addSuggestionCandidate(label, meta = {}){
+        const cleanLabel = plainText(label);
+        if (!cleanLabel) return;
+        const key = normalizeSearchText(cleanLabel);
+        if (!key || suggestionKeys.has(key)) return;
+        suggestionKeys.add(key);
+        suggestionCandidates.push({
+          label: cleanLabel,
+          normalized: key,
+          pageIndex: typeof meta.pageIndex === 'number' ? meta.pageIndex : null,
+          element: meta.element || null
+        });
+      }
+
+      function ensureStableNavigationHash(element, prefix = 'nav-anchor'){
+        if (!element) return '';
+        if (element.id) return `#${element.id}`;
+
+        generatedNavAnchorCounter += 1;
+        const nextId = `${prefix}-${generatedNavAnchorCounter}`;
+        element.id = nextId;
+        return `#${nextId}`;
+      }
+
+      function syncLocationHash(hash){
+        const cleanHash = hash && String(hash).startsWith('#') ? String(hash) : '';
+        const nextUrl = `${window.location.pathname}${window.location.search}${cleanHash}`;
+        try {
+          history.replaceState(null, '', nextUrl);
+        } catch (err) {
+          if (cleanHash) {
+            window.location.hash = cleanHash.slice(1);
+          }
+        }
+      }
+
+      function normalizeHash(hash){
+        return hash && String(hash).startsWith('#') ? String(hash) : '';
+      }
+
+      function resolveNavItemElement(item){
+        if (!item || !item.targetSelector) return null;
+        try {
+          return document.querySelector(item.targetSelector);
+        } catch (err) {
+          return null;
+        }
+      }
+
+      function isDocumentOrderBeforeOrEqual(baseElement, targetElement){
+        if (!baseElement || !targetElement) return false;
+        if (baseElement === targetElement) return true;
+        const relation = baseElement.compareDocumentPosition(targetElement);
+        return Boolean(relation & Node.DOCUMENT_POSITION_FOLLOWING);
+      }
+
+      function findBestActiveNavIndex(){
+        const exactHash = normalizeHash(currentNavigationHash) || normalizeHash(window.location.hash);
+        if (exactHash) {
+          const exactIndex = NAV_ITEMS.findIndex((item) => normalizeHash(item.targetSelector) === exactHash);
+          if (exactIndex >= 0) return exactIndex;
+        }
+
+        const candidates = NAV_ITEMS
+          .map((item, index) => ({
+            index,
+            item,
+            element: resolveNavItemElement(item)
+          }))
+          .filter((entry) => entry.item.targetPageIndex === currentPage);
+
+        if (!candidates.length) return -1;
+
+        if (currentNavigationElement) {
+          let bestMatch = null;
+          candidates.forEach((entry) => {
+            if (!entry.element) return;
+            if (isDocumentOrderBeforeOrEqual(entry.element, currentNavigationElement)) {
+              if (!bestMatch || isDocumentOrderBeforeOrEqual(bestMatch.element, entry.element)) {
+                bestMatch = entry;
+              }
+            }
+          });
+          if (bestMatch) return bestMatch.index;
+        }
+
+        return candidates[0].index;
+      }
+
+      function enhanceInternalDocumentLinks(){
+        const paragraphRules = [
+          {
+            match: (text) => text.includes('Пластинка черно-белая контрастная (п. 1.2).'),
+            replacements: [
+              { pattern: /п\.\s*1\.2/g, replacement: '<a href="#section-1-2" class="doc-ref">п. 1.2</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('Приборы оптические по п. 2.2.'),
+            replacements: [
+              { pattern: /п\.\s*2\.2/g, replacement: '<a href="#section-2-2" class="doc-ref">п. 2.2</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('Пластинка черная, приготовленная по п. 2.2.'),
+            replacements: [
+              { pattern: /п\.\s*2\.2/g, replacement: '<a href="#section-2-2" class="doc-ref">п. 2.2</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('Измерение коэффициентов яркости проводят по п. 2.3 настоящего стандарта.'),
+            replacements: [
+              { pattern: /п\.\s*2\.3/g, replacement: '<a href="#section-2-3" class="doc-ref">п. 2.3</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('По величинам коэффициентов яркости вычисляют коэффициент контрастности по формуле (6).'),
+            replacements: [
+              { pattern: /формуле\s*\(6\)/g, replacement: '<a href="#formula-6" class="doc-ref">формуле (6)</a>' }
+            ]
+          },
+          {
+            match: (text) => text.includes('Укрывистость лакокрасочного материала, готового к применению, вычисляют по формуле (3).'),
+            replacements: [
+              { pattern: /формуле\s*\(3\)/g, replacement: '<a href="#formula-3" class="doc-ref">формуле (3)</a>' }
+            ]
+          }
+        ];
+
+        document.querySelectorAll('.doc p').forEach((paragraph) => {
+          const plain = plainText(paragraph.textContent);
+          const rule = paragraphRules.find((item) => item.match(plain));
+          if (!rule) return;
+
+          let nextHtml = paragraph.innerHTML;
+          rule.replacements.forEach((item) => {
+            nextHtml = nextHtml.replace(item.pattern, item.replacement);
+          });
+          paragraph.innerHTML = nextHtml;
+        });
+      }
+
+      function getActiveBibliographyNavigation(){
+        const state = bibliographyNavigationStack[bibliographyNavigationStack.length - 1] || null;
+        if (!state) return null;
+        return state.targetPageIndex === currentPage ? state : null;
+      }
+
+      function updateBibliographyBackButton(){
+        if (!biblioBackBtn) return;
+        const activeState = getActiveBibliographyNavigation();
+        const shouldShow = Boolean(activeState);
+        biblioBackBtn.hidden = !shouldShow;
+        biblioBackBtn.disabled = !shouldShow;
+        biblioBackBtn.setAttribute('aria-hidden', String(!shouldShow));
+      }
+
+      function rememberBibliographyNavigation(sourceElement, targetHash){
+        const targetPageIndex = getTargetPageIndex(targetHash);
+        if (!sourceElement || targetPageIndex < 0) return;
+
+        bibliographyNavigationStack.push({
+          sourceElement,
+          sourcePageIndex: currentPage,
+          sourceHash: ensureStableNavigationHash(sourceElement, 'doc-ref-source'),
+          targetHash,
+          targetPageIndex
+        });
+
+        if (bibliographyNavigationStack.length > 24) {
+          bibliographyNavigationStack.splice(0, bibliographyNavigationStack.length - 24);
+        }
+      }
+
+      function discardBibliographyNavigationForPageChange(previousPage, nextPage){
+        if (previousPage === nextPage) return;
+        const activeState = bibliographyNavigationStack[bibliographyNavigationStack.length - 1];
+        if (!activeState) return;
+        if (activeState.targetPageIndex === previousPage && previousPage !== nextPage) {
+          bibliographyNavigationStack.pop();
+        }
+      }
+
+      function goBackFromBibliographyReference(){
+        const state = bibliographyNavigationStack.pop();
+        updateBibliographyBackButton();
+        if (!state) return;
+
+        if (state.sourceElement && document.contains(state.sourceElement)) {
+          navigateToElement(state.sourceElement, {
+            pageIndex: state.sourcePageIndex,
+            syncUrl: false,
+            urlHash: state.sourceHash || ''
+          });
+          return;
+        }
+
+        if (state.sourceHash) {
+          navigateToSelector(state.sourceHash, false, { urlHash: state.sourceHash });
+          return;
+        }
+
+        goToPage(state.sourcePageIndex);
+        syncLocationHash('');
+      }
+
+      function scrollActivePageButtonIntoView(button){
+        if (!button || !pageList) return;
+
+        const container = pageList;
+        const maxScrollTop = Math.max(0, container.scrollHeight - container.clientHeight);
+        if (maxScrollTop <= 0) return;
+
+        const currentScrollTop = container.scrollTop;
+        const visibleTop = currentScrollTop;
+        const visibleBottom = currentScrollTop + container.clientHeight;
+        const buttonTop = button.offsetTop;
+        const buttonBottom = buttonTop + button.offsetHeight;
+        const edgeGap = 8;
+        const preferredTopBand = visibleTop + Math.min(42, Math.max(18, container.clientHeight * 0.22));
+
+        const fullyVisible = buttonTop >= visibleTop + edgeGap && buttonBottom <= visibleBottom - edgeGap;
+        const alreadyNearTop = buttonTop <= preferredTopBand + 14;
+
+        let nextScrollTop = null;
+
+        if (!fullyVisible) {
+          nextScrollTop = buttonTop - edgeGap;
+        } else if (!alreadyNearTop && buttonTop > preferredTopBand + 28) {
+          nextScrollTop = buttonTop - edgeGap;
+        }
+
+        if (nextScrollTop === null) return;
+
+        nextScrollTop = Math.max(0, Math.min(maxScrollTop, nextScrollTop));
+        if (Math.abs(nextScrollTop - currentScrollTop) < 6) return;
+
+        container.scrollTo({ top: nextScrollTop, behavior: 'smooth' });
+      }
+
+      function scheduleActivePageButtonScroll(button){
+        if (activePageListScrollFrame) {
+          cancelAnimationFrame(activePageListScrollFrame);
+        }
+
+        activePageListScrollFrame = requestAnimationFrame(() => {
+          activePageListScrollFrame = 0;
+          scrollActivePageButtonIntoView(button);
+        });
+      }
+
+      function buildPageList(){
+        pageList.innerHTML = '';
+        NAV_ITEMS.forEach((item, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'page-jump';
+          btn.dataset.navIndex = String(idx);
+          btn.dataset.pageIndex = String(item.targetPageIndex);
+          btn.dataset.targetHash = item.targetSelector && item.targetSelector.startsWith('#') ? item.targetSelector : '';
+
+          const label = document.createElement('span');
+          label.className = 'page-jump-label';
+          label.textContent = item.label;
+          btn.appendChild(label);
+
+          btn.addEventListener('click', () => {
+            closeSearchDropdown();
+            if (item.targetSelector) {
+              navigateToSelector(item.targetSelector);
+            } else {
+              goToPage(item.targetPageIndex);
+            }
+          });
+
+          pageList.appendChild(btn);
+        });
+      }
+
+      function updatePageButtons(){
+        const activeNavIndex = findBestActiveNavIndex();
+        let activeButton = null;
+
+        Array.from(pageList.querySelectorAll('.page-jump')).forEach((btn) => {
+          const navIndex = Number(btn.dataset.navIndex);
+          const isActive = navIndex === activeNavIndex;
+          btn.classList.toggle('active', isActive);
+          if (isActive) {
+            activeButton = btn;
+          }
+        });
+
+        if (activeButton) {
+          scheduleActivePageButtonScroll(activeButton);
+        }
+      }
+
+      function setZoom(nextZoom){
+        zoom = Math.max(0.55, Math.min(2.2, Number(nextZoom.toFixed(2))));
+        pageFrame.style.transform = `scale(${zoom})`;
+        zoomReadout.textContent = `${Math.round(zoom * 100)}%`;
+      }
+
+      function updatePage(){
+        pages.forEach((page, idx) => {
+          page.classList.toggle('active', idx === currentPage);
+        });
+
+        pageIndicator.textContent = `Страница ${currentPage + 1} из ${pages.length}`;
+        pageInput.value = currentPage + 1;
+        prevBtn.disabled = currentPage === 0;
+        nextBtn.disabled = currentPage === pages.length - 1;
+        updatePageButtons();
+        updateBibliographyBackButton();
+        workspace.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+      }
+
+      function goToPage(index, options = {}){
+        const previousPage = currentPage;
+        currentPage = clampPage(index);
+
+        if (!options.preserveNavigationContext) {
+          currentNavigationElement = null;
+          currentNavigationHash = '';
+        }
+
+        discardBibliographyNavigationForPageChange(previousPage, currentPage);
+        updatePage();
+      }
+
+      function getTargetPageIndex(hash){
+        if (!hash || !hash.startsWith('#')) return -1;
+        const target = document.querySelector(hash);
+        if (!target) return -1;
+        const page = target.closest('.page');
+        return page ? pages.indexOf(page) : -1;
+      }
+
+      function navigateToElement(element, options = {}){
+        if (!element) return;
+        const page = element.closest('.page');
+        const pageIndex = page ? pages.indexOf(page) : (typeof options.pageIndex === 'number' ? options.pageIndex : -1);
+        const resolvedHash = Object.prototype.hasOwnProperty.call(options, 'urlHash')
+          ? normalizeHash(options.urlHash)
+          : (element.id ? `#${element.id}` : '');
+
+        currentNavigationElement = element;
+        currentNavigationHash = resolvedHash;
+
+        if (pageIndex >= 0) {
+          goToPage(pageIndex, { preserveNavigationContext: true });
+        }
+
+        requestAnimationFrame(() => {
+          if (typeof options.matchStart === 'number' && typeof options.matchEnd === 'number') {
+            highlightMatchInElement(element, options.matchStart, options.matchEnd);
+          } else {
+            clearSearchHighlight();
+          }
+
+          const focusTarget = activeSearchElement || element;
+          focusTarget.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' });
+
+          if (options.syncUrl && element.id) {
+            syncLocationHash(`#${element.id}`);
+          } else if (Object.prototype.hasOwnProperty.call(options, 'urlHash')) {
+            syncLocationHash(options.urlHash || '');
+          }
+
+          updatePageButtons();
+        });
+      }
+
+      function navigateToSelector(selector, syncUrl = true, extraOptions = {}){
+        if (!selector) return;
+        const element = document.querySelector(selector);
+        if (!element) return;
+        navigateToElement(element, { ...extraOptions, syncUrl });
+      }
+
+      function navigateToHash(hash, syncUrl = true){
+        if (!hash || !hash.startsWith('#')) return;
+        const target = document.querySelector(hash);
+        if (!target) return;
+        navigateToElement(target, { syncUrl });
+      }
+
+      function nextPage(){ goToPage(currentPage + 1); }
+      function prevPage(){ goToPage(currentPage - 1); }
+
+      function buildSearchIndex(){
+        pages.forEach((page, pageIndex) => {
+          const elements = Array.from(page.querySelectorAll(SEARCHABLE_SELECTOR));
+          elements.forEach((element) => {
+            const text = plainText(element.textContent);
+            if (!text) return;
+            searchIndex.push({
+              pageIndex,
+              element,
+              text,
+              normalized: normalizeSearchText(text)
+            });
+          });
+        });
+
+        NAV_ITEMS.forEach((item) => {
+          const targetElement = item.targetSelector ? document.querySelector(item.targetSelector) : null;
+          addSuggestionCandidate(item.label, {
+            pageIndex: item.targetPageIndex,
+            element: targetElement
+          });
+        });
+
+        const referencePatterns = [
+          /\bГОСТ(?:\s*Р)?\s*[\d]+(?:[.\-—]\d+)*(?:\s*[—-]\s*\d{2,4})?/giu,
+          /\bISO\/CIE\s*\d+(?:-\d+)?(?::\d{4})?/giu,
+          /\bISO\s*\d+(?:-\d+)?(?::\d{4})?/giu,
+          /\bASTM\s*[A-Z]\d+(?:-\d+)*(?::\d{4})?/giu,
+          /\bМКО\b/giu,
+          /\bD\s*65\b/giu,
+          /PANTONE Lighting Indicator Stickers D65/giu
+        ];
+
+        searchIndex.forEach((entry) => {
+          referencePatterns.forEach((pattern) => {
+            const matches = entry.text.match(pattern);
+            if (!matches) return;
+            matches.forEach((match) => {
+              addSuggestionCandidate(match, { pageIndex: entry.pageIndex, element: entry.element });
+            });
+          });
+        });
+
+        suggestionCandidates.sort((a, b) => {
+          const aG = /^гост/i.test(a.label);
+          const bG = /^гост/i.test(b.label);
+          if (aG !== bG) return aG ? -1 : 1;
+          return a.label.localeCompare(b.label, 'ru');
+        });
+      }
+
+      function getSuggestions(query){
+        const normalizedQuery = normalizeSearchText(query);
+        if (!normalizedQuery) return [];
+
+        const compactQuery = buildCompactSearchMap(normalizedQuery).compactText;
+
+        return suggestionCandidates
+          .filter((item) => {
+            if (item.normalized.includes(normalizedQuery)) return true;
+            if (!compactQuery) return false;
+            return buildCompactSearchMap(item.normalized).compactText.includes(compactQuery);
+          })
+          .slice(0, 12);
+      }
+
+      function getDisplayMatchRange(text, query){
+        const normalizedText = normalizeSearchText(text);
+        const normalizedQuery = normalizeSearchText(query);
+
+        if (!normalizedText || !normalizedQuery) {
+          return null;
+        }
+
+        const directIndex = normalizedText.indexOf(normalizedQuery);
+        if (directIndex >= 0) {
+          return {
+            start: directIndex,
+            end: directIndex + normalizedQuery.length
+          };
+        }
+
+        const compactTextData = buildCompactSearchMap(normalizedText);
+        const compactQuery = buildCompactSearchMap(normalizedQuery).compactText;
+
+        if (!compactTextData.compactText || !compactQuery) {
+          return null;
+        }
+
+        const compactIndex = compactTextData.compactText.indexOf(compactQuery);
+        if (compactIndex < 0) {
+          return null;
+        }
+
+        return {
+          start: compactTextData.indexMap[compactIndex],
+          end: compactTextData.indexMap[compactIndex + compactQuery.length - 1] + 1
+        };
+      }
+
+      function buildContextSnippet(text, matchStart, matchEnd){
+        const compactText = plainText(text);
+        const sentenceStart = Math.max(
+          compactText.lastIndexOf('. ', Math.max(0, matchStart - 1)),
+          compactText.lastIndexOf('; ', Math.max(0, matchStart - 1)),
+          compactText.lastIndexOf(': ', Math.max(0, matchStart - 1))
+        );
+        const sentenceEndCandidates = [
+          compactText.indexOf('. ', matchEnd),
+          compactText.indexOf('; ', matchEnd),
+          compactText.indexOf(': ', matchEnd)
+        ].filter((value) => value >= 0);
+        const sentenceEnd = sentenceEndCandidates.length ? Math.min(...sentenceEndCandidates) : -1;
+
+        const start = Math.max(0, sentenceStart >= 0 ? sentenceStart + 2 : matchStart - 55);
+        const end = Math.min(compactText.length, sentenceEnd >= 0 ? sentenceEnd + 1 : matchEnd + 95);
+
+        const safeStart = Math.max(0, Math.min(start, compactText.length));
+        const safeEnd = Math.max(safeStart, Math.min(end, compactText.length));
+        const prefix = safeStart > 0 ? '…' : '';
+        const suffix = safeEnd < compactText.length ? '…' : '';
+        const snippetText = compactText.slice(safeStart, safeEnd);
+
+        return {
+          text: `${prefix}${snippetText}${suffix}`,
+          highlightStart: prefix.length + (matchStart - safeStart),
+          highlightEnd: prefix.length + (matchEnd - safeStart)
+        };
+      }
+
+      function renderHighlightedText(text, matchStart, matchEnd){
+        const safeStart = Math.max(0, Math.min(matchStart, text.length));
+        const safeEnd = Math.max(safeStart, Math.min(matchEnd, text.length));
+        return `${escapeHtml(text.slice(0, safeStart))}<mark class="search-inline-match">${escapeHtml(text.slice(safeStart, safeEnd))}</mark>${escapeHtml(text.slice(safeEnd))}`;
+      }
+
+      function performSearch(query){
+        const normalizedQuery = normalizeSearchText(query);
+        if (!normalizedQuery) return [];
+        if (normalizedQuery.length < 2) return [];
+
+        const results = [];
+
+        searchIndex.forEach((entry) => {
+          const matches = findTextMatches(entry.normalized, normalizedQuery);
+          matches.forEach((match) => {
+            results.push({
+              pageIndex: entry.pageIndex,
+              element: entry.element,
+              text: entry.text,
+              matchStart: match.start,
+              matchEnd: match.end
+            });
+          });
+        });
+
+        results.sort((a, b) => {
+          if (a.pageIndex !== b.pageIndex) return a.pageIndex - b.pageIndex;
+          if (a.matchStart !== b.matchStart) return a.matchStart - b.matchStart;
+          return a.matchEnd - b.matchEnd;
+        });
+
+        return results.slice(0, 160);
+      }
+
+      function openSearchDropdown(){
+        if (!docSearchDropdown) return;
+        docSearchDropdown.hidden = false;
+        docSearchDropdown.classList.add('is-open');
+        docSearchInput.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeSearchDropdown(){
+        if (!docSearchDropdown) return;
+        docSearchDropdown.classList.remove('is-open', 'has-suggestions');
+        docSearchDropdown.hidden = true;
+        docSearchInput.setAttribute('aria-expanded', 'false');
+      }
+
+      function navigateToSearchResult(result){
+        if (!result || !result.element) return;
+        closeSearchDropdown();
+        navigateToElement(result.element, {
+          matchStart: result.matchStart,
+          matchEnd: result.matchEnd,
+          syncUrl: false
+        });
+      }
+
+      function renderSuggestions(items, query){
+        docSearchSuggestions.innerHTML = '';
+        docSearchSuggestions.classList.toggle('has-items', items.length > 0);
+        if (docSearchDropdown) {
+          docSearchDropdown.classList.toggle('has-suggestions', items.length > 0);
+        }
+
+        const normalizedQuery = normalizeSearchText(query);
+
+        items.forEach((item) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'search-suggestion';
+          const matchRange = normalizedQuery ? getDisplayMatchRange(item.label, normalizedQuery) : null;
+          btn.innerHTML = matchRange
+            ? renderHighlightedText(item.label, matchRange.start, matchRange.end)
+            : escapeHtml(item.label);
+          btn.addEventListener('click', () => {
+            docSearchInput.value = item.label;
+            updateSearchUI(item.label);
+            if (searchResults.length) {
+              navigateToSearchResult(searchResults[0]);
+            } else if (item.element) {
+              closeSearchDropdown();
+              navigateToElement(item.element);
+            } else if (typeof item.pageIndex === 'number') {
+              closeSearchDropdown();
+              goToPage(item.pageIndex);
+            }
+          });
+          docSearchSuggestions.appendChild(btn);
+        });
+      }
+
+      function renderResults(results, query){
+        docSearchResults.innerHTML = '';
+
+        if (!query.trim()) {
+          docSearchResults.innerHTML = '<div class="search-results-empty">Начните вводить запрос, чтобы найти совпадения по документу.</div>';
+          return;
+        }
+
+        if (!results.length) {
+          docSearchResults.innerHTML = '<div class="search-results-empty">Совпадения не найдены.</div>';
+          return;
+        }
+
+        results.forEach((entry) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'search-result';
+
+          const pageLabel = document.createElement('span');
+          pageLabel.className = 'search-result-page';
+          pageLabel.textContent = `Страница ${entry.pageIndex + 1}`;
+
+          const contextData = buildContextSnippet(entry.text, entry.matchStart, entry.matchEnd);
+          const context = document.createElement('span');
+          context.className = 'search-result-context';
+          context.innerHTML = renderHighlightedText(contextData.text, contextData.highlightStart, contextData.highlightEnd);
+
+          btn.appendChild(pageLabel);
+          btn.appendChild(context);
+          btn.addEventListener('click', () => navigateToSearchResult(entry));
+
+          docSearchResults.appendChild(btn);
+        });
+      }
+
+      function updateSearchUI(query){
+        const cleanQuery = plainText(query);
+
+        if (!cleanQuery) {
+          searchResults = [];
+          renderSuggestions([], '');
+          renderResults([], '');
+          closeSearchDropdown();
+          clearSearchHighlight();
+          return;
+        }
+
+        if (normalizeSearchText(cleanQuery).length < 2) {
+          searchResults = [];
+          renderSuggestions(getSuggestions(cleanQuery), cleanQuery);
+          docSearchResults.innerHTML = '<div class="search-results-empty">Введите минимум 2 символа для точного поиска.</div>';
+          openSearchDropdown();
+          clearSearchHighlight();
+          return;
+        }
+
+        searchResults = performSearch(cleanQuery);
+        renderSuggestions(getSuggestions(cleanQuery), cleanQuery);
+        renderResults(searchResults, cleanQuery);
+
+        const hasSuggestions = docSearchSuggestions.children.length > 0;
+        const hasResults = searchResults.length > 0 || docSearchResults.querySelector('.search-results-empty');
+        if (hasSuggestions || hasResults) {
+          openSearchDropdown();
+        } else {
+          closeSearchDropdown();
+        }
+      }
+
+      prevBtn.addEventListener('click', prevPage);
+      nextBtn.addEventListener('click', nextPage);
+
+      goBtn.addEventListener('click', () => {
+        const val = parseInt(pageInput.value, 10);
+        if (!Number.isNaN(val)) goToPage(val - 1);
+      });
+
+      pageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const val = parseInt(pageInput.value, 10);
+          if (!Number.isNaN(val)) goToPage(val - 1);
+        }
+      });
+
+      zoomInBtn.addEventListener('click', () => setZoom(zoom + 0.1));
+      zoomOutBtn.addEventListener('click', () => setZoom(zoom - 0.1));
+      zoomResetBtn.addEventListener('click', () => setZoom(1));
+      printBtn.addEventListener('click', () => window.print());
+      themeToggleBtn.addEventListener('click', () => {
+        applyTheme(document.body.dataset.theme === 'dark' ? 'light' : 'dark');
+      });
+      biblioBackBtn.addEventListener('click', () => {
+        goBackFromBibliographyReference();
+      });
+
+      docSearchInput.addEventListener('input', () => {
+        updateSearchUI(docSearchInput.value);
+      });
+
+      docSearchInput.addEventListener('focus', () => {
+        if (plainText(docSearchInput.value)) {
+          updateSearchUI(docSearchInput.value);
+        }
+      });
+
+      docSearchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          if (searchResults.length) {
+            navigateToSearchResult(searchResults[0]);
+          } else {
+            const suggestions = getSuggestions(docSearchInput.value);
+            if (suggestions.length) {
+              const first = suggestions[0];
+              docSearchInput.value = first.label;
+              updateSearchUI(first.label);
+              if (searchResults.length) {
+                navigateToSearchResult(searchResults[0]);
+              } else if (first.element) {
+                closeSearchDropdown();
+                navigateToElement(first.element);
+              } else if (typeof first.pageIndex === 'number') {
+                closeSearchDropdown();
+                goToPage(first.pageIndex);
+              }
+            }
+          }
+        } else if (e.key === 'Escape') {
+          closeSearchDropdown();
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        const link = e.target.closest('a.doc-ref[href^="#"]');
+        if (link) {
+          const hash = link.getAttribute('href');
+          if (!hash) return;
+          e.preventDefault();
+          closeSearchDropdown();
+          rememberBibliographyNavigation(link, hash);
+          navigateToHash(hash);
+          return;
+        }
+
+        const insideSearch = e.target.closest('.search-panel');
+        if (!insideSearch) {
+          closeSearchDropdown();
+        }
+      });
+
+      window.addEventListener('hashchange', () => {
+        if (window.location.hash) {
+          navigateToHash(window.location.hash, false);
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        const tag = (document.activeElement && document.activeElement.tagName) || '';
+        const editing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(tag);
+        if (editing) return;
+
+        if (e.key === 'ArrowRight' || e.key === 'PageDown') {
+          e.preventDefault();
+          nextPage();
+        } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+          e.preventDefault();
+          prevPage();
+        } else if (e.key === 'Home') {
+          e.preventDefault();
+          goToPage(0);
+        } else if (e.key === 'End') {
+          e.preventDefault();
+          goToPage(pages.length - 1);
+        } else if (e.key === '+') {
+          e.preventDefault();
+          setZoom(zoom + 0.1);
+        } else if (e.key === '-') {
+          e.preventDefault();
+          setZoom(zoom - 0.1);
+        } else if (e.key === '0') {
+          e.preventDefault();
+          setZoom(1);
+        }
+      });
+
+      
+      buildPageList();
+      buildSearchIndex();
+      updateThemeToggle(getStoredTheme());
+      setZoom(1);
+      updateBibliographyBackButton();
+      updatePage();
+
+      if (window.location.hash) {
+        navigateToHash(window.location.hash, false);
+      }
+    })();
+  
+  
+  </script>
+</body>
+</html>
