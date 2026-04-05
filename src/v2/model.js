@@ -92,6 +92,7 @@ export function buildFallbackV2Document(document) {
       year: document.year,
       pages: document.pages,
       themeId,
+      readerMode: document.readerMode ?? 'legacy',
       migrationStatus: document.migrationStatus ?? 'imported'
     },
     synopsis: {
@@ -125,6 +126,11 @@ export function buildFallbackV2Document(document) {
     definitions: [],
     highlights: [],
     relatedNorms: [],
+    curation: {
+      applied: false,
+      hiddenBlocksCount: 0,
+      overrideVersion: null
+    },
     entryPoints: {
       legacyUrl: document.legacyViewerUrl || document.viewerUrl,
       printUrl: document.printUrl || document.viewerUrl

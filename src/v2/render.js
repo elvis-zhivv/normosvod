@@ -1,5 +1,6 @@
 import { escapeHtml } from '../js/html.js';
 import { normalizeDocumentUrl } from '../js/paths.js';
+import { buildDocumentSignals, formatMigrationStatusLabel, formatReaderModeLabel, formatThemeLabel } from '../js/document-signals.js';
 
 function buildRelatedNormIndex(model) {
   return new Map((model.relatedNorms ?? []).map((item) => [item.label, item.id]));
@@ -27,7 +28,7 @@ function renderOutline(items = []) {
   return items.map((item) => `
     <a class="v2-outline-link" href="#${escapeHtml(item.id)}">
       <span>${escapeHtml(item.title)}</span>
-      <small>${escapeHtml(item.type)} · стр. ${escapeHtml(item.pageNumber ?? '—')}</small>
+      <small>${escapeHtml(item.type)} · источник стр. ${escapeHtml(item.pageNumber ?? '—')}</small>
     </a>
   `).join('');
 }
@@ -138,12 +139,38 @@ function renderContextPanel() {
   `;
 }
 
-function renderBlocks(blocks = [], entryPoints = {}, options = {}) {
-  const legacyBaseUrl = entryPoints?.legacyUrl ?? '';
-  const printBaseUrl = entryPoints?.printUrl ?? '';
-  const relatedNormIndex = options.relatedNormIndex ?? new Map();
-  const definitionIndex = options.definitionIndex ?? new Map();
-  const renderUnits = (units = []) => units.map((unit) => `
+function renderSignalChips(document) {
+  const signals = buildDocumentSignals(document);
+
+  if (!signals.length) {
+    return '';
+  }
+
+  return `
+    <div class="document-signal-list document-signal-list-v2">
+      ${signals.map((signal) => `
+        <span class="document-signal document-signal-${escapeHtml(signal.tone)}">
+          ${escapeHtml(signal.label)}
+        </span>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderBlockBand(blockType) {
+  if (blockType === 'appendix') {
+    return '<div class="v2-block-band v2-block-band-appendix">Приложение</div>';
+  }
+
+  if (blockType === 'procedure') {
+    return '<div class="v2-block-band v2-block-band-procedure">Процедура</div>';
+  }
+
+  return '';
+}
+
+function renderStandardUnit(unit, relatedNormIndex, definitionIndex) {
+  return `
     <div class="v2-unit v2-unit-${escapeHtml(unit.type)}" id="${escapeHtml(unit.id)}">
       <div class="v2-unit-head">
         <span class="v2-unit-type">${escapeHtml(unit.type)}</span>
@@ -160,27 +187,98 @@ function renderBlocks(blocks = [], entryPoints = {}, options = {}) {
       <p>${escapeHtml(unit.summary ?? unit.text ?? '')}</p>
       ${renderReferenceTokens(unit.references, relatedNormIndex)}
     </div>
-  `).join('');
+  `;
+}
+
+function renderProcedureItem(unit, relatedNormIndex) {
+  return `
+    <div class="v2-unit v2-unit-procedure-item" id="${escapeHtml(unit.id)}">
+      <div class="v2-procedure-marker">Шаг</div>
+      <div class="v2-procedure-body">
+        <div class="v2-unit-head">
+          <span class="v2-unit-type">${escapeHtml(unit.type)}</span>
+          ${unit.title ? `<strong>${escapeHtml(unit.title)}</strong>` : ''}
+        </div>
+        <p>${escapeHtml(unit.summary ?? unit.text ?? '')}</p>
+        ${renderReferenceTokens(unit.references, relatedNormIndex)}
+      </div>
+    </div>
+  `;
+}
+
+function renderTableGroup(captionUnit, tableUnit, relatedNormIndex) {
+  return `
+    <section class="v2-table-group" id="${escapeHtml(tableUnit.id)}">
+      ${captionUnit
+        ? `<div class="v2-table-caption">${escapeHtml(captionUnit.summary ?? captionUnit.text ?? captionUnit.title ?? 'Таблица')}</div>`
+        : ''}
+      <div class="v2-table-box">
+        <div class="v2-table-head">
+          <span class="v2-unit-type">table</span>
+          <strong>${escapeHtml(tableUnit.title || 'Таблица')}</strong>
+        </div>
+        <p class="v2-table-text">${escapeHtml(tableUnit.summary ?? tableUnit.text ?? '')}</p>
+        ${renderReferenceTokens(tableUnit.references, relatedNormIndex)}
+      </div>
+    </section>
+  `;
+}
+
+function renderUnitList(units = [], relatedNormIndex = new Map(), definitionIndex = new Map(), blockType = 'section') {
+  const renderedUnits = [];
+
+  for (let index = 0; index < units.length; index += 1) {
+    const unit = units[index];
+    const nextUnit = units[index + 1];
+
+    if (unit?.type === 'table-caption' && nextUnit?.type === 'table') {
+      renderedUnits.push(renderTableGroup(unit, nextUnit, relatedNormIndex));
+      index += 1;
+      continue;
+    }
+
+    if (unit?.type === 'table') {
+      renderedUnits.push(renderTableGroup(null, unit, relatedNormIndex));
+      continue;
+    }
+
+    if (blockType === 'procedure' && unit?.type === 'list-item') {
+      renderedUnits.push(renderProcedureItem(unit, relatedNormIndex));
+      continue;
+    }
+
+    renderedUnits.push(renderStandardUnit(unit, relatedNormIndex, definitionIndex));
+  }
+
+  return renderedUnits.join('');
+}
+
+function renderBlocks(blocks = [], entryPoints = {}, options = {}) {
+  const legacyBaseUrl = entryPoints?.legacyUrl ?? '';
+  const printBaseUrl = entryPoints?.printUrl ?? '';
+  const relatedNormIndex = options.relatedNormIndex ?? new Map();
+  const definitionIndex = options.definitionIndex ?? new Map();
 
   return blocks.map((block) => `
     <article class="v2-block v2-block-${escapeHtml(block.type)}" id="${escapeHtml(block.id)}">
+      ${renderBlockBand(block.type)}
       <div class="v2-block-head">
         <p class="v2-block-type">${escapeHtml(block.type)}</p>
-        <p class="v2-block-page">Print page ${escapeHtml(block.print?.pageNumber ?? '—')}</p>
+        <p class="v2-block-page">Source page ${escapeHtml(block.print?.sourcePageNumber ?? block.print?.pageNumber ?? '—')}</p>
       </div>
       <h2>${escapeHtml(block.title)}</h2>
       <p>${escapeHtml(block.summary ?? '')}</p>
       ${renderHighlights(block.highlights)}
       ${renderReferenceTokens(block.references, relatedNormIndex)}
       ${block.units?.length
-        ? `<div class="v2-unit-list">${renderUnits(block.units)}</div>`
+        ? `<div class="v2-unit-list">${renderUnitList(block.units, relatedNormIndex, definitionIndex, block.type)}</div>`
         : ''}
       <div class="v2-block-links">
         ${block.legacy?.targetSelector
           ? `<a class="v2-block-link" href="${escapeHtml(buildAnchorUrl(legacyBaseUrl, block.legacy.targetSelector))}" target="_blank" rel="noreferrer">Источник: ${escapeHtml(block.legacy.targetSelector)}</a>`
           : ''}
         ${block.print?.pageNumber
-          ? `<a class="v2-block-link" href="${escapeHtml(buildAnchorUrl(printBaseUrl, block.print?.pageAnchor))}" target="_blank" rel="noreferrer">Печать A4: стр. ${escapeHtml(block.print.pageNumber)}</a>`
+          ? `<a class="v2-block-link" href="${escapeHtml(buildAnchorUrl(printBaseUrl, `#${block.id}`))}" target="_blank" rel="noreferrer">Печать A4</a>`
           : ''}
       </div>
     </article>
@@ -199,8 +297,28 @@ function renderRail(model) {
     .join('');
   const highlightItems = (model.highlights ?? []).slice(0, 6);
   const definitionIndex = buildDefinitionIndex(model);
+  const signalDocument = {
+    themeId: model.meta?.themeId,
+    readerMode: model.meta?.readerMode,
+    migrationStatus: model.meta?.migrationStatus,
+    curationApplied: model.curation?.applied,
+    hiddenBlocksCount: model.curation?.hiddenBlocksCount,
+    v2BlockCount: model.blocks?.length,
+    v2DefinitionsCount: model.definitions?.length,
+    v2RelatedNormsCount: model.relatedNorms?.length
+  };
 
   return `
+    <section class="v2-rail-card">
+      <p class="eyebrow">Верификация</p>
+      ${renderSignalChips(signalDocument)}
+      <ul class="v2-rail-list">
+        <li>${escapeHtml(formatThemeLabel(model.meta?.themeId))}</li>
+        <li>${escapeHtml(formatReaderModeLabel(model.meta?.readerMode))}</li>
+        <li>${escapeHtml(formatMigrationStatusLabel(model.meta?.migrationStatus))}</li>
+        <li>${model.curation?.applied ? 'Кураторский слой активен' : 'Без ручной верификации'}</li>
+      </ul>
+    </section>
     <section class="v2-rail-card">
       <p class="eyebrow">Сводка</p>
       <p>${escapeHtml(model.synopsis?.description ?? '')}</p>
@@ -231,6 +349,16 @@ export function renderV2Reader(model, legacyDocument) {
   const printUrl = normalizeDocumentUrl(model.entryPoints?.printUrl || legacyDocument.printUrl || legacyDocument.viewerUrl);
   const relatedNormIndex = buildRelatedNormIndex(model);
   const definitionIndex = buildDefinitionIndex(model);
+  const signalDocument = {
+    themeId: model.meta?.themeId,
+    readerMode: model.meta?.readerMode,
+    migrationStatus: model.meta?.migrationStatus,
+    curationApplied: model.curation?.applied,
+    hiddenBlocksCount: model.curation?.hiddenBlocksCount,
+    v2BlockCount: model.blocks?.length,
+    v2DefinitionsCount: model.definitions?.length,
+    v2RelatedNormsCount: model.relatedNorms?.length
+  };
 
   return `
     <div class="v2-reader v2-theme-${escapeHtml(model.meta?.themeId ?? 'regulation')}">
@@ -248,7 +376,8 @@ export function renderV2Reader(model, legacyDocument) {
           <p class="eyebrow">Screen Flow</p>
           <h1>${escapeHtml(model.meta?.title ?? legacyDocument.title)}</h1>
           <p>${escapeHtml(model.synopsis?.description ?? '')}</p>
-          <p class="v2-source-note">Source: ${escapeHtml(model.source?.type ?? 'unknown')} · migration ${escapeHtml(model.meta?.migrationStatus ?? '—')}</p>
+          ${renderSignalChips(signalDocument)}
+          <p class="v2-source-note">Source: ${escapeHtml(model.source?.type ?? 'unknown')} · migration ${escapeHtml(formatMigrationStatusLabel(model.meta?.migrationStatus ?? 'imported'))} · ${model.curation?.applied ? 'curated' : 'auto-generated'}</p>
           <div class="hero-actions">
             <a class="button button-secondary" href="${escapeHtml(legacyUrl)}" target="_blank" rel="noreferrer">Legacy viewer</a>
             <a class="button button-ghost" href="${escapeHtml(printUrl)}" target="_blank" rel="noreferrer">Print A4</a>

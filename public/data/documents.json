@@ -117,8 +117,14 @@
     "migrationStatus": "imported",
     "v2DocumentUrl": "/data/v2/gost-1-0-2015.json",
     "legacyViewerUrl": "/docs/gost-1-0-2015/viewer.html",
-    "printUrl": "/docs/gost-1-0-2015/viewer.html",
-    "hasV2Scaffold": true
+    "printUrl": "/docs/gost-1-0-2015/print.html",
+    "hasV2Scaffold": true,
+    "curationApplied": false,
+    "curationVersion": null,
+    "hiddenBlocksCount": 0,
+    "v2BlockCount": 16,
+    "v2DefinitionsCount": 0,
+    "v2RelatedNormsCount": 14
   },
   {
     "id": "gost-29319-2025",
@@ -149,7 +155,7 @@
     "hasPrintMode": true,
     "hasQuickNav": true,
     "hasBackNavigation": true,
-    "description": "Автономный viewer ГОСТ 29319—2025.",
+    "description": "Кураторски выверенная canonical-модель ГОСТ 29319—2025 для screen-flow и print-A4 режимов.",
     "navItemsCount": 24,
     "navItems": [
       {
@@ -274,12 +280,18 @@
       }
     ],
     "themeId": "coatings",
-    "readerMode": "legacy",
-    "migrationStatus": "imported",
+    "readerMode": "hybrid",
+    "migrationStatus": "entity-linked",
     "v2DocumentUrl": "/data/v2/gost-29319-2025.json",
     "legacyViewerUrl": "/docs/gost-29319-2025/viewer.html",
-    "printUrl": "/docs/gost-29319-2025/viewer.html",
-    "hasV2Scaffold": true
+    "printUrl": "/docs/gost-29319-2025/print.html",
+    "hasV2Scaffold": true,
+    "curationApplied": true,
+    "curationVersion": 1,
+    "hiddenBlocksCount": 0,
+    "v2BlockCount": 24,
+    "v2DefinitionsCount": 5,
+    "v2RelatedNormsCount": 18
   },
   {
     "id": "gost-8784-75",
@@ -424,7 +436,13 @@
     "migrationStatus": "imported",
     "v2DocumentUrl": "/data/v2/gost-8784-75.json",
     "legacyViewerUrl": "/docs/gost-8784-75/viewer.html",
-    "printUrl": "/docs/gost-8784-75/viewer.html",
-    "hasV2Scaffold": true
+    "printUrl": "/docs/gost-8784-75/print.html",
+    "hasV2Scaffold": true,
+    "curationApplied": false,
+    "curationVersion": null,
+    "hiddenBlocksCount": 0,
+    "v2BlockCount": 21,
+    "v2DefinitionsCount": 0,
+    "v2RelatedNormsCount": 20
   }
 ]

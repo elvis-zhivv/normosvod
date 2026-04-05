@@ -4,13 +4,16 @@ import { fileURLToPath } from 'node:url';
 import { readDocumentsManifest } from './lib/manifest.mjs';
 import { readJsonFile } from './lib/manifest.mjs';
 import { CONTENT_DOCS_DIR, DOCS_DIR, SEARCH_INDEX_PATH } from './lib/project-paths.mjs';
+import { applyCanonicalOverrides, readCanonicalOverrides } from './lib/canonical-overrides.mjs';
 import { enrichDocumentRecord } from './lib/document-record.mjs';
 import { buildCanonicalDocument } from './lib/document-segmentation.mjs';
 import { writeJson } from './lib/write-json.mjs';
 
-export async function rebuildCanonicalDocs() {
-  const manifest = (await readDocumentsManifest()).map(enrichDocumentRecord);
-  const searchIndex = await readJsonFile(SEARCH_INDEX_PATH, []);
+export async function rebuildCanonicalDocs(manifestOverride = null, searchIndexOverride = null) {
+  const manifest = (manifestOverride ?? await readDocumentsManifest()).map(enrichDocumentRecord);
+  const searchIndex = Array.isArray(searchIndexOverride)
+    ? searchIndexOverride
+    : await readJsonFile(SEARCH_INDEX_PATH, []);
   const searchIndexMap = new Map(
     (Array.isArray(searchIndex) ? searchIndex : [])
       .filter((entry) => entry?.slug)
@@ -21,7 +24,9 @@ export async function rebuildCanonicalDocs() {
 
   for (const document of manifest) {
     const html = await readFile(path.join(DOCS_DIR, document.slug, 'viewer.html'), 'utf8').catch(() => '');
-    const canonicalDocument = buildCanonicalDocument(document, searchIndexMap.get(document.slug), html);
+    const autoCanonicalDocument = buildCanonicalDocument(document, searchIndexMap.get(document.slug), html);
+    const overrides = await readCanonicalOverrides(document.slug);
+    const canonicalDocument = applyCanonicalOverrides(autoCanonicalDocument, overrides);
     const outputDirectory = path.join(CONTENT_DOCS_DIR, document.slug);
     await mkdir(outputDirectory, { recursive: true });
     await writeJson(path.join(outputDirectory, 'document.json'), canonicalDocument);

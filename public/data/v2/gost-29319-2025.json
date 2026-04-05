@@ -11,17 +11,16 @@
     "language": "ru",
     "pages": 26,
     "themeId": "coatings",
-    "readerMode": "legacy",
-    "migrationStatus": "imported"
+    "readerMode": "hybrid",
+    "migrationStatus": "entity-linked"
   },
   "synopsis": {
-    "description": "Автономный viewer ГОСТ 29319—2025.",
+    "description": "Кураторски выверенная canonical-модель ГОСТ 29319—2025 для screen-flow и print-A4 режимов.",
     "keyTakeaways": [
       "ГОСТ 29319—2025 сегментирован в 24 block units для V2 reader.",
-      "Во внутренних fragment-узлах выделено semantic units: 247.",
-      "Практические акценты автоматически выделены: 37.",
-      "В документе выявлены блоки определений: 1.",
-      "Из текста извлечено нормативных ссылок: 18."
+      "В документе выявлены или подтверждены определения: 5.",
+      "Связанные нормы в curated graph: 18.",
+      "Кураторский слой не скрывал блоки."
     ]
   },
   "source": {
@@ -32,7 +31,7 @@
   "entryPoints": {
     "screenUrl": "/doc/gost-29319-2025?view=v2",
     "legacyUrl": "/docs/gost-29319-2025/viewer.html",
-    "printUrl": "/docs/gost-29319-2025/viewer.html"
+    "printUrl": "/docs/gost-29319-2025/print.html"
   },
   "outline": [
     {
@@ -250,8 +249,53 @@
         "pageAnchor": null
       },
       "print": {
+        "sourcePageNumber": 1,
         "pageNumber": 1,
-        "pageAnchor": null
+        "pageAnchor": null,
+        "layout": {
+          "estimatedUnits": 30,
+          "minUnits": 20,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": true,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-stranica-i-titul-mezhgosudarstvennyi-sovet-po-standartizacii-metr",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-i-titul-mezhgosudarstvennyi-standart",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-i-titul-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-i-titul-materialy-lakokrasochnye-metod-vizualnogo-sravne",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-i-titul-moskva-rossiiskii-institut-standartizacii-2026",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -409,8 +453,101 @@
         "pageAnchor": null
       },
       "print": {
+        "sourcePageNumber": 2,
         "pageNumber": 2,
-        "pageAnchor": null
+        "pageAnchor": null,
+        "layout": {
+          "estimatedUnits": 81,
+          "minUnits": 53,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": true,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": false,
+          "segmentTargetUnits": 24,
+          "introUnits": 11,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-predislovie",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-celi-osnovnye-principy-i-obschie-pravila-proveden",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-svedeniya-o-standarte",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-1-razrabotan-avtonomnoi-nekommercheskoi-organizac",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-2-vnesen-mezhgosudarstvennym-tehnicheskim-komiteto",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-3-prinyat-mezhgosudarstvennym-sovetom-po-standarti",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-za-prinyatie-progolosovali",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-tablica",
+              "type": "table",
+              "estimatedUnits": 15,
+              "prefersSoloSegment": true
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-4-prikazom-federalnogo-agentstva-po-tehnicheskom",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-5-nastoyaschii-standart-razrabotan-s-uchetom-osnovny",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-6-vzamen-gost-29319-92-iso-3668-76",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte-ii",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -474,8 +611,47 @@
         "pageAnchor": null
       },
       "print": {
+        "sourcePageNumber": 3,
         "pageNumber": 3,
-        "pageAnchor": null
+        "pageAnchor": null,
+        "layout": {
+          "estimatedUnits": 32,
+          "minUnits": 21,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": true,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 5,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-stranica-iii-informacionnye-svedeniya-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iii-informacionnye-svedeniya-informaciya-o-vvedenii-v-deistvie-prekraschenii-de",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iii-informacionnye-svedeniya-oformlenie-fgbu-institut-standartizacii-20",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iii-informacionnye-svedeniya-iii",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -628,8 +804,95 @@
         "pageAnchor": null
       },
       "print": {
+        "sourcePageNumber": 4,
         "pageNumber": 4,
-        "pageAnchor": null
+        "pageAnchor": null,
+        "layout": {
+          "estimatedUnits": 64,
+          "minUnits": 42,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": true,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 9,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-vvedenie",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-dlya-standartnogo-opredeleniya-cveta-metodom-vizua",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-kak-pravilo-esli-net-drugih-ukazanii-dlya-sravn",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-kontrol-harakteristik-osvetitelnyh-ustroistv-p",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-iv",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-mezhgosudarstvennyi-standart",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-materialy-lakokrasochnye",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-metod-vizualnogo-sravneniya-cveta",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-coating-materials-visual-color-comparison-metho",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-stranica-iv-vvedenie-data-vvedeniya-2026-04-01",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -731,8 +994,65 @@
         "pageAnchor": "#section-1-scope"
       },
       "print": {
+        "sourcePageNumber": 5,
         "pageNumber": 5,
-        "pageAnchor": "#section-1-scope"
+        "pageAnchor": "#section-1-scope",
+        "layout": {
+          "estimatedUnits": 47,
+          "minUnits": 31,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 8,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-1-oblast-primeneniya-1-oblast-primeneniya",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-1-oblast-primeneniya-nastoyaschii-standart-rasprostranyaetsya-na-lakokraso",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-1-oblast-primeneniya-primechanie",
+              "type": "note",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-1-oblast-primeneniya-dannyi-metod-obespechivaet-poluchenie-sopostavimyh",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-1-oblast-primeneniya-dopuskaetsya-metodom-vizualnogo-sravneniya-provod",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-1-oblast-primeneniya-primechanie",
+              "type": "note",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-1-oblast-primeneniya-dopuskaetsya-pri-otsutstvii-etalona-sravneniya-pro",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -744,7 +1064,7 @@
       "order": 5,
       "type": "references",
       "title": "2. Нормативные ссылки",
-      "summary": "2 Нормативные ссылки В настоящем стандарте использованы нормативные ссылки на следующие межгосударственные стандарты: ГОСТ 8784 Материалы лакокрасочные. Методы определения укрывистости ГОСТ 8832 Материалы лакокрасочные. Методы получения лакокрасочного покрытия для испытания ГОСТ 9980.2 (ISO 1513:2010, ISO 15528:2013) Материалы лакокрасочные и сырье для них. Отбор проб, контроль и подготовка образцов для испытаний 1) В Российской Федерации действует ГОСТ Р…",
+      "summary": "Блок нормативных ссылок с национальными заменами и связанными документами, обязательными для применения метода.",
       "bodyText": "2 Нормативные ссылки В настоящем стандарте использованы нормативные ссылки на следующие межгосударственные стандарты: ГОСТ 8784 Материалы лакокрасочные. Методы определения укрывистости ГОСТ 8832 Материалы лакокрасочные. Методы получения лакокрасочного покрытия для испытания ГОСТ 9980.2 (ISO 1513:2010, ISO 15528:2013) Материалы лакокрасочные и сырье для них. Отбор проб, контроль и подготовка образцов для испытаний 1) В Российской Федерации действует ГОСТ Р 71216—2024 «Материалы лакокрасочные. Колориметрия. Измерение цвета. Расчет цветовых различий и индекса метамерии». Издание официальное 1 ГОСТ 29319—2025 ГОСТ 29317 (ИСО 3270—84) Материалы лакокрасочные и сырье для них. Температуры и влажности для кондиционирования и испытания ГОСТ 31993 (ISO 2808:2019) Материалы лакокрасочные. Определение толщины покрытия Примечание — При пользовании настоящим стандартом целесообразно проверить действие ссылочных стандартов и классификаторов на официальном интернет-сайте Межгосударственного совета по стандартизации, метрологии и сертификации (www.easc.by) или по указателям национальных стандартов, издаваемым в государствах, указанных в предисловии, или на официальных сайтах соответствующих национальных органов по стандартизации. Если на документ дана недатированная ссылка, то следует использовать документ, действующий на текущий момент, с учетом всех внесенных в него изменений. Если заменен ссылочный документ, на который дана датированная ссылка, то следует использовать указанную версию этого документа. Если после принятия настоящего стандарта в ссылочный документ, на который дана датированная ссылка, внесено изменение, затрагивающее положение, на которое дана ссылка, то это положение применяется без учета данного изменения. Если ссылочный документ отменен без замены, то положение, в котором дана ссылка на него, применяется в части, не затрагивающей эту ссылку.",
       "references": [
         "ГОСТ 8784",
@@ -894,20 +1214,98 @@
         "pageAnchor": "#section-1-scope"
       },
       "print": {
+        "sourcePageNumber": 5,
         "pageNumber": 5,
-        "pageAnchor": "#section-2-normative"
+        "pageAnchor": "#section-2-normative",
+        "layout": {
+          "estimatedUnits": 71,
+          "minUnits": 47,
+          "avoidBreakInside": false,
+          "keepWithNext": true,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 15,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-2-normativnye-ssylki",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-v-nastoyaschem-standarte-ispolzovany-normativnye-s",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-gost-8784-materialy-lakokrasochnye-metody-oprede",
+              "type": "paragraph",
+              "estimatedUnits": 7,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-1-v-rossiiskoi-federacii",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-izdanie-oficialnoe",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-gost-29317-iso-3270-84-materialy-lakokrasochnye",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-gost-31993-iso-2808-2019-materialy-lakokrasochn",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-2-normativnye-ssylki-primechanie",
+              "type": "note",
+              "estimatedUnits": 10,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
         "confidence": "high"
-      }
+      },
+      "referencesAppend": [
+        "ГОСТ Р 71216—2024"
+      ]
     },
     {
       "id": "gost-29319-2025-3-terminy-i-opredeleniya",
       "order": 6,
       "type": "definition-set",
       "title": "3. Термины и определения",
-      "summary": "3 Термины и определения В настоящем стандарте применены следующие термины с соответствующими определениями: 3.1 цвет лакокрасочного покрытия: Свойство излучаемого, прошедшего через объект рассеянного или отраженного света вызывать определенные зрительные ощущения в соответствии с его спектральным составом. 3.2 визуальное цветовое различие: Различие между двумя цветами, каким его видит человеческий глаз. Примечание — Описывается в терминах субъективных цвет…",
+      "summary": "Ключевые термины визуальной оценки цвета и метамерного соответствия, подтвержденные вручную.",
       "bodyText": "3 Термины и определения В настоящем стандарте применены следующие термины с соответствующими определениями: 3.1 цвет лакокрасочного покрытия: Свойство излучаемого, прошедшего через объект рассеянного или отраженного света вызывать определенные зрительные ощущения в соответствии с его спектральным составом. 3.2 визуальное цветовое различие: Различие между двумя цветами, каким его видит человеческий глаз. Примечание — Описывается в терминах субъективных цветовых характеристик (темнее, светлее, насыщеннее, краснее, желтее и др.). 3.3 контрольный образец цвета; КОЦ: Мера цвета — инструмент, используемый для нормирования и воспроизведения цвета лакокрасочных материалов. 3.4 метамерия (между двумя цветами): Свойство зрения, при котором свет различного спектрального состава может вызывать ощущение одинакового цвета.",
       "references": [],
       "units": [
@@ -997,8 +1395,65 @@
         "pageAnchor": "#section-3-terms"
       },
       "print": {
+        "sourcePageNumber": 6,
         "pageNumber": 6,
-        "pageAnchor": "#section-3-terms"
+        "pageAnchor": "#section-3-terms",
+        "layout": {
+          "estimatedUnits": 45,
+          "minUnits": 30,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 6,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-terminy-i-opredeleniya",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-v-nastoyaschem-standarte-primeneny-sleduyuschie-termin",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-1-cvet-lakokrasochnogo-pokrytiya",
+              "type": "definition",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-2-vizualnoe-cvetovoe-razlichie",
+              "type": "definition",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-primechanie",
+              "type": "note",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-3-kontrolnyi-obrazec-cveta-koc",
+              "type": "definition",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-4-metameriya-mezhdu-dvumya-cvetami",
+              "type": "definition",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1244,8 +1699,149 @@
         "pageAnchor": "#section-3-terms"
       },
       "print": {
+        "sourcePageNumber": 6,
         "pageNumber": 6,
-        "pageAnchor": "#section-4-lighting"
+        "pageAnchor": "#section-4-lighting",
+        "layout": {
+          "estimatedUnits": 116,
+          "minUnits": 76,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 19,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-4-1-obschie-trebovaniya",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-dlya-vizualnogo-sravneniya-cveta-ispolzuyut-estes",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-4-2-estestvennoe-dnevnoe-osveschenie",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-sleduet-ispolzovat-rasseyannyi-dnevnoi-svet-chas",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-osveschenie-dolzhno-byt-ravnomernym-po-vsei-ploschad",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-primechanie",
+              "type": "note",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-4-3-iskusstvennoe-dnevnoe-osveschenie",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-kamera-sravneniya-cveta-predstavlyaet-soboi-ustroi",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-metod-proverki-sootvetstviya-spektralnogo-raspre",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-uroven-osveschennosti-v-kamere-sravneniya-cveta-do",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-vnutrennyaya-poverhnost-kamery-obschego-naznacheniya",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-primechanie",
+              "type": "note",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-dlya-obespecheniya-nadlezhaschih-uslovii-sravneniya-cve",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-pri-sravnenii-obrazcov-svetlyh-cvetov-i-cvetov",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-pri-sravnenii-obrazcov-temnyh-cvetov-teksturiro",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-rekomenduetsya-ispolzovat-rasseivayuschii-ekran-ch",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-izgotovitel-istochnika-iskusstvennogo-dnevnogo-o",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta-rekomenduetsya-kazhdye-500-ch-raboty-kamery-proverya",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1392,8 +1988,83 @@
         "pageAnchor": "#section-5-specialist"
       },
       "print": {
+        "sourcePageNumber": 7,
         "pageNumber": 7,
-        "pageAnchor": "#section-5-specialist"
+        "pageAnchor": "#section-5-specialist",
+        "layout": {
+          "estimatedUnits": 62,
+          "minUnits": 41,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 12,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-5-trebovaniya-k-specialistu",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-neobhodimo-s-bolshoi-otvetstvennostyu-podhodit",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-pri-neobhodimosti-specialist-po-ispytaniyam-mozhet",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-vospriyatie-cveta-znachitelno-menyaetsya-s-vozrasto",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-1-obychno-ispolzuyut-uroven",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-3",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-chtoby-izbezhat-iskazhennogo-vospriyatiya-cveta-iz-z",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-kachestvo-vizualnogo-analiza-znachitelno-snizhaet",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-5-trebovaniya-k-specialistu-vo-vremya-provedeniya-ispytanii-na-specialiste-dol",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1618,8 +2289,131 @@
         "pageAnchor": "#section-6-samples"
       },
       "print": {
+        "sourcePageNumber": 8,
         "pageNumber": 8,
-        "pageAnchor": "#section-6-samples"
+        "pageAnchor": "#section-6-samples",
+        "layout": {
+          "estimatedUnits": 101,
+          "minUnits": 66,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 24,
+          "introUnits": 14,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-6-trebovaniya-k-obrazcam-i-etalonam",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-6-1-obschie-polozheniya",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-razmer-obrazcov-i-rasstoyanie-osmotra-dolzhny-byt",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-ispytuemye-obrazcy-i-etalony-sravneniya-cveta-dol",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-dlya-izgotovleniya-obrazcov-primenyayut-standartnye",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-pri-ispolzovanii-obrazcov-bolshego-razmera-pole",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-t-a-b-l-i-c-a-1",
+              "type": "table-caption",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-tablica",
+              "type": "table",
+              "estimatedUnits": 13,
+              "prefersSoloSegment": true
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-dlya-ocenki-cveta-poluprozrachnyh-i-lessiruyuschih-la",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-primechanie",
+              "type": "note",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-6-2-etalony-sravneniya",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-v-kachestve-etalonov-sravneniya-mogut-byt-ispolz",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-v-kachestve-etalona-sravneniya-vybirayut-etalon-cve",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-naibolee-dostovernye-rezultaty-mozhno-poluchit-p",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-1-seroi-maskoi-mozhet",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-4",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-primechanie",
+              "type": "note",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1898,8 +2692,161 @@
         "pageAnchor": "#section-6-continued"
       },
       "print": {
+        "sourcePageNumber": 9,
         "pageNumber": 9,
-        "pageAnchor": "#section-6-continued"
+        "pageAnchor": "#section-6-continued",
+        "layout": {
+          "estimatedUnits": 127,
+          "minUnits": 83,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 22,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-6-3-podgotovka-plastinok-i-poluchenie-pokrytiya",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-dlya-ispytanii-otbirayut-probu-lakokrasochnogo-mate",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-podgotovku-plastinok-osuschestvlyayut-po-gost-8832",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-metod-naneseniya-lakokrasochnogo-materiala-uslovi",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-esli-lakokrasochnyi-material-nanosyat-metodom-otl",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-esli-ispytuemyi-obrazec-neobhodimo-sravnit-so-s",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-dlya-sravnivaemyh-obrazcov-metod-naneseniya-lakokr",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-pri-raznoglasiyah-v-ocenke-cveta-lakokrasochnyi-ma",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-optimalnym-yavlyaetsya-metod-pnevmaticheskogo-raspy",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-6-4-sushka-ispytuemogo-obrazca",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-obrazcy-sushat-v-opredelennyh-usloviyah-v-sootvets",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-esli-v-normativnyh-dokumentah-ili-tehnicheskoi-do",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-primechanie",
+              "type": "note",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-6-5-tolschina-pokrytiya",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-tolschina-vysushennogo-pokrytiya-dolzhna-sootvetstvov",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-pri-nanesenii-lakokrasochnogo-materiala-na-plasti",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-v-sootvetstvii-s-normativnym-dokumentom-ili-tehn",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-1-v-rossiiskoi-federacii",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-5",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-tolschina-nevysushennogo-mokrogo-pokrytiya-ili-ras",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-iz-okrashennyh-plastinok-otbirayut-obrazcy-poverh",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-razdel-6-prodolzhenie-dlya-ispytanii-ispolzuyut-odin-obrazec-ili-soglas",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2229,8 +3176,203 @@
         "pageAnchor": "#section-7-tests"
       },
       "print": {
+        "sourcePageNumber": 10,
         "pageNumber": 10,
-        "pageAnchor": "#section-7-tests"
+        "pageAnchor": "#section-7-tests",
+        "layout": {
+          "estimatedUnits": 147,
+          "minUnits": 96,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 30,
+          "introUnits": 22,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-7-provedenie-ispytanii",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-7-1-ispytaniya-provodyat-pri",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-7-2-osnovnoi-metod",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-osmatrivayut-obrazec-i-etalon-ili-dva-obrazca-sra",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-obrazcy-raspolagayut-ryadom-pri-etom-oni-dolzhny-s",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-obrazcy-osmatrivayut-pod-uglom-45-pri-osveschenii",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-chtoby-obespechit-bolshuyu-tochnost-sravneniya-vre",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-7-3-metod-ocenki-cveta-obrazcov-s-raznym-bleskom-pokrytiya",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-pri-sravnenii-obrazcov-silno-razlichayuschihsya-po",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-obrazcy-mogut-byt-osmotreny-a-pri-estestvenno",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-obrazcy-osmatrivayut-pod-uglom-zreniya-kotoryi-ob",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-7-4-metod-ocenki-cveta-teksturirovannyh-pokrytii-i-pokrytii-metallik-perlamutr-hameleon",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-dlya-teksturirovannyh-pokrytii-i-pokrytii-metall",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-esli-metod-ne-soglasovan-to-neobhodimo-provodit",
+              "type": "paragraph",
+              "estimatedUnits": 7,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-1-standartnyi-istochnik-osvescheniya",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-6",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-d-pri-sravnenii-obrazca",
+              "type": "list-item",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-dlya-ocenki-sootvetstviya-cveta-krupnogabaritnyh-i",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-rekomenduetsya-polozhit-izdelie-gorizontalno-isp",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-pri-znachitelnom-prevyshenii-razmerov-ispytuemogo",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-v-sluchae-raznoglasii-pri-ocenke-sootvetstviya-cve",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-7-6-metod-ocenki-vizualnyh-cvetovyh-razlichii",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-ocenku-vizualnyh-cvetovyh-razlichii-provodyat-v-d",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-obrazcy-osmatrivayut-po-7-2-i-provodyat-ocenku-viz",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-po-soglasovaniyu-zainteresovannyh-storon-dopuskae",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-7-7-arbitrazhnyi-metod",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-pri-raznoglasiyah-v-ocenke-sravnenie-cveta-provod",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-v-ispytaniyah-po-arbitrazhnomu-metodu-dolzhno-uchast",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-7-provedenie-ispytanii-primechanie",
+              "type": "note",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2354,8 +3496,77 @@
         "pageAnchor": "#section-8-metamerism"
       },
       "print": {
+        "sourcePageNumber": 11,
         "pageNumber": 11,
-        "pageAnchor": "#section-8-metamerism"
+        "pageAnchor": "#section-8-metamerism",
+        "layout": {
+          "estimatedUnits": 53,
+          "minUnits": 35,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 9,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-8-ocenka-metamerii-8-ocenka-metamerii",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-8-ocenka-metamerii-ocenku-metamerii-metamernogo-sootvetstviya-prov",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-8-ocenka-metamerii-ocenku-metamerii-provodyat-pri-iskusstvennom-dnev",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-8-ocenka-metamerii-dva-obrazca-ne-yavlyayutsya-metamernymi-esli-oni-so",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-8-ocenka-metamerii-dopustimuyu-stepen-metamerii-ustanavlivayut-po-so",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-8-ocenka-metamerii-primechanie",
+              "type": "note",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-8-ocenka-metamerii-7",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-8-ocenka-metamerii-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-8-ocenka-metamerii-dopolnitelnaya-informaciya-o-metamerii-i-metamern",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2415,8 +3626,47 @@
         "pageAnchor": "#section-9-results"
       },
       "print": {
+        "sourcePageNumber": 12,
         "pageNumber": 12,
-        "pageAnchor": "#section-9-results"
+        "pageAnchor": "#section-9-results",
+        "layout": {
+          "estimatedUnits": 27,
+          "minUnits": 18,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-9-obrabotka-rezultatov-9-obrabotka-rezultatov",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-9-obrabotka-rezultatov-9-1-pri-opredelenii-cveta",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-9-obrabotka-rezultatov-9-2-pri-ocenke-vizualnyh",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-9-obrabotka-rezultatov-9-3-pri-ocenke-metamerii",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2458,8 +3708,35 @@
         "pageAnchor": "#section-9-results"
       },
       "print": {
+        "sourcePageNumber": 12,
         "pageNumber": 12,
-        "pageAnchor": "#section-10-precision"
+        "pageAnchor": "#section-10-precision",
+        "layout": {
+          "estimatedUnits": 18,
+          "minUnits": 12,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-10-precizionnost-10-precizionnost",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-10-precizionnost-v-nastoyaschem-standarte-ne-ukazany-znacheniya-predel",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2637,8 +3914,113 @@
         "pageAnchor": "#section-9-results"
       },
       "print": {
+        "sourcePageNumber": 12,
         "pageNumber": 12,
-        "pageAnchor": "#section-11-report"
+        "pageAnchor": "#section-11-report",
+        "layout": {
+          "estimatedUnits": 67,
+          "minUnits": 44,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 30,
+          "introUnits": 7,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-11-protokol-ispytanii",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-protokol-ispytanii-dolzhen-soderzhat",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-a-vse-svedeniya-neobhodimye",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-b-ssylku-na-nastoyaschii",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-v-usloviya-sravneniya-cveta",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-g-lyubye-otkloneniya-ot",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-d-opisanie-ispytuemogo-obrazca",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-e-informaciyu-o-podgotovke",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-zh-opisanie-etalona-sravneniya",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-i-usloviya-provedeniya-ispytanii",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-k-rezultaty-ispytaniya-v",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-l-lyubye-osobennosti-nablyudaemye",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-m-datu-provedeniya-ispytanii",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-8",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-11-protokol-ispytanii-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2792,8 +4174,107 @@
         "pageAnchor": "#appendix-a"
       },
       "print": {
+        "sourcePageNumber": 13,
         "pageNumber": 13,
-        "pageAnchor": "#appendix-a"
+        "pageAnchor": "#appendix-a",
+        "layout": {
+          "estimatedUnits": 83,
+          "minUnits": 54,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 24,
+          "introUnits": 9,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-prilozhenie-a-spravochnoe",
+              "type": "heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-identifikaciya-cveta-obrazcov",
+              "type": "heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-osmotr-obrazcov-pokrytiya-s-celyu-identifikacii-c",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-dlya-identifikacii-cvet-opisyvayut-s-pomoschyu-treh",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-v-bolshinstve-sluchaev-dlya-opisaniya-cveta-dostato",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-dlya-opredeleniya-osnovnogo-cveta-pri-osmotre-obra",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-t-a-b-l-i-c-a-a-1",
+              "type": "table-caption",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-tablica",
+              "type": "table",
+              "estimatedUnits": 16,
+              "prefersSoloSegment": true
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-osnovnye-cveta-razdelyayut-na-ahromaticheskie-cher",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-dlya-ahromaticheskih-cvetov-ne-imeyuschih-ottenka-c",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-chernye-serye-belye-0-10-20-30-40-50-60-70-80-90",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-dlya-hromaticheskih-cvetov-cvet-opredelyayut-po-shkal",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-9",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2931,8 +4412,77 @@
         "pageAnchor": "#appendix-a-continued"
       },
       "print": {
+        "sourcePageNumber": 14,
         "pageNumber": 14,
-        "pageAnchor": "#appendix-a-continued"
+        "pageAnchor": "#appendix-a-continued",
+        "layout": {
+          "estimatedUnits": 57,
+          "minUnits": 38,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 26,
+          "introUnits": 10,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-prodolzhenie-fioletovye-sinie-golubye-zelenye-zheltye-oranzhevy",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-prodolzhenie-gruppa-svetlo-krasnyh-cvetov-prinyata-za-osnovnoi",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-prodolzhenie-gruppa-temno-oranzhevyh-cvetov-prinyata-za-osnovno",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-prodolzhenie-dlya-bolee-tochnoi-identifikacii-cvetu-prisvaivayut",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-prodolzhenie-pri-neobhodimosti-mozhet-byt-dobavleno-ukazanie",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-prodolzhenie-primechanie",
+              "type": "note",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-prodolzhenie-1-cvet-i-nazvaniya",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-prodolzhenie-10",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-a-prodolzhenie-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -3068,8 +4618,95 @@
         "pageAnchor": "#appendix-b"
       },
       "print": {
+        "sourcePageNumber": 15,
         "pageNumber": 15,
-        "pageAnchor": "#appendix-b"
+        "pageAnchor": "#appendix-b",
+        "layout": {
+          "estimatedUnits": 76,
+          "minUnits": 50,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 24,
+          "introUnits": 8,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-prilozhenie-b-obyazatelnoe",
+              "type": "heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii",
+              "type": "heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-komponentami-cvetovogo-razlichiya-yavlyayutsya-a-raz",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-ocenka-komponentov-cvetovogo-razlichiya-v-ballah-p",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-t-a-b-l-i-c-a-b-1",
+              "type": "table-caption",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-tablica",
+              "type": "table",
+              "estimatedUnits": 14,
+              "prefersSoloSegment": true
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-primery",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-1-razlichie-v-svetlote-dl-vis-2-oznachaet-chto",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-2-razlichie-v-ottenke-dh-vis-5ye-oznachaet-chto",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-3-razlichie-v-nasyschennosti-dc-vis-3-oznachaet",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-11",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -3196,8 +4833,89 @@
         "pageAnchor": "#appendix-v"
       },
       "print": {
+        "sourcePageNumber": 16,
         "pageNumber": 16,
-        "pageAnchor": "#appendix-v"
+        "pageAnchor": "#appendix-v",
+        "layout": {
+          "estimatedUnits": 62,
+          "minUnits": 41,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 26,
+          "introUnits": 8,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-prilozhenie-v-spravochnoe",
+              "type": "heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-metameriya-i-metamernye-sootvetstviya",
+              "type": "heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-spektralnoe-ravenstvo-yavlenie-kogda-dva-lako",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-metamernoe-sootvetstvie-eto-sovpadenie-po-cvet",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-esli-v-dvuh-sravnivaemyh-materialah-soderzhatsya-r",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-metamernoe-sootvetstvie-obnaruzhennoe-pri-iskuss",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-pri-ispolzovanii-osvetitelnyh-priborov-s-linei",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-v-zavisimosti-ot-naznacheniya-lakokrasochnogo-mater",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-pri-ocenke-metamerii-na-reshenie-o-sootvetstvii-i",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-12",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -3303,8 +5021,71 @@
         "pageAnchor": "#section-bibliography"
       },
       "print": {
+        "sourcePageNumber": 17,
         "pageNumber": 17,
-        "pageAnchor": "#section-bibliography"
+        "pageAnchor": "#section-bibliography",
+        "layout": {
+          "estimatedUnits": 51,
+          "minUnits": 34,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 24,
+          "introUnits": 5,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-bibliografiya-bibliografiya",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-bibliografiya-1",
+              "type": "bibliography-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-bibliografiya-astm-d1729-22-standard-practice-for-visual-appra",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-bibliografiya-2",
+              "type": "bibliography-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-bibliografiya-iso-cie-11664-4-2019-colorimetry-part-4-cie-19",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-bibliografiya-13",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-bibliografiya-gost-29319-2025",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-bibliografiya-tablica",
+              "type": "table",
+              "estimatedUnits": 13,
+              "prefersSoloSegment": true
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -3346,8 +5127,35 @@
         "pageAnchor": "#section-keywords"
       },
       "print": {
+        "sourcePageNumber": 18,
         "pageNumber": 18,
-        "pageAnchor": "#section-keywords"
+        "pageAnchor": "#section-keywords",
+        "layout": {
+          "estimatedUnits": 17,
+          "minUnits": 12,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-klyuchevye-slova-klyuchevye-slova-lakokrasochnye-materialy-lakokra",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-29319-2025-klyuchevye-slova-14",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -3380,8 +5188,29 @@
         "pageAnchor": "#section-imprint"
       },
       "print": {
+        "sourcePageNumber": 19,
         "pageNumber": 19,
-        "pageAnchor": "#section-imprint"
+        "pageAnchor": "#section-imprint",
+        "layout": {
+          "estimatedUnits": 18,
+          "minUnits": 12,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-29319-2025-izdatelskie-svedeniya-redaktor-n-v-talanova-tehnicheskii-redaktor-v-n",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -3404,8 +5233,22 @@
         "pageAnchor": null
       },
       "print": {
+        "sourcePageNumber": 20,
         "pageNumber": 20,
-        "pageAnchor": null
+        "pageAnchor": null,
+        "layout": {
+          "estimatedUnits": 10,
+          "minUnits": 7,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": true,
+          "prefersSoloPage": true,
+          "pageFillWeight": 1,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": []
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -3419,28 +5262,38 @@
       "term": "цвет лакокрасочного покрытия",
       "summary": "Свойство излучаемого, прошедшего через объект рассеянного или отраженного света вызывать определенные зрительные ощущения в соответствии с его спектральным составом.",
       "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
-      "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-1-cvet-lakokrasochnogo-pokrytiya"
+      "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-1-cvet-lakokrasochnogo-pokrytiya",
+      "references": []
     },
     {
       "id": "gost-29319-2025-3-terminy-i-opredeleniya-vizualnoe-cvetovoe-razlichie",
       "term": "визуальное цветовое различие",
       "summary": "Различие между двумя цветами, каким его видит человеческий глаз.",
       "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
-      "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-2-vizualnoe-cvetovoe-razlichie"
+      "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-2-vizualnoe-cvetovoe-razlichie",
+      "references": []
     },
     {
       "id": "gost-29319-2025-3-terminy-i-opredeleniya-kontrolnyi-obrazec-cveta-koc",
       "term": "контрольный образец цвета; КОЦ",
       "summary": "Мера цвета — инструмент, используемый для нормирования и воспроизведения цвета лакокрасочных материалов.",
       "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
-      "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-3-kontrolnyi-obrazec-cveta-koc"
+      "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-3-kontrolnyi-obrazec-cveta-koc",
+      "references": []
     },
     {
       "id": "gost-29319-2025-3-terminy-i-opredeleniya-metameriya-mezhdu-dvumya-cvetami",
       "term": "метамерия (между двумя цветами)",
       "summary": "Свойство зрения, при котором свет различного спектрального состава может вызывать ощущение одинакового цвета.",
       "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
-      "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-4-metameriya-mezhdu-dvumya-cvetami"
+      "unitId": "gost-29319-2025-3-terminy-i-opredeleniya-3-4-metameriya-mezhdu-dvumya-cvetami",
+      "references": []
+    },
+    {
+      "id": "manual-definition-kontrolnyi-obrazec",
+      "term": "контрольный образец",
+      "summary": "Образец покрытия, используемый как опорный объект для визуального сравнения цвета.",
+      "blockId": "gost-29319-2025-3-terminy-i-opredeleniya"
     }
   ],
   "highlights": [
@@ -3632,7 +5485,7 @@
       "occurrenceCount": 4
     },
     {
-      "id": "related-gost-r-71216-2024",
+      "id": "manual-related-gost-r-71216-2024",
       "label": "ГОСТ Р 71216—2024",
       "type": "reference",
       "sourceBlockIds": [
@@ -3733,84 +5586,94 @@
       "label": "Метод визуального сравнения цвета"
     },
     {
-      "id": "entity-ref-1",
+      "id": "entity-related-gost-29319-2025",
       "type": "reference",
       "label": "ГОСТ 29319— 2025"
     },
     {
-      "id": "entity-ref-2",
+      "id": "entity-related-iso-3668-2017",
       "type": "reference",
       "label": "ISO 3668:2017"
     },
     {
-      "id": "entity-ref-3",
+      "id": "entity-related-gost-29319-2025",
       "type": "reference",
       "label": "ГОСТ 29319—2025"
     },
     {
-      "id": "entity-ref-4",
+      "id": "entity-related-gost-1-0",
       "type": "reference",
       "label": "ГОСТ 1.0"
     },
     {
-      "id": "entity-ref-5",
+      "id": "entity-related-gost-1-2",
       "type": "reference",
       "label": "ГОСТ 1.2"
     },
     {
-      "id": "entity-ref-6",
+      "id": "entity-related-gost-29319-92",
       "type": "reference",
       "label": "ГОСТ 29319—92"
     },
     {
-      "id": "entity-ref-7",
+      "id": "entity-related-gost-8784",
       "type": "reference",
       "label": "ГОСТ 8784"
     },
     {
-      "id": "entity-ref-8",
+      "id": "entity-related-gost-8832",
       "type": "reference",
       "label": "ГОСТ 8832"
     },
     {
-      "id": "entity-ref-9",
+      "id": "entity-related-gost-9980-2",
       "type": "reference",
       "label": "ГОСТ 9980.2"
     },
     {
-      "id": "entity-ref-10",
+      "id": "entity-manual-related-gost-r-71216-2024",
       "type": "reference",
       "label": "ГОСТ Р 71216—2024"
     },
     {
-      "id": "entity-ref-11",
+      "id": "entity-related-gost-29317",
       "type": "reference",
       "label": "ГОСТ 29317"
     },
     {
-      "id": "entity-ref-12",
+      "id": "entity-related-gost-31993",
       "type": "reference",
       "label": "ГОСТ 31993"
     },
     {
-      "id": "entity-ref-13",
+      "id": "entity-related-iso-1513-2010",
       "type": "reference",
       "label": "ISO 1513:2010"
     },
     {
-      "id": "entity-ref-14",
+      "id": "entity-related-iso-15528-2013",
       "type": "reference",
       "label": "ISO 15528:2013"
     },
     {
-      "id": "entity-ref-15",
+      "id": "entity-related-iso-2808-2019",
       "type": "reference",
       "label": "ISO 2808:2019"
     },
     {
-      "id": "entity-ref-16",
+      "id": "entity-related-gost-r-59953-2021",
       "type": "reference",
       "label": "ГОСТ Р 59953—2021"
+    },
+    {
+      "id": "entity-related-iso-cie-11664-4-2019",
+      "type": "reference",
+      "label": "ISO/CIE 11664-4:2019"
+    },
+    {
+      "id": "entity-related-astm-d1729-22",
+      "type": "reference",
+      "label": "ASTM D1729-22"
     }
   ],
   "relations": [
@@ -4138,123 +6001,176 @@
   "printMap": [
     {
       "blockId": "gost-29319-2025-stranica-i-titul",
+      "sourcePageNumber": 1,
       "pageNumber": 1,
-      "pageAnchor": null
+      "pageAnchor": null,
+      "estimatedUnits": 30
     },
     {
       "blockId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte",
+      "sourcePageNumber": 2,
       "pageNumber": 2,
-      "pageAnchor": null
+      "pageAnchor": null,
+      "estimatedUnits": 81
     },
     {
       "blockId": "gost-29319-2025-stranica-iii-informacionnye-svedeniya",
+      "sourcePageNumber": 3,
       "pageNumber": 3,
-      "pageAnchor": null
+      "pageAnchor": null,
+      "estimatedUnits": 32
     },
     {
       "blockId": "gost-29319-2025-stranica-iv-vvedenie",
+      "sourcePageNumber": 4,
       "pageNumber": 4,
-      "pageAnchor": null
+      "pageAnchor": null,
+      "estimatedUnits": 64
     },
     {
       "blockId": "gost-29319-2025-1-oblast-primeneniya",
+      "sourcePageNumber": 5,
       "pageNumber": 5,
-      "pageAnchor": "#section-1-scope"
+      "pageAnchor": "#section-1-scope",
+      "estimatedUnits": 47
     },
     {
       "blockId": "gost-29319-2025-2-normativnye-ssylki",
+      "sourcePageNumber": 5,
       "pageNumber": 5,
-      "pageAnchor": "#section-2-normative"
+      "pageAnchor": "#section-2-normative",
+      "estimatedUnits": 71
     },
     {
       "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
+      "sourcePageNumber": 6,
       "pageNumber": 6,
-      "pageAnchor": "#section-3-terms"
+      "pageAnchor": "#section-3-terms",
+      "estimatedUnits": 45
     },
     {
       "blockId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta",
+      "sourcePageNumber": 6,
       "pageNumber": 6,
-      "pageAnchor": "#section-4-lighting"
+      "pageAnchor": "#section-4-lighting",
+      "estimatedUnits": 116
     },
     {
       "blockId": "gost-29319-2025-5-trebovaniya-k-specialistu",
+      "sourcePageNumber": 7,
       "pageNumber": 7,
-      "pageAnchor": "#section-5-specialist"
+      "pageAnchor": "#section-5-specialist",
+      "estimatedUnits": 62
     },
     {
       "blockId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam",
+      "sourcePageNumber": 8,
       "pageNumber": 8,
-      "pageAnchor": "#section-6-samples"
+      "pageAnchor": "#section-6-samples",
+      "estimatedUnits": 101
     },
     {
       "blockId": "gost-29319-2025-razdel-6-prodolzhenie",
+      "sourcePageNumber": 9,
       "pageNumber": 9,
-      "pageAnchor": "#section-6-continued"
+      "pageAnchor": "#section-6-continued",
+      "estimatedUnits": 127
     },
     {
       "blockId": "gost-29319-2025-7-provedenie-ispytanii",
+      "sourcePageNumber": 10,
       "pageNumber": 10,
-      "pageAnchor": "#section-7-tests"
+      "pageAnchor": "#section-7-tests",
+      "estimatedUnits": 147
     },
     {
       "blockId": "gost-29319-2025-8-ocenka-metamerii",
+      "sourcePageNumber": 11,
       "pageNumber": 11,
-      "pageAnchor": "#section-8-metamerism"
+      "pageAnchor": "#section-8-metamerism",
+      "estimatedUnits": 53
     },
     {
       "blockId": "gost-29319-2025-9-obrabotka-rezultatov",
+      "sourcePageNumber": 12,
       "pageNumber": 12,
-      "pageAnchor": "#section-9-results"
+      "pageAnchor": "#section-9-results",
+      "estimatedUnits": 27
     },
     {
       "blockId": "gost-29319-2025-10-precizionnost",
+      "sourcePageNumber": 12,
       "pageNumber": 12,
-      "pageAnchor": "#section-10-precision"
+      "pageAnchor": "#section-10-precision",
+      "estimatedUnits": 18
     },
     {
       "blockId": "gost-29319-2025-11-protokol-ispytanii",
+      "sourcePageNumber": 12,
       "pageNumber": 12,
-      "pageAnchor": "#section-11-report"
+      "pageAnchor": "#section-11-report",
+      "estimatedUnits": 67
     },
     {
       "blockId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov",
+      "sourcePageNumber": 13,
       "pageNumber": 13,
-      "pageAnchor": "#appendix-a"
+      "pageAnchor": "#appendix-a",
+      "estimatedUnits": 83
     },
     {
       "blockId": "gost-29319-2025-prilozhenie-a-prodolzhenie",
+      "sourcePageNumber": 14,
       "pageNumber": 14,
-      "pageAnchor": "#appendix-a-continued"
+      "pageAnchor": "#appendix-a-continued",
+      "estimatedUnits": 57
     },
     {
       "blockId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii",
+      "sourcePageNumber": 15,
       "pageNumber": 15,
-      "pageAnchor": "#appendix-b"
+      "pageAnchor": "#appendix-b",
+      "estimatedUnits": 76
     },
     {
       "blockId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya",
+      "sourcePageNumber": 16,
       "pageNumber": 16,
-      "pageAnchor": "#appendix-v"
+      "pageAnchor": "#appendix-v",
+      "estimatedUnits": 62
     },
     {
       "blockId": "gost-29319-2025-bibliografiya",
+      "sourcePageNumber": 17,
       "pageNumber": 17,
-      "pageAnchor": "#section-bibliography"
+      "pageAnchor": "#section-bibliography",
+      "estimatedUnits": 51
     },
     {
       "blockId": "gost-29319-2025-klyuchevye-slova",
+      "sourcePageNumber": 18,
       "pageNumber": 18,
-      "pageAnchor": "#section-keywords"
+      "pageAnchor": "#section-keywords",
+      "estimatedUnits": 17
     },
     {
       "blockId": "gost-29319-2025-izdatelskie-svedeniya",
+      "sourcePageNumber": 19,
       "pageNumber": 19,
-      "pageAnchor": "#section-imprint"
+      "pageAnchor": "#section-imprint",
+      "estimatedUnits": 18
     },
     {
       "blockId": "gost-29319-2025-stranica-20",
+      "sourcePageNumber": 20,
       "pageNumber": 20,
-      "pageAnchor": null
+      "pageAnchor": null,
+      "estimatedUnits": 10
     }
-  ]
+  ],
+  "curation": {
+    "applied": true,
+    "hiddenBlocksCount": 0,
+    "overrideVersion": 1
+  }
 }

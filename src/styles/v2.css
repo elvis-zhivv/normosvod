@@ -102,6 +102,29 @@
   padding: 22px;
 }
 
+.v2-block-band {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  margin-bottom: 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.v2-block-band-appendix {
+  color: var(--v2-accent);
+  background: color-mix(in srgb, var(--v2-soft) 72%, white);
+}
+
+.v2-block-band-procedure {
+  color: #29465f;
+  background: rgba(226, 235, 242, 0.92);
+}
+
 .v2-unit-list {
   display: grid;
   gap: 10px;
@@ -148,6 +171,10 @@
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 14px;
+}
+
+.document-signal-list-v2 {
+  margin: 16px 0;
 }
 
 .v2-inline-pill {
@@ -198,6 +225,64 @@
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.62);
   border: 1px solid rgba(24, 32, 42, 0.08);
+}
+
+.v2-unit-procedure-item {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+
+.v2-procedure-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  border-radius: 999px;
+  background: rgba(24, 32, 42, 0.06);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.v2-procedure-body {
+  min-width: 0;
+}
+
+.v2-table-group {
+  display: grid;
+  gap: 8px;
+}
+
+.v2-table-caption {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--v2-accent);
+}
+
+.v2-table-box {
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(24, 32, 42, 0.1);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(244, 247, 250, 0.78));
+}
+
+.v2-table-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.v2-table-text {
+  margin: 0;
+  line-height: 1.55;
 }
 
 .v2-unit-head {
@@ -407,6 +492,12 @@
     position: static;
     max-height: none;
     overflow: visible;
+  }
+}
+
+@media (max-width: 720px) {
+  .v2-unit-procedure-item {
+    grid-template-columns: 1fr;
   }
 }
 

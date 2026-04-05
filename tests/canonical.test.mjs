@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { applyCanonicalOverrides } from '../scripts/lib/canonical-overrides.mjs';
 import { buildCanonicalDocument, inferBlockType } from '../scripts/lib/document-segmentation.mjs';
 import { extractBlockFragmentsFromViewer } from '../scripts/lib/viewer-fragments.mjs';
 
@@ -105,6 +106,8 @@ test('buildCanonicalDocument creates canonical blocks with body text and extract
   assert.match(documentModel.blocks[0].bodyText, /Текст первого раздела/);
   assert.ok(documentModel.blocks[1].references.length === 0);
   assert.ok(documentModel.blocks[0].units.length > 0);
+  assert.ok(documentModel.blocks[0].print.layout.estimatedUnits >= 6);
+  assert.equal(documentModel.blocks[0].print.sourcePageNumber, 1);
 });
 
 test('extractBlockFragmentsFromViewer slices by selector boundaries across pages', () => {
@@ -168,4 +171,59 @@ test('buildCanonicalDocument extracts highlights, definitions and related norms 
   assert.ok(documentModel.highlights.some((item) => item.type === 'requirement'));
   assert.ok(documentModel.relatedNorms.some((item) => item.label === 'ГОСТ 29317—92'));
   assert.ok(documentModel.relatedNorms.some((item) => item.label === 'ISO 3668:2017'));
+});
+
+test('applyCanonicalOverrides applies curated block, definition and related norm patches', () => {
+  const baseDocument = buildCanonicalDocument({
+    ...legacyDocument,
+    navItems: [
+      { label: '2. Нормативные ссылки', targetPageIndex: 0, targetSelector: '#section-2' },
+      { label: '3. Термины и определения', targetPageIndex: 1, targetSelector: '#section-3' }
+    ]
+  }, {
+    slug: 'gost-29319-2025',
+    entries: [
+      { pageIndex: 0, anchor: '#section-2', text: '2 Нормативные ссылки. ГОСТ 29317—92.' },
+      { pageIndex: 1, anchor: '#section-3', text: '3 Термины и определения. 3.1 контрольный образец: образец.' }
+    ]
+  }, semanticViewerHtml);
+
+  const curated = applyCanonicalOverrides(baseDocument, {
+    version: 1,
+    meta: {
+      migrationStatus: 'entity-linked',
+      readerMode: 'hybrid'
+    },
+    blockOverrides: {
+      [baseDocument.blocks[0].id]: {
+        summary: 'Кураторски уточненный блок нормативных ссылок.',
+        referencesAppend: ['ГОСТ Р 71216—2024']
+      }
+    },
+    definitionsAppend: [
+      {
+        id: 'manual-definition',
+        term: 'контрольный образец',
+        summary: 'Ручное определение.',
+        blockId: baseDocument.blocks[1].id
+      }
+    ],
+    relatedNormsAppend: [
+      {
+        id: 'manual-related',
+        label: 'ГОСТ Р 71216—2024',
+        type: 'reference',
+        sourceBlockIds: [baseDocument.blocks[0].id],
+        occurrenceCount: 1
+      }
+    ]
+  });
+
+  assert.equal(curated.meta.migrationStatus, 'entity-linked');
+  assert.equal(curated.meta.readerMode, 'hybrid');
+  assert.match(curated.blocks[0].summary, /Кураторски уточненный/);
+  assert.ok(curated.blocks[0].references.includes('ГОСТ Р 71216—2024'));
+  assert.ok(curated.definitions.some((item) => item.id === 'manual-definition'));
+  assert.ok(curated.relatedNorms.some((item) => item.label === 'ГОСТ Р 71216—2024'));
+  assert.equal(curated.curation.applied, true);
 });

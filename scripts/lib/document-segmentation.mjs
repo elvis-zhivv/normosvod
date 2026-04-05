@@ -1,4 +1,5 @@
 import { buildSlug } from './slugify.mjs';
+import { buildPrintLayoutForBlock } from './print-layout.mjs';
 import { inferThemeId } from './theme.mjs';
 import { extractBlockFragmentsFromViewer } from './viewer-fragments.mjs';
 import { cleanText } from './text-utils.mjs';
@@ -514,6 +515,15 @@ export function buildCanonicalDocument(document, searchIndexEntry, html = '') {
     const references = extractReferencesFromText(sourceText);
     const units = extractNestedUnits(fragment?.html ?? '', { id: blockId, type: blockType });
     const highlights = buildBlockHighlights({ id: blockId, type: blockType }, sourceText, units);
+    const printLayout = buildPrintLayoutForBlock({
+      blockType,
+      title: item.label,
+      sourceText,
+      units,
+      references,
+      highlights,
+      order: index
+    });
 
     return {
       id: blockId,
@@ -531,8 +541,10 @@ export function buildCanonicalDocument(document, searchIndexEntry, html = '') {
         pageAnchor: pageEntry?.anchor ?? null
       },
       print: {
+        sourcePageNumber: pageIndex + 1,
         pageNumber: pageIndex + 1,
-        pageAnchor: item.targetSelector ?? pageEntry?.anchor ?? null
+        pageAnchor: item.targetSelector ?? pageEntry?.anchor ?? null,
+        layout: printLayout
       },
       migration: {
         source: 'legacy-viewer',
@@ -581,7 +593,7 @@ export function buildCanonicalDocument(document, searchIndexEntry, html = '') {
       id: block.id,
       title: block.title,
       type: block.type,
-      pageNumber: block.print.pageNumber
+      pageNumber: block.print.sourcePageNumber ?? block.print.pageNumber
     })),
     blocks,
     definitions,
@@ -591,8 +603,10 @@ export function buildCanonicalDocument(document, searchIndexEntry, html = '') {
     relations,
     printMap: blocks.map((block) => ({
       blockId: block.id,
+      sourcePageNumber: block.print.sourcePageNumber ?? block.print.pageNumber,
       pageNumber: block.print.pageNumber,
-      pageAnchor: block.print.pageAnchor
+      pageAnchor: block.print.pageAnchor,
+      estimatedUnits: block.print.layout?.estimatedUnits ?? null
     }))
   };
 }

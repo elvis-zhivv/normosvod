@@ -407,6 +407,64 @@ select {
   font-size: 1rem;
 }
 
+.document-signal-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 14px 0;
+}
+
+.document-signal {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 1px solid rgba(24, 32, 42, 0.08);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.document-signal-coatings {
+  color: #8a5a0a;
+  background: rgba(185, 120, 23, 0.12);
+}
+
+.document-signal-regulation {
+  color: #1c476a;
+  background: rgba(28, 71, 106, 0.12);
+}
+
+.document-signal-fire-safety {
+  color: #8d3740;
+  background: rgba(141, 55, 64, 0.12);
+}
+
+.document-signal-construction {
+  color: #47637d;
+  background: rgba(71, 99, 125, 0.12);
+}
+
+.document-signal-v2,
+.document-signal-hybrid,
+.document-signal-print-verified,
+.document-signal-v2-ready,
+.document-signal-curated {
+  color: #1f4d36;
+  background: rgba(31, 77, 54, 0.12);
+}
+
+.document-signal-legacy,
+.document-signal-imported,
+.document-signal-segmented,
+.document-signal-entity-linked,
+.document-signal-metric {
+  color: #475569;
+  background: rgba(71, 85, 105, 0.1);
+}
+
 .doc-card-hit-snippet {
   margin: 0;
   line-height: 1.6;
@@ -555,6 +613,40 @@ select {
   border-radius: var(--radius);
 }
 
+.platform-status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.platform-status-card {
+  padding: 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(24, 32, 42, 0.08);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.platform-status-card strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1.15rem;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.platform-status-card p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.platform-status-label {
+  margin: 0 0 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
 @media (max-width: 980px) {
   .search-panel,
   .document-hero,
@@ -569,7 +661,8 @@ select {
   .stats-grid,
   .doc-grid,
   .meta-list,
-  .filter-grid {
+  .filter-grid,
+  .platform-status-grid {
     grid-template-columns: 1fr;
   }
 }

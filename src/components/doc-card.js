@@ -1,5 +1,6 @@
 import { escapeHtml, highlightSearchTerms } from '../js/html.js';
 import { normalizeDocumentUrl, withBase } from '../js/paths.js';
+import { buildDocumentSignals } from '../js/document-signals.js';
 
 function getSearchHitBadge(searchHit) {
   switch (searchHit?.kind) {
@@ -36,6 +37,24 @@ function renderSearchPreview(searchHit, query, matchedPagesLabel) {
       <strong class="doc-card-hit-title">${contextLabel}</strong>
       <p class="doc-card-hit-snippet">${highlightSearchTerms(searchHit.snippet ?? '', query ?? '')}</p>
     </section>
+  `;
+}
+
+function renderSignalChips(document) {
+  const signals = buildDocumentSignals(document);
+
+  if (!signals.length) {
+    return '';
+  }
+
+  return `
+    <div class="document-signal-list">
+      ${signals.map((signal) => `
+        <span class="document-signal document-signal-${escapeHtml(signal.tone)}">
+          ${escapeHtml(signal.label)}
+        </span>
+      `).join('')}
+    </div>
   `;
 }
 
@@ -84,6 +103,7 @@ export function renderDocCard(document) {
         <p class="doc-card-kicker">${escapeHtml(document.gostNumber)}</p>
         <h3>${escapeHtml(document.title)}</h3>
         <p class="doc-card-meta">${escapeHtml(document.year)} · ${escapeHtml(document.pages)} стр. · ${escapeHtml(document.language?.toUpperCase() ?? 'RU')}</p>
+        ${renderSignalChips(document)}
         <p class="doc-card-description">${escapeHtml(description)}</p>
         ${renderSearchPreview(searchHit, document.searchQuery ?? '', matchedPagesLabel)}
         ${searchHit

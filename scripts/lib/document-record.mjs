@@ -13,6 +13,7 @@ function normalizeMigrationStatus(value) {
 export function enrichDocumentRecord(record) {
   const viewerUrl = record.viewerUrl || `/docs/${record.slug}/viewer.html`;
   const slug = record.slug;
+  const printUrl = record.printUrl || `/docs/${slug}/print.html`;
 
   return {
     ...record,
@@ -21,7 +22,7 @@ export function enrichDocumentRecord(record) {
     migrationStatus: normalizeMigrationStatus(record.migrationStatus),
     v2DocumentUrl: record.v2DocumentUrl || `/data/v2/${slug}.json`,
     legacyViewerUrl: record.legacyViewerUrl || viewerUrl,
-    printUrl: record.printUrl || viewerUrl,
+    printUrl,
     hasV2Scaffold: record.hasV2Scaffold ?? true
   };
 }

@@ -1,0 +1,2962 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ГОСТ 1.0—2015 · Print A4</title>
+    <style>
+      :root {
+        --print-accent: #284a67;
+        --print-soft: #dbe5ef;
+        --print-line: rgba(24, 32, 42, 0.14);
+        --print-text: #18202a;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: #e8edf2; color: var(--print-text); }
+      body { font-family: "Times New Roman", Georgia, serif; }
+      .print-toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 24px;
+        background: rgba(255, 255, 255, 0.94);
+        border-bottom: 1px solid var(--print-line);
+      }
+      .print-toolbar strong { color: var(--print-accent); }
+      .print-toolbar button {
+        min-height: 42px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid var(--print-line);
+        background: white;
+        cursor: pointer;
+        font: inherit;
+      }
+      .print-document {
+        width: min(100%, 980px);
+        margin: 0 auto;
+        padding: 24px 0 48px;
+      }
+      .print-page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto 16px;
+        padding: 16mm 16mm 18mm;
+        background: white;
+        box-shadow: 0 16px 40px rgba(14, 34, 53, 0.14);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 10mm;
+        page-break-after: always;
+      }
+      .print-page-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 8mm;
+        border-bottom: 2px solid var(--print-soft);
+      }
+      .print-doc-number {
+        margin: 0 0 6px;
+        font-size: 11pt;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--print-accent);
+      }
+      .print-page-header h1 {
+        margin: 0;
+        font-size: 18pt;
+        line-height: 1.2;
+      }
+      .print-page-marker {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: var(--print-soft);
+        color: var(--print-accent);
+        font-size: 10pt;
+        white-space: nowrap;
+      }
+      .print-page-body {
+        display: grid;
+        align-content: start;
+        gap: 8mm;
+      }
+      .print-block {
+        border: 1px solid var(--print-line);
+        border-radius: 4mm;
+        padding: 6mm;
+        break-inside: avoid;
+      }
+      .print-block-band {
+        display: inline-flex;
+        align-items: center;
+        min-height: 9mm;
+        padding: 0 4mm;
+        margin-bottom: 4mm;
+        border-radius: 999px;
+        font-size: 9.5pt;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .print-block-band-appendix {
+        color: var(--print-accent);
+        background: var(--print-soft);
+      }
+      .print-block-band-procedure {
+        color: #29465f;
+        background: #e2ebf2;
+      }
+      .print-block-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 4mm;
+      }
+      .print-block-type,
+      .print-block-anchor,
+      .print-unit-type {
+        margin: 0;
+        font-size: 9.5pt;
+        color: #556273;
+      }
+      .print-block h2 {
+        margin: 0 0 3mm;
+        font-size: 14pt;
+        line-height: 1.25;
+      }
+      .print-block-continuation-label {
+        color: #556273;
+        font-size: 11pt;
+        font-weight: 400;
+      }
+      .print-block-summary,
+      .print-unit p {
+        margin: 0;
+        font-size: 11pt;
+        line-height: 1.5;
+      }
+      .print-reference-list {
+        margin: 4mm 0 0;
+        padding-left: 5mm;
+        display: grid;
+        gap: 2mm;
+      }
+      .print-unit-list {
+        display: grid;
+        gap: 4mm;
+        margin-top: 5mm;
+      }
+      .print-unit {
+        padding-top: 4mm;
+        border-top: 1px solid rgba(24, 32, 42, 0.08);
+      }
+      .print-table-group {
+        display: grid;
+        gap: 2mm;
+      }
+      .print-table-caption {
+        font-size: 10pt;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--print-accent);
+      }
+      .print-table-box {
+        padding: 4mm;
+        border-radius: 3mm;
+        border: 1px solid rgba(24, 32, 42, 0.14);
+        background: rgba(244, 247, 250, 0.72);
+      }
+      .print-table-head {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 2mm;
+        flex-wrap: wrap;
+      }
+      .print-table-text {
+        margin: 0;
+        font-size: 10.2pt;
+        line-height: 1.45;
+      }
+      .print-unit-list-item {
+        display: grid;
+        grid-template-columns: 16mm 1fr;
+        gap: 4mm;
+        align-items: start;
+      }
+      .print-list-marker {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 8mm;
+        border-radius: 999px;
+        background: rgba(24, 32, 42, 0.06);
+        color: #556273;
+        font-size: 9pt;
+        font-weight: 700;
+      }
+      .print-list-body p {
+        margin-top: 2mm;
+      }
+      .print-block-continuation .print-block-head {
+        padding-bottom: 2mm;
+        border-bottom: 1px dashed rgba(24, 32, 42, 0.12);
+      }
+      .print-unit-head {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 2mm;
+      }
+      .print-page-footer {
+        justify-self: end;
+        font-size: 10pt;
+        color: #556273;
+      }
+      @media print {
+        html, body { background: white; }
+        .print-toolbar { display: none; }
+        .print-document { width: auto; margin: 0; padding: 0; }
+        .print-page {
+          margin: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="print-toolbar">
+      <strong>ГОСТ 1.0—2015 · Print A4</strong>
+      <button type="button" onclick="window.print()">Печать</button>
+    </div>
+    <main class="print-document">
+      
+    <section class="print-page" data-page-number="1">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 1</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-oblozhka" data-block-id="gost-1-0-2015-oblozhka" data-source-page-number="1">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #cover-page</p>
+      </div>
+      <h2>
+        Обложка
+        
+      </h2>
+      <p class="print-block-summary">МЕЖГОСУДАРСТВЕННЫЙ СОВЕТ ПО СТАНДАРТИЗАЦИИ, МЕТРОЛОГИИ И СЕРТИФИКАЦИИ (МГС) INTERSTATE COUNCIL FOR STANDARDIZATION, METROLOGY AND CERTIFICATION (ISC) МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ ГОСТ 1.0— 2015 Межгосударственная система стандартизации Основные положения Издание официальное Москва Стандартинформ 2016 ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0— 2015</li><li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МЕЖГОСУДАРСТВЕННЫЙ СОВЕТ ПО СТАНДАРТИЗАЦИИ, МЕТРОЛОГИИ И СЕРТИФИКАЦИИ (МГС) INTERSTATE COUNCIL FOR STANDARDIZATION, METROLOGY AND CERTIFICATION (ISC)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0— 2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0— 2015</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Межгосударственная система стандартизации Основные положения Издание официальное</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Москва Стандартинформ 2016</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">1</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="2">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 2</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-meta" id="gost-1-0-2015-predislovie-i-svedeniya-o-standarte" data-block-id="gost-1-0-2015-predislovie-i-svedeniya-o-standarte" data-source-page-number="2">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">meta</p>
+        <p class="print-block-anchor">Источник: #preface</p>
+      </div>
+      <h2>
+        Предисловие и сведения о стандарте
+        
+      </h2>
+      <p class="print-block-summary">Предисловие Цели, основные принципы и основной порядок проведения работ по межгосударственной стандартизации установлены в настоящем стандарте и ГОСТ 1.2—2015 «Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Правила разработки, принятия, обновления и отмены». Сведения о стандарте 1 РАЗРАБОТАН Федеральным государственным унитарным предприятием «Всероссийский научно-исследо…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.2—2015</li><li>ГОСТ 1.0—2015</li><li>ГОСТ 1.0—92</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Предисловие</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Цели, основные принципы и основной порядок проведения работ по межгосударственной стандартизации установлены в настоящем стандарте и ГОСТ 1.2—2015 «Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Правила разработки, принятия, обновления и отмены».</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.2—2015</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Сведения о стандарте</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>1 РАЗРАБОТАН Федеральным государственным унитарным предприятием «Всероссийский научно-исследовательский институт стандартизации и сертификации в машиностроении» (ВНИИНМАШ)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>2 ВНЕСЕН Межгосударственным техническим комитетом по стандартизации МТК 536 «Методология межгосударственной стандартизации»</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>3 ПРИНЯТ Межгосударственным советом по стандартизации, метрологии и сертификации (протокол от 10 декабря 2015 г. № 48)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>За принятие проголосовали:</p>
+      
+    </section>
+  
+    <section class="print-table-group">
+      
+      <div class="print-table-box">
+        <div class="print-table-head">
+          <span class="print-unit-type">table</span>
+          <strong>Таблица</strong>
+        </div>
+        <p class="print-table-text">Краткое наименование страны по МК (ИСО 3166) 004—97 Код страны по МК (ИСО 3166) 004—97 Сокращенное наименование национального органа по стандартизации Армения AM Минэкономики Республики Армения Беларусь BY Госстандарт Республики Беларусь Казахстан KZ Госстандарт Республики Казахстан Киргизия KG Кыргызстандарт Молдова MD Молдова-Стандарт Россия RU Росстандарт Таджикистан TJ Таджикстандарт Узбекистан UZ Узстандарт Украина UA Минэкономразвития Украины</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>4 Приказом Федерального агентства по техническому регулированию и метрологии от 11 декабря 2015 г. № 2156-ст межгосударственный стандарт ГОСТ 1.0—2015 введен в действие в качестве национального стандарта Российской Федерации с 1 июля 2016 г.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>5 ВЗАМЕН ГОСТ 1.0—92</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—92</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Информация об изменениях к настоящему стандарту публикуется в ежегодном информационном указателе «Национальные стандарты», а текст изменений и поправок — в ежемесячном информационном указателе «Национальные стандарты». В случае пересмотра (замены) или отмены настоящего стандарта соответствующее уведомление будет опубликовано в ежемесячном информационном указателе «Национальные стандарты». Соответствующая информация, уведомление и тексты размещаются также в информационной системе общего пользования — на официальном сайте Федерального агентства по техническому регулированию и метрологии в сети Интернет (www.gost.ru).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>© Стандартинформ, 2016</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В Российской Федерации настоящий стандарт не может быть полностью или частично воспроизведен, тиражирован и распространен в качестве официального издания без разрешения Федерального агентства по техническому регулированию и метрологии</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>II</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">2</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="3">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 3</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-soderzhanie" data-block-id="gost-1-0-2015-soderzhanie" data-source-page-number="3">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #toc</p>
+      </div>
+      <h2>
+        Содержание
+        
+      </h2>
+      <p class="print-block-summary">Содержание 1 Область применения 1 2 Нормативные ссылки 1 3 Цели межгосударственной стандартизации 2 4 Основные принципы межгосударственной стандартизации 2 5 Основные направления работ по межгосударственной стандартизации 2 6 Организация работ по межгосударственной стандартизации 3 7 Объекты межгосударственной стандартизации 4 8 Документы по межгосударственной стандартизации и правила их применения 5 Библиография 8 III ГОСТ 1.0—2015 МЕЖГОСУДАРСТВЕННЫЙ СТАН…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Содержание</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>1</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>1</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>2</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>1</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>3</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>2</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>4</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>2</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">3</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="4">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 4</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-soderzhanie--print-2" data-block-id="gost-1-0-2015-soderzhanie" data-source-page-number="3">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #toc</p>
+      </div>
+      <h2>
+        Содержание
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>5</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>2</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>6</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>3</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>7</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>4</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>8</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>5</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">4</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="5">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 5</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-soderzhanie--print-3" data-block-id="gost-1-0-2015-soderzhanie" data-source-page-number="3">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #toc</p>
+      </div>
+      <h2>
+        Содержание
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>8</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>III</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Межгосударственная система стандартизации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Основные положения</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Interstate system for standardization. Basic principles</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Дата введения — 2016—07—01*</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">5</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="6">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 6</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-1-oblast-primeneniya" data-block-id="gost-1-0-2015-1-oblast-primeneniya" data-source-page-number="4">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-1</p>
+      </div>
+      <h2>
+        1. Область применения
+        
+      </h2>
+      <p class="print-block-summary">1 Область применения Настоящий стандарт устанавливает цели и принципы межгосударственной стандартизации, основные направления работ и объекты межгосударственной стандартизации, организационные основы межгосударственной системы стандартизации, категории документов по межгосударственной стандартизации и правила их применения. Примечание — В настоящем стандарте применены термины по ГОСТ 1.1. Настоящий стандарт направлен на реализацию Соглашения о проведении с…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.1</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>1 Область применения</strong>
+      </div>
+      <p>1 Область применения</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Настоящий стандарт устанавливает цели и принципы межгосударственной стандартизации, основные направления работ и объекты межгосударственной стандартизации, организационные основы межгосударственной системы стандартизации, категории документов по межгосударственной стандартизации и правила их применения.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Примечание — В настоящем стандарте применены термины по ГОСТ 1.1.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.1</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Настоящий стандарт направлен на реализацию Соглашения о проведении согласованной политики в области стандартизации, метрологии и сертификации (далее — Соглашение).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Примечание — Данное Соглашение заключено правительствами стран Содружества Независимых Государств 13 марта 1992 г. в г. Москве (с дополнениями и изменениями от 22 ноября 2007 г., принятыми в г. Ашхабаде).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Настоящий стандарт не распространяется на деятельность в отношении межгосударственной стандартизации оборонной продукции и иной продукции, сведения о которой составляют государственную тайну или которую используют для защиты этих сведений.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">6</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="7">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 7</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-references" id="gost-1-0-2015-2-normativnye-ssylki" data-block-id="gost-1-0-2015-2-normativnye-ssylki" data-source-page-number="4">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">references</p>
+        <p class="print-block-anchor">Источник: #section-2</p>
+      </div>
+      <h2>
+        2. Нормативные ссылки
+        
+      </h2>
+      <p class="print-block-summary">2 Нормативные ссылки В настоящем стандарте использованы нормативные ссылки на следующие стандарты: ГОСТ 1.1—2002 Межгосударственная система стандартизации. Термины и определения ГОСТ 1.2—2015 Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Правила разработки, принятия, обновления и отмены ГОСТ 1.3—2014 Межгосударственная система стандартизации. Стандарты межгосударственны…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.1—2002</li><li>ГОСТ 1.2—2015</li><li>ГОСТ 1.3—2014</li><li>ГОСТ 1.4—2015</li><li>ГОСТ 1.5—2001</li><li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>2 Нормативные ссылки</strong>
+      </div>
+      <p>2 Нормативные ссылки</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В настоящем стандарте использованы нормативные ссылки на следующие стандарты:</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.1—2002 Межгосударственная система стандартизации. Термины и определения</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.1—2002</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.2—2015 Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Правила разработки, принятия, обновления и отмены</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.2—2015</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.3—2014 Межгосударственная система стандартизации. Стандарты межгосударственные. Правила разработки на основе международных и региональных стандартов</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.3—2014</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">7</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="8">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 8</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-references print-block-continuation" id="gost-1-0-2015-2-normativnye-ssylki--print-2" data-block-id="gost-1-0-2015-2-normativnye-ssylki" data-source-page-number="4">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">references</p>
+        <p class="print-block-anchor">Источник: #section-2</p>
+      </div>
+      <h2>
+        2. Нормативные ссылки
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.4—2015 Межгосударственная система стандартизации. Межгосударственные технические комитеты по стандартизации. Правила создания и деятельности</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.4—2015</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.5—2001 Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Общие требования к построению, изложению, оформлению, содержанию и обозначению</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.5—2001</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>* Данная дата является общей для всех государств, указанных в предисловии.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Издание официальное</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>1</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-references print-block-continuation" id="gost-1-0-2015-2-normativnye-ssylki--print-3" data-block-id="gost-1-0-2015-2-normativnye-ssylki" data-source-page-number="4">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">references</p>
+        <p class="print-block-anchor">Источник: #section-2</p>
+      </div>
+      <h2>
+        2. Нормативные ссылки
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Примечание — При пользовании настоящим стандартом целесообразно проверить действие ссылочных стандартов в информационной системе общего пользования — на официальном сайте Федерального агентства по техническому регулированию и метрологии в сети Интернет или по ежегодному информационному указателю «Национальные стандарты», который опубликован по состоянию на 1 января текущего года, и по выпускам ежемесячного информационного указателя «Национальные стандарты» за текущий год. Если ссылочный документ заменен (изменен), то при пользовании настоящим стандартом следует руководствоваться заменяющим (измененным) стандартом. Если ссылочный стандарт отменен без замены, то положение, в котором дана ссылка на него, применяется в части, не затрагивающей эту ссылку.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">8</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="9">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 9</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-3-celi-mezhgosudarstvennoi-standartizacii" data-block-id="gost-1-0-2015-3-celi-mezhgosudarstvennoi-standartizacii" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-3</p>
+      </div>
+      <h2>
+        3. Цели межгосударственной стандартизации
+        
+      </h2>
+      <p class="print-block-summary">3 Цели межгосударственной стандартизации Основными целями межгосударственной стандартизации являются: - содействие устранению технических барьеров в торговле; - обеспечение безопасности для жизни, здоровья и имущества населения; - содействие охране окружающей среды; - защита интересов потребителей в отношении качества продукции и услуг; - обеспечение совместимости и взаимозаменяемости продукции; - содействие экономии всех видов ресурсов; - содействие повыш…</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>3 Цели межгосударственной стандартизации</strong>
+      </div>
+      <p>3 Цели межгосударственной стандартизации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Основными целями межгосударственной стандартизации являются:</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- содействие устранению технических барьеров в торговле; - обеспечение безопасности для жизни, здоровья и имущества населения; - содействие охране окружающей среды; - защита интересов потребителей в отношении качества продукции и услуг; - обеспечение совместимости и взаимозаменяемости продукции; - содействие экономии всех видов ресурсов; - содействие повышению качества и конкурентоспособности продукции; - содействие повышению безопасности хозяйственных объектов при возникновении природных и техногенных катастроф, а также других чрезвычайных ситуаций; - обеспечение единства измерений.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section" id="gost-1-0-2015-4-osnovnye-principy-mezhgosudarstvennoi-standartizacii" data-block-id="gost-1-0-2015-4-osnovnye-principy-mezhgosudarstvennoi-standartizacii" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-4</p>
+      </div>
+      <h2>
+        4. Основные принципы межгосударственной стандартизации
+        
+      </h2>
+      <p class="print-block-summary">4 Основные принципы межгосударственной стандартизации Основными принципами межгосударственной стандартизации являются: - приоритетное использование международных и европейских стандартов при планировании разработки межгосударственных стандартов; - принятие межгосударственных стандартов на основе консенсуса; - недопустимость создания препятствий производству и обращению продукции, выполнению работ и оказанию услуг; - взаимное стремление всех заинтересованны…</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>4 Основные принципы межгосударственной стандартизации</strong>
+      </div>
+      <p>4 Основные принципы межгосударственной стандартизации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Основными принципами межгосударственной стандартизации являются:</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- приоритетное использование международных и европейских стандартов при планировании разработки межгосударственных стандартов; - принятие межгосударственных стандартов на основе консенсуса; - недопустимость создания препятствий производству и обращению продукции, выполнению работ и оказанию услуг; - взаимное стремление всех заинтересованных государств — участников Соглашения к достижению согласия по обеспечению качества взаимопоставляемой продукции; - обеспечение соответствия межгосударственных стандартов современным достижениям науки, техники и технологий; - комплексность стандартизации взаимосвязанных объектов, стандартизуемых на межгосударственном уровне, путем согласованности требований к этим объектам и увязки сроков разработки и введения межгосударственных стандартов в действие; - приоритетное принятие в качестве межгосударственных стандартов национальных (государственных) стандартов, идентичных международным или европейским стандартам; - обязательное введение в действие межгосударственных стандартов на национальном уровне в государствах — участниках Соглашения, которые голосовали за принятие этих стандартов или присоединились к ним в дальнейшем, с соблюдением правил, установленных в 8.3.1—8.3.4 и 8.4 ; - обеспечение права участия всех заинтересованных сторон в разработке межгосударственных документов по стандартизации.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">9</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="10">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 10</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii" data-block-id="gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-5</p>
+      </div>
+      <h2>
+        5. Основные направления работ по межгосударственной стандартизации
+        
+      </h2>
+      <p class="print-block-summary">5 Основные направления работ по межгосударственной стандартизации 5.1 Основными направлениями проведения согласованной межгосударственной политики в области стандартизации являются: - установление единых (согласованных, гармонизированных) требований к продукции, обеспечивающих ее безопасность для жизни, здоровья и имущества населения, охрану окружающей среды, совместимость и взаимозаменяемость, а также контролепригодность; - установление единых (согласован…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>5 Основные направления работ по межгосударственной стандартизации</strong>
+      </div>
+      <p>5 Основные направления работ по межгосударственной стандартизации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>5.1 Основными направлениями проведения</strong>
+        <p>5.1 Основными направлениями проведения согласованной межгосударственной политики в области стандартизации являются:</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- установление единых (согласованных, гармонизированных) требований к продукции, обеспечивающих ее безопасность для жизни, здоровья и имущества населения, охрану окружающей среды, совместимость и взаимозаменяемость, а также контролепригодность; - установление единых (согласованных, гармонизированных) методов контроля (испытаний); - стандартизация общетехнических требований, представляющих межгосударственный интерес; - разработка межгосударственных стандартов, правил и рекомендаций по межгосударственной стандартизации в области методологии стандартизации, аккредитации, подтверждения соответствия и метрологии;</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>2</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii--print-2" data-block-id="gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-5</p>
+      </div>
+      <h2>
+        5. Основные направления работ по межгосударственной стандартизации
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- разработка межгосударственных классификаторов технико-экономической и социальной информации и систем кодирования; - расширение применения информационных технологий при планировании, разработке и распространении межгосударственных стандартов; - формирование, хранение и ведение фонда документов по межгосударственной стандартизации, а также международных, региональных и национальных стандартов при наличии соответствующих соглашений и договоренностей, обеспечение государств — участников Соглашения этими стандартами; - координация издания и распространения документов по межгосударственной стандартизации; - координация программ подготовки и повышения квалификации кадров в области стандартизации; - координация научно-технического сотрудничества государств — участников Соглашения в работах по международной стандартизации.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">10</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="11">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 11</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-5-2-prioritetnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii" data-block-id="gost-1-0-2015-5-2-prioritetnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-5-2</p>
+      </div>
+      <h2>
+        5.2. Приоритетные направления работ по межгосударственной стандартизации
+        
+      </h2>
+      <p class="print-block-summary">…енный совет по стандартизации, метрологии и сертификации периодически принимает приоритетные направления работ по межгосударственной стандартизации на ближайшие пять лет.</p>
+      
+      
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">11</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="12">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 12</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii" data-block-id="gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-6</p>
+      </div>
+      <h2>
+        6. Организация работ по межгосударственной стандартизации
+        
+      </h2>
+      <p class="print-block-summary">6 Организация работ по межгосударственной стандартизации 6.1 Организацию работ по межгосударственной стандартизации осуществляет Межгосударственный совет по стандартизации, метрологии и сертификации (далее — МГС), который образован на основе Соглашения и является руководящим органом региональной организации по стандартизации, которая признана Международной организацией по стандартизации (the International Organization for Standardization, далее — ISO) и за…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.4</li><li>ГОСТ 1.2</li><li>ГОСТ 1.0—2015</li><li>ISO 26</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>6 Организация работ по межгосударственной стандартизации</strong>
+      </div>
+      <p>6 Организация работ по межгосударственной стандартизации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.1 Организацию работ по</strong>
+        <p>6.1 Организацию работ по межгосударственной стандартизации осуществляет Межгосударственный совет по стандартизации, метрологии и сертификации (далее — МГС), который образован на основе Соглашения и является руководящим органом региональной организации по стандартизации, которая признана Международной организацией по стандартизации (the International Organization for Standardization, далее — ISO) и зарегистрирована как Евразийский совет по стандартизации, метрологии и сертификации на основании резолюции Совета ISO 26/1996.</p>
+        
+    <ul class="print-reference-list">
+      <li>ISO 26</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В документах по межгосударственной стандартизации применяют аббревиатуры Межгосударственного совета по стандартизации, метрологии и сертификации как региональной организации по стандартизации:</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- на русском языке — «Евразийский совет по стандартизации, метрологии и сертификации (ЕАСС)»; - на английском языке — «Euro-Asian Council for Standardization, Metrology and Certification (EASC)».</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">12</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="13">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 13</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii--print-2" data-block-id="gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-6</p>
+      </div>
+      <h2>
+        6. Организация работ по межгосударственной стандартизации
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.1.1 В состав МГС</strong>
+        <p>6.1.1 В состав МГС входят руководители национальных органов по стандартизации государств — участников Соглашения (далее — национальные органы).</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.1.2 МГС осуществляет свою</strong>
+        <p>6.1.2 МГС осуществляет свою деятельность на основании соответствующего положения и правил процедуры [1] , [2] .</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.1.3 Высшим органом МГС</strong>
+        <p>6.1.3 Высшим органом МГС является заседание членов Совета.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.1.4 Между заседаниями руководство</strong>
+        <p>6.1.4 Между заседаниями руководство работой МГС осуществляет председатель Совета, которого назначают поочередно из числа руководителей национальных органов на основе принципа ротации на срок не более одного года.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.2 Рабочим органом МГС</strong>
+        <p>6.2 Рабочим органом МГС является Бюро по стандартам МГС, которое осуществляет свою деятельность на основании соответствующего положения [3] .</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.3 По основным направлениям</strong>
+        <p>6.3 По основным направлениям деятельности МГС создаются научно-технические комиссии и рабочие группы.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.4 МГС создает межгосударственные</strong>
+        <p>6.4 МГС создает межгосударственные технические комитеты по стандартизации (МТК) и координирует их деятельность в соответствии с ГОСТ 1.4.</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.4</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.5 МГС принимает программу</strong>
+        <p>6.5 МГС принимает программу работ по межгосударственной стандартизации в соответствии с правилами ее разработки [4] .</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">13</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="14">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 14</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii--print-3" data-block-id="gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-6</p>
+      </div>
+      <h2>
+        6. Организация работ по межгосударственной стандартизации
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.6 МГС принимает межгосударственные</strong>
+        <p>6.6 МГС принимает межгосударственные стандарты, правила и рекомендации по межгосударственной стандартизации в соответствии с ГОСТ 1.2, а межгосударственные классификаторы технико-экономической и социальной информации — в соответствии с порядком, принятым МГС [5] .</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.2</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.7 Бюро по стандартам</strong>
+        <p>6.7 Бюро по стандартам МГС осуществляет регистрацию принятых документов по межгосударственной стандартизации, а также размещение на издание в автоматизированной информационной системе МГС, хранение и ведение фонда этих документов в соответствии с правилами, принятыми МГС [6] .</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6.8 Как руководящий орган</strong>
+        <p>6.8 Как руководящий орган региональной организации по стандартизации, МГС сотрудничает с ISO, Международной электротехнической комиссией (the International Electrotechnical Commission, далее — IEC), Европейским комитетом по стандартизации (European Committee for Standardization, далее — CEN) и Европейским комитетом по стандартизации в электротехнике (European Committee for Electrotechnical Standardization, далее — CENELEC), а также другими международными и региональными организациями по стандартизации, метрологии, сертификации и аккредитации.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>3</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">14</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="15">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 15</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii" data-block-id="gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii" data-source-page-number="7">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-7</p>
+      </div>
+      <h2>
+        7. Объекты межгосударственной стандартизации
+        
+      </h2>
+      <p class="print-block-summary">7 Объекты межгосударственной стандартизации 7.1 Объектами межгосударственной стандартизации являются: - общетехнические нормы и требования, в том числе единый технический язык, типоразмерные ряды и типовые конструкции изделий общемашиностроительного применения (подшипники, крепеж и др.), совместимые программные и технические средства информационных технологий, справочные данные о свойствах материалов и веществ; - объекты крупных промышленных и хозяйственны…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>7 Объекты межгосударственной стандартизации</strong>
+      </div>
+      <p>7 Объекты межгосударственной стандартизации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.1 Объектами межгосударственной стандартизации</strong>
+        <p>7.1 Объектами межгосударственной стандартизации являются:</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- общетехнические нормы и требования, в том числе единый технический язык, типоразмерные ряды и типовые конструкции изделий общемашиностроительного применения (подшипники, крепеж и др.), совместимые программные и технические средства информационных технологий, справочные данные о свойствах материалов и веществ; - объекты крупных промышленных и хозяйственных комплексов (транспорт, энергетика, связь и др.); - объекты крупных межгосударственных социально-экономических и научно-технических программ; - взаимопоставляемая продукция и услуги.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.2 В межгосударственные стандарты</strong>
+        <p>7.2 В межгосударственные стандарты включают:</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">15</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="16">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 16</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii--print-2" data-block-id="gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii" data-source-page-number="7">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-7</p>
+      </div>
+      <h2>
+        7. Объекты межгосударственной стандартизации
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- требования безопасности для жизни, здоровья и имущества населения; - основные потребительские (эксплуатационные) свойства продукции, требования к ее упаковке, маркировке, транспортированию, хранению и утилизации; - другие требования к качеству продукции; - требования к качеству услуг; - требования охраны окружающей среды; - требования к совместимости и взаимозаменяемости продукции; - параметрические ряды и типовые конструкции изделий; - методы контроля продукции и услуг; - требования, обеспечивающие техническое единство при разработке, производстве, эксплуатации (применении) продукции и оказании услуг, в том числе правила оформления технической документации; - термины и их определения, условные обозначения и знаки; - метрологические и другие общетехнические правила и нормы; - требования к сохранению и рациональному использованию всех видов ресурсов; - требования к компетентности персонала в выполнении определенных работ и оказании услуг, а также требования к компетентности юридических лиц в выполнении работ по оценке соответствия техническим требованиям.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.3 В зависимости от</strong>
+        <p>7.3 В зависимости от специфики объекта стандартизации и содержания устанавливаемых к нему требований применяют следующие основные виды межгосударственных стандартов:</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- стандарты основополагающие; - стандарты на продукцию; - стандарты на услуги; - стандарты на процессы; - стандарты на методы контроля (испытаний, измерений, анализа); - стандарты на термины и определения.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.3.1 Основополагающие межгосударственные стандарты</strong>
+        <p>7.3.1 Основополагающие межгосударственные стандарты устанавливают общие организационно-методические положения для определенной области деятельности, а также общетехнические требования (нормы, правила), обеспечивающие проведение согласованной политики в области межгосударственной стандартизации, техническое единство и взаимосвязь различных областей науки, техники и производства в процессе создания и использования продукции, охрану окружающей среды, охрану труда и другие общетехнические требования.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.3.2 Межгосударственные стандарты на</strong>
+        <p>7.3.2 Межгосударственные стандарты на продукцию устанавливают требования к группам однородной продукции и, при необходимости, к конкретной продукции.</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">16</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="17">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 17</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii--print-3" data-block-id="gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii" data-source-page-number="7">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-7</p>
+      </div>
+      <h2>
+        7. Объекты межгосударственной стандартизации
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.3.3 Межгосударственные стандарты на</strong>
+        <p>7.3.3 Межгосударственные стандарты на услуги устанавливают требования к группам однородных услуг и, при необходимости, к конкретной услуге.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>4</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.3.4 Межгосударственные стандарты на</strong>
+        <p>7.3.4 Межгосударственные стандарты на процессы устанавливают требования к методам (способам, приемам, режимам, нормам) выполнения различного рода работ в технологических процессах разработки, изготовления, хранения, транспортирования, эксплуатации, ремонта и утилизации продукции.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.3.5 Межгосударственные стандарты на</strong>
+        <p>7.3.5 Межгосударственные стандарты на методы контроля устанавливают методы (способы, приемы, режимы и др.) проведения испытаний продукции при ее создании, оценке соответствия и использовании (эксплуатации или ином применении).</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.3.6 Межгосударственные стандарты на</strong>
+        <p>7.3.6 Межгосударственные стандарты на термины и определения устанавливают научно-технические термины и их определения, многократно используемые в науке, технике, технологии, в различных отраслях экономики и иных областях деятельности.</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">17</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="18">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 18</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya" data-block-id="gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8</p>
+      </div>
+      <h2>
+        8. Документы по межгосударственной стандартизации и правила их применения
+        
+      </h2>
+      <p class="print-block-summary">8 Документы по межгосударственной стандартизации и правила их применения 8.1 К документам по межгосударственной стандартизации относятся: - межгосударственные стандарты; - правила по межгосударственной стандартизации; - рекомендации по межгосударственной стандартизации; - межгосударственные классификаторы технико-экономической и социальной информации. 8.2 Межгосударственные стандарты, правила и рекомендации по межгосударственной стандартизации разрабатываю…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.2</li><li>ГОСТ 1.5</li><li>ГОСТ 1.3</li><li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>8 Документы по межгосударственной стандартизации и правила их применения</strong>
+      </div>
+      <p>8 Документы по межгосударственной стандартизации и правила их применения</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.1 К документам по</strong>
+        <p>8.1 К документам по межгосударственной стандартизации относятся:</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- межгосударственные стандарты; - правила по межгосударственной стандартизации; - рекомендации по межгосударственной стандартизации; - межгосударственные классификаторы технико-экономической и социальной информации.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">18</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="19">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 19</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya--print-2" data-block-id="gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8</p>
+      </div>
+      <h2>
+        8. Документы по межгосударственной стандартизации и правила их применения
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.2 Межгосударственные стандарты, правила</strong>
+        <p>8.2 Межгосударственные стандарты, правила и рекомендации по межгосударственной стандартизации разрабатывают, принимают, обновляют и отменяют в соответствии с ГОСТ 1.2.</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.2</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Построение, изложение, оформление и обозначение межгосударственных стандартов, правил и рекомендаций по межгосударственной стандартизации должно соответствовать требованиям, установленным в ГОСТ 1.5.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.5</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При применении в качестве основы для проектов межгосударственных стандартов международных и региональных стандартов, а также международных документов, не являющихся международными стандартами, соблюдают правила, установленные в ГОСТ 1.3.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.3</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.3 Межгосударственные стандарты, правила</strong>
+        <p>8.3 Межгосударственные стандарты, правила и рекомендации по межгосударственной стандартизации применяют в качестве национальных стандартов, правил и рекомендаций по национальной стандартизации в государствах, чьи национальные органы приняли эти стандарты, правила и рекомендации (присоединились к ним), в порядке, установленном этими национальными органами и (или) национальным законодательством данных государств. Применение межгосударственных стандартов, правил и рекомендаций по межгосударственной стандартизации осуществляют непосредственно, без переоформления в национальные стандарты, правила и рекомендации по национальной стандартизации, если это не противоречит национальному законодательству государств — участников Соглашения.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.3.1 Бюро по стандартам</strong>
+        <p>8.3.1 Бюро по стандартам МГС размещает принятый и зарегистрированный межгосударственный стандарт (правила и рекомендации по межгосударственной стандартизации) в Интегрированной автоматизированной информационной системе Межгосударственного Совета по стандартизации, метрологии и сертификации (АИС МГС) на стадии «Издание».</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">19</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="20">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 20</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya--print-3" data-block-id="gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8</p>
+      </div>
+      <h2>
+        8. Документы по межгосударственной стандартизации и правила их применения
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.3.2* Заинтересованный национальный орган</strong>
+        <p>8.3.2* Заинтересованный национальный орган получает в АИС МГС зарегистрированный межгосударственный стандарт (правила и рекомендации по межгосударственной стандартизации) и вводит его в действие на территории своего государства в качестве национального стандарта (правил и рекомендаций по национальной стандартизации) путем принятия соответствующего организационно-распорядительного документа. При этом национальный орган устанавливает для стандарта (правил, рекомендаций) дату введения его в действие на территории своего государства и одновременно отменяет противоречащий ему (или дублирующий его) национальный стандарт (стандарты, правила и рекомендации). При этом стандарт (правила, рекомендации) может быть дополнен национальными информационными данными по ГОСТ 1.5 (подраздел 3.15).</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.5</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.3.3 Заинтересованный национальный орган</strong>
+        <p>8.3.3 Заинтересованный национальный орган устанавливает дату введения в действие межгосударственного стандарта в качестве национального стандарта не позднее двух лет со дня регистрации стандарта в Бюро по стандартам МГС. При этом учитывают соответствующие рекомендации национального органа государства-разработчика, которые изложены в пояснительной записке к проекту межгосударственного стандарта.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>* Национальный орган может установить собственные правила введения в действие межгосударственных стандартов, если приведенные в 8.3.2 правила противоречат национальному законодательству государства — участника Соглашения.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>5</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">20</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="21">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 21</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya--print-4" data-block-id="gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8</p>
+      </div>
+      <h2>
+        8. Документы по межгосударственной стандартизации и правила их применения
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Заинтересованный национальный орган устанавливает дату введения в действие правил (рекомендаций) по межгосударственной стандартизации в качестве национальных правил (рекомендаций) по стандартизации не позднее шести месяцев со дня регистрации правил (рекомендаций) по межгосударственной стандартизации в Бюро по стандартам МГС. При этом учитывают соответствующие рекомендации национального органа государства-разработчика, которые изложены в пояснительной записке к проекту правил (рекомендаций) по межгосударственной стандартизации.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>После принятия, на этапе регистрации межгосударственного стандарта его библиографические данные Бюро по стандартам МГС (далее — Бюро по стандартам) переводит в информационно-поисковую систему «СНГСтандарт» (ИПС «СНГСтандарт»).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Примечание — На сайте МГС (www.easc.org), в разделе «Каталог межгосударственных стандартов» находятся межгосударственные стандарты, принятые по результатам голосования и на заседаниях МГС.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">21</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="22">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 22</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov" data-block-id="gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov" data-source-page-number="9">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8-3-4</p>
+      </div>
+      <h2>
+        8.3.4. Дата введения национальных стандартов
+        
+      </h2>
+      <p class="print-block-summary">…в — участников Соглашения, МГС может установить единую для всех государств дату введения их в действие в качестве национальных стандартов, правил и рекомендаций по национальной стандартизации. 8.3.5 По решению национального органа правила и рекомендации по межгосударственной стандартизации могут не вводиться в действие для прямого применения на территории государства — участника Соглашения, а могут быть применены косвенно путем учета при разработке национа…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.2</li><li>ГОСТ 1.3</li><li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.3.4 Для наиболее важных</strong>
+        <p>8.3.4 Для наиболее важных межгосударственных стандартов, правил и рекомендаций по межгосударственной стандартизации, затрагивающих интересы всех государств — участников Соглашения, МГС может установить единую для всех государств дату введения их в действие в качестве национальных стандартов, правил и рекомендаций по национальной стандартизации.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.3.5 По решению национального</strong>
+        <p>8.3.5 По решению национального органа правила и рекомендации по межгосударственной стандартизации могут не вводиться в действие для прямого применения на территории государства — участника Соглашения, а могут быть применены косвенно путем учета при разработке национальных стандартов в области методологии стандартизации и других видов деятельности.</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">22</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="23">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 23</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov--print-2" data-block-id="gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov" data-source-page-number="9">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8-3-4</p>
+      </div>
+      <h2>
+        8.3.4. Дата введения национальных стандартов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.3.6 Публикацию информации о</strong>
+        <p>8.3.6 Публикацию информации о введении межгосударственного стандарта (правил или рекомендаций по межгосударственной стандартизации) в действие для применения в качестве национального стандарта (правил или рекомендаций по национальной стандартизации), его издание и распространение на территории государства осуществляют в порядке, установленном его национальным органом и (или) национальным законодательством данного государства.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.4 Изменение к межгосударственному</strong>
+        <p>8.4 Изменение к межгосударственному стандарту (правилам или рекомендациям по межгосударственной стандартизации) вводят в действие на территории государств после размещения принятого изменения в АИС МГС на стадии «Издание». При этом заинтересованные национальные органы принимают соответствующие организационно-распорядительные документы, устанавливая дату введения в действие изменения к стандарту не ранее трех месяцев, но не позднее одного года со дня регистрации изменения в Бюро по стандартам МГС, если это не противоречит национальному законодательству государства — участника Соглашения.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.4.1 Для изменения к</strong>
+        <p>8.4.1 Для изменения к основополагающему стандарту (правилам или рекомендациям по межгосударственной стандартизации), которые затрагивают интересы всех государств — участников Соглашения, МГС может установить единую для всех государств дату введения его в действие.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.4.2 Публикацию информации о</strong>
+        <p>8.4.2 Публикацию информации о введении в действие изменения к межгосударственному стандарту (правилам или рекомендациям по межгосударственной стандартизации) в государстве, в котором применяют данный стандарт (правила и рекомендации), и при необходимости публикацию текста самого изменения осуществляют в порядке, установленном национальным органом этого государства. При этом публикацию текста изменения к стандарту (правилам, рекомендациям) осуществляют на тех языках, на которых издан данный стандарт (правила и рекомендации).</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.5 В случае применения</strong>
+        <p>8.5 В случае применения национального стандарта государства — участника Соглашения (согласно ГОСТ 1.2, пункт 4.7) его оформление осуществляется в соответствии с ГОСТ 1.3 (раздел 6).</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.2</li><li>ГОСТ 1.3</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">23</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="24">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 24</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov--print-3" data-block-id="gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov" data-source-page-number="9">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8-3-4</p>
+      </div>
+      <h2>
+        8.3.4. Дата введения национальных стандартов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.6 Если межгосударственный стандарт</strong>
+        <p>8.6 Если межгосударственный стандарт не введен в действие в качестве национального стандарта в каком-либо государстве — участнике Соглашения, то этот стандарт можно применять в экономических отношениях с предприятиями тех стран, в которых действует данный стандарт, для изготовления и поставки продукции на экспорт в эти страны или для оказания им услуг, а также в иных случаях, обусловленных договорами (контрактами) между заинтересованными сторонами.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.7 Разработку и ведение</strong>
+        <p>8.7 Разработку и ведение межгосударственных классификаторов технико-экономической и социальной информации осуществляют в соответствии с порядком, принятым МГС [5] , а при их гармонизации соблюдают соответствующее положение [7] .</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Межгосударственные классификаторы технико-экономической и социальной информации применяют в государствах — участниках Соглашения в качестве соответствующих национальных классификаторов при разработке различной документации, в том числе при указании установленных данными классификаторами кодов и наименований объектов классификации.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.8 Национальный орган государства,</strong>
+        <p>8.8 Национальный орган государства, в котором применяют межгосударственный стандарт, вправе прекратить его применение в качестве национального стандарта в одностороннем порядке в следующих случаях:</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>6</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov--print-4" data-block-id="gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov" data-source-page-number="9">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8-3-4</p>
+      </div>
+      <h2>
+        8.3.4. Дата введения национальных стандартов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>- при возникновении противоречий между требованиями (правилами), установленными в данном стандарте, и положениями законодательного акта (в том числе технического регламента), принятого в этом государстве; - при несоответствии установленных в данном стандарте требований (правил) потребностям национальной экономики и/или безопасности; - при несогласии с содержанием изменения, внесенного в данный межгосударственный стандарт, или содержанием межгосударственного стандарта, принятого взамен действовавшего стандарта, а также в других обоснованных случаях.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">24</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="25">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 25</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya" data-block-id="gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya" data-source-page-number="10">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8-8-1</p>
+      </div>
+      <h2>
+        8.8.1. Уведомление о прекращении применения МГС в государстве — участнике Соглашения
+        
+      </h2>
+      <p class="print-block-summary">…ороннем порядке национальный орган этого государства направляет соответствующее уведомление (с указанием причины) в Бюро по стандартам МГС и национальные органы других государств, применяющих данный стандарт, не позднее чем за два месяца до даты прекращения применения. 8.8.2 Информацию о прекращении применения межгосударственного стандарта в государстве — участнике Соглашения в качестве национального стандарта в одностороннем порядке направляют в Бюро по с…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.8.1 В случае принятия</strong>
+        <p>8.8.1 В случае принятия решения о прекращении применения межгосударственного стандарта в государстве — участнике Соглашения в качестве национального стандарта в одностороннем порядке национальный орган этого государства направляет соответствующее уведомление (с указанием причины) в Бюро по стандартам МГС и национальные органы других государств, применяющих данный стандарт, не позднее чем за два месяца до даты прекращения применения.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.8.2 Информацию о прекращении</strong>
+        <p>8.8.2 Информацию о прекращении применения межгосударственного стандарта в государстве — участнике Соглашения в качестве национального стандарта в одностороннем порядке направляют в Бюро по стандартам МГС для актуализации электронного каталога «Межгосударственные стандарты».</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.9 Решение о прекращении</strong>
+        <p>8.9 Решение о прекращении применения межгосударственного стандарта в качестве национального стандарта в связи с его отменой или в одностороннем порядке национальный орган оформляет принятием соответствующего организационно-распорядительного документа с публикацией официальной информации об этом решении в порядке, установленном этим национальным органом.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.10 Одностороннее прекращение применения</strong>
+        <p>8.10 Одностороннее прекращение применения правил по межгосударственной стандартизации в государстве — участнике Соглашения не допускается, за исключением случая возникновения противоречий между положениями, установленными в них и в законодательных актах этого государства. При этом осуществляют процедуры, указанные в 8.8.1—8.8.3 .</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8.11 Национальный орган государства,</strong>
+        <p>8.11 Национальный орган государства, в котором применяют рекомендации по межгосударственной стандартизации, вправе прекратить их применение в одностороннем порядке, если их содержание не отвечает интересам этого государства. При этом осуществляют процедуры, указанные в 8.8.1—8.8.3 .</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section print-block-continuation" id="gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya--print-2" data-block-id="gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya" data-source-page-number="10">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-8-8-1</p>
+      </div>
+      <h2>
+        8.8.1. Уведомление о прекращении применения МГС в государстве — участнике Соглашения
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>7</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 1.0—2015</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0—2015</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">25</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="26">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 26</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-bibliography" id="gost-1-0-2015-bibliografiya" data-block-id="gost-1-0-2015-bibliografiya" data-source-page-number="11">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">bibliography</p>
+        <p class="print-block-anchor">Источник: #bibliography</p>
+      </div>
+      <h2>
+        Библиография
+        
+      </h2>
+      <p class="print-block-summary">Библиография [1] Положение о Межгосударственном совете по стандартизации, метрологии и сертификации [2] Правила процедуры Межгосударственного совета по стандартизации, метрологии и сертификации [3] Положение о Бюро по стандартам Межгосударственного совета по стандартизации, метрологии и сертификации [4] ПМГ 22—2004 Правила разработки программы работ по межгосударственной стандартизации [5] ПМГ 13—95 Порядок разработки и ведения межгосударственных классифик…</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Библиография</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-bibliography-item">
+      <div class="print-unit-head">
+        <span class="print-unit-type">bibliography-item</span>
+        <strong>[1]</strong>
+      </div>
+      <p>[1]</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Положение о Межгосударственном совете по стандартизации, метрологии и сертификации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-bibliography-item">
+      <div class="print-unit-head">
+        <span class="print-unit-type">bibliography-item</span>
+        <strong>[2]</strong>
+      </div>
+      <p>[2]</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Правила процедуры Межгосударственного совета по стандартизации, метрологии и сертификации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-bibliography-item">
+      <div class="print-unit-head">
+        <span class="print-unit-type">bibliography-item</span>
+        <strong>[3]</strong>
+      </div>
+      <p>[3]</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Положение о Бюро по стандартам Межгосударственного совета по стандартизации, метрологии и сертификации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-bibliography-item">
+      <div class="print-unit-head">
+        <span class="print-unit-type">bibliography-item</span>
+        <strong>[4]</strong>
+      </div>
+      <p>[4]</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ПМГ 22—2004</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">26</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="27">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 27</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-bibliography print-block-continuation" id="gost-1-0-2015-bibliografiya--print-2" data-block-id="gost-1-0-2015-bibliografiya" data-source-page-number="11">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">bibliography</p>
+        <p class="print-block-anchor">Источник: #bibliography</p>
+      </div>
+      <h2>
+        Библиография
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Правила разработки программы работ по межгосударственной стандартизации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-bibliography-item">
+      <div class="print-unit-head">
+        <span class="print-unit-type">bibliography-item</span>
+        <strong>[5]</strong>
+      </div>
+      <p>[5]</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ПМГ 13—95</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Порядок разработки и ведения межгосударственных классификаторов</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-bibliography-item">
+      <div class="print-unit-head">
+        <span class="print-unit-type">bibliography-item</span>
+        <strong>[6]</strong>
+      </div>
+      <p>[6]</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ПМГ 03—2011</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Порядок регистрации, издания и обеспечения нормативными документами по межгосударственной стандартизации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-bibliography-item">
+      <div class="print-unit-head">
+        <span class="print-unit-type">bibliography-item</span>
+        <strong>[7]</strong>
+      </div>
+      <p>[7]</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">27</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="28">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 1.0—2015</p>
+          <h1>Основные положения</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 28</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-bibliography print-block-continuation" id="gost-1-0-2015-bibliografiya--print-3" data-block-id="gost-1-0-2015-bibliografiya" data-source-page-number="11">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">bibliography</p>
+        <p class="print-block-anchor">Источник: #bibliography</p>
+      </div>
+      <h2>
+        Библиография
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ПМГ 14—96</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Положение о гармонизации классификаторов технико-экономической и социальной информации</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>УДК 006.05:006.354</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МКС 01.120</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Ключевые слова: стандартизация межгосударственная; цели, задачи, принципы, основные направления работ и объекты межгосударственной стандартизации; организационные основы межгосударственной системы стандартизации; категории документов по межгосударственной стандартизации; правила применения</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-meta" id="gost-1-0-2015-izdatelskie-svedeniya" data-block-id="gost-1-0-2015-izdatelskie-svedeniya" data-source-page-number="11">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">meta</p>
+        <p class="print-block-anchor">Источник: #imprint</p>
+      </div>
+      <h2>
+        Издательские сведения
+        
+      </h2>
+      <p class="print-block-summary">Редактор А. А. Микрюков Технический редактор В. Ю. Фотиева Корректор М. М. Малахова Компьютерная верстка А. Н. Золотаревой Сдано в набор 13.01.2016. Подписано в печать 11.02.2016. Формат 60×84 1/8. Гарнитура Ариал. Усл. печ. л. 1,40. Уч.-изд. л. 1,05. Тираж 165 экз. Зак. 463. Издано и отпечатано во ФГУП «СТАНДАРТИНФОРМ», 123995 Москва, Гранатный пер., 4. www.gostinfo.ru info@gostinfo.ru</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Редактор А. А. Микрюков Технический редактор В. Ю. Фотиева Корректор М. М. Малахова Компьютерная верстка А. Н. Золотаревой</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Сдано в набор 13.01.2016. Подписано в печать 11.02.2016. Формат 60×84 1/8. Гарнитура Ариал. Усл. печ. л. 1,40. Уч.-изд. л. 1,05. Тираж 165 экз. Зак. 463. Издано и отпечатано во ФГУП «СТАНДАРТИНФОРМ», 123995 Москва, Гранатный пер., 4. www.gostinfo.ru info@gostinfo.ru</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">28</footer>
+    </section>
+  
+    </main>
+  </body>
+</html>

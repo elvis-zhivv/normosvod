@@ -1,0 +1,4473 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ГОСТ 29319—2025 · Print A4</title>
+    <style>
+      :root {
+        --print-accent: #9b6a18;
+        --print-soft: #ece1ca;
+        --print-line: rgba(24, 32, 42, 0.14);
+        --print-text: #18202a;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: #e8edf2; color: var(--print-text); }
+      body { font-family: "Times New Roman", Georgia, serif; }
+      .print-toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 24px;
+        background: rgba(255, 255, 255, 0.94);
+        border-bottom: 1px solid var(--print-line);
+      }
+      .print-toolbar strong { color: var(--print-accent); }
+      .print-toolbar button {
+        min-height: 42px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid var(--print-line);
+        background: white;
+        cursor: pointer;
+        font: inherit;
+      }
+      .print-document {
+        width: min(100%, 980px);
+        margin: 0 auto;
+        padding: 24px 0 48px;
+      }
+      .print-page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto 16px;
+        padding: 16mm 16mm 18mm;
+        background: white;
+        box-shadow: 0 16px 40px rgba(14, 34, 53, 0.14);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 10mm;
+        page-break-after: always;
+      }
+      .print-page-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 8mm;
+        border-bottom: 2px solid var(--print-soft);
+      }
+      .print-doc-number {
+        margin: 0 0 6px;
+        font-size: 11pt;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--print-accent);
+      }
+      .print-page-header h1 {
+        margin: 0;
+        font-size: 18pt;
+        line-height: 1.2;
+      }
+      .print-page-marker {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: var(--print-soft);
+        color: var(--print-accent);
+        font-size: 10pt;
+        white-space: nowrap;
+      }
+      .print-page-body {
+        display: grid;
+        align-content: start;
+        gap: 8mm;
+      }
+      .print-block {
+        border: 1px solid var(--print-line);
+        border-radius: 4mm;
+        padding: 6mm;
+        break-inside: avoid;
+      }
+      .print-block-band {
+        display: inline-flex;
+        align-items: center;
+        min-height: 9mm;
+        padding: 0 4mm;
+        margin-bottom: 4mm;
+        border-radius: 999px;
+        font-size: 9.5pt;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .print-block-band-appendix {
+        color: var(--print-accent);
+        background: var(--print-soft);
+      }
+      .print-block-band-procedure {
+        color: #29465f;
+        background: #e2ebf2;
+      }
+      .print-block-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 4mm;
+      }
+      .print-block-type,
+      .print-block-anchor,
+      .print-unit-type {
+        margin: 0;
+        font-size: 9.5pt;
+        color: #556273;
+      }
+      .print-block h2 {
+        margin: 0 0 3mm;
+        font-size: 14pt;
+        line-height: 1.25;
+      }
+      .print-block-continuation-label {
+        color: #556273;
+        font-size: 11pt;
+        font-weight: 400;
+      }
+      .print-block-summary,
+      .print-unit p {
+        margin: 0;
+        font-size: 11pt;
+        line-height: 1.5;
+      }
+      .print-reference-list {
+        margin: 4mm 0 0;
+        padding-left: 5mm;
+        display: grid;
+        gap: 2mm;
+      }
+      .print-unit-list {
+        display: grid;
+        gap: 4mm;
+        margin-top: 5mm;
+      }
+      .print-unit {
+        padding-top: 4mm;
+        border-top: 1px solid rgba(24, 32, 42, 0.08);
+      }
+      .print-table-group {
+        display: grid;
+        gap: 2mm;
+      }
+      .print-table-caption {
+        font-size: 10pt;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--print-accent);
+      }
+      .print-table-box {
+        padding: 4mm;
+        border-radius: 3mm;
+        border: 1px solid rgba(24, 32, 42, 0.14);
+        background: rgba(244, 247, 250, 0.72);
+      }
+      .print-table-head {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 2mm;
+        flex-wrap: wrap;
+      }
+      .print-table-text {
+        margin: 0;
+        font-size: 10.2pt;
+        line-height: 1.45;
+      }
+      .print-unit-list-item {
+        display: grid;
+        grid-template-columns: 16mm 1fr;
+        gap: 4mm;
+        align-items: start;
+      }
+      .print-list-marker {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 8mm;
+        border-radius: 999px;
+        background: rgba(24, 32, 42, 0.06);
+        color: #556273;
+        font-size: 9pt;
+        font-weight: 700;
+      }
+      .print-list-body p {
+        margin-top: 2mm;
+      }
+      .print-block-continuation .print-block-head {
+        padding-bottom: 2mm;
+        border-bottom: 1px dashed rgba(24, 32, 42, 0.12);
+      }
+      .print-unit-head {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 2mm;
+      }
+      .print-page-footer {
+        justify-self: end;
+        font-size: 10pt;
+        color: #556273;
+      }
+      @media print {
+        html, body { background: white; }
+        .print-toolbar { display: none; }
+        .print-document { width: auto; margin: 0; padding: 0; }
+        .print-page {
+          margin: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="print-toolbar">
+      <strong>ГОСТ 29319—2025 · Print A4</strong>
+      <button type="button" onclick="window.print()">Печать</button>
+    </div>
+    <main class="print-document">
+      
+    <section class="print-page" data-page-number="1">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 1</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-29319-2025-stranica-i-titul" data-block-id="gost-29319-2025-stranica-i-titul" data-source-page-number="1">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: </p>
+      </div>
+      <h2>
+        Страница I — «Титул»
+        
+      </h2>
+      <p class="print-block-summary">МЕЖГОСУДАРСТВЕННЫЙ СОВЕТ ПО СТАНДАРТИЗАЦИИ, МЕТРОЛОГИИ И СЕРТИФИКАЦИИ (МГС) INTERSTATE COUNCIL FOR STANDARDIZATION, METROLOGY AND CERTIFICATION (ISC) МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ ГОСТ 29319— 2025 МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ Метод визуального сравнения цвета (ISO 3668:2017, NEQ) Издание официальное Москва Российский институт стандартизации 2026</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319— 2025</li><li>ISO 3668:2017</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МЕЖГОСУДАРСТВЕННЫЙ СОВЕТ ПО СТАНДАРТИЗАЦИИ, МЕТРОЛОГИИ И СЕРТИФИКАЦИИ (МГС) INTERSTATE COUNCIL FOR STANDARDIZATION, METROLOGY AND CERTIFICATION (ISC)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319— 2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319— 2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ Метод визуального сравнения цвета (ISO 3668:2017, NEQ) Издание официальное</p>
+      
+    <ul class="print-reference-list">
+      <li>ISO 3668:2017</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Москва Российский институт стандартизации 2026</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">1</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="2">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 2</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-meta" id="gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte" data-block-id="gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte" data-source-page-number="2">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">meta</p>
+        <p class="print-block-anchor">Источник: </p>
+      </div>
+      <h2>
+        Страница II — «Предисловие. Сведения о стандарте»
+        
+      </h2>
+      <p class="print-block-summary">…ударственной стандартизации. Правила разработки, принятия, обновления и отмены» Сведения о стандарте 1 РАЗРАБОТАН Автономной некоммерческой организацией «Сертификационный центр «ЯрТЕСТ лакокрасочной продукции и тары» (АНО СЦ «ЯрТЕСТ ЛКП и тары») 2 ВНЕСЕН Межгосударственным техническим комитетом по стандартизации МТК 195 «Материалы и покрытия лакокрасочные» 3 ПРИНЯТ Межгосударственным советом по стандартизации, метрологии и сертификации (протокол от 28 нояб…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li><li>ГОСТ 1.0</li><li>ГОСТ 1.2</li><li>ГОСТ 29319—92</li><li>ISO 3668:2017</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Предисловие</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Цели, основные принципы и общие правила проведения работ по межгосударственной стандартизации установлены ГОСТ 1.0 «Межгосударственная система стандартизации. Основные положения» и ГОСТ 1.2 «Межгосударственная система стандартизации. Стандарты межгосударственные, правила и рекомендации по межгосударственной стандартизации. Правила разработки, принятия, обновления и отмены»</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 1.0</li><li>ГОСТ 1.2</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>Сведения о стандарте</strong>
+      </div>
+      <p>Сведения о стандарте</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>1 РАЗРАБОТАН Автономной некоммерческой организацией «Сертификационный центр «ЯрТЕСТ лакокрасочной продукции и тары» (АНО СЦ «ЯрТЕСТ ЛКП и тары»)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>2 ВНЕСЕН Межгосударственным техническим комитетом по стандартизации МТК 195 «Материалы и покрытия лакокрасочные»</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>3 ПРИНЯТ Межгосударственным советом по стандартизации, метрологии и сертификации (протокол от 28 ноября 2025 г. № 191-П)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>За принятие проголосовали:</p>
+      
+    </section>
+  
+    <section class="print-table-group">
+      
+      <div class="print-table-box">
+        <div class="print-table-head">
+          <span class="print-unit-type">table</span>
+          <strong>Таблица</strong>
+        </div>
+        <p class="print-table-text">Краткое наименование страны по МК (ИСО 3166) 004—97 Код страны по МК (ИСО 3166) 004—97 Сокращенное наименование национального органа по стандартизации Азербайджан AZ Азстандарт Армения AM ЗАО «Национальный орган по стандартизации и метрологии» Республики Армения Беларусь BY Госстандарт Республики Беларусь Киргизия KG Кыргызстандарт Россия RU Росстандарт Узбекистан UZ Узбекское агентство по техническому регулированию</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>4 Приказом Федерального агентства по техническому регулированию и метрологии от 15 декабря 2025 г. № 1725-ст межгосударственный стандарт ГОСТ 29319—2025 введен в действие в качестве национального стандарта Российской Федерации с 1 апреля 2026 г.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>5 Настоящий стандарт разработан с учетом основных нормативных положений международного стандарта ISO 3668:2017 «Материалы лакокрасочные. Визуальное сравнение цвета красок» («Paints and varnishes — Visual comparison of colour of paints», NEQ)</p>
+      
+    <ul class="print-reference-list">
+      <li>ISO 3668:2017</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>6 ВЗАМЕН ГОСТ 29319—92 (ИСО 3668—76)</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—92</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>II</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">2</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="3">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 3</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-29319-2025-stranica-iii-informacionnye-svedeniya" data-block-id="gost-29319-2025-stranica-iii-informacionnye-svedeniya" data-source-page-number="3">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: </p>
+      </div>
+      <h2>
+        Страница III — «Информационные сведения»
+        
+      </h2>
+      <p class="print-block-summary">…ез разрешения Федерального агентства по техническому регулированию и метрологии III</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Информация о введении в действие (прекращении действия) настоящего стандарта и изменений к нему на территории указанных выше государств публикуется в указателях национальных стандартов, издаваемых в этих государствах, а также в сети Интернет на сайтах соответствующих национальных органов по стандартизации. В случае пересмотра, изменения или отмены настоящего стандарта соответствующая информация будет опубликована на официальном интернет-сайте Межгосударственного совета по стандартизации, метрологии и сертификации в каталоге «Межгосударственные стандарты»</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>© Оформление. ФГБУ «Институт стандартизации», 2026 В Российской Федерации настоящий стандарт не может быть полностью или частично воспроизведен, тиражирован и распространен в качестве официального издания без разрешения Федерального агентства по техническому регулированию и метрологии</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>III</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">3</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="4">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 4</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-meta" id="gost-29319-2025-stranica-iv-vvedenie" data-block-id="gost-29319-2025-stranica-iv-vvedenie" data-source-page-number="4">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">meta</p>
+        <p class="print-block-anchor">Источник: </p>
+      </div>
+      <h2>
+        Страница IV — «Введение»
+        
+      </h2>
+      <p class="print-block-summary">ГОСТ 29319—2025 Введение Для стандартного определения цвета методом визуального сравнения необходимы специалист с нормальным цветовым зрением, воспроизводимое освещение и условия осмотра. Цвет покрытия для большинства лакокрасочных материалов подлежит сравнению с эталоном при дневном свете, однако спектральный состав дневного света может заметно изменяться в течение светового дня. Рекомендуется использовать источники искусственного дневного освещения, так…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Введение</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для стандартного определения цвета методом визуального сравнения необходимы специалист с нормальным цветовым зрением, воспроизводимое освещение и условия осмотра. Цвет покрытия для большинства лакокрасочных материалов подлежит сравнению с эталоном при дневном свете, однако спектральный состав дневного света может заметно изменяться в течение светового дня. Рекомендуется использовать источники искусственного дневного освещения, так как они более стабильны в течение ограниченного периода времени по сравнению с дневным светом и обеспечивают лучшую воспроизводимость при сравнении цвета.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Как правило, если нет других указаний, для сравнения цвета используют рассеянный дневной свет или источник искусственного освещения, соответствующий дневному свету с коррелированной цветовой температурой 6500 К (МКО, стандартный источник освещения D 65 ). В случае разногласий контрольное испытание всегда проводят при искусственном освещении.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Контроль характеристик осветительных устройств представляет трудности в связи с отсутствием согласованного метода, позволяющего проверить, что освещение в камере сравнения цвета имеет спектральный состав, близкий к составу стандартного источника освещения D 65 . При проведении испытаний в протоколе рекомендуется дополнительно указывать метод контроля спектрального состава источника излучения.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>IV</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Метод визуального сравнения цвета</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Coating materials. Visual color comparison method</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Дата введения — 2026—04—01</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">4</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="5">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 5</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-29319-2025-1-oblast-primeneniya" data-block-id="gost-29319-2025-1-oblast-primeneniya" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-1-scope</p>
+      </div>
+      <h2>
+        1. Область применения
+        
+      </h2>
+      <p class="print-block-summary">1 Область применения Настоящий стандарт распространяется на лакокрасочные материалы и устанавливает метод визуального сравнения цвета лакокрасочных покрытий с эталоном сравнения при естественном или искусственном дневном освещении. Примечания 1 В качестве эталона сравнения может использоваться контрольный образец цвета, образец цвета каталога или образец цвета, принятый заинтересованными сторонами. 2 Испытания при естественном дневном освещении проводят пр…</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>1 Область применения</strong>
+      </div>
+      <p>1 Область применения</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Настоящий стандарт распространяется на лакокрасочные материалы и устанавливает метод визуального сравнения цвета лакокрасочных покрытий с эталоном сравнения при естественном или искусственном дневном освещении.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечания 1 В качестве эталона сравнения может использоваться контрольный образец цвета, образец цвета каталога или образец цвета, принятый заинтересованными сторонами. 2 Испытания при естественном дневном освещении проводят при обычном дневном свете на открытом воздухе или в помещении у окна.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Данный метод обеспечивает получение сопоставимых результатов на основе установленных стандартных требований к источникам освещения, выбору освещения и условий наблюдения, к специалисту по испытаниям, к размерам образцов и эталонов сравнения.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Допускается методом визуального сравнения проводить определение цвета для пигментов, колеровочных и пигментных паст.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section print-block-continuation" id="gost-29319-2025-1-oblast-primeneniya--print-2" data-block-id="gost-29319-2025-1-oblast-primeneniya" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-1-scope</p>
+      </div>
+      <h2>
+        1. Область применения
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Для лакокрасочных покрытий с явной цветовой однородностью и покрытий, полностью укрывающих непрозрачную подложку (окрашиваемую поверхность), рекомендовано инструментальное измерение цвета с помощью спектрофотометров или спектроколориметров согласно нормативным документам, действующим на территории государства, принявшего стандарт 1) .</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Допускается при отсутствии эталона сравнения проводить визуальный осмотр образцов для идентификации цвета лакокрасочного покрытия. Справочная информация по идентификации цвета приведена в приложении А.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">5</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="6">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 6</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-references" id="gost-29319-2025-2-normativnye-ssylki" data-block-id="gost-29319-2025-2-normativnye-ssylki" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">references</p>
+        <p class="print-block-anchor">Источник: #section-2-normative</p>
+      </div>
+      <h2>
+        2. Нормативные ссылки
+        
+      </h2>
+      <p class="print-block-summary">Блок нормативных ссылок с национальными заменами и связанными документами, обязательными для применения метода.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784</li><li>ГОСТ 8832</li><li>ГОСТ 9980.2</li><li>ГОСТ Р 71216—2024</li><li>ГОСТ 29319—2025</li><li>ГОСТ 29317</li><li>ГОСТ 31993</li><li>ISO 1513:2010</li><li>ISO 15528:2013</li><li>ISO 2808:2019</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>2 Нормативные ссылки</strong>
+      </div>
+      <p>2 Нормативные ссылки</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В настоящем стандарте использованы нормативные ссылки на следующие межгосударственные стандарты:</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 8784 Материалы лакокрасочные. Методы определения укрывистости ГОСТ 8832 Материалы лакокрасочные. Методы получения лакокрасочного покрытия для испытания ГОСТ 9980.2 (ISO 1513:2010, ISO 15528:2013) Материалы лакокрасочные и сырье для них. Отбор проб, контроль и подготовка образцов для испытаний</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784</li><li>ГОСТ 8832</li><li>ГОСТ 9980.2</li><li>ISO 1513:2010</li><li>ISO 15528:2013</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1) В Российской Федерации</strong>
+        <p>1) В Российской Федерации действует ГОСТ Р 71216—2024 «Материалы лакокрасочные. Колориметрия. Измерение цвета. Расчет цветовых различий и индекса метамерии».</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ Р 71216—2024</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">6</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="7">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 7</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-references print-block-continuation" id="gost-29319-2025-2-normativnye-ssylki--print-2" data-block-id="gost-29319-2025-2-normativnye-ssylki" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">references</p>
+        <p class="print-block-anchor">Источник: #section-2-normative</p>
+      </div>
+      <h2>
+        2. Нормативные ссылки
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Издание официальное</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>1</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29317 (ИСО 3270—84) Материалы лакокрасочные и сырье для них. Температуры и влажности для кондиционирования и испытания</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29317</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 31993 (ISO 2808:2019) Материалы лакокрасочные. Определение толщины покрытия</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 31993</li><li>ISO 2808:2019</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-references print-block-continuation" id="gost-29319-2025-2-normativnye-ssylki--print-3" data-block-id="gost-29319-2025-2-normativnye-ssylki" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">references</p>
+        <p class="print-block-anchor">Источник: #section-2-normative</p>
+      </div>
+      <h2>
+        2. Нормативные ссылки
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — При пользовании настоящим стандартом целесообразно проверить действие ссылочных стандартов и классификаторов на официальном интернет-сайте Межгосударственного совета по стандартизации, метрологии и сертификации (www.easc.by) или по указателям национальных стандартов, издаваемым в государствах, указанных в предисловии, или на официальных сайтах соответствующих национальных органов по стандартизации. Если на документ дана недатированная ссылка, то следует использовать документ, действующий на текущий момент, с учетом всех внесенных в него изменений. Если заменен ссылочный документ, на который дана датированная ссылка, то следует использовать указанную версию этого документа. Если после принятия настоящего стандарта в ссылочный документ, на который дана датированная ссылка, внесено изменение, затрагивающее положение, на которое дана ссылка, то это положение применяется без учета данного изменения. Если ссылочный документ отменен без замены, то положение, в котором дана ссылка на него, применяется в части, не затрагивающей эту ссылку.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">7</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="8">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 8</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-definition-set" id="gost-29319-2025-3-terminy-i-opredeleniya" data-block-id="gost-29319-2025-3-terminy-i-opredeleniya" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">definition-set</p>
+        <p class="print-block-anchor">Источник: #section-3-terms</p>
+      </div>
+      <h2>
+        3. Термины и определения
+        
+      </h2>
+      <p class="print-block-summary">Ключевые термины визуальной оценки цвета и метамерного соответствия, подтвержденные вручную.</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>3 Термины и определения</strong>
+      </div>
+      <p>3 Термины и определения</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В настоящем стандарте применены следующие термины с соответствующими определениями:</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-definition">
+      <div class="print-unit-head">
+        <span class="print-unit-type">definition</span>
+        <strong>3.1 цвет лакокрасочного покрытия</strong>
+      </div>
+      <p>3.1 цвет лакокрасочного покрытия: Свойство излучаемого, прошедшего через объект рассеянного или отраженного света вызывать определенные зрительные ощущения в соответствии с его спектральным составом.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-definition">
+      <div class="print-unit-head">
+        <span class="print-unit-type">definition</span>
+        <strong>3.2 визуальное цветовое различие</strong>
+      </div>
+      <p>3.2 визуальное цветовое различие: Различие между двумя цветами, каким его видит человеческий глаз.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Описывается в терминах субъективных цветовых характеристик (темнее, светлее, насыщеннее, краснее, желтее и др.).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-definition">
+      <div class="print-unit-head">
+        <span class="print-unit-type">definition</span>
+        <strong>3.3 контрольный образец цвета; КОЦ</strong>
+      </div>
+      <p>3.3 контрольный образец цвета; КОЦ: Мера цвета — инструмент, используемый для нормирования и воспроизведения цвета лакокрасочных материалов.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-definition-set print-block-continuation" id="gost-29319-2025-3-terminy-i-opredeleniya--print-2" data-block-id="gost-29319-2025-3-terminy-i-opredeleniya" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">definition-set</p>
+        <p class="print-block-anchor">Источник: #section-3-terms</p>
+      </div>
+      <h2>
+        3. Термины и определения
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-definition">
+      <div class="print-unit-head">
+        <span class="print-unit-type">definition</span>
+        <strong>3.4 метамерия (между двумя цветами)</strong>
+      </div>
+      <p>3.4 метамерия (между двумя цветами): Свойство зрения, при котором свет различного спектрального состава может вызывать ощущение одинакового цвета.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">8</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="9">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 9</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-requirements" id="gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta" data-block-id="gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-4-lighting</p>
+      </div>
+      <h2>
+        4. Требования к освещению для сравнения цвета
+        
+      </h2>
+      <p class="print-block-summary">4 Требования к освещению для сравнения цвета 4.1 Общие требования Для визуального сравнения цвета используют естественное или искусственное дневное освещение. Для арбитражных целей необходимо использовать точно контролируемое искусственное дневное освещение в камере сравнения цвета, так как качество естественного дневного света различно, и на мнение специалиста по испытаниям может оказать влияние наличие в поле зрения интенсивно окрашенных предметов. В обл…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>4 Требования к освещению для сравнения цвета</strong>
+      </div>
+      <p>4 Требования к освещению для сравнения цвета</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>4.1 Общие требования</strong>
+      </div>
+      <p>4.1 Общие требования</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для визуального сравнения цвета используют естественное или искусственное дневное освещение. Для арбитражных целей необходимо использовать точно контролируемое искусственное дневное освещение в камере сравнения цвета, так как качество естественного дневного света различно, и на мнение специалиста по испытаниям может оказать влияние наличие в поле зрения интенсивно окрашенных предметов. В области осмотра не должно быть ярких предметов, за исключением испытуемых образцов.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">9</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="10">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 10</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-requirements print-block-continuation" id="gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta--print-2" data-block-id="gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-4-lighting</p>
+      </div>
+      <h2>
+        4. Требования к освещению для сравнения цвета
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>4.2 Естественное дневное освещение</strong>
+      </div>
+      <p>4.2 Естественное дневное освещение</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Следует использовать рассеянный дневной свет частично покрытого облаками северного неба в северном полушарии и частично покрытого облаками южного неба в южном полушарии, не отражаемый от каких-либо интенсивно окрашенных объектов (например, таких как красная кирпичная стена или зеленое дерево).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Освещение должно быть равномерным по всей площади расположения испытуемых образцов и не менее 1000 лк. Следует избегать попадания прямых солнечных лучей.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Уровень освещения при обычном дневном свете на открытом воздухе составляет от 1700 до 2000 лк, в помещении у окна — от 1000 до 1600 лк.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>2</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>4.3 Искусственное дневное освещение</strong>
+        <p>4.3 Искусственное дневное освещение в камере сравнения цвета</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">10</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="11">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 11</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-requirements print-block-continuation" id="gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta--print-3" data-block-id="gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-4-lighting</p>
+      </div>
+      <h2>
+        4. Требования к освещению для сравнения цвета
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Камера сравнения цвета представляет собой устройство, в которое не проникает извне посторонний свет. Устройство освещается источником со спектральным распределением энергии, падающей на испытуемый образец, приблизительно равным распределению энергии стандартного источника освещения D 65 . Использование источника света с отличным спектральным распределением должно быть согласовано между заинтересованными сторонами.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Метод проверки соответствия спектрального распределения осветительного устройства стандартному источнику освещения D 65 должен быть указан или согласован. Для контроля освещения D 65 применяют специальные индикаторы, например, такие как PANTONE Lighting Indicator Stickers D65, — простой в использовании инструмент с двумя цветными плашками, совпадающими по цвету при идеальных условиях освещения, соответствующих D 65 , и различающимися при плохих условиях, то есть не соответствующих излучению источника D 65 .</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Уровень освещенности в камере сравнения цвета должен быть от 1000 до 4000 лк 1) , при этом значения, приближающиеся к верхнему пределу, следует использовать для темных цветов.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Внутренняя поверхность камеры общего назначения должна быть окрашена в нейтральный серый матовый цвет 2) с коэффициентом отражения от 30 % до 35 % (например, эталон Манселла № 6).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Современные камеры для визуальной оценки цвета (световые кабины) соответствуют требованиям основных международных стандартов визуального контроля цвета, включая [1] .</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">11</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="12">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 12</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-requirements print-block-continuation" id="gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta--print-4" data-block-id="gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-4-lighting</p>
+      </div>
+      <h2>
+        4. Требования к освещению для сравнения цвета
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для обеспечения надлежащих условий сравнения цвета внутренняя поверхность дна в камере должна иметь коэффициент отражения, близкий к коэффициенту отражения образцов, подлежащих сравнению.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При сравнении образцов светлых цветов и цветов, близких к белому, дно камеры закрывают специальной панелью с коэффициентом отражения не менее 50 % (например, нейтральный серый цвет с координатами цвета: L* 50 ± 5; a* ± 0,5; b* ± 0,5 в соответствии с [2] ).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При сравнении образцов темных цветов, текстурированных покрытий и покрытий «металлик», «перламутр», «хамелеон» дно камеры закрывают специальной панелью с черным матовым покрытием. Допускается использовать камеру, внутренняя часть которой окрашена в черный матовый цвет.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Рекомендуется использовать рассеивающий экран, чтобы избежать отражения изображения лампы от испытуемого образца. Характеристики спектрального распределения источника освещения должны включать прохождение спектра через экран.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Изготовитель источника искусственного дневного освещения должен указать количество часов непрерывной работы, в течение которых его изделие будет соответствовать требованиям настоящего стандарта.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Рекомендуется каждые 500 ч работы камеры проверять уровень освещенности в камере и соответствие излучения заявленному источнику освещения МКО.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">12</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="13">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 13</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-requirements" id="gost-29319-2025-5-trebovaniya-k-specialistu" data-block-id="gost-29319-2025-5-trebovaniya-k-specialistu" data-source-page-number="7">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-5-specialist</p>
+      </div>
+      <h2>
+        5. Требования к специалисту
+        
+      </h2>
+      <p class="print-block-summary">5 Требования к специалисту Необходимо с большой ответственностью подходить к выбору специалиста, проводящего испытания, так как значительное число людей неправильно воспринимают и различают цвета. Некоторые отклонения можно обнаружить с помощью таблицы для определения цветоощущения 3) , но для окончательного контрольного определения цветоощущения специалисту рекомендуется пройти более чувствительные тесты, например с применением аномалоскопа 4) . При необх…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>5 Требования к специалисту</strong>
+      </div>
+      <p>5 Требования к специалисту</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Необходимо с большой ответственностью подходить к выбору специалиста, проводящего испытания, так как значительное число людей неправильно воспринимают и различают цвета. Некоторые отклонения можно обнаружить с помощью таблицы для определения цветоощущения 3) , но для окончательного контрольного определения цветоощущения специалисту рекомендуется пройти более чувствительные тесты, например с применением аномалоскопа 4) .</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При необходимости специалист по испытаниям может носить очки, обеспечивающие однородную спектральную передачу в отношении видимого спектра.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Восприятие цвета значительно меняется с возрастом, поэтому рекомендуется специалистам старше 40 лет пройти специальные тесты с применением аномалоскопа или тест, при котором специалисту предлагают выбрать наилучший эталон из метамерного ряда цветов.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1) Обычно используют уровень</strong>
+        <p>1) Обычно используют уровень освещенности от 1000 до 2500 лк. 2) Для нейтрального серого цвета координаты цвета a* и b* должны быть менее 1,0 по [2] . 3) «Таблица для определения цветоощущения» Е.Б. Рабкина. 4) В международной практике используют тесты Ишихара и Фарнсворта—Манселла.</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">13</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="14">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 14</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-requirements print-block-continuation" id="gost-29319-2025-5-trebovaniya-k-specialistu--print-2" data-block-id="gost-29319-2025-5-trebovaniya-k-specialistu" data-source-page-number="7">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-5-specialist</p>
+      </div>
+      <h2>
+        5. Требования к специалисту
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>3</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Чтобы избежать искаженного восприятия цвета из-за утомления глаз, пастельные или оттеночные тона не следует оценивать сразу после интенсивных цветов. Если при сравнении ярких интенсивных цветов невозможно провести быструю оценку, специалист должен перевести взгляд на несколько секунд на нейтральное серое поле прежде, чем перейти к дальнейшему сравнению.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Качество визуального анализа значительно снижается при длительной непрерывной работе. Поэтому в работе каждого специалиста должны быть частые перерывы на несколько минут.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Во время проведения испытаний на специалисте должна быть одежда нейтрального цвета. Не допускается проводить испытания в одежде ярких и насыщенных цветов.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">14</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="15">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 15</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-requirements" id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam" data-block-id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-6-samples</p>
+      </div>
+      <h2>
+        6. Требования к образцам и эталонам
+        
+      </h2>
+      <p class="print-block-summary">6 Требования к образцам и эталонам 6.1 Общие положения Размер образцов и расстояние осмотра должны быть выбраны таким образом, чтобы обеспечить угол обзора для глаза примерно 10° в соответствии с рекомендацией МКО 1964. Испытуемые образцы и эталоны сравнения цвета должны быть плоскими, размером не более 150 × 100 мм и не менее 120 × 50 мм. Для изготовления образцов применяют стандартные пластинки по ГОСТ 8832 из стекла, листовой стали, белой жести, алюмини…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8832</li><li>ГОСТ 8784</li><li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>6 Требования к образцам и эталонам</strong>
+      </div>
+      <p>6 Требования к образцам и эталонам</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>6.1 Общие положения</strong>
+      </div>
+      <p>6.1 Общие положения</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Размер образцов и расстояние осмотра должны быть выбраны таким образом, чтобы обеспечить угол обзора для глаза примерно 10° в соответствии с рекомендацией МКО 1964.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-requirements print-block-continuation" id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam--print-2" data-block-id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-6-samples</p>
+      </div>
+      <h2>
+        6. Требования к образцам и эталонам
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Испытуемые образцы и эталоны сравнения цвета должны быть плоскими, размером не более 150 × 100 мм и не менее 120 × 50 мм.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для изготовления образцов применяют стандартные пластинки по ГОСТ 8832 из стекла, листовой стали, белой жести, алюминия или алюминиевых сплавов. Допускается применять пластинки из других материалов в соответствии с нормативными документами или технической документацией на испытуемый лакокрасочный материал.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8832</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При использовании образцов большего размера поле обзора, соответствующее 10° для наблюдателя, должно быть сформировано с помощью серой маски 1) . Рекомендуемые расстояния осмотра и размеры квадратных отверстий в маске приведены в таблице 1.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-table-caption">
+      <div class="print-unit-head">
+        <span class="print-unit-type">table-caption</span>
+        <strong>Т а б л и ц а 1</strong>
+      </div>
+      <p>Т а б л и ц а 1</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">15</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="16">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 16</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-requirements print-block-continuation" id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam--print-3" data-block-id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-6-samples</p>
+      </div>
+      <h2>
+        6. Требования к образцам и эталонам
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-table-group">
+      
+      <div class="print-table-box">
+        <div class="print-table-head">
+          <span class="print-unit-type">table</span>
+          <strong>Таблица</strong>
+        </div>
+        <p class="print-table-text">Расстояние осмотра, мм Размер отверстия, мм × мм 300 54 × 54 500 87 × 87 700 123 × 123 900 158 × 158</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-requirements print-block-continuation" id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam--print-4" data-block-id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-6-samples</p>
+      </div>
+      <h2>
+        6. Требования к образцам и эталонам
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для оценки цвета полупрозрачных и лессирующих лакокрасочных покрытий, не обеспечивающих полную укрывистость, необходимо, чтобы и эталон и испытуемый образец были нанесены на одинаковую однотонную стандартизированную подложку.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Полную укрывистость определяют при коэффициенте контрастности более 0,98 по ГОСТ 8784.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>6.2 Эталоны сравнения</strong>
+      </div>
+      <p>6.2 Эталоны сравнения</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В качестве эталонов сравнения могут быть использованы только цветовые эталоны с соответствующей степенью устойчивости цвета. Эталоны сравнения должны быть по возможности одинакового размера с испытуемыми образцами, а также иметь одинаковую текстуру и структуру поверхности.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">16</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="17">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 17</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-requirements print-block-continuation" id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam--print-5" data-block-id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-6-samples</p>
+      </div>
+      <h2>
+        6. Требования к образцам и эталонам
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В качестве эталона сравнения выбирают эталон цвета, наиболее близкий по блеску к испытуемому образцу.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Наиболее достоверные результаты можно получить при сравнении цвета однофактурных материалов с одинаковым показателем блеска.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1) Серой маской может</strong>
+        <p>1) Серой маской может быть лист картона нейтрального серого цвета с квадратным отверстием.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>4</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-requirements print-block-continuation" id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam--print-6" data-block-id="gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">requirements</p>
+        <p class="print-block-anchor">Источник: #section-6-samples</p>
+      </div>
+      <h2>
+        6. Требования к образцам и эталонам
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Для контрольных образцов цвета и образцов цвета, которые используют в качестве эталона сравнения, могут быть установлены требования к изготовлению и оформлению согласно нормативным документам, действующим на территории государства, принявшего стандарт 1) .</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">17</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="18">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 18</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-29319-2025-razdel-6-prodolzhenie" data-block-id="gost-29319-2025-razdel-6-prodolzhenie" data-source-page-number="9">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-6-continued</p>
+      </div>
+      <h2>
+        Раздел 6 (продолжение)
+        
+      </h2>
+      <p class="print-block-summary">6.3 Подготовка пластинок и получение покрытия Для испытаний отбирают пробу лакокрасочного материала по ГОСТ 9980.2. Пробу материала подготавливают к испытанию в соответствии с нормативными документами или технической документацией на испытуемый лакокрасочный материал. Подготовку пластинок осуществляют по ГОСТ 8832. Метод нанесения лакокрасочного материала, условия сушки и выдержки лакокрасочного покрытия должны быть выбраны в соответствии с нормативными до</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 9980.2</li><li>ГОСТ 8832</li><li>ГОСТ 29317</li><li>ГОСТ Р 59953—2021</li><li>ГОСТ 29319—2025</li><li>ГОСТ 31993</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>6.3 Подготовка пластинок и получение покрытия</strong>
+      </div>
+      <p>6.3 Подготовка пластинок и получение покрытия</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для испытаний отбирают пробу лакокрасочного материала по ГОСТ 9980.2. Пробу материала подготавливают к испытанию в соответствии с нормативными документами или технической документацией на испытуемый лакокрасочный материал.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 9980.2</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">18</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="19">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 19</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-29319-2025-razdel-6-prodolzhenie--print-2" data-block-id="gost-29319-2025-razdel-6-prodolzhenie" data-source-page-number="9">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-6-continued</p>
+      </div>
+      <h2>
+        Раздел 6 (продолжение)
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Подготовку пластинок осуществляют по ГОСТ 8832.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8832</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Метод нанесения лакокрасочного материала, условия сушки и выдержки лакокрасочного покрытия должны быть выбраны в соответствии с нормативными документами или технической документацией на испытуемый лакокрасочный материал, технологией или регламентом окраски изделия. Данные условия должны быть согласованы между заинтересованными сторонами, так как метод нанесения и толщина покрытия могут в значительной степени повлиять на цвет образца.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Если лакокрасочный материал наносят методом, отличным от указанного в нормативных документах или технической документации на испытуемый лакокрасочный материал, то этот метод должен быть согласован и подробно изложен.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Если испытуемый образец необходимо сравнить со стандартным образцом лакокрасочного материала, на пластинку наносят испытуемый лакокрасочный материал или систему покрытия, на аналогичную пластинку — стандартный материал или систему покрытия.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для сравниваемых образцов метод нанесения лакокрасочного материала и толщина высушенного покрытия по возможности должны быть одинаковыми.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При разногласиях в оценке цвета лакокрасочный материал наносят методом, указанным в нормативном документе или технической документации на испытуемый лакокрасочный материал, обеспечивающим наиболее ровное нанесение и минимальное отклонение по толщине высушенного покрытия.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">19</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="20">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 20</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-29319-2025-razdel-6-prodolzhenie--print-3" data-block-id="gost-29319-2025-razdel-6-prodolzhenie" data-source-page-number="9">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-6-continued</p>
+      </div>
+      <h2>
+        Раздел 6 (продолжение)
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Оптимальным является метод пневматического распыления, если в нормативном документе или технической документации на испытуемый лакокрасочный материал не предусмотрен принципиально другой метод нанесения.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>6.4 Сушка испытуемого образца</strong>
+      </div>
+      <p>6.4 Сушка испытуемого образца</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Образцы сушат в определенных условиях в соответствии с требованиями нормативного документа или технической документации на испытуемый лакокрасочный материал, технологией или регламентом окрашивания изделия в течение указанного времени.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Если в нормативных документах или технической документации нет других указаний, то после естественной сушки выдержка высушенного лакокрасочного покрытия не требуется, после горячей сушки покрытие выдерживают в стандартных атмосферных условиях по ГОСТ 29317 при свободной циркуляции воздуха, исключая возможность попадания прямых солнечных лучей, не менее 1 ч (до охлаждения).</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29317</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Если цвет лакокрасочного покрытия зависит от температуры, то испытуемый образец должен храниться при температуре (20 ± 2) °С, при этом температуру поддерживают, например, с помощью термостата. Лакокрасочные покрытия, которые меняют цвет в зависимости от температуры, необходимо кондиционировать до тех пор, пока цвет не перестанет изменяться.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>6.5 Толщина покрытия</strong>
+      </div>
+      <p>6.5 Толщина покрытия</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">20</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="21">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 21</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-29319-2025-razdel-6-prodolzhenie--print-4" data-block-id="gost-29319-2025-razdel-6-prodolzhenie" data-source-page-number="9">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-6-continued</p>
+      </div>
+      <h2>
+        Раздел 6 (продолжение)
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Толщина высушенного покрытия должна соответствовать требованиям нормативного документа или технической документации на испытуемый лакокрасочный материал, технологии или регламенту окрашивания изделия.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При нанесении лакокрасочного материала на пластинки из стекла толщина покрытия должна обеспечивать полное укрытие пластинки для исключения влияния цвета поверхности, на которой располагают образцы при осмотре.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В соответствии с нормативным документом или технической документацией на испытуемый лакокрасочный материал или по согласованию сторон для лакокрасочного покрытия может быть указана</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1) В Российской Федерации</strong>
+        <p>1) В Российской Федерации действует ГОСТ Р 59953—2021 «Материалы лакокрасочные. Цветовой ассортимент. Нормирование цвета. Образцы цвета. Изготовление, учет и хранение».</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ Р 59953—2021</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>5</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section print-block-continuation" id="gost-29319-2025-razdel-6-prodolzhenie--print-5" data-block-id="gost-29319-2025-razdel-6-prodolzhenie" data-source-page-number="9">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-6-continued</p>
+      </div>
+      <h2>
+        Раздел 6 (продолжение)
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>толщина невысушенного «мокрого» покрытия или расход лакокрасочного материала на невысушенное покрытие. Толщину покрытия определяют по ГОСТ 31993 или по нормативному документу, действующему на территории государства, принявшего стандарт. 6.6 Отбор образцов для испытаний</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 31993</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Из окрашенных пластинок отбирают образцы, поверхность и размеры которых подходят для проведения испытаний в соответствии с 6.1. Поверхность образцов должна быть чистой и ровной.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для испытаний используют один образец или согласовывают количество образцов между заинтересованными сторонами.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">21</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="22">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 22</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure" id="gost-29319-2025-7-provedenie-ispytanii" data-block-id="gost-29319-2025-7-provedenie-ispytanii" data-source-page-number="10">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-7-tests</p>
+      </div>
+      <h2>
+        7. Проведение испытаний
+        
+      </h2>
+      <p class="print-block-summary">7 Проведение испытаний 7.1 Испытания проводят при температуре (23 ± 2) °С и относительной влажности (50 ± 5) % по ГОСТ 29317, если другие условия не установлены в документе по стандартизации на лакокрасочный материал. 7.2 Основной метод Осматривают образец и эталон или два образца сравнения при естественном дневном освещении по 4.2 или при искусственном дневном освещении в камере сравнения цвета по 4.3. Образцы располагают рядом, при этом они должны соприк…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29317</li><li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>7 Проведение испытаний</strong>
+      </div>
+      <p>7 Проведение испытаний</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7.1 Испытания проводят при</strong>
+        <p>7.1 Испытания проводят при температуре (23 ± 2) °С и относительной влажности (50 ± 5) % по ГОСТ 29317, если другие условия не установлены в документе по стандартизации на лакокрасочный материал.</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ 29317</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">22</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="23">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 23</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure print-block-continuation" id="gost-29319-2025-7-provedenie-ispytanii--print-2" data-block-id="gost-29319-2025-7-provedenie-ispytanii" data-source-page-number="10">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-7-tests</p>
+      </div>
+      <h2>
+        7. Проведение испытаний
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>7.2 Основной метод</strong>
+      </div>
+      <p>7.2 Основной метод</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Осматривают образец и эталон или два образца сравнения при естественном дневном освещении по 4.2 или при искусственном дневном освещении в камере сравнения цвета по 4.3.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Образцы располагают рядом, при этом они должны соприкасаться сторонами или заходить один на другой в одной плоскости на расстоянии приблизительно 500 мм от глаз.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Образцы осматривают под углом 45° при освещении под углом 0°. Сравнивают цвет испытуемого покрытия с цветом эталона или цветом покрытия из стандартного материала.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Чтобы обеспечить большую точность сравнения, время от времени меняют расположение образцов.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>7.3 Метод оценки цвета образцов с разным блеском покрытия</strong>
+      </div>
+      <p>7.3 Метод оценки цвета образцов с разным блеском покрытия</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При сравнении образцов, сильно различающихся по блеску, используют специальную методику визуального осмотра.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Образцы могут быть осмотрены: а) при естественном дневном освещении; б) при искусственном дневном освещении в камере сравнения цвета.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">23</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="24">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 24</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure print-block-continuation" id="gost-29319-2025-7-provedenie-ispytanii--print-3" data-block-id="gost-29319-2025-7-provedenie-ispytanii" data-source-page-number="10">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-7-tests</p>
+      </div>
+      <h2>
+        7. Проведение испытаний
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Образцы осматривают под углом зрения, который обеспечивает минимальные различия в блеске. Например, взгляд должен попадать на поверхность почти перпендикулярно, чтобы зеркальное отражение не достигало глаза.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>7.4 Метод оценки цвета текстурированных покрытий и покрытий «металлик», «перламутр», «хамелеон»</strong>
+      </div>
+      <p>7.4 Метод оценки цвета текстурированных покрытий и покрытий «металлик», «перламутр», «хамелеон»</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для текстурированных покрытий и покрытий «металлик», «перламутр», «хамелеон» метод оценки цвета согласовывают между заинтересованными сторонами.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Если метод не согласован, то необходимо проводить испытания по 7.2, соблюдая при этом ряд условий: а) текстура, рисунок и структура сравниваемых образцов должны быть примерно одинаковыми; б) при осмотре образцы должны располагаться так, чтобы направление ориентации структуры было одинаковым; в) покрытия «металлик», «перламутр», «хамелеон» осматривают дополнительно под прямым углом к поверхности образцов для оценки верхнего (фейс) тона и под острым углом к поверхности (практически скользящим) для оценки нижнего (флоп) тона; г) важным параметром покрытий «металлик» и «перламутр» является искристость. Для оценки искристости при осмотре образцов необходимо использовать стандартный источник освещения А 1) , при котором искристость проявляется в наибольшей степени;</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1) Стандартный источник освещения</strong>
+        <p>1) Стандартный источник освещения А, соответствующий свету вольфрамовой лампы накаливания с коррелированной цветовой температурой, равной 2856 К, предназначен для определения метамерного соответствия и индекса метамерии.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>6</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">24</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="25">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 25</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure print-block-continuation" id="gost-29319-2025-7-provedenie-ispytanii--print-4" data-block-id="gost-29319-2025-7-provedenie-ispytanii" data-source-page-number="10">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-7-tests</p>
+      </div>
+      <h2>
+        7. Проведение испытаний
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>д) при сравнении образца</strong>
+        <p>д) при сравнении образца текстурированного или фактурного покрытия с гладким однородным эталоном цвета необходимо выбирать угол осмотра, максимально исключающий влияние текстуры, но при этом оценка будет носить очень субъективный характер (похоже/непохоже). Однозначно определить соответствие цвета эталону в данном случае невозможно. 7.5 Метод оценки цвета крупногабаритных изделий</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для оценки соответствия цвета крупногабаритных изделий эталону, при отсутствии возможности проводить испытания по 7.2 с помощью серой маски, необходимо выбрать плоскую грань изделия размером не менее 120 × 50 мм и закрепить на этой грани эталон в той же плоскости.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Рекомендуется положить изделие горизонтально испытуемой плоскости и проводить осмотр на расстоянии не менее 500 мм от глаз под углом 45° при освещении 0°. Если нет такой возможности, то осмотр проводят при рассеянном свете под прямым углом, затем отходят вправо и влево, обеспечивая угол осмотра 45°.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При значительном превышении размеров испытуемого изделия (образца), указанных в 6.1, необходимо увеличить расстояние для осмотра пропорционально размерам изделия.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В случае разногласий при оценке соответствия цвета крупногабаритных изделий испытания проводят сначала основным методом по 7.2, а затем при необходимости арбитражным методом по 7.7.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">25</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="26">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 26</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure print-block-continuation" id="gost-29319-2025-7-provedenie-ispytanii--print-5" data-block-id="gost-29319-2025-7-provedenie-ispytanii" data-source-page-number="10">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-7-tests</p>
+      </div>
+      <h2>
+        7. Проведение испытаний
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>7.6 Метод оценки визуальных цветовых различий</strong>
+      </div>
+      <p>7.6 Метод оценки визуальных цветовых различий</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Оценку визуальных цветовых различий проводят в дополнение к основному методу по 7.2. Данный метод основан на оценке различий по отдельным компонентам: «светлота», «оттенок» и «насыщенность».</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Образцы осматривают по 7.2 и проводят оценку визуальных цветовых различий по схеме в соответствии с приложением Б.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>По согласованию заинтересованных сторон допускается использовать упрощенную схему оценки. При этом для исключения разногласий значение индивидуальных оценок по приложению Б не должно изменяться.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>7.7 Арбитражный метод</strong>
+      </div>
+      <p>7.7 Арбитражный метод</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При разногласиях в оценке сравнение цвета проводят по 7.2 на образцах одинакового размера при искусственном дневном освещении с помощью стандартного источника освещения D 65 , если по согласованию заинтересованных сторон не предусмотрен другой источник света.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В испытаниях по арбитражному методу должно участвовать не менее трех специалистов.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-procedure print-block-continuation" id="gost-29319-2025-7-provedenie-ispytanii--print-6" data-block-id="gost-29319-2025-7-provedenie-ispytanii" data-source-page-number="10">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-7-tests</p>
+      </div>
+      <h2>
+        7. Проведение испытаний
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Инструментальное измерение цвета с помощью спектрофотометров или спектроколориметров является наиболее точным методом для оценки цвета, так как не зависит от субъективных факторов.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">26</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="27">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 27</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis" id="gost-29319-2025-8-ocenka-metamerii" data-block-id="gost-29319-2025-8-ocenka-metamerii" data-source-page-number="11">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-8-metamerism</p>
+      </div>
+      <h2>
+        8. Оценка метамерии
+        
+      </h2>
+      <p class="print-block-summary">8 Оценка метамерии Оценку метамерии (метамерного соответствия) проводят в том случае, если известно, что стандартные и испытуемые образцы содержат разнородные смеси пигментов или по согласованию заинтересованных сторон. Такие образцы могут соответствовать друг другу в условиях освещения стандартным источником и не будут соответствовать при другом освещении. Оценку метамерии проводят при искусственном дневном освещении с помощью стандартных источников освещ…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>8 Оценка метамерии</strong>
+      </div>
+      <p>8 Оценка метамерии</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Оценку метамерии (метамерного соответствия) проводят в том случае, если известно, что стандартные и испытуемые образцы содержат разнородные смеси пигментов или по согласованию заинтересованных сторон. Такие образцы могут соответствовать друг другу в условиях освещения стандартным источником и не будут соответствовать при другом освещении.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Оценку метамерии проводят при искусственном дневном освещении с помощью стандартных источников освещения D 65 и А.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Два образца не являются метамерными, если они соответствуют друг другу по цвету при оценке с помощью стандартных источников освещения D 65 и А. Если же при этих условиях сравниваемые образцы не соответствуют друг другу, но степень метамерии незначительна (сравнительно незаметна), это может служить гарантией, что при свете обычно применяемых источников естественного и искусственного освещения с длительным спектром степень метамерии между материалами не увеличится.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Допустимую степень метамерии устанавливают по согласованию заинтересованных сторон в тех случаях, когда значительное совпадение цвета при разных условиях освещения имеет существенное значение.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Для объективной оценки метамерии определяют цветовые различия и индекс метамерии инструментальным методом.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-analysis print-block-continuation" id="gost-29319-2025-8-ocenka-metamerii--print-2" data-block-id="gost-29319-2025-8-ocenka-metamerii" data-source-page-number="11">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-8-metamerism</p>
+      </div>
+      <h2>
+        8. Оценка метамерии
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>7</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Дополнительная информация о метамерии и метамерном соответствии приведена в приложении В.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">27</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="28">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 28</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis" id="gost-29319-2025-9-obrabotka-rezultatov" data-block-id="gost-29319-2025-9-obrabotka-rezultatov" data-source-page-number="12">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-9-results</p>
+      </div>
+      <h2>
+        9. Обработка результатов
+        
+      </h2>
+      <p class="print-block-summary">9 Обработка результатов 9.1 При определении цвета методом визуального сравнения за результат испытания принимают соответствие/несоответствие образца лакокрасочного покрытия эталону сравнения. 9.2 При оценке визуальных цветовых различий результаты указывают по отдельным компонентам в соответствии с приложением Б. 9.3 При оценке метамерии за результат испытания принимают наличие/отсутствие метамерии между образцом лакокрасочного покрытия и эталоном сравнения…</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>9 Обработка результатов</strong>
+      </div>
+      <p>9 Обработка результатов</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>9.1 При определении цвета</strong>
+        <p>9.1 При определении цвета методом визуального сравнения за результат испытания принимают соответствие/несоответствие образца лакокрасочного покрытия эталону сравнения.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>9.2 При оценке визуальных</strong>
+        <p>9.2 При оценке визуальных цветовых различий результаты указывают по отдельным компонентам в соответствии с приложением Б.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>9.3 При оценке метамерии</strong>
+        <p>9.3 При оценке метамерии за результат испытания принимают наличие/отсутствие метамерии между образцом лакокрасочного покрытия и эталоном сравнения. При наличии метамерии может быть указана степень метамерии: незначительная или значительная.</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section" id="gost-29319-2025-10-precizionnost" data-block-id="gost-29319-2025-10-precizionnost" data-source-page-number="12">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-10-precision</p>
+      </div>
+      <h2>
+        10. Прецизионность
+        
+      </h2>
+      <p class="print-block-summary">10 Прецизионность В настоящем стандарте не указаны значения предела повторяемости r и предела воспроизводимости R, так как получаемые результаты не указываются в виде числовых значений, а сама оценка является субъективной.</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>10 Прецизионность</strong>
+      </div>
+      <p>10 Прецизионность</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В настоящем стандарте не указаны значения предела повторяемости r и предела воспроизводимости R, так как получаемые результаты не указываются в виде числовых значений, а сама оценка является субъективной.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">28</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="29">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 29</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure" id="gost-29319-2025-11-protokol-ispytanii" data-block-id="gost-29319-2025-11-protokol-ispytanii" data-source-page-number="12">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-11-report</p>
+      </div>
+      <h2>
+        11. Протокол испытаний
+        
+      </h2>
+      <p class="print-block-summary">11 Протокол испытаний Протокол испытаний должен содержать: а) все сведения, необходимые для полной идентификации испытуемого образца; б) ссылку на настоящий стандарт и метод оценки; в) условия сравнения цвета: естественный дневной свет или искусственное дневное освещение с указанием стандартного источника освещения; г) любые отклонения от используемого метода оценки (по согласованию или по другим причинам); д) описание испытуемого образца с указанием разме…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>11 Протокол испытаний</strong>
+      </div>
+      <p>11 Протокол испытаний</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Протокол испытаний должен содержать:</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>а) все сведения, необходимые</strong>
+        <p>а) все сведения, необходимые для полной идентификации испытуемого образца;</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>б) ссылку на настоящий</strong>
+        <p>б) ссылку на настоящий стандарт и метод оценки;</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>в) условия сравнения цвета:</strong>
+        <p>в) условия сравнения цвета: естественный дневной свет или искусственное дневное освещение с указанием стандартного источника освещения;</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>г) любые отклонения от</strong>
+        <p>г) любые отклонения от используемого метода оценки (по согласованию или по другим причинам);</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>д) описание испытуемого образца</strong>
+        <p>д) описание испытуемого образца с указанием размера образца и толщины лакокрасочного покрытия;</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">29</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="30">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 30</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure print-block-continuation" id="gost-29319-2025-11-protokol-ispytanii--print-2" data-block-id="gost-29319-2025-11-protokol-ispytanii" data-source-page-number="12">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-11-report</p>
+      </div>
+      <h2>
+        11. Протокол испытаний
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>е) информацию о подготовке</strong>
+        <p>е) информацию о подготовке образца для испытания (материал подложки (окрашиваемой поверхности), метод нанесения, условия сушки, количество слоев, условия выдержки) при наличии;</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>ж) описание эталона сравнения;</strong>
+        <p>ж) описание эталона сравнения;</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>и) условия проведения испытаний</strong>
+        <p>и) условия проведения испытаний (температура и относительная влажность);</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>к) результаты испытания в</strong>
+        <p>к) результаты испытания в соответствии с разделом 9;</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>л) любые особенности, наблюдаемые</strong>
+        <p>л) любые особенности, наблюдаемые во время проведения испытаний;</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>м) дату проведения испытаний.</strong>
+        <p>м) дату проведения испытаний.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>8</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-procedure print-block-continuation" id="gost-29319-2025-11-protokol-ispytanii--print-3" data-block-id="gost-29319-2025-11-protokol-ispytanii" data-source-page-number="12">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-11-report</p>
+      </div>
+      <h2>
+        11. Протокол испытаний
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">30</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="31">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 31</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix" id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov" data-block-id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov" data-source-page-number="13">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-a</p>
+      </div>
+      <h2>
+        Приложение А (справочное) — «Идентификация цвета образцов»
+        
+      </h2>
+      <p class="print-block-summary">Приложение А (справочное) Идентификация цвета образцов Осмотр образцов покрытия с целью идентификации цвета проводят при естественном дневном освещении по 4.2 или при искусственном дневном освещении в камере сравнения цвета по 4.3. Для идентификации цвет описывают с помощью трех компонентов: а) основного цвета (цветового тона); б) оттенка, указывающего на степень светлоты или отклонения в сторону от основного цвета; в) яркости и насыщенности. В большинстве…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">heading</span>
+        <strong>Приложение А (справочное)</strong>
+      </div>
+      <p>Приложение А (справочное)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">heading</span>
+        <strong>Идентификация цвета образцов</strong>
+      </div>
+      <p>Идентификация цвета образцов</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Осмотр образцов покрытия с целью идентификации цвета проводят при естественном дневном освещении по 4.2 или при искусственном дневном освещении в камере сравнения цвета по 4.3.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для идентификации цвет описывают с помощью трех компонентов: а) основного цвета (цветового тона); б) оттенка, указывающего на степень светлоты или отклонения в сторону от основного цвета; в) яркости и насыщенности.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">31</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="32">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 32</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov--print-2" data-block-id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov" data-source-page-number="13">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-a</p>
+      </div>
+      <h2>
+        Приложение А (справочное) — «Идентификация цвета образцов»
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В большинстве случаев для описания цвета достаточно использовать только основной цвет, без учета оттенка, яркости и насыщенности.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для определения основного цвета при осмотре образца устанавливают групповую принадлежность цвета в соответствии с таблицей А.1.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-table-caption">
+      <div class="print-unit-head">
+        <span class="print-unit-type">table-caption</span>
+        <strong>Т а б л и ц а А.1</strong>
+      </div>
+      <p>Т а б л и ц а А.1</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov--print-3" data-block-id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov" data-source-page-number="13">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-a</p>
+      </div>
+      <h2>
+        Приложение А (справочное) — «Идентификация цвета образцов»
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-table-group">
+      
+      <div class="print-table-box">
+        <div class="print-table-head">
+          <span class="print-unit-type">table</span>
+          <strong>Таблица</strong>
+        </div>
+        <p class="print-table-text">Группы наименований основных цветов Описание цвета Белый Цвет снега, молока, мела Черный Цвет сажи, угля Серый Цвет пепла, пыли Красный Цвет алой артериальной крови Оранжевый Цвет апельсина, красно-желтый Желтый Цвет яичного желтка, перьев канарейки Зеленый Цвет сочной травы, листвы Голубой Цвет ясного неба, светло-синий Синий Цвет синьки, василька, темно-голубой Фиолетовый Цвет темной фиалки, синий с красноватым оттенком, среднее между лиловым и сливовым Розовый Цвет бледно-красной розы Коричневый Цвет каштана, горького шоколада</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">32</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="33">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 33</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov--print-4" data-block-id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov" data-source-page-number="13">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-a</p>
+      </div>
+      <h2>
+        Приложение А (справочное) — «Идентификация цвета образцов»
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Основные цвета разделяют на ахроматические — черный, белый, серый и хроматические — красный, оранжевый, желтый, зеленый, голубой, синий, фиолетовый, розовый и коричневый.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для ахроматических цветов, не имеющих оттенка, цвет определяют по шкале изменения светлоты, показанной на рисунке А.1.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Черные Серые Белые 0 10 20 30 40 50 60 70 80 90 100 Рисунок А.1 — Шкала изменения светлоты</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для хроматических цветов цвет определяют по шкале длин волн видимого диапазона электромагнитного спектра, приведенной на рисунке А.2.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>9</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov--print-5" data-block-id="gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov" data-source-page-number="13">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-a</p>
+      </div>
+      <h2>
+        Приложение А (справочное) — «Идентификация цвета образцов»
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">33</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="34">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 34</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix" id="gost-29319-2025-prilozhenie-a-prodolzhenie" data-block-id="gost-29319-2025-prilozhenie-a-prodolzhenie" data-source-page-number="14">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-a-continued</p>
+      </div>
+      <h2>
+        Приложение А (продолжение)
+        
+      </h2>
+      <p class="print-block-summary">Фиолетовые Синие Голубые Зеленые Желтые Оранжевые Красные 400 450 500 550 600 650 700 750 Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра Группа светло-красных цветов принята за основной розовый. Группа темно-оранжевых цветов принята за основной коричневый. Для более точной идентификации цвету присваивают оттенок, который указывает на степень светлоты, воспринимаемой чистоты, отклонения в сторону от основного цвета: - при смещени</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Фиолетовые Синие Голубые Зеленые Желтые Оранжевые Красные 400 450 500 550 600 650 700 750 Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Группа светло-красных цветов принята за основной розовый.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Группа темно-оранжевых цветов принята за основной коричневый.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для более точной идентификации цвету присваивают оттенок, который указывает на степень светлоты, воспринимаемой чистоты, отклонения в сторону от основного цвета: - при смещении цвета к черному — «темно-»; - при смещении цвета к белому — «светло-»; - при смещении от основного цвета в сторону другого цвета добавляют оттенок по цвету смещения, например «желто-зеленый», «красно-фиолетовый».</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">34</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="35">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 35</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-a-prodolzhenie--print-2" data-block-id="gost-29319-2025-prilozhenie-a-prodolzhenie" data-source-page-number="14">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-a-continued</p>
+      </div>
+      <h2>
+        Приложение А (продолжение)
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При необходимости может быть добавлено указание на яркость и насыщенность цвета, например «ярко-зеленый».</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-note">
+      <div class="print-unit-head">
+        <span class="print-unit-type">note</span>
+        <strong>Примечание</strong>
+      </div>
+      <p>Примечание — Дополнительная информация и рекомендации по идентификации цвета образцов приведены в справочной литературе 1), 2) .</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1) Цвет и названия</strong>
+        <p>1) Цвет и названия цвета в русском языке / А.П. Василевич, С.Н. Кузнецова, С.С. Мищенко; под общ. ред. А.П. Василевича, Изд. 4, 2022. 2) Цвет в промышленности / Под ред. Р. Мак-Дональда: Пер. с англ. И.В. Пеновой, П.П. Новосельцева. — М.: Логос, 2002.</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>10</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">35</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="36">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 36</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix" id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii" data-block-id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii" data-source-page-number="15">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-b</p>
+      </div>
+      <h2>
+        Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»
+        
+      </h2>
+      <p class="print-block-summary">Приложение Б (обязательное) Схема визуальной оценки компонентов цветовых различий Компонентами цветового различия являются: а) различие в светлоте, которое обозначают DL vis и оценивают баллами от 0 до 5 со знаками «+» (более светлый или менее темный) или «—» (более темный или менее светлый); б) различие в оттенке, которое обозначают DH vis и оценивают баллами от 0 до 5 с дополнительным указанием: более желтый (ye), более зеленый (gr), более красный (re),…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">heading</span>
+        <strong>Приложение Б (обязательное)</strong>
+      </div>
+      <p>Приложение Б (обязательное)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">heading</span>
+        <strong>Схема визуальной оценки компонентов цветовых различий</strong>
+      </div>
+      <p>Схема визуальной оценки компонентов цветовых различий</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Компонентами цветового различия являются: а) различие в светлоте, которое обозначают DL vis и оценивают баллами от 0 до 5 со знаками «+» (более светлый или менее темный) или «—» (более темный или менее светлый); б) различие в оттенке, которое обозначают DH vis и оценивают баллами от 0 до 5 с дополнительным указанием: более желтый (ye), более зеленый (gr), более красный (re), более синий (bl); в) различие в насыщенности цвета, которое обозначают DC vis и оценивают баллами от 0 до 5 со знаками «+» (более насыщенный) или «—» (менее насыщенный).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Оценка компонентов цветового различия в баллах приведена в таблице Б.1.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">36</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="37">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 37</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii--print-2" data-block-id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii" data-source-page-number="15">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-b</p>
+      </div>
+      <h2>
+        Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-table-caption">
+      <div class="print-unit-head">
+        <span class="print-unit-type">table-caption</span>
+        <strong>Т а б л и ц а Б.1</strong>
+      </div>
+      <p>Т а б л и ц а Б.1</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii--print-3" data-block-id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii" data-source-page-number="15">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-b</p>
+      </div>
+      <h2>
+        Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-table-group">
+      
+      <div class="print-table-box">
+        <div class="print-table-head">
+          <span class="print-unit-type">table</span>
+          <strong>Таблица</strong>
+        </div>
+        <p class="print-table-text">Оценка цветового различия в баллах Описание цветового различия 0 Нет заметного различия 1 Очень незначительное, то есть едва ощутимое различие 2 Небольшое, но отчетливо ощутимое различие 3 Умеренное, достаточно заметное различие 4 Значительное, явно выраженное различие 5 Очень существенное различие</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">37</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="38">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 38</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii--print-4" data-block-id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii" data-source-page-number="15">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-b</p>
+      </div>
+      <h2>
+        Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Примеры</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>1 Различие в светлоте «DL vis — 2» означает, что испытуемый образец имеет ощутимо более темный (или менее светлый) цвет по сравнению с эталоном.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>2 Различие в оттенке «DH vis 5ye» означает, что испытуемый образец существенно более желтый по сравнению с эталоном.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>3 Различие в насыщенности «DC vis + 3» означает, что испытуемый образец имеет достаточно заметную большую насыщенность цвета (заметно более интенсивный цвет) по сравнению с эталоном.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>11</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii--print-5" data-block-id="gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii" data-source-page-number="15">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-b</p>
+      </div>
+      <h2>
+        Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">38</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="39">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 39</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix" id="gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya" data-block-id="gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya" data-source-page-number="16">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-v</p>
+      </div>
+      <h2>
+        Приложение В (справочное) — «Метамерия и метамерные соответствия»
+        
+      </h2>
+      <p class="print-block-summary">Приложение В (справочное) Метамерия и метамерные соответствия Спектральное равенство — явление, когда два лакокрасочных покрытия имеют одинаковые спектральные кривые отражения. При визуальном осмотре они будут совпадать по цвету при любом источнике освещения, независимо от его спектральных характеристик. Метамерное соответствие — это совпадение по цвету двух лакокрасочных материалов с различными спектральными кривыми отражения при одном источнике света и н…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">heading</span>
+        <strong>Приложение В (справочное)</strong>
+      </div>
+      <p>Приложение В (справочное)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">heading</span>
+        <strong>Метамерия и метамерные соответствия</strong>
+      </div>
+      <p>Метамерия и метамерные соответствия</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Спектральное равенство — явление, когда два лакокрасочных покрытия имеют одинаковые спектральные кривые отражения. При визуальном осмотре они будут совпадать по цвету при любом источнике освещения, независимо от его спектральных характеристик.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Метамерное соответствие — это совпадение по цвету двух лакокрасочных материалов с различными спектральными кривыми отражения при одном источнике света и несовпадение при другом источнике с отличающимися спектральными характеристиками.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Если в двух сравниваемых материалах содержатся различные пигменты, некоторая метамерия является неизбежной; в ряде случаев может проявиться небольшая степень метамерии даже при использовании одних и тех же пигментов.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">39</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="40">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 40</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix print-block-continuation" id="gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya--print-2" data-block-id="gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya" data-source-page-number="16">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-v</p>
+      </div>
+      <h2>
+        Приложение В (справочное) — «Метамерия и метамерные соответствия»
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Метамерное соответствие, обнаруженное при искусственном дневном освещении, может не наблюдаться в определенных условиях естественного дневного освещения (например, северный свет с голубого неба или свет заходящего/восходящего солнца), но сохраняется в большинстве случаев во всех остальных условиях дневного освещения.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При использовании осветительных приборов с линейной эмиссией (например, натриевые и ртутно-паровые лампы) результаты могут оказаться иными.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В зависимости от назначения лакокрасочного материала допускается небольшая степень метамерии.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>При оценке метамерии на решение о соответствии или несоответствии двух образцов может повлиять различие в восприятии цвета специалистом по испытаниям.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>12</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">40</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="41">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 41</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-bibliography" id="gost-29319-2025-bibliografiya" data-block-id="gost-29319-2025-bibliografiya" data-source-page-number="17">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">bibliography</p>
+        <p class="print-block-anchor">Источник: #section-bibliography</p>
+      </div>
+      <h2>
+        Библиография
+        
+      </h2>
+      <p class="print-block-summary">Библиография [1] ASTM D1729-22 Standard Practice for Visual Appraisal of Colors and Color Differences of Diffusely-Illuminated Opaque Materials (Стандартная практика визуальной оценки цветов и цветовых различий диффузно освещенных непрозрачных материалов) [2] ISO/CIE 11664-4:2019 Colorimetry. Part 4: CIE 1976 L*a*b* colour space (Колориметрия. Часть 4. Цветовое пространство CIE 1976 L*a*b*) 13 ГОСТ 29319—2025 УДК 667-12:006.354 МКС 87.040 NEQ</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li><li>ISO/CIE 11664-4:2019</li><li>ASTM D1729-22</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Библиография</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-bibliography-item">
+      <div class="print-unit-head">
+        <span class="print-unit-type">bibliography-item</span>
+        <strong>[1]</strong>
+      </div>
+      <p>[1]</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ASTM D1729-22 Standard Practice for Visual Appraisal of Colors and Color Differences of Diffusely-Illuminated Opaque Materials (Стандартная практика визуальной оценки цветов и цветовых различий диффузно освещенных непрозрачных материалов)</p>
+      
+    <ul class="print-reference-list">
+      <li>ASTM D1729-22</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-bibliography-item">
+      <div class="print-unit-head">
+        <span class="print-unit-type">bibliography-item</span>
+        <strong>[2]</strong>
+      </div>
+      <p>[2]</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ISO/CIE 11664-4:2019 Colorimetry. Part 4: CIE 1976 L*a*b* colour space (Колориметрия. Часть 4. Цветовое пространство CIE 1976 L*a*b*)</p>
+      
+    <ul class="print-reference-list">
+      <li>ISO/CIE 11664-4:2019</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-bibliography print-block-continuation" id="gost-29319-2025-bibliografiya--print-2" data-block-id="gost-29319-2025-bibliografiya" data-source-page-number="17">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">bibliography</p>
+        <p class="print-block-anchor">Источник: #section-bibliography</p>
+      </div>
+      <h2>
+        Библиография
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>13</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 29319—2025</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 29319—2025</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">41</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="42">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 42</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-bibliography print-block-continuation" id="gost-29319-2025-bibliografiya--print-3" data-block-id="gost-29319-2025-bibliografiya" data-source-page-number="17">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">bibliography</p>
+        <p class="print-block-anchor">Источник: #section-bibliography</p>
+      </div>
+      <h2>
+        Библиография
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-table-group">
+      
+      <div class="print-table-box">
+        <div class="print-table-head">
+          <span class="print-unit-type">table</span>
+          <strong>Таблица</strong>
+        </div>
+        <p class="print-table-text">УДК 667-12:006.354 МКС 87.040 NEQ</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-meta" id="gost-29319-2025-klyuchevye-slova" data-block-id="gost-29319-2025-klyuchevye-slova" data-source-page-number="18">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">meta</p>
+        <p class="print-block-anchor">Источник: #section-keywords</p>
+      </div>
+      <h2>
+        Ключевые слова
+        
+      </h2>
+      <p class="print-block-summary">Ключевые слова: лакокрасочные материалы, лакокрасочные покрытия, цвет покрытия, метод визуального сравнения цвета, эталон сравнения, контрольный образец цвета, визуальное цветовое различие, метамерия 14</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Ключевые слова: лакокрасочные материалы, лакокрасочные покрытия, цвет покрытия, метод визуального сравнения цвета, эталон сравнения, контрольный образец цвета, визуальное цветовое различие, метамерия</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>14</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">42</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="43">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 43</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-meta" id="gost-29319-2025-izdatelskie-svedeniya" data-block-id="gost-29319-2025-izdatelskie-svedeniya" data-source-page-number="19">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">meta</p>
+        <p class="print-block-anchor">Источник: #section-imprint</p>
+      </div>
+      <h2>
+        Издательские сведения
+        
+      </h2>
+      <p class="print-block-summary">Редактор Н.В. Таланова Технический редактор В.Н. Прусакова Корректор Р.А. Ментова Компьютерная верстка А.Н. Золотаревой Сдано в набор 17.12.2025. Подписано в печать 28.01.2026. Формат 60×84 1/8 . Гарнитура Ариал. Усл. печ. л. 2,32. Уч.-изд. л. 2,12. Подготовлено на основе электронной версии, предоставленной разработчиком стандарта Создано в единичном исполнении в ФГБУ «Институт стандартизации» для комплектования Федерального информационного фонда стандарто</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Редактор Н.В. Таланова Технический редактор В.Н. Прусакова Корректор Р.А. Ментова Компьютерная верстка А.Н. Золотаревой Сдано в набор 17.12.2025. Подписано в печать 28.01.2026. Формат 60×84 1/8 . Гарнитура Ариал. Усл. печ. л. 2,32. Уч.-изд. л. 2,12. Подготовлено на основе электронной версии, предоставленной разработчиком стандарта Создано в единичном исполнении в ФГБУ «Институт стандартизации» для комплектования Федерального информационного фонда стандартов, 117418 Москва, Нахимовский пр-т, д. 31, к. 2. www.gostinfo.ru info@gostinfo.ru</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">43</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="44">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 29319—2025</p>
+          <h1>Метод визуального сравнения цвета</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 44</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-29319-2025-stranica-20" data-block-id="gost-29319-2025-stranica-20" data-source-page-number="20">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: </p>
+      </div>
+      <h2>
+        Страница 20
+        
+      </h2>
+      
+      
+      
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">44</footer>
+    </section>
+  
+    </main>
+  </body>
+</html>

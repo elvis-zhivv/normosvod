@@ -21,6 +21,7 @@ import { buildV2SearchIndex } from './build-v2-search-index.mjs';
 import { generatePreviewOrPlaceholder } from './generate-preview.mjs';
 import { buildV2DocumentStub } from './lib/v2-document-stub.mjs';
 import { rebuildCanonicalDocs } from './rebuild-canonical-docs.mjs';
+import { rebuildPrintDocs } from './rebuild-print-docs.mjs';
 import { rebuildV2Data } from './rebuild-v2-data.mjs';
 
 function timestampForPath(date = new Date()) {
@@ -94,6 +95,7 @@ function buildLocalMeta(meta, slug, fileHash, timestamps, previewFileName = 'pre
     language: meta.language,
     pages: meta.pages,
     viewerUrl: `/docs/${slug}/viewer.html`,
+    printUrl: `/docs/${slug}/print.html`,
     metaUrl: `/docs/${slug}/meta.json`,
     previewUrl: `/docs/${slug}/${previewFileName}`,
     searchTextUrl: '/data/search-index.json',
@@ -183,6 +185,7 @@ export async function importViewer(inputPath, options = {}) {
       writeJsonAtomic(SEARCH_INDEX_PATH, nextSearchIndex)
     ]);
     await rebuildCanonicalDocs();
+    await rebuildPrintDocs();
     await rebuildV2Data();
     const nextV2SearchIndex = await buildV2SearchIndex(nextManifest);
     await writeJsonAtomic(V2_SEARCH_INDEX_PATH, nextV2SearchIndex);

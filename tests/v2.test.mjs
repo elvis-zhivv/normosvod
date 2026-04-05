@@ -117,5 +117,76 @@ test('renderV2Reader includes contextual rail and interactive tooltip triggers',
   assert.match(html, /data-v2-tooltip-layer/);
   assert.match(html, /data-v2-context-kind="related-norm"/);
   assert.match(html, /data-v2-context-kind="definition"/);
+  assert.match(html, /Верификация/);
   assert.match(html, /Выберите определение, связанную норму или ссылку в потоке/);
+});
+
+test('renderV2Reader uses specialized screen-flow renderers for procedure, appendix and tables', () => {
+  const model = normalizeV2Document({
+    meta: {
+      themeId: 'coatings',
+      migrationStatus: 'segmented'
+    },
+    blocks: [
+      {
+        id: 'block-procedure',
+        type: 'procedure',
+        title: '7 Проведение испытаний',
+        summary: 'Порядок проведения испытаний.',
+        references: [],
+        units: [
+          {
+            id: 'unit-step',
+            type: 'list-item',
+            title: '7.1 Подготовка',
+            summary: 'Подготовить образец к испытанию.',
+            references: []
+          }
+        ],
+        highlights: [],
+        print: {
+          sourcePageNumber: 10
+        },
+        legacy: {}
+      },
+      {
+        id: 'block-appendix',
+        type: 'appendix',
+        title: 'Приложение А',
+        summary: 'Справочные таблицы.',
+        references: [],
+        units: [
+          {
+            id: 'unit-caption',
+            type: 'table-caption',
+            summary: 'Т а б л и ц а А.1',
+            references: []
+          },
+          {
+            id: 'unit-table',
+            type: 'table',
+            title: 'Таблица',
+            summary: 'Колонка 1 Значение 1 Колонка 2 Значение 2',
+            references: []
+          }
+        ],
+        highlights: [],
+        print: {
+          sourcePageNumber: 14
+        },
+        legacy: {}
+      }
+    ],
+    entryPoints: {
+      legacyUrl: '/docs/gost-29319-2025/viewer.html',
+      printUrl: '/docs/gost-29319-2025/print.html'
+    }
+  }, legacyDocument);
+
+  const html = renderV2Reader(model, legacyDocument);
+
+  assert.match(html, /v2-block-band-procedure/);
+  assert.match(html, /v2-block-band-appendix/);
+  assert.match(html, /v2-unit-procedure-item/);
+  assert.match(html, /v2-table-group/);
 });

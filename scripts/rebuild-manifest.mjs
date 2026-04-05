@@ -8,7 +8,9 @@ import { writeJsonAtomic } from './lib/write-json.mjs';
 import { buildSearchIndex } from './build-search-index.mjs';
 import { buildV2SearchIndex } from './build-v2-search-index.mjs';
 import { rebuildCanonicalDocs } from './rebuild-canonical-docs.mjs';
+import { rebuildPrintDocs } from './rebuild-print-docs.mjs';
 import { rebuildV2Data } from './rebuild-v2-data.mjs';
+import { overlayManifestWithCanonicalData } from './lib/manifest-overlay.mjs';
 
 export async function rebuildManifest() {
   const directoryEntries = await readdir(DOCS_DIR, { withFileTypes: true }).catch(() => []);
@@ -27,16 +29,19 @@ export async function rebuildManifest() {
     }
   }
 
-  const manifest = sortManifestEntries(metaEntries);
+  const draftManifest = sortManifestEntries(metaEntries);
+  const searchIndex = await buildSearchIndex(draftManifest);
+
+  await rebuildCanonicalDocs(draftManifest, searchIndex);
+  const manifest = sortManifestEntries(await overlayManifestWithCanonicalData(draftManifest));
   const stats = buildStats(manifest);
-  const searchIndex = await buildSearchIndex(manifest);
 
   await Promise.all([
     writeJsonAtomic(DOCUMENTS_MANIFEST_PATH, manifest),
     writeJsonAtomic(STATS_PATH, stats),
     writeJsonAtomic(SEARCH_INDEX_PATH, searchIndex)
   ]);
-  await rebuildCanonicalDocs();
+  await rebuildPrintDocs();
   await rebuildV2Data();
   const v2SearchIndex = await buildV2SearchIndex(manifest);
   await writeJsonAtomic(V2_SEARCH_INDEX_PATH, v2SearchIndex);

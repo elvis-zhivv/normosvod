@@ -1,0 +1,2998 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ГОСТ 8784—75 · Print A4</title>
+    <style>
+      :root {
+        --print-accent: #9b6a18;
+        --print-soft: #ece1ca;
+        --print-line: rgba(24, 32, 42, 0.14);
+        --print-text: #18202a;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; background: #e8edf2; color: var(--print-text); }
+      body { font-family: "Times New Roman", Georgia, serif; }
+      .print-toolbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 24px;
+        background: rgba(255, 255, 255, 0.94);
+        border-bottom: 1px solid var(--print-line);
+      }
+      .print-toolbar strong { color: var(--print-accent); }
+      .print-toolbar button {
+        min-height: 42px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 1px solid var(--print-line);
+        background: white;
+        cursor: pointer;
+        font: inherit;
+      }
+      .print-document {
+        width: min(100%, 980px);
+        margin: 0 auto;
+        padding: 24px 0 48px;
+      }
+      .print-page {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0 auto 16px;
+        padding: 16mm 16mm 18mm;
+        background: white;
+        box-shadow: 0 16px 40px rgba(14, 34, 53, 0.14);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 10mm;
+        page-break-after: always;
+      }
+      .print-page-header {
+        display: flex;
+        align-items: start;
+        justify-content: space-between;
+        gap: 16px;
+        padding-bottom: 8mm;
+        border-bottom: 2px solid var(--print-soft);
+      }
+      .print-doc-number {
+        margin: 0 0 6px;
+        font-size: 11pt;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--print-accent);
+      }
+      .print-page-header h1 {
+        margin: 0;
+        font-size: 18pt;
+        line-height: 1.2;
+      }
+      .print-page-marker {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: var(--print-soft);
+        color: var(--print-accent);
+        font-size: 10pt;
+        white-space: nowrap;
+      }
+      .print-page-body {
+        display: grid;
+        align-content: start;
+        gap: 8mm;
+      }
+      .print-block {
+        border: 1px solid var(--print-line);
+        border-radius: 4mm;
+        padding: 6mm;
+        break-inside: avoid;
+      }
+      .print-block-band {
+        display: inline-flex;
+        align-items: center;
+        min-height: 9mm;
+        padding: 0 4mm;
+        margin-bottom: 4mm;
+        border-radius: 999px;
+        font-size: 9.5pt;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+      .print-block-band-appendix {
+        color: var(--print-accent);
+        background: var(--print-soft);
+      }
+      .print-block-band-procedure {
+        color: #29465f;
+        background: #e2ebf2;
+      }
+      .print-block-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 4mm;
+      }
+      .print-block-type,
+      .print-block-anchor,
+      .print-unit-type {
+        margin: 0;
+        font-size: 9.5pt;
+        color: #556273;
+      }
+      .print-block h2 {
+        margin: 0 0 3mm;
+        font-size: 14pt;
+        line-height: 1.25;
+      }
+      .print-block-continuation-label {
+        color: #556273;
+        font-size: 11pt;
+        font-weight: 400;
+      }
+      .print-block-summary,
+      .print-unit p {
+        margin: 0;
+        font-size: 11pt;
+        line-height: 1.5;
+      }
+      .print-reference-list {
+        margin: 4mm 0 0;
+        padding-left: 5mm;
+        display: grid;
+        gap: 2mm;
+      }
+      .print-unit-list {
+        display: grid;
+        gap: 4mm;
+        margin-top: 5mm;
+      }
+      .print-unit {
+        padding-top: 4mm;
+        border-top: 1px solid rgba(24, 32, 42, 0.08);
+      }
+      .print-table-group {
+        display: grid;
+        gap: 2mm;
+      }
+      .print-table-caption {
+        font-size: 10pt;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--print-accent);
+      }
+      .print-table-box {
+        padding: 4mm;
+        border-radius: 3mm;
+        border: 1px solid rgba(24, 32, 42, 0.14);
+        background: rgba(244, 247, 250, 0.72);
+      }
+      .print-table-head {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 2mm;
+        flex-wrap: wrap;
+      }
+      .print-table-text {
+        margin: 0;
+        font-size: 10.2pt;
+        line-height: 1.45;
+      }
+      .print-unit-list-item {
+        display: grid;
+        grid-template-columns: 16mm 1fr;
+        gap: 4mm;
+        align-items: start;
+      }
+      .print-list-marker {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 8mm;
+        border-radius: 999px;
+        background: rgba(24, 32, 42, 0.06);
+        color: #556273;
+        font-size: 9pt;
+        font-weight: 700;
+      }
+      .print-list-body p {
+        margin-top: 2mm;
+      }
+      .print-block-continuation .print-block-head {
+        padding-bottom: 2mm;
+        border-bottom: 1px dashed rgba(24, 32, 42, 0.12);
+      }
+      .print-unit-head {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 2mm;
+      }
+      .print-page-footer {
+        justify-self: end;
+        font-size: 10pt;
+        color: #556273;
+      }
+      @media print {
+        html, body { background: white; }
+        .print-toolbar { display: none; }
+        .print-document { width: auto; margin: 0; padding: 0; }
+        .print-page {
+          margin: 0;
+          box-shadow: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="print-toolbar">
+      <strong>ГОСТ 8784—75 · Print A4</strong>
+      <button type="button" onclick="window.print()">Печать</button>
+    </div>
+    <main class="print-document">
+      
+    <section class="print-page" data-page-number="1">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 1</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-8784-75-oblozhka" data-block-id="gost-8784-75-oblozhka" data-source-page-number="1">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #cover-page</p>
+      </div>
+      <h2>
+        Обложка
+        
+      </h2>
+      <p class="print-block-summary">ГОСТ 8784—75 МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ МЕТОДЫ ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ Издание официальное ИПК ИЗДАТЕЛЬСТВО СТАНДАРТОВ Москва УДК 667.63.001.4:006.354 Группа Л19</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 8784—75</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ МЕТОДЫ ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ Издание официальное</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ИПК ИЗДАТЕЛЬСТВО СТАНДАРТОВ Москва</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>УДК 667.63.001.4:006.354</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Группа Л19</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">1</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="2">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 2</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-definition-set" id="gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti" data-block-id="gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti" data-source-page-number="2">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">definition-set</p>
+        <p class="print-block-anchor">Источник: #page1-start</p>
+      </div>
+      <h2>
+        Титульная страница и 1. Визуальный метод определения укрывистости
+        
+      </h2>
+      <p class="print-block-summary">…кокрасочные материалы (эмали, краски) и неорганические пигменты и устанавливает визуальный, инструментальный и инструментально-математический методы определения укрывистости. За укрывистость принимают способность лакокрасочного материала делать невидимым цвет или цветовые различия окрашиваемой поверхности. (Измененная редакция, Изм. № 2). 1. ВИЗУАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Методы определения укрывистости</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Paint materials. Methods for determination of hiding power</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 8784—75</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ОКСТУ 2310</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Дата введения 01.01.76</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Настоящий стандарт распространяется на лакокрасочные материалы (эмали, краски) и неорганические пигменты и устанавливает визуальный, инструментальный и инструментально-математический методы определения укрывистости.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-definition-set print-block-continuation" id="gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti--print-2" data-block-id="gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti" data-source-page-number="2">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">definition-set</p>
+        <p class="print-block-anchor">Источник: #page1-start</p>
+      </div>
+      <h2>
+        Титульная страница и 1. Визуальный метод определения укрывистости
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>За укрывистость принимают способность лакокрасочного материала делать невидимым цвет или цветовые различия окрашиваемой поверхности.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Измененная редакция, Изм. № 2).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>1. ВИЗУАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</strong>
+      </div>
+      <p>1. ВИЗУАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">2</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="3">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 3</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-8784-75-1-1-suschnost-metoda" data-block-id="gost-8784-75-1-1-suschnost-metoda" data-source-page-number="2">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-1-1</p>
+      </div>
+      <h2>
+        1.1. Сущность метода
+        
+      </h2>
+      <p class="print-block-summary">1.1. Сущность метода Метод заключается в нанесении слоев лакокрасочного материала на стеклянную пластинку до тех пор, пока контуры черно-белой контрастной пластинки или шахматной доски, подложенной под стеклянную пластинку, станут невидимыми. Метод предназначается для определения укрывистости эмалей и красок в высушенных и невысушенных покрытиях, а также пигментов в невысушенной краске.</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>1.1. Сущность метода</strong>
+      </div>
+      <p>1.1. Сущность метода</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Метод заключается в нанесении слоев лакокрасочного материала на стеклянную пластинку до тех пор, пока контуры черно-белой контрастной пластинки или шахматной доски, подложенной под стеклянную пластинку, станут невидимыми.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Метод предназначается для определения укрывистости эмалей и красок в высушенных и невысушенных покрытиях, а также пигментов в невысушенной краске.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">3</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="4">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 4</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-8784-75-1-2-apparatura-i-materialy" data-block-id="gost-8784-75-1-2-apparatura-i-materialy" data-source-page-number="2">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-1-2</p>
+      </div>
+      <h2>
+        1.2. Аппаратура и материалы
+        
+      </h2>
+      <p class="print-block-summary">1.2. Аппаратура и материалы Пластинки стеклянные (стекло для фотографических пластинок размером 9 × 12—1,2 по ТУ 6—43—0205133—03, допускается применять стеклянные пластинки размером 180 × 240 мм, на которых закрашивается площадь размером 180 × 225 мм). Пульверизатор, кисть, аппликатор или другое оборудование, позволяющее наносить на стеклянные пластинки слои лакокрасочного материала толщиной каждого слоя не более 20 мкм. Доска шахматная (черт. 1) изготавли…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 597</li><li>ГОСТ 9095</li><li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>1.2. Аппаратура и материалы</strong>
+      </div>
+      <p>1.2. Аппаратура и материалы</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Пластинки стеклянные (стекло для фотографических пластинок размером 9 × 12—1,2 по ТУ 6—43—0205133—03, допускается применять стеклянные пластинки размером 180 × 240 мм, на которых закрашивается площадь размером 180 × 225 мм). Пульверизатор, кисть, аппликатор или другое оборудование, позволяющее наносить на стеклянные пластинки слои лакокрасочного материала толщиной каждого слоя не более 20 мкм. Доска шахматная (черт. 1) изготавливается следующим образом: кусок белой чертежной (ГОСТ 597) или матовой типографской (ГОСТ 9095) бумаги размером 90 × 120 мм расчерчивают на 12 квадратов размером 30 × 30 мм (допускается размер квадратов 45 × 45 мм при применении стеклянной пластинки размером 180 × 240 мм) и закрашивают их в шахматном порядке черной тушью; после высыхания туши лист бумаги наклеивают на стеклянную пластинку или гладкую деревянную дощечку размером 90 × 120 мм (180 × 225 мм). Пластинка черно-белая контрастная из гладкого материала (бумаги, картона, пластмассы и т. д.); коэффициент яркости черно-белой пластинки и шахматной доски, измеренный на белом поле, должен быть 0,80—0,85, на черном поле — не более 0,05.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 597</li><li>ГОСТ 9095</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Шахматная доска</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Издание официальное</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Перепечатка воспрещена</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">4</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="5">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 5</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-8784-75-1-2-apparatura-i-materialy--print-2" data-block-id="gost-8784-75-1-2-apparatura-i-materialy" data-source-page-number="2">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-1-2</p>
+      </div>
+      <h2>
+        1.2. Аппаратура и материалы
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>© Издательство стандартов, 1975 © ИПК Издательство стандартов, 2002</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>С. 2 ГОСТ 8784—75</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Весы аналитические с погрешностью взвешивания не более 0,0002 г.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Измененная редакция, Изм. № 1, 2).</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">5</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="6">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 6</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure" id="gost-8784-75-1-3-provedenie-ispytaniya" data-block-id="gost-8784-75-1-3-provedenie-ispytaniya" data-source-page-number="3">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-1-3</p>
+      </div>
+      <h2>
+        1.3. Проведение испытания
+        
+      </h2>
+      <p class="print-block-summary">1.3. Проведение испытания Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Пигменты предварительно растирают с натуральной олифой (ГОСТ 7931), затем пигментную пасту разбавляют олифой до получения готовой к применению краски. На стеклянную пластинку, подготовленную по ГОСТ 8832, разд. 3, и взвешенную с точностью до четвертого десятичного знака, наносят один или два слоя лакокрасочного материала. Стеклянную пластинку с лак…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 7931</li><li>ГОСТ 8832</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>1.3. Проведение испытания</strong>
+      </div>
+      <p>1.3. Проведение испытания</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Пигменты предварительно растирают с натуральной олифой (ГОСТ 7931), затем пигментную пасту разбавляют олифой до получения готовой к применению краски.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 7931</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>На стеклянную пластинку, подготовленную по ГОСТ 8832, разд. 3, и взвешенную с точностью до четвертого десятичного знака, наносят один или два слоя лакокрасочного материала. Стеклянную пластинку с лакокрасочным материалом кладут на контрастную пластинку или шахматную доску и наблюдают при рассеянном дневном свете, просвечивают ли белые и черные поля. Если поля просвечивают, наносят на пластинку последовательно новые слои материала до тех пор, пока полностью не исчезнет разница между белыми и черными полями. После полного укрытия стеклянную пластинку взвешивают с точностью до четвертого десятичного знака, сушат и снова взвешивают. Перед высушиванием и взвешиванием удаляют потеки лакокрасочного материала с обратной стороны и с ребер пластинки. Каждый раз перед нанесением нового слоя лакокрасочный материал перемешивают. Пластинки размером 180 × 240 мм взвешивают с точностью до второго десятичного знака.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8832</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Испытания проводят не менее чем на трех пластинках.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-procedure print-block-continuation" id="gost-8784-75-1-3-provedenie-ispytaniya--print-2" data-block-id="gost-8784-75-1-3-provedenie-ispytaniya" data-source-page-number="3">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-1-3</p>
+      </div>
+      <h2>
+        1.3. Проведение испытания
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Вид продукта для разбавления лакокрасочного материала до рабочей вязкости, величина рабочей вязкости, количество олифы и пигмента, метод нанесения лакокрасочного материала на стеклянные пластинки, режим сушки или отсутствие сушки должны быть указаны в нормативно-технической документации на лакокрасочный материал или пигмент.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Измененная редакция, Изм. № 2).</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">6</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="7">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 7</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis" id="gost-8784-75-1-4-obrabotka-rezultatov" data-block-id="gost-8784-75-1-4-obrabotka-rezultatov" data-source-page-number="3">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-1-4</p>
+      </div>
+      <h2>
+        1.4. Обработка результатов
+        
+      </h2>
+      <p class="print-block-summary">1.4. Обработка результатов 1.4.1. Укрывистость высушенной пленки ( D ), г/м², вычисляют по формуле D = ( m 1 &amp;minus; m 0 ) &amp;middot; 10 6 S , (1) где m₀ — масса неокрашенной стеклянной пластинки, г; m₁ — масса пластинки с высушенной пленкой, г; S — площадь стеклянной пластинки, мм². (Измененная редакция, Изм. № 1). 1.4.1а. Укрывистость невысушенной лакокрасочной пленки ( D н ), г/м², вычисляют по формуле D н = m 1 &amp;prime; &amp;minus; m 0 S &amp;middot; 10 6 , (1а)…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 17537</li><li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>1.4. Обработка результатов</strong>
+      </div>
+      <p>1.4. Обработка результатов</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1.4.1. Укрывистость высушенной пленки</strong>
+        <p>1.4.1. Укрывистость высушенной пленки ( D ), г/м², вычисляют по формуле</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>D = ( m 1 &amp;minus; m 0 ) &amp;middot; 10 6 S ,</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(1)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где m₀ — масса неокрашенной стеклянной пластинки, г; m₁ — масса пластинки с высушенной пленкой, г; S — площадь стеклянной пластинки, мм².</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Измененная редакция, Изм. № 1).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1.4.1а. Укрывистость невысушенной лакокрасочной</strong>
+        <p>1.4.1а. Укрывистость невысушенной лакокрасочной пленки ( D н ), г/м², вычисляют по формуле</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>D н = m 1 &amp;prime; &amp;minus; m 0 S &amp;middot; 10 6 ,</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">7</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="8">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 8</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis print-block-continuation" id="gost-8784-75-1-4-obrabotka-rezultatov--print-2" data-block-id="gost-8784-75-1-4-obrabotka-rezultatov" data-source-page-number="3">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-1-4</p>
+      </div>
+      <h2>
+        1.4. Обработка результатов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(1а)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где m′₁ — масса пластинки с невысушенным лакокрасочным материалом, г.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Введен дополнительно, Изм. № 1).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1.4.2. Для пластинки размером</strong>
+        <p>1.4.2. Для пластинки размером 90 × 120 мм укрывистость ( D и D н ) вычисляют по формулам:</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>D = ( m 1 &amp;minus; m 0 ) &amp;middot; 92,6 ;</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(2)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>D н = ( m 1 &amp;prime; &amp;minus; m 0 ) &amp;middot; 92,6 .</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(2а)</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">8</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="9">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 9</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis print-block-continuation" id="gost-8784-75-1-4-obrabotka-rezultatov--print-3" data-block-id="gost-8784-75-1-4-obrabotka-rezultatov" data-source-page-number="3">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-1-4</p>
+      </div>
+      <h2>
+        1.4. Обработка результатов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Измененная редакция, Изм. № 1).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1.4.3. Укрывистость высушенной пленки</strong>
+        <p>1.4.3. Укрывистость высушенной пленки в пересчете на лакокрасочный материал ( D м ), г/м², вычисляют по формуле</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>D м = D &amp;middot; 100 X ,</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(3)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где X — массовая доля нелетучих веществ в лакокрасочном материале, определенная по ГОСТ 17537, %.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 17537</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Измененная редакция, Изм. № 1, 2).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 8784—75 С. 3</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">9</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="10">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 10</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis print-block-continuation" id="gost-8784-75-1-4-obrabotka-rezultatov--print-4" data-block-id="gost-8784-75-1-4-obrabotka-rezultatov" data-source-page-number="3">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-1-4</p>
+      </div>
+      <h2>
+        1.4. Обработка результатов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1.4.4. Укрывистость масляных красок</strong>
+        <p>1.4.4. Укрывистость масляных красок в пересчете на густотертую краску D г , г/м², вычисляют по формуле D г = ( m 1 &amp;prime; &amp;minus; m 0 ) ( 100 &amp;minus; m 2 ) &amp;middot; 10 6 S &amp;middot; 100 ,</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(4)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где m₂ — масса олифы, израсходованная для получения окраски, готовой к применению, из густотертой краски, %.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Измененная редакция, Изм. № 1).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1.4.5. Укрывистость пигмента (</strong>
+        <p>1.4.5. Укрывистость пигмента ( D п ), г/м², вычисляют по формуле</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>D п = ( m 1 &amp;prime; &amp;minus; m 0 ) m п S ( m 3 + m п ) &amp;middot; 10 6 ,</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(5)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где m п — масса пигмента в краске, г; m₃ — масса олифы, израсходованная для приготовления краски из пигмента, г.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-analysis print-block-continuation" id="gost-8784-75-1-4-obrabotka-rezultatov--print-5" data-block-id="gost-8784-75-1-4-obrabotka-rezultatov" data-source-page-number="3">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-1-4</p>
+      </div>
+      <h2>
+        1.4. Обработка результатов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>За результат испытания принимают среднеарифметическое трех параллельных определений, допускаемые расхождения между которыми не должны превышать 5 % среднеарифметического значения.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Измененная редакция, Изм. № 1, 2).</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">10</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="11">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 11</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-definition-set" id="gost-8784-75-2-instrumentalnyi-metod-opredeleniya-ukryvistosti" data-block-id="gost-8784-75-2-instrumentalnyi-metod-opredeleniya-ukryvistosti" data-source-page-number="4">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">definition-set</p>
+        <p class="print-block-anchor">Источник: #section-2</p>
+      </div>
+      <h2>
+        2. Инструментальный метод определения укрывистости
+        
+      </h2>
+      <p class="print-block-summary">2. ИНСТРУМЕНТАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>2. ИНСТРУМЕНТАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</strong>
+      </div>
+      <p>2. ИНСТРУМЕНТАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section" id="gost-8784-75-2-1-suschnost-metoda" data-block-id="gost-8784-75-2-1-suschnost-metoda" data-source-page-number="4">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-2-1</p>
+      </div>
+      <h2>
+        2.1. Сущность метода
+        
+      </h2>
+      <p class="print-block-summary">2.1. Сущность метода Сущность метода заключается в определении коэффициента контрастности измерением коэффициентов яркости покрытий разной толщины, помещенных на белую и черную подложки. Метод предназначается для определения укрывистости эмалей и красок белых и светлых тонов в высушенных покрытиях (коэффициент яркости не менее 0,6). Коэффициент яркости ( R ) — отношение яркости покрытия к яркости эталона, измеренных в одинаковых условиях освещения с углом…</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>2.1. Сущность метода</strong>
+      </div>
+      <p>2.1. Сущность метода</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Сущность метода заключается в определении коэффициента контрастности измерением коэффициентов яркости покрытий разной толщины, помещенных на белую и черную подложки.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Метод предназначается для определения укрывистости эмалей и красок белых и светлых тонов в высушенных покрытиях (коэффициент яркости не менее 0,6).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Коэффициент яркости ( R ) — отношение яркости покрытия к яркости эталона, измеренных в одинаковых условиях освещения с углом падения света 45°.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Коэффициент контрастности ( C ) — отношение коэффициента яркости покрытия от черной подложки ( R ч ) к коэффициенту яркости покрытия от белой подложки ( R б ):</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>C = R ч R б .</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(6)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Полную укрывистость определяют при коэффициенте контрастности 0,98.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">11</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="12">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 12</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-8784-75-2-2-apparatura-i-materialy" data-block-id="gost-8784-75-2-2-apparatura-i-materialy" data-source-page-number="4">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-2-2</p>
+      </div>
+      <h2>
+        2.2. Аппаратура и материалы
+        
+      </h2>
+      <p class="print-block-summary">2.2. Аппаратура и материалы Приборы оптические с измерительной геометрией углов 45°, обеспечивающие измерение коэффициента яркости с точностью до 0,01 при зеленом светофильтре или длине волны 560 нм (компараторы, фотометры, спектрофотометры с отражающей приставкой ПДО-1, колориметр). Толщиномер с погрешностью измерения не более 5 %. Пластинки стеклянные (стекло для фотографических пластинок размером 9 × 12—1,2 по ТУ 6—43—0205133—03) или пленка полиэфирная…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 24234</li><li>ГОСТ 597</li><li>ГОСТ 9095</li><li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>2.2. Аппаратура и материалы</strong>
+      </div>
+      <p>2.2. Аппаратура и материалы</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Приборы оптические с измерительной геометрией углов 45°, обеспечивающие измерение коэффициента яркости с точностью до 0,01 при зеленом светофильтре или длине волны 560 нм (компараторы, фотометры, спектрофотометры с отражающей приставкой ПДО-1, колориметр).</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Толщиномер с погрешностью измерения не более 5 %.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Пластинки стеклянные (стекло для фотографических пластинок размером 9 × 12—1,2 по ТУ 6—43—0205133—03) или пленка полиэфирная (полиэтилентерефталатная пленка толщиной от 50 до 100 мкм по ГОСТ 24234), используемые в качестве промежуточного слоя. Толщина пленки должна быть указана в НТД на лакокрасочный материал. Для удобства нанесения лакокрасочного материала полиэфирную пленку разравнивают на твердой (стеклянной, керамической) подложке толщиной не менее 6 мм, предварительно смоченной несколькими каплями уайт-спирита, который не должен попадать на наружную поверхность пленки.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 24234</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Пульверизатор, кисть, аппликатор или другое оборудование, позволяющее наносить на стеклянные пластинки слои лакокрасочного материала толщиной не более 20 мкм.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">12</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="13">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 13</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-8784-75-2-2-apparatura-i-materialy--print-2" data-block-id="gost-8784-75-2-2-apparatura-i-materialy" data-source-page-number="4">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-2-2</p>
+      </div>
+      <h2>
+        2.2. Аппаратура и материалы
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Пластинка черная, представляющая собой кусок белой бумаги (ГОСТ 597 или ГОСТ 9095) размером 90 × 120 мм, закрашенный черной тушью; коэффициент яркости черной пластинки должен быть не более 0,05.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 597</li><li>ГОСТ 9095</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Пластинка белая, представляющая собой кусок белой бумаги (ГОСТ 597 или ГОСТ 9095) размером 90 × 120 мм; коэффициент яркости должен составлять 0,80—0,85.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 597</li><li>ГОСТ 9095</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Пластинка черно-белая контрастная (п. 1.2). Весы аналитические с погрешностью взвешивания не более 0,0002 г.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>2.1, 2.2. (Измененная редакция,</strong>
+        <p>2.1, 2.2. (Измененная редакция, Изм. № 1, 2).</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>С. 4 ГОСТ 8784—75</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">13</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="14">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 14</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure" id="gost-8784-75-2-3-provedenie-ispytaniya" data-block-id="gost-8784-75-2-3-provedenie-ispytaniya" data-source-page-number="5">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-2-3</p>
+      </div>
+      <h2>
+        2.3. Проведение испытания
+        
+      </h2>
+      <p class="print-block-summary">2.3. Проведение испытания Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Шесть подготовленных пластинок (контрастных или промежуточных) взвешивают с точностью до четвертого десятичного знака и определяют их площадь с точностью до 1 мм². Наносят на пластинки лакокрасочный материал с постепенно увеличивающейся толщиной (толщина покрытия на первой пластинке не должна превышать 20 мкм). Пластинки высушивают и затем определя…</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>2.3. Проведение испытания</strong>
+      </div>
+      <p>2.3. Проведение испытания</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Шесть подготовленных пластинок (контрастных или промежуточных) взвешивают с точностью до четвертого десятичного знака и определяют их площадь с точностью до 1 мм². Наносят на пластинки лакокрасочный материал с постепенно увеличивающейся толщиной (толщина покрытия на первой пластинке не должна превышать 20 мкм). Пластинки высушивают и затем определяют на них коэффициенты яркости покрытий, при этом в случае промежуточных пластинок с покрытием кладут их на черно-белые поля покрытием вниз. При использовании колориметров или компараторов измерения проводят при зеленом фильтре, при использовании спектрофотометров — при длине волны 560 нм. Коэффициент яркости определяют для трех—пяти точек каждого покрытия на черном и белом полях. За результат испытания принимают среднеарифметическое результатов измерений, если отклонение результатов отдельных измерений от среднеарифметического не превышает 0,5 %.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Пластинки с покрытием взвешивают с точностью до четвертого десятичного знака.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Вид продукта для разбавления лакокрасочного материала до рабочей вязкости, величина рабочей вязкости, метод нанесения лакокрасочного материала на стеклянные пластинки, режим сушки и кондиционирования должны быть указаны в нормативно-технической документации на лакокрасочный материал. При отсутствии указаний образцы до начала испытания выдерживают в течение 24 ч при температуре (20 ± 2) °С и относительной влажности воздуха (65 ± 5) %.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">14</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="15">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 15</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis" id="gost-8784-75-2-4-obrabotka-rezultatov" data-block-id="gost-8784-75-2-4-obrabotka-rezultatov" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-2-4</p>
+      </div>
+      <h2>
+        2.4. Обработка результатов
+        
+      </h2>
+      <p class="print-block-summary">2.4. Обработка результатов По величинам коэффициентов яркости вычисляют коэффициент контрастности по формуле (6). Массу единицы площади покрытия ( m ) в граммах на квадратный метр поверхности с известным коэффициентом контрастности вычисляют по формуле m = m 2 &amp;minus; m 1 , (7) где m₁ — масса единицы площади пластинки, г/м²; m₂ — масса единицы площади пластинки с покрытием, г/м². График для определения укрывистости C 0,80 0,90 0,98 1,00 D m, г/м² a Черт. 2…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>2.4. Обработка результатов</strong>
+      </div>
+      <p>2.4. Обработка результатов</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>По величинам коэффициентов яркости вычисляют коэффициент контрастности по формуле (6). Массу единицы площади покрытия ( m ) в граммах на квадратный метр поверхности с известным коэффициентом контрастности вычисляют по формуле</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>m = m 2 &amp;minus; m 1 ,</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(7)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где m₁ — масса единицы площади пластинки, г/м²; m₂ — масса единицы площади пластинки с покрытием, г/м².</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>График для определения укрывистости</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">15</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="16">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 16</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis print-block-continuation" id="gost-8784-75-2-4-obrabotka-rezultatov--print-2" data-block-id="gost-8784-75-2-4-obrabotka-rezultatov" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-2-4</p>
+      </div>
+      <h2>
+        2.4. Обработка результатов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>C 0,80 0,90 0,98 1,00 D m, г/м² a Черт. 2 Затем строят график (черт. 2): на оси ординат откладывают величины коэффициентов контрастности C , а на оси абсцисс — соответствующие каждому C значения m и проводят кривую. Из точки на оси ординат, соответствующей величине C , равной 0,98, проводят прямую, параллельную оси абсцисс, до пересечения с кривой (точка a ). Из точки a опускают перпендикуляр к оси абсцисс и находят значение m , которое соответствует укрывистости высушенного лакокрасочного материала ( D ), г/м².</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Укрывистость лакокрасочного материала, готового к применению, вычисляют по формуле (3). Толщину сырого слоя покрытия ( d ) в миллиметрах вычисляют по формуле</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>d = D &amp;rho; &amp;middot; x &amp;middot; 10 5 ,</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(7а)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где ρ — плотность лакокрасочного материала, г/см³; D — укрывистость высушенного лакокрасочного покрытия, г/м²; x — массовая доля нелетучих веществ, %.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Расход лакокрасочного материала при нанесении ( P ) в квадратных метрах на кубический дециметр вычисляют по формуле</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>P = 1 d = &amp;rho; &amp;middot; x D &amp;middot; 10 &amp;minus; 5 .</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">16</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="17">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 17</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis print-block-continuation" id="gost-8784-75-2-4-obrabotka-rezultatov--print-3" data-block-id="gost-8784-75-2-4-obrabotka-rezultatov" data-source-page-number="5">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-2-4</p>
+      </div>
+      <h2>
+        2.4. Обработка результатов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(7б)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Коэффициент контрастности для установленного расхода лакокрасочного материала 20 м²/дм³ определяют линейной интерполяцией на графике зависимости коэффициентов контрастности от расхода материала.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>2.3, 2.4. (Измененная редакция,</strong>
+        <p>2.3, 2.4. (Измененная редакция, Изм. № 2).</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 8784—75 С. 5</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-definition-set" id="gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti" data-block-id="gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">definition-set</p>
+        <p class="print-block-anchor">Источник: #section-3</p>
+      </div>
+      <h2>
+        3. Инструментально-математический метод определения укрывистости
+        
+      </h2>
+      <p class="print-block-summary">3. ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-section-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">section-heading</span>
+        <strong>3. ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</strong>
+      </div>
+      <p>3. ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">17</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="18">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 18</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-8784-75-3-1-suschnost-metoda" data-block-id="gost-8784-75-3-1-suschnost-metoda" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-3-1</p>
+      </div>
+      <h2>
+        3.1. Сущность метода
+        
+      </h2>
+      <p class="print-block-summary">3.1. Сущность метода Сущность метода заключается в определении коэффициентов яркости неукрывающего и переукрывающего покрытий, помещенных на черную и белую подложки. Метод предназначается для определения укрывистости эмалей и красок белых и светлых тонов в высушенных покрытиях (коэффициент яркости не менее 0,6).</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>3.1. Сущность метода</strong>
+      </div>
+      <p>3.1. Сущность метода</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Сущность метода заключается в определении коэффициентов яркости неукрывающего и переукрывающего покрытий, помещенных на черную и белую подложки.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Метод предназначается для определения укрывистости эмалей и красок белых и светлых тонов в высушенных покрытиях (коэффициент яркости не менее 0,6).</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section" id="gost-8784-75-3-2-apparatura-i-materialy" data-block-id="gost-8784-75-3-2-apparatura-i-materialy" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-3-2</p>
+      </div>
+      <h2>
+        3.2. Аппаратура и материалы
+        
+      </h2>
+      <p class="print-block-summary">3.2. Аппаратура и материалы Машина цифровая электронно-вычислительная. Приборы оптические по п. 2.2. Пульверизатор, кисть, аппликатор или другое оборудование, позволяющее наносить на стеклянные пластинки равномерные слои лакокрасочного материала толщиной не более 20 мкм. Пластинка черная, приготовленная по п. 2.2. Пластинка белая, приготовленная по п. 2.2. Толщиномер с погрешностью измерения не более 5 %. (Измененная редакция, Изм. № 1, 2).</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>3.2. Аппаратура и материалы</strong>
+      </div>
+      <p>3.2. Аппаратура и материалы</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Машина цифровая электронно-вычислительная. Приборы оптические по п. 2.2.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Пульверизатор, кисть, аппликатор или другое оборудование, позволяющее наносить на стеклянные пластинки равномерные слои лакокрасочного материала толщиной не более 20 мкм.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Пластинка черная, приготовленная по п. 2.2. Пластинка белая, приготовленная по п. 2.2. Толщиномер с погрешностью измерения не более 5 %.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(Измененная редакция, Изм. № 1, 2).</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">18</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="19">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 19</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-procedure" id="gost-8784-75-3-3-provedenie-ispytaniya" data-block-id="gost-8784-75-3-3-provedenie-ispytaniya" data-source-page-number="6">
+      <div class="print-block-band print-block-band-procedure">Процедура</div>
+      <div class="print-block-head">
+        <p class="print-block-type">procedure</p>
+        <p class="print-block-anchor">Источник: #section-3-3</p>
+      </div>
+      <h2>
+        3.3. Проведение испытания
+        
+      </h2>
+      <p class="print-block-summary">3.3. Проведение испытания Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Две стеклянные пластинки подготавливают по ГОСТ 8832 и на одну из них наносят покрытие, не укрывающее подложку, а на другую — покрытие, значительно переукрывающее контрастную подложку (контроль проводят визуальным методом по шахматной доске). После высушивания определяют коэффициенты яркости неукрывающего ( R 0 ) и переукрывающего ( R &amp;infin; ) пок…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8832</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>3.3. Проведение испытания</strong>
+      </div>
+      <p>3.3. Проведение испытания</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для определения укрывистости лакокрасочный материал разбавляют до рабочей вязкости. Две стеклянные пластинки подготавливают по ГОСТ 8832 и на одну из них наносят покрытие, не укрывающее подложку, а на другую — покрытие, значительно переукрывающее контрастную подложку (контроль проводят визуальным методом по шахматной доске). После высушивания определяют коэффициенты яркости неукрывающего ( R 0 ) и переукрывающего ( R &amp;infin; ) покрытий.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8832</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Измерение коэффициентов яркости проводят по п. 2.3 настоящего стандарта. Величины коэффициентов яркости от черной и белой подложек для пластинки с переукрывающим слоем должны быть одинаковы. После определения коэффициентов яркости определяют толщину неукрывающего слоя ( H ) в миллиметрах при помощи микрометра или методом, указанным в приложении 1 .</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Вид продукта для разбавления лакокрасочного материала до рабочей вязкости, величина рабочей вязкости, метод нанесения лакокрасочного материала на стеклянные пластинки, режим сушки должны быть указаны в нормативно-технической документации на лакокрасочный материал.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">19</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="20">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 20</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis" id="gost-8784-75-3-4-obrabotka-rezultatov" data-block-id="gost-8784-75-3-4-obrabotka-rezultatov" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-3-4</p>
+      </div>
+      <h2>
+        3.4. Обработка результатов
+        
+      </h2>
+      <p class="print-block-summary">3.4. Обработка результатов 3.4.1. Укрывистость ( Y ), м²/л, вычисляют по формуле y = N к &amp;minus; 1 , (8) где H к — толщина покрытия с коэффициентом контрастности 0,98, обеспечивающего полное укрытие черно-белой контрастной подложки, мм. 3.4.2. Толщину укрывающего слоя (H к ) в миллиметрах вычисляют по формуле H к = H &amp;middot; ln 1 &amp;minus; R ок &amp;middot; R &amp;infin; 1 &amp;minus; R ок R &amp;infin; ln 1 &amp;minus; R 0 &amp;middot; R &amp;infin; 1 &amp;minus; R 0 R &amp;infin; , (9) где…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-subsection-heading">
+      <div class="print-unit-head">
+        <span class="print-unit-type">subsection-heading</span>
+        <strong>3.4. Обработка результатов</strong>
+      </div>
+      <p>3.4. Обработка результатов</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>3.4.1. Укрывистость ( Y</strong>
+        <p>3.4.1. Укрывистость ( Y ), м²/л, вычисляют по формуле</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>y = N к &amp;minus; 1 ,</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(8)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где H к — толщина покрытия с коэффициентом контрастности 0,98, обеспечивающего полное укрытие черно-белой контрастной подложки, мм.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>3.4.2. Толщину укрывающего слоя</strong>
+        <p>3.4.2. Толщину укрывающего слоя (H к ) в миллиметрах вычисляют по формуле</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>H к = H &amp;middot; ln 1 &amp;minus; R ок &amp;middot; R &amp;infin; 1 &amp;minus; R ок R &amp;infin; ln 1 &amp;minus; R 0 &amp;middot; R &amp;infin; 1 &amp;minus; R 0 R &amp;infin; ,</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(9)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где H — толщина неукрывающего слоя, мм; R ок — коэффициент яркости покрытия толщиной H к , который вычисляют по формуле</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">20</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="21">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 21</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-analysis print-block-continuation" id="gost-8784-75-3-4-obrabotka-rezultatov--print-2" data-block-id="gost-8784-75-3-4-obrabotka-rezultatov" data-source-page-number="6">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">analysis</p>
+        <p class="print-block-anchor">Источник: #section-3-4</p>
+      </div>
+      <h2>
+        3.4. Обработка результатов
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>R ок = ( C &amp;middot; a + 1 &amp;minus; C 2 R g ) &amp;minus; ( C &amp;middot; a + 1 &amp;minus; C 2 R g ) 2 &amp;minus; C</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(10)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где R g — коэффициент яркости белой пластинки; a — оптическая константа, которую вычисляют по формуле</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>a = 1 R &amp;infin; + R &amp;infin; 2</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(11)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>С. 6 ГОСТ 8784—75</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">21</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="22">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 22</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti" data-block-id="gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti" data-source-page-number="7">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-3-4-3</p>
+      </div>
+      <h2>
+        3.4.3. Перевод величины укрывистости
+        
+      </h2>
+      <p class="print-block-summary">3.4.3. Перевод величины укрывистости (м²/л) в размерность г/м² осуществляют по формуле D = &amp;rho; &amp;middot; 10 3 y = &amp;rho; &amp;middot; H ln 1 &amp;minus; R ок &amp;middot; R &amp;infin; 1 &amp;minus; R ок R &amp;infin; ln 1 &amp;minus; R 0 &amp;middot; R &amp;infin; 1 &amp;minus; R 0 R &amp;infin; &amp;times; 10 3 , (12) где ρ — плотность пленки, определенная по ГОСТ 267 или по ГОСТ 15139, г/см³. За результат испытания принимают среднеарифметическое трех параллельных определений, допускаемые расхождения…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 267</li><li>ГОСТ 15139</li><li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>3.4.3. Перевод величины укрывистости</strong>
+        <p>3.4.3. Перевод величины укрывистости (м²/л) в размерность г/м² осуществляют по формуле</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>D = &amp;rho; &amp;middot; 10 3 y = &amp;rho; &amp;middot; H ln 1 &amp;minus; R ок &amp;middot; R &amp;infin; 1 &amp;minus; R ок R &amp;infin; ln 1 &amp;minus; R 0 &amp;middot; R &amp;infin; 1 &amp;minus; R 0 R &amp;infin; &amp;times; 10 3 ,</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(12)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где ρ — плотность пленки, определенная по ГОСТ 267 или по ГОСТ 15139, г/см³.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 267</li><li>ГОСТ 15139</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>За результат испытания принимают среднеарифметическое трех параллельных определений, допускаемые расхождения между которыми не должны превышать 3 %.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Для ускорения расчета и обработки данных для целой серии образцов одновременно следует применять электронно-вычислительную машину. Универсальная блок-схема расчета укрывистости приведена в приложении 2 .</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section print-block-continuation" id="gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti--print-2" data-block-id="gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti" data-source-page-number="7">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-3-4-3</p>
+      </div>
+      <h2>
+        3.4.3. Перевод величины укрывистости
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 8784—75 С. 7</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ПРИЛОЖЕНИЕ 1 Рекомендуемое</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">22</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="23">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 23</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-definition-set" id="gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom" data-block-id="gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">definition-set</p>
+        <p class="print-block-anchor">Источник: #appendix-1</p>
+      </div>
+      <h2>
+        Приложение 1 — определение толщины покрытия весовым методом
+        
+      </h2>
+      <p class="print-block-summary">…в которой лакокрасочная пленка не набухает и не растворяется. С. 8 ГОСТ 8784—75 ПРИЛОЖЕНИЕ 2 Рекомендуемое</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 267</li><li>ГОСТ 15139</li><li>ГОСТ 14243</li><li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ОПРЕДЕЛЕНИЕ ТОЛЩИНЫ ПОКРЫТИЯ ВЕСОВЫМ МЕТОДОМ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Стеклянную пластинку с покрытием взвешивают с погрешностью не более 0,0001 г. Затем на пластинке тщательно отмечают квадрат размером 50 × 50 мм; аккуратно механическим способом освобождают квадрат от лакокрасочной пленки и пластинку снова взвешивают.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Толщину покрытия ( H ) в миллиметрах вычисляют по формуле</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>H = ( m 1 &amp;minus; m 4 ) &amp;middot; 10 3 S &amp;middot; &amp;rho; ,</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>(1)</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>где m₁ — масса пластинки с покрытием, г; m₄ — масса пластинки с частично удаленным покрытием (с квадрата размером 50 × 50 мм), г; S — площадь удаленного покрытия, мм² (в данном случае 2500 мм²); ρ — плотность сухого покрытия, г/см³.</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">23</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="24">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 24</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-definition-set print-block-continuation" id="gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom--print-2" data-block-id="gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom" data-source-page-number="8">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">definition-set</p>
+        <p class="print-block-anchor">Источник: #appendix-1</p>
+      </div>
+      <h2>
+        Приложение 1 — определение толщины покрытия весовым методом
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Плотность пленок определяют по ГОСТ 267 или по ГОСТ 15139. Свободные лакокрасочные пленки для определения плотности получают по ГОСТ 14243.</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 267</li><li>ГОСТ 15139</li><li>ГОСТ 14243</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>В качестве рабочей жидкости применяют гексан (ТУ 6—09—3375) или другую жидкость, в которой лакокрасочная пленка не набухает и не растворяется.</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>С. 8 ГОСТ 8784—75</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ПРИЛОЖЕНИЕ 2 Рекомендуемое</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">24</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="25">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 25</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-appendix" id="gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti" data-block-id="gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti" data-source-page-number="9">
+      <div class="print-block-band print-block-band-appendix">Приложение</div>
+      <div class="print-block-head">
+        <p class="print-block-type">appendix</p>
+        <p class="print-block-anchor">Источник: #appendix-2</p>
+      </div>
+      <h2>
+        Приложение 2 — блок-схема расчета укрывистости
+        
+      </h2>
+      <p class="print-block-summary">БЛОК-СХЕМА РАСЧЕТА УКРЫВИСТОСТИ ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИМ МЕТОДОМ НАЧАЛО 1 2 3 4 5 6 ВВОД ИСХОДНЫХ ДАННЫХ ( R 0 ) j , ( R ∞ ) j , H , R g , C (равно 0,98) РАСЧЕТ a ПО ФОРМУЛЕ (11) РАСЧЕТ R ок ПО ФОРМУЛЕ (10) РАСЧЕТ ТОЛЩИНЫ КРОЮЩЕГО СЛОЯ H к ПО ФОРМУЛЕ (9) РАСЧЕТ ВЕЛИЧИНЫ УКРЫВИСТОСТИ ПО ФОРМУЛЕ (8) ПРОВЕРКА НА КОНЕЦ ЦИКЛА ОСТАНОВКА Нет Да ГОСТ 8784—75 С. 9</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>БЛОК-СХЕМА РАСЧЕТА УКРЫВИСТОСТИ ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИМ МЕТОДОМ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>НАЧАЛО 1 2 3 4 5 6 ВВОД ИСХОДНЫХ ДАННЫХ ( R 0 ) j , ( R ∞ ) j , H , R g , C (равно 0,98) РАСЧЕТ a ПО ФОРМУЛЕ (11) РАСЧЕТ R ок ПО ФОРМУЛЕ (10) РАСЧЕТ ТОЛЩИНЫ КРОЮЩЕГО СЛОЯ H к ПО ФОРМУЛЕ (9) РАСЧЕТ ВЕЛИЧИНЫ УКРЫВИСТОСТИ ПО ФОРМУЛЕ (8) ПРОВЕРКА НА КОНЕЦ ЦИКЛА ОСТАНОВКА Нет Да</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ГОСТ 8784—75 С. 9</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—75</li>
+    </ul>
+  
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">25</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="26">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 26</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section" id="gost-8784-75-informacionnye-dannye" data-block-id="gost-8784-75-informacionnye-dannye" data-source-page-number="10">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-info</p>
+      </div>
+      <h2>
+        Информационные данные
+        
+      </h2>
+      <p class="print-block-summary">ИНФОРМАЦИОННЫЕ ДАННЫЕ 1. РАЗРАБОТАН И ВНЕСЕН Министерством химической промышленности СССР 2. УТВЕРЖДЕН И ВВЕДЕН В ДЕЙСТВИЕ Постановлением Государственного комитета стандартов Совета Министров СССР от 17.07.75 № 1831 3. Стандарт содержит все требования СТ СЭВ 5904—87 4. Стандарт полностью соответствует международным стандартам ИСО 3905—80, ИСО 3906—80, ИСО 2814—73 и соответствует ИСО 6504-1—83 в части принципа оценки инструментального метода 5. ВЗАМЕН ГОСТ…</p>
+      
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—58</li><li>ГОСТ 267—73</li><li>ГОСТ 597—73</li><li>ГОСТ 7931—76</li><li>ГОСТ 8832—76</li><li>ГОСТ 9095—89</li><li>ГОСТ 14243—78</li><li>ГОСТ 15139—69</li><li>ГОСТ 17537—72</li><li>ГОСТ 24234—80</li>
+    </ul>
+  
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>ИНФОРМАЦИОННЫЕ ДАННЫЕ</p>
+      
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>1. РАЗРАБОТАН И ВНЕСЕН</strong>
+        <p>1. РАЗРАБОТАН И ВНЕСЕН Министерством химической промышленности СССР</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>2. УТВЕРЖДЕН И ВВЕДЕН</strong>
+        <p>2. УТВЕРЖДЕН И ВВЕДЕН В ДЕЙСТВИЕ Постановлением Государственного комитета стандартов Совета Министров СССР от 17.07.75 № 1831</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>3. Стандарт содержит все</strong>
+        <p>3. Стандарт содержит все требования СТ СЭВ 5904—87</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section print-block-continuation" id="gost-8784-75-informacionnye-dannye--print-2" data-block-id="gost-8784-75-informacionnye-dannye" data-source-page-number="10">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-info</p>
+      </div>
+      <h2>
+        Информационные данные
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>4. Стандарт полностью соответствует</strong>
+        <p>4. Стандарт полностью соответствует международным стандартам ИСО 3905—80, ИСО 3906—80, ИСО 2814—73 и соответствует ИСО 6504-1—83 в части принципа оценки инструментального метода</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>5. ВЗАМЕН ГОСТ 8784—58</strong>
+        <p>5. ВЗАМЕН ГОСТ 8784—58</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ 8784—58</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>6. ССЫЛОЧНЫЕ НОРМАТИВНО-ТЕХНИЧЕСКИЕ ДОКУМЕНТЫ</strong>
+        <p>6. ССЫЛОЧНЫЕ НОРМАТИВНО-ТЕХНИЧЕСКИЕ ДОКУМЕНТЫ</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">26</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="27">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 27</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-section print-block-continuation" id="gost-8784-75-informacionnye-dannye--print-3" data-block-id="gost-8784-75-informacionnye-dannye" data-source-page-number="10">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-info</p>
+      </div>
+      <h2>
+        Информационные данные
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-table-group">
+      
+      <div class="print-table-box">
+        <div class="print-table-head">
+          <span class="print-unit-type">table</span>
+          <strong>Таблица</strong>
+        </div>
+        <p class="print-table-text">Обозначение НТД, на который дана ссылка Номер пункта, подпункта, приложения ГОСТ 267—73 3.4.3, приложение 1 ГОСТ 597—73 1.2, 2.2 ГОСТ 7931—76 1.3 ГОСТ 8832—76 1.3, 3.3 ГОСТ 9095—89 1.2, 2.2 ГОСТ 14243—78 Приложение 1 ГОСТ 15139—69 3.4.3, приложение 1 ГОСТ 17537—72 1.4.3 ГОСТ 24234—80 2.2 ТУ 6—09—3375—78 Приложение 1 ТУ 6—43—0205133—03—91 1.2, 2.2</p>
+        
+    <ul class="print-reference-list">
+      <li>ГОСТ 267—73</li><li>ГОСТ 597—73</li><li>ГОСТ 7931—76</li><li>ГОСТ 8832—76</li><li>ГОСТ 9095—89</li><li>ГОСТ 14243—78</li><li>ГОСТ 15139—69</li><li>ГОСТ 17537—72</li><li>ГОСТ 24234—80</li>
+    </ul>
+  
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+    <article class="print-block print-block-section print-block-continuation" id="gost-8784-75-informacionnye-dannye--print-4" data-block-id="gost-8784-75-informacionnye-dannye" data-source-page-number="10">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">section</p>
+        <p class="print-block-anchor">Источник: #section-info</p>
+      </div>
+      <h2>
+        Информационные данные
+        <span class="print-block-continuation-label"> (продолжение)</span>
+      </h2>
+      
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>7. Ограничение срока действия</strong>
+        <p>7. Ограничение срока действия снято по протоколу № 7—95 Межгосударственного Совета по стандартизации, метрологии и сертификации (ИУС 11—95)</p>
+        
+      </div>
+    </section>
+  
+    <section class="print-unit print-unit-list-item">
+      <div class="print-list-marker">Пункт</div>
+      <div class="print-list-body">
+        <strong>8. ИЗДАНИЕ (сентябрь 2002</strong>
+        <p>8. ИЗДАНИЕ (сентябрь 2002 г.) с Изменениями № 1, 2, утвержденными в январе 1981 г., мае 1988 г. (ИУС 4—81, 9—88)</p>
+        
+      </div>
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">27</footer>
+    </section>
+  
+    <section class="print-page" data-page-number="28">
+      <header class="print-page-header">
+        <div>
+          <p class="print-doc-number">ГОСТ 8784—75</p>
+          <h1>Методы определения укрывистости</h1>
+        </div>
+        <span class="print-page-marker">A4 стр. 28</span>
+      </header>
+      <div class="print-page-body">
+        
+    <article class="print-block print-block-meta" id="gost-8784-75-izdatelskie-svedeniya" data-block-id="gost-8784-75-izdatelskie-svedeniya" data-source-page-number="11">
+      
+      <div class="print-block-head">
+        <p class="print-block-type">meta</p>
+        <p class="print-block-anchor">Источник: #section-imprint</p>
+      </div>
+      <h2>
+        Издательские сведения
+        
+      </h2>
+      <p class="print-block-summary">Редактор В. Н. Колосов Технический редактор Л. А. Гусева Корректор В. И. Варенцов Компьютерная верстка Л. А. Круговой Изд. лиц. № 02354 от 14.07.2000. Сдано в набор 04.11.2002. Подписано в печать 26.11.2002. Усл. печ. л. 1,40. Уч.-изд. л. 0,80. Тираж 87 экз. С 8643. Зак. 347. ИПК Издательство стандартов, 107076 Москва, Колодезный пер., 14. http://www.standards.ru e-mail: info@standards.ru Набрано и отпечатано в ИПК Издательство стандартов</p>
+      
+      
+    <div class="print-unit-list">
+      
+    <section class="print-unit print-unit-paragraph">
+      <div class="print-unit-head">
+        <span class="print-unit-type">paragraph</span>
+        
+      </div>
+      <p>Редактор В. Н. Колосов Технический редактор Л. А. Гусева Корректор В. И. Варенцов Компьютерная верстка Л. А. Круговой Изд. лиц. № 02354 от 14.07.2000. Сдано в набор 04.11.2002. Подписано в печать 26.11.2002. Усл. печ. л. 1,40. Уч.-изд. л. 0,80. Тираж 87 экз. С 8643. Зак. 347. ИПК Издательство стандартов, 107076 Москва, Колодезный пер., 14. http://www.standards.ru e-mail: info@standards.ru Набрано и отпечатано в ИПК Издательство стандартов</p>
+      
+    </section>
+  
+    </div>
+  
+    </article>
+  
+      </div>
+      <footer class="print-page-footer">28</footer>
+    </section>
+  
+    </main>
+  </body>
+</html>

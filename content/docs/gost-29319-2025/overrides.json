@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "meta": {
+    "migrationStatus": "entity-linked",
+    "readerMode": "hybrid"
+  },
+  "synopsis": {
+    "description": "Кураторски выверенная canonical-модель ГОСТ 29319—2025 для screen-flow и print-A4 режимов."
+  },
+  "blockOverrides": {
+    "gost-29319-2025-2-normativnye-ssylki": {
+      "summary": "Блок нормативных ссылок с национальными заменами и связанными документами, обязательными для применения метода.",
+      "referencesAppend": [
+        "ГОСТ Р 71216—2024"
+      ],
+      "print": {
+        "layout": {
+          "keepWithNext": true
+        }
+      }
+    },
+    "gost-29319-2025-3-terminy-i-opredeleniya": {
+      "summary": "Ключевые термины визуальной оценки цвета и метамерного соответствия, подтвержденные вручную."
+    }
+  },
+  "definitionsAppend": [
+    {
+      "id": "manual-definition-kontrolnyi-obrazec",
+      "term": "контрольный образец",
+      "summary": "Образец покрытия, используемый как опорный объект для визуального сравнения цвета.",
+      "blockId": "gost-29319-2025-3-terminy-i-opredeleniya"
+    }
+  ],
+  "relatedNormsAppend": [
+    {
+      "id": "manual-related-gost-r-71216-2024",
+      "label": "ГОСТ Р 71216—2024",
+      "type": "reference",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki"
+      ],
+      "occurrenceCount": 1
+    }
+  ]
+}

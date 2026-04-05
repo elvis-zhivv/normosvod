@@ -32,7 +32,7 @@
   "entryPoints": {
     "screenUrl": "/doc/gost-1-0-2015?view=v2",
     "legacyUrl": "/docs/gost-1-0-2015/viewer.html",
-    "printUrl": "/docs/gost-1-0-2015/viewer.html"
+    "printUrl": "/docs/gost-1-0-2015/print.html"
   },
   "outline": [
     {
@@ -211,8 +211,59 @@
         "pageAnchor": null
       },
       "print": {
+        "sourcePageNumber": 1,
         "pageNumber": 1,
-        "pageAnchor": "#cover-page"
+        "pageAnchor": "#cover-page",
+        "layout": {
+          "estimatedUnits": 33,
+          "minUnits": 22,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": true,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-oblozhka-mezhgosudarstvennyi-sovet-po-standartizacii-metr",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-oblozhka-mezhgosudarstvennyi-standart",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-oblozhka-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-oblozhka-mezhgosudarstvennaya-sistema-standartizacii-osnovn",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-oblozhka-moskva-standartinform-2016",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-oblozhka-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -383,8 +434,113 @@
         "pageAnchor": "#preface"
       },
       "print": {
+        "sourcePageNumber": 2,
         "pageNumber": 2,
-        "pageAnchor": "#preface"
+        "pageAnchor": "#preface",
+        "layout": {
+          "estimatedUnits": 90,
+          "minUnits": 59,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": false,
+          "segmentTargetUnits": 24,
+          "introUnits": 11,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-predislovie",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-celi-osnovnye-principy-i-osnovnoi-poryadok-prove",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-svedeniya-o-standarte",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-1-razrabotan-federalnym-gosudarstvennym-unitarn",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-2-vnesen-mezhgosudarstvennym-tehnicheskim-komiteto",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-3-prinyat-mezhgosudarstvennym-sovetom-po-standarti",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-za-prinyatie-progolosovali",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-tablica",
+              "type": "table",
+              "estimatedUnits": 15,
+              "prefersSoloSegment": true
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-4-prikazom-federalnogo-agentstva-po-tehnicheskom",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-5-vzamen-gost-1-0-92",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-informaciya-ob-izmeneniyah-k-nastoyaschemu-standartu",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-standartinform-2016",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-v-rossiiskoi-federacii-nastoyaschii-standart-ne-mozh",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-ii",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -637,8 +793,173 @@
         "pageAnchor": "#toc"
       },
       "print": {
+        "sourcePageNumber": 3,
         "pageNumber": 3,
-        "pageAnchor": "#toc"
+        "pageAnchor": "#toc",
+        "layout": {
+          "estimatedUnits": 90,
+          "minUnits": 59,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-soderzhanie",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-3",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-4",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-5",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-6",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-3",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-7",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-4",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-8",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-5",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-8",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-iii",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-mezhgosudarstvennyi-standart",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-mezhgosudarstvennaya-sistema-standartizacii",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-osnovnye-polozheniya",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-interstate-system-for-standardization-basic-pri",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-soderzhanie-data-vvedeniya-2016-07-01",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -742,8 +1063,59 @@
         "pageAnchor": "#section-1"
       },
       "print": {
+        "sourcePageNumber": 4,
         "pageNumber": 4,
-        "pageAnchor": "#section-1"
+        "pageAnchor": "#section-1",
+        "layout": {
+          "estimatedUnits": 41,
+          "minUnits": 27,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 9,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-1-oblast-primeneniya-1-oblast-primeneniya",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-1-oblast-primeneniya-nastoyaschii-standart-ustanavlivaet-celi-i-principy",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-1-oblast-primeneniya-primechanie-v-nastoyaschem-standarte-primeneny-ter",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-1-oblast-primeneniya-nastoyaschii-standart-napravlen-na-realizaciyu-sogla",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-1-oblast-primeneniya-primechanie-dannoe-soglashenie-zaklyucheno-pravite",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-1-oblast-primeneniya-nastoyaschii-standart-ne-rasprostranyaetsya-na-deyatel",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -916,8 +1288,95 @@
         "pageAnchor": "#section-1"
       },
       "print": {
+        "sourcePageNumber": 4,
         "pageNumber": 4,
-        "pageAnchor": "#section-2"
+        "pageAnchor": "#section-2",
+        "layout": {
+          "estimatedUnits": 73,
+          "minUnits": 48,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 13,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-2-normativnye-ssylki",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-v-nastoyaschem-standarte-ispolzovany-normativnye-s",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-gost-1-1-2002-mezhgosudarstvennaya-sistema-standar",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-gost-1-2-2015-mezhgosudarstvennaya-sistema-standar",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-gost-1-3-2014-mezhgosudarstvennaya-sistema-standar",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-gost-1-4-2015-mezhgosudarstvennaya-sistema-standar",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-gost-1-5-2001-mezhgosudarstvennaya-sistema-standar",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-dannaya-data-yavlyaetsya-obschei-dlya-vseh-gosudarstv",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-izdanie-oficialnoe",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-2-normativnye-ssylki-primechanie-pri-polzovanii-nastoyaschim-standarto",
+              "type": "paragraph",
+              "estimatedUnits": 7,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -968,8 +1427,41 @@
         "pageAnchor": "#section-3"
       },
       "print": {
+        "sourcePageNumber": 5,
         "pageNumber": 5,
-        "pageAnchor": "#section-3"
+        "pageAnchor": "#section-3",
+        "layout": {
+          "estimatedUnits": 25,
+          "minUnits": 17,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-3-celi-mezhgosudarstvennoi-standartizacii-3-celi-mezhgosudarstvennoi-standartizacii",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-3-celi-mezhgosudarstvennoi-standartizacii-osnovnymi-celyami-mezhgosudarstvennoi-standartizac",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-3-celi-mezhgosudarstvennoi-standartizacii-sodeistvie-ustraneniyu-tehnicheskih-barerov-v-t",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1020,8 +1512,41 @@
         "pageAnchor": "#section-3"
       },
       "print": {
+        "sourcePageNumber": 5,
         "pageNumber": 5,
-        "pageAnchor": "#section-4"
+        "pageAnchor": "#section-4",
+        "layout": {
+          "estimatedUnits": 34,
+          "minUnits": 23,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 7,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-4-osnovnye-principy-mezhgosudarstvennoi-standartizacii-4-osnovnye-principy-mezhgosudarstvennoi-standartizacii",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-4-osnovnye-principy-mezhgosudarstvennoi-standartizacii-osnovnymi-principami-mezhgosudarstvennoi-standart",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-4-osnovnye-principy-mezhgosudarstvennoi-standartizacii-prioritetnoe-ispolzovanie-mezhdunarodnyh-i-evr",
+              "type": "paragraph",
+              "estimatedUnits": 10,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1103,8 +1628,59 @@
         "pageAnchor": "#section-3"
       },
       "print": {
+        "sourcePageNumber": 5,
         "pageNumber": 5,
-        "pageAnchor": "#section-5"
+        "pageAnchor": "#section-5",
+        "layout": {
+          "estimatedUnits": 45,
+          "minUnits": 30,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 9,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii-5-1-osnovnymi-napravleniyami-provedeniya",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii-ustanovlenie-edinyh-soglasovannyh-garmonizir",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii-razrabotka-mezhgosudarstvennyh-klassifikatorov",
+              "type": "paragraph",
+              "estimatedUnits": 7,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1127,8 +1703,22 @@
         "pageAnchor": "#section-5-2"
       },
       "print": {
+        "sourcePageNumber": 6,
         "pageNumber": 6,
-        "pageAnchor": "#section-5-2"
+        "pageAnchor": "#section-5-2",
+        "layout": {
+          "estimatedUnits": 13,
+          "minUnits": 9,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 1,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": []
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1318,8 +1908,125 @@
         "pageAnchor": "#section-5-2"
       },
       "print": {
+        "sourcePageNumber": 6,
         "pageNumber": 6,
-        "pageAnchor": "#section-6"
+        "pageAnchor": "#section-6",
+        "layout": {
+          "estimatedUnits": 89,
+          "minUnits": 58,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 14,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-1-organizaciyu-rabot-po",
+              "type": "list-item",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-v-dokumentah-po-mezhgosudarstvennoi-standartizaci",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-na-russkom-yazyke-evraziiskii-sovet-po-stand",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-1-1-v-sostav-mgs",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-1-2-mgs-osuschestvlyaet-svoyu",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-1-3-vysshim-organom-mgs",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-1-4-mezhdu-zasedaniyami-rukovodstvo",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-2-rabochim-organom-mgs",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-3-po-osnovnym-napravleniyam",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-4-mgs-sozdaet-mezhgosudarstvennye",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-5-mgs-prinimaet-programmu",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-6-mgs-prinimaet-mezhgosudarstvennye",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-7-byuro-po-standartam",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-6-8-kak-rukovodyaschii-organ",
+              "type": "list-item",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-3",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1504,8 +2211,113 @@
         "pageAnchor": "#section-7"
       },
       "print": {
+        "sourcePageNumber": 7,
         "pageNumber": 7,
-        "pageAnchor": "#section-7"
+        "pageAnchor": "#section-7",
+        "layout": {
+          "estimatedUnits": 91,
+          "minUnits": 60,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 17,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-obekty-mezhgosudarstvennoi-standartizacii",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-1-obektami-mezhgosudarstvennoi-standartizacii",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-obschetehnicheskie-normy-i-trebovaniya-v-tom-chisl",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-2-v-mezhgosudarstvennye-standarty",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-trebovaniya-bezopasnosti-dlya-zhizni-zdorovya-i",
+              "type": "paragraph",
+              "estimatedUnits": 9,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-3-v-zavisimosti-ot",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-standarty-osnovopolagayuschie-standarty-na-pro",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-3-1-osnovopolagayuschie-mezhgosudarstvennye-standarty",
+              "type": "list-item",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-3-2-mezhgosudarstvennye-standarty-na",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-3-3-mezhgosudarstvennye-standarty-na",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-4",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-3-4-mezhgosudarstvennye-standarty-na",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-3-5-mezhgosudarstvennye-standarty-na",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii-7-3-6-mezhgosudarstvennye-standarty-na",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1703,8 +2515,119 @@
         "pageAnchor": "#section-7-3-4"
       },
       "print": {
+        "sourcePageNumber": 8,
         "pageNumber": 8,
-        "pageAnchor": "#section-8"
+        "pageAnchor": "#section-8",
+        "layout": {
+          "estimatedUnits": 105,
+          "minUnits": 69,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 20,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-8-1-k-dokumentam-po",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-mezhgosudarstvennye-standarty-pravila-po-mezh",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-8-2-mezhgosudarstvennye-standarty-pravila",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-postroenie-izlozhenie-oformlenie-i-oboznachenie",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-pri-primenenii-v-kachestve-osnovy-dlya-proektov-me",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-8-3-mezhgosudarstvennye-standarty-pravila",
+              "type": "list-item",
+              "estimatedUnits": 7,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-8-3-1-byuro-po-standartam",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-8-3-2-zainteresovannyi-nacionalnyi-organ",
+              "type": "list-item",
+              "estimatedUnits": 7,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-8-3-3-zainteresovannyi-nacionalnyi-organ",
+              "type": "list-item",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-nacionalnyi-organ-mozhet-ustanovit-sobstvenny",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-5",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-zainteresovannyi-nacionalnyi-organ-ustanavlivae",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-posle-prinyatiya-na-etape-registracii-mezhgosudars",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya-primechanie-na-saite-mgs-www-easc-org-v-razd",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1871,8 +2794,107 @@
         "pageAnchor": "#section-8-3-4"
       },
       "print": {
+        "sourcePageNumber": 9,
         "pageNumber": 9,
-        "pageAnchor": "#section-8-3-4"
+        "pageAnchor": "#section-8-3-4",
+        "layout": {
+          "estimatedUnits": 97,
+          "minUnits": 64,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 19,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-3-4-dlya-naibolee-vazhnyh",
+              "type": "list-item",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-3-5-po-resheniyu-nacionalnogo",
+              "type": "list-item",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-3-6-publikaciyu-informacii-o",
+              "type": "list-item",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-4-izmenenie-k-mezhgosudarstvennomu",
+              "type": "list-item",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-4-1-dlya-izmeneniya-k",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-4-2-publikaciyu-informacii-o",
+              "type": "list-item",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-5-v-sluchae-primeneniya",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-6-esli-mezhgosudarstvennyi-standart",
+              "type": "list-item",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-7-razrabotku-i-vedenie",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-mezhgosudarstvennye-klassifikatory-tehniko-ekonom",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-8-8-nacionalnyi-organ-gosudarstva",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-6",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov-pri-vozniknovenii-protivorechii-mezhdu-trebovani",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1971,8 +2993,65 @@
         "pageAnchor": "#section-8-8-1"
       },
       "print": {
+        "sourcePageNumber": 10,
         "pageNumber": 10,
-        "pageAnchor": "#section-8-8-1"
+        "pageAnchor": "#section-8-8-1",
+        "layout": {
+          "estimatedUnits": 50,
+          "minUnits": 33,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 10,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya-8-8-1-v-sluchae-prinyatiya",
+              "type": "list-item",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya-8-8-2-informaciyu-o-prekraschenii",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya-8-9-reshenie-o-prekraschenii",
+              "type": "list-item",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya-8-10-odnostoronnee-prekraschenie-primeneniya",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya-8-11-nacionalnyi-organ-gosudarstva",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya-7",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya-gost-1-0-2015",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2194,8 +3273,155 @@
         "pageAnchor": "#bibliography"
       },
       "print": {
+        "sourcePageNumber": 11,
         "pageNumber": 11,
-        "pageAnchor": "#bibliography"
+        "pageAnchor": "#bibliography",
+        "layout": {
+          "estimatedUnits": 81,
+          "minUnits": 53,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 5,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-bibliografiya",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-1",
+              "type": "bibliography-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-polozhenie-o-mezhgosudarstvennom-sovete-po-standar",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-2",
+              "type": "bibliography-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-pravila-procedury-mezhgosudarstvennogo-soveta-po",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-3",
+              "type": "bibliography-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-polozhenie-o-byuro-po-standartam-mezhgosudarstvenno",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-4",
+              "type": "bibliography-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-pmg-22-2004",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-pravila-razrabotki-programmy-rabot-po-mezhgosudar",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-5",
+              "type": "bibliography-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-pmg-13-95",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-poryadok-razrabotki-i-vedeniya-mezhgosudarstvennyh",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-6",
+              "type": "bibliography-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-pmg-03-2011",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-poryadok-registracii-izdaniya-i-obespecheniya-norma",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-7",
+              "type": "bibliography-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-pmg-14-96",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-polozhenie-o-garmonizacii-klassifikatorov-tehniko",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-udk-006-05-006-354",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-mks-01-120",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-bibliografiya-klyuchevye-slova-standartizaciya-mezhgosudarstvenna",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2237,8 +3463,35 @@
         "pageAnchor": "#bibliography"
       },
       "print": {
+        "sourcePageNumber": 11,
         "pageNumber": 11,
-        "pageAnchor": "#imprint"
+        "pageAnchor": "#imprint",
+        "layout": {
+          "estimatedUnits": 18,
+          "minUnits": 12,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-1-0-2015-izdatelskie-svedeniya-redaktor-a-a-mikryukov-tehnicheskii-redaktor-v",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-1-0-2015-izdatelskie-svedeniya-sdano-v-nabor-13-01-2016-podpisano-v-pechat-11",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2776,83 +4029,115 @@
   "printMap": [
     {
       "blockId": "gost-1-0-2015-oblozhka",
+      "sourcePageNumber": 1,
       "pageNumber": 1,
-      "pageAnchor": "#cover-page"
+      "pageAnchor": "#cover-page",
+      "estimatedUnits": 33
     },
     {
       "blockId": "gost-1-0-2015-predislovie-i-svedeniya-o-standarte",
+      "sourcePageNumber": 2,
       "pageNumber": 2,
-      "pageAnchor": "#preface"
+      "pageAnchor": "#preface",
+      "estimatedUnits": 90
     },
     {
       "blockId": "gost-1-0-2015-soderzhanie",
+      "sourcePageNumber": 3,
       "pageNumber": 3,
-      "pageAnchor": "#toc"
+      "pageAnchor": "#toc",
+      "estimatedUnits": 90
     },
     {
       "blockId": "gost-1-0-2015-1-oblast-primeneniya",
+      "sourcePageNumber": 4,
       "pageNumber": 4,
-      "pageAnchor": "#section-1"
+      "pageAnchor": "#section-1",
+      "estimatedUnits": 41
     },
     {
       "blockId": "gost-1-0-2015-2-normativnye-ssylki",
+      "sourcePageNumber": 4,
       "pageNumber": 4,
-      "pageAnchor": "#section-2"
+      "pageAnchor": "#section-2",
+      "estimatedUnits": 73
     },
     {
       "blockId": "gost-1-0-2015-3-celi-mezhgosudarstvennoi-standartizacii",
+      "sourcePageNumber": 5,
       "pageNumber": 5,
-      "pageAnchor": "#section-3"
+      "pageAnchor": "#section-3",
+      "estimatedUnits": 25
     },
     {
       "blockId": "gost-1-0-2015-4-osnovnye-principy-mezhgosudarstvennoi-standartizacii",
+      "sourcePageNumber": 5,
       "pageNumber": 5,
-      "pageAnchor": "#section-4"
+      "pageAnchor": "#section-4",
+      "estimatedUnits": 34
     },
     {
       "blockId": "gost-1-0-2015-5-osnovnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii",
+      "sourcePageNumber": 5,
       "pageNumber": 5,
-      "pageAnchor": "#section-5"
+      "pageAnchor": "#section-5",
+      "estimatedUnits": 45
     },
     {
       "blockId": "gost-1-0-2015-5-2-prioritetnye-napravleniya-rabot-po-mezhgosudarstvennoi-standartizacii",
+      "sourcePageNumber": 6,
       "pageNumber": 6,
-      "pageAnchor": "#section-5-2"
+      "pageAnchor": "#section-5-2",
+      "estimatedUnits": 13
     },
     {
       "blockId": "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii",
+      "sourcePageNumber": 6,
       "pageNumber": 6,
-      "pageAnchor": "#section-6"
+      "pageAnchor": "#section-6",
+      "estimatedUnits": 89
     },
     {
       "blockId": "gost-1-0-2015-7-obekty-mezhgosudarstvennoi-standartizacii",
+      "sourcePageNumber": 7,
       "pageNumber": 7,
-      "pageAnchor": "#section-7"
+      "pageAnchor": "#section-7",
+      "estimatedUnits": 91
     },
     {
       "blockId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya",
+      "sourcePageNumber": 8,
       "pageNumber": 8,
-      "pageAnchor": "#section-8"
+      "pageAnchor": "#section-8",
+      "estimatedUnits": 105
     },
     {
       "blockId": "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov",
+      "sourcePageNumber": 9,
       "pageNumber": 9,
-      "pageAnchor": "#section-8-3-4"
+      "pageAnchor": "#section-8-3-4",
+      "estimatedUnits": 97
     },
     {
       "blockId": "gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya",
+      "sourcePageNumber": 10,
       "pageNumber": 10,
-      "pageAnchor": "#section-8-8-1"
+      "pageAnchor": "#section-8-8-1",
+      "estimatedUnits": 50
     },
     {
       "blockId": "gost-1-0-2015-bibliografiya",
+      "sourcePageNumber": 11,
       "pageNumber": 11,
-      "pageAnchor": "#bibliography"
+      "pageAnchor": "#bibliography",
+      "estimatedUnits": 81
     },
     {
       "blockId": "gost-1-0-2015-izdatelskie-svedeniya",
+      "sourcePageNumber": 11,
       "pageNumber": 11,
-      "pageAnchor": "#imprint"
+      "pageAnchor": "#imprint",
+      "estimatedUnits": 18
     }
   ]
 }

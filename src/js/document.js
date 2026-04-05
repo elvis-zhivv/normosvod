@@ -1,6 +1,7 @@
 import { renderViewerFrame } from '../components/viewer-frame.js';
 import { escapeHtml } from './html.js';
 import { normalizeDocumentUrl, withBase } from './paths.js';
+import { buildDocumentSignals, formatMigrationStatusLabel, formatReaderModeLabel, formatThemeLabel } from './document-signals.js';
 
 function renderNavItems(document) {
   if (!document.navItems?.length) {
@@ -41,6 +42,61 @@ function renderNavItems(document) {
   `;
 }
 
+function renderSignalChips(document) {
+  const signals = buildDocumentSignals(document);
+
+  if (!signals.length) {
+    return '';
+  }
+
+  return `
+    <div class="document-signal-list">
+      ${signals.map((signal) => `
+        <span class="document-signal document-signal-${escapeHtml(signal.tone)}">
+          ${escapeHtml(signal.label)}
+        </span>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderPlatformStatus(document) {
+  return `
+    <section class="content-block">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Платформенный статус</p>
+          <h2>Состояние reader и migration layer</h2>
+        </div>
+      </div>
+      <div class="platform-status-grid">
+        <article class="platform-status-card">
+          <p class="platform-status-label">Тематический режим</p>
+          <strong>${escapeHtml(formatThemeLabel(document.themeId))}</strong>
+          <p>Тема применяется к screen-flow и print-A4 представлениям.</p>
+        </article>
+        <article class="platform-status-card">
+          <p class="platform-status-label">Reader mode</p>
+          <strong>${escapeHtml(formatReaderModeLabel(document.readerMode))}</strong>
+          <p>Текущий маршрут /doc/:slug переключается по manifest-контракту.</p>
+        </article>
+        <article class="platform-status-card">
+          <p class="platform-status-label">Migration status</p>
+          <strong>${escapeHtml(formatMigrationStatusLabel(document.migrationStatus))}</strong>
+          <p>${document.curationApplied
+            ? 'Документ прошёл ручную верификацию canonical-модели.'
+            : 'Документ пока использует auto-generated migration слой без ручной верификации.'}</p>
+        </article>
+        <article class="platform-status-card">
+          <p class="platform-status-label">Canonical coverage</p>
+          <strong>${escapeHtml(document.v2BlockCount ?? 0)} блоков</strong>
+          <p>${escapeHtml(document.v2DefinitionsCount ?? 0)} определений · ${escapeHtml(document.v2RelatedNormsCount ?? 0)} связанных норм</p>
+        </article>
+      </div>
+    </section>
+  `;
+}
+
 export function renderMissingDocument(slug) {
   return `
     <section class="content-block narrow-block">
@@ -66,11 +122,13 @@ function renderV2Scaffold(document) {
         <p class="eyebrow">Reader V2 Beta</p>
         <h1>${escapeHtml(document.title)}</h1>
         <p class="document-lead">${escapeHtml(document.description ?? 'Структурированный экранный режим документа.')}</p>
+        ${renderSignalChips(document)}
         <ul class="meta-list">
           <li><strong>Документ:</strong> ${escapeHtml(document.gostNumber)}</li>
-          <li><strong>Тема:</strong> ${escapeHtml(themeLabel)}</li>
-          <li><strong>Режим:</strong> ${escapeHtml(document.readerMode ?? 'legacy')}</li>
-          <li><strong>Миграция:</strong> ${escapeHtml(document.migrationStatus ?? 'imported')}</li>
+          <li><strong>Тема:</strong> ${escapeHtml(formatThemeLabel(themeLabel))}</li>
+          <li><strong>Режим:</strong> ${escapeHtml(formatReaderModeLabel(document.readerMode ?? 'legacy'))}</li>
+          <li><strong>Миграция:</strong> ${escapeHtml(formatMigrationStatusLabel(document.migrationStatus ?? 'imported'))}</li>
+          <li><strong>Кураторский слой:</strong> ${escapeHtml(document.curationApplied ? 'применён' : 'не применён')}</li>
         </ul>
         <div class="hero-actions">
           <a class="button button-primary" href="${escapeHtml(readerUrl)}" data-link>Reader V2</a>
@@ -89,6 +147,7 @@ function renderV2Scaffold(document) {
         ></iframe>
       </div>
     </section>
+    ${renderPlatformStatus(document)}
     <section
       class="v2-reader-shell"
       data-v2-reader
@@ -124,6 +183,7 @@ export function renderDocumentPage(document, { showEmbeddedViewer, showV2Reader 
         <p class="eyebrow">${escapeHtml(document.gostNumber)}</p>
         <h1>${escapeHtml(document.title)}</h1>
         <p class="document-lead">${escapeHtml(document.description ?? 'Автономный HTML-viewer документа ГОСТ.')}</p>
+        ${renderSignalChips(document)}
         <ul class="meta-list">
           <li><strong>Год:</strong> ${escapeHtml(document.year)}</li>
           <li><strong>Страниц:</strong> ${escapeHtml(document.pages)}</li>
@@ -153,6 +213,7 @@ export function renderDocumentPage(document, { showEmbeddedViewer, showV2Reader 
       </div>
     </section>
     ${showEmbeddedViewer ? renderViewerFrame(document) : ''}
+    ${renderPlatformStatus(document)}
     ${renderNavItems(document)}
   `;
 }

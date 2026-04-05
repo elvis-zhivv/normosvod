@@ -32,7 +32,7 @@
   "entryPoints": {
     "screenUrl": "/doc/gost-8784-75?view=v2",
     "legacyUrl": "/docs/gost-8784-75/viewer.html",
-    "printUrl": "/docs/gost-8784-75/viewer.html"
+    "printUrl": "/docs/gost-8784-75/print.html"
   },
   "outline": [
     {
@@ -238,8 +238,59 @@
         "pageAnchor": null
       },
       "print": {
+        "sourcePageNumber": 1,
         "pageNumber": 1,
-        "pageAnchor": "#cover-page"
+        "pageAnchor": "#cover-page",
+        "layout": {
+          "estimatedUnits": 31,
+          "minUnits": 21,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": true,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-oblozhka-gost-8784-75",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-oblozhka-mezhgosudarstvennyi-standart",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-oblozhka-materialy-lakokrasochnye-metody-opredeleniya-ukryv",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-oblozhka-ipk-izdatelstvo-standartov-moskva",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-oblozhka-udk-667-63-001-4-006-354",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-oblozhka-gruppa-l19",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -366,8 +417,89 @@
         "pageAnchor": "#page1-start"
       },
       "print": {
+        "sourcePageNumber": 2,
         "pageNumber": 2,
-        "pageAnchor": "#page1-start"
+        "pageAnchor": "#page1-start",
+        "layout": {
+          "estimatedUnits": 52,
+          "minUnits": 34,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 5,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-mezhgosudarstvennyi-standart",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-materialy-lakokrasochnye",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-metody-opredeleniya-ukryvistosti",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-paint-materials-methods-for-determination-of-hi",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-gost-8784-75",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-okstu-2310",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-data-vvedeniya-01-01-76",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-nastoyaschii-standart-rasprostranyaetsya-na-lakokraso",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-za-ukryvistost-prinimayut-sposobnost-lakokrasoch",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-izmenennaya-redakciya-izm-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti-1-vizualnyi-metod-opredeleniya-ukryvistosti",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -418,8 +550,41 @@
         "pageAnchor": "#page1-start"
       },
       "print": {
+        "sourcePageNumber": 2,
         "pageNumber": 2,
-        "pageAnchor": "#section-1-1"
+        "pageAnchor": "#section-1-1",
+        "layout": {
+          "estimatedUnits": 22,
+          "minUnits": 15,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-1-1-suschnost-metoda-1-1-suschnost-metoda",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-1-suschnost-metoda-metod-zaklyuchaetsya-v-nanesenii-sloev-lakokrasochno",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-1-suschnost-metoda-metod-prednaznachaetsya-dlya-opredeleniya-ukryvistos",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -548,8 +713,77 @@
         "pageAnchor": "#page1-start"
       },
       "print": {
+        "sourcePageNumber": 2,
         "pageNumber": 2,
-        "pageAnchor": "#section-1-2"
+        "pageAnchor": "#section-1-2",
+        "layout": {
+          "estimatedUnits": 55,
+          "minUnits": 36,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 10,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-1-2-apparatura-i-materialy-1-2-apparatura-i-materialy",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-2-apparatura-i-materialy-plastinki-steklyannye-steklo-dlya-fotograficheskih",
+              "type": "paragraph",
+              "estimatedUnits": 10,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-2-apparatura-i-materialy-shahmatnaya-doska",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-2-apparatura-i-materialy-izdanie-oficialnoe",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-2-apparatura-i-materialy-perepechatka-vospreschena",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-2-apparatura-i-materialy-izdatelstvo-standartov-1975-ipk-izdatelst",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-2-apparatura-i-materialy-s-2-gost-8784-75",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-2-apparatura-i-materialy-vesy-analiticheskie-s-pogreshnostyu-vzveshivaniya-ne",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-2-apparatura-i-materialy-izmenennaya-redakciya-izm-1-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -634,8 +868,59 @@
         "pageAnchor": "#section-1-3"
       },
       "print": {
+        "sourcePageNumber": 3,
         "pageNumber": 3,
-        "pageAnchor": "#section-1-3"
+        "pageAnchor": "#section-1-3",
+        "layout": {
+          "estimatedUnits": 48,
+          "minUnits": 32,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 30,
+          "introUnits": 7,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-1-3-provedenie-ispytaniya-1-3-provedenie-ispytaniya",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-3-provedenie-ispytaniya-dlya-opredeleniya-ukryvistosti-lakokrasochnyi-mater",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-3-provedenie-ispytaniya-na-steklyannuyu-plastinku-podgotovlennuyu-po-gost",
+              "type": "paragraph",
+              "estimatedUnits": 9,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-3-provedenie-ispytaniya-ispytaniya-provodyat-ne-menee-chem-na-treh-plastink",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-3-provedenie-ispytaniya-vid-produkta-dlya-razbavleniya-lakokrasochnogo-mate",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-3-provedenie-ispytaniya-izmenennaya-redakciya-izm-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -963,8 +1248,221 @@
         "pageAnchor": "#section-1-3"
       },
       "print": {
+        "sourcePageNumber": 3,
         "pageNumber": 3,
-        "pageAnchor": "#section-1-4"
+        "pageAnchor": "#section-1-4",
+        "layout": {
+          "estimatedUnits": 123,
+          "minUnits": 80,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 8,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-1-4-obrabotka-rezultatov",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-1-4-1-ukryvistost-vysushennoi-plenki",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-d-m-1-minus-m-0-middot-10-6-s",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-gde-m-massa-neokrashennoi-steklyannoi-plastinki",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-izmenennaya-redakciya-izm-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-1-4-1a-ukryvistost-nevysushennoi-lakokrasochnoi",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-d-n-m-1-prime-minus-m-0-s-middot-10-6",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-1a",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-gde-m-massa-plastinki-s-nevysushennym-lakokra",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-vveden-dopolnitelno-izm-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-1-4-2-dlya-plastinki-razmerom",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-d-m-1-minus-m-0-middot-92-6",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-d-n-m-1-prime-minus-m-0-middot-92-6",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-2a",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-izmenennaya-redakciya-izm-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-1-4-3-ukryvistost-vysushennoi-plenki",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-d-m-d-middot-100-x",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-3",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-gde-x-massovaya-dolya-neletuchih-veschestv-v-lakokr",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-izmenennaya-redakciya-izm-1-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-gost-8784-75-s-3",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-1-4-4-ukryvistost-maslyanyh-krasok",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-4",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-gde-m-massa-olify-izrashodovannaya-dlya-poluche",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-izmenennaya-redakciya-izm-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-1-4-5-ukryvistost-pigmenta",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-d-p-m-1-prime-minus-m-0-m-p-s-m-3",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-5",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-gde-m-p-massa-pigmenta-v-kraske-g-m-massa",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-za-rezultat-ispytaniya-prinimayut-srednearifmetich",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-1-4-obrabotka-rezultatov-izmenennaya-redakciya-izm-1-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -997,8 +1495,29 @@
         "pageAnchor": "#section-2"
       },
       "print": {
+        "sourcePageNumber": 4,
         "pageNumber": 4,
-        "pageAnchor": "#section-2"
+        "pageAnchor": "#section-2",
+        "layout": {
+          "estimatedUnits": 17,
+          "minUnits": 12,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-2-instrumentalnyi-metod-opredeleniya-ukryvistosti-2-instrumentalnyi-metod-opredeleniya-ukryvistosti",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1094,8 +1613,71 @@
         "pageAnchor": "#section-2"
       },
       "print": {
+        "sourcePageNumber": 4,
         "pageNumber": 4,
-        "pageAnchor": "#section-2-1"
+        "pageAnchor": "#section-2-1",
+        "layout": {
+          "estimatedUnits": 38,
+          "minUnits": 25,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-2-1-suschnost-metoda-2-1-suschnost-metoda",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-1-suschnost-metoda-suschnost-metoda-zaklyuchaetsya-v-opredelenii-koeffi",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-1-suschnost-metoda-metod-prednaznachaetsya-dlya-opredeleniya-ukryvistos",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-1-suschnost-metoda-koefficient-yarkosti-r-otnoshenie-yarkosti-po",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-1-suschnost-metoda-koefficient-kontrastnosti-c-otnoshenie-koef",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-1-suschnost-metoda-c-r-ch-r-b",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-1-suschnost-metoda-6",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-1-suschnost-metoda-polnuyu-ukryvistost-opredelyayut-pri-koefficiente",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1253,8 +1835,83 @@
         "pageAnchor": "#section-2"
       },
       "print": {
+        "sourcePageNumber": 4,
         "pageNumber": 4,
-        "pageAnchor": "#section-2-2"
+        "pageAnchor": "#section-2-2",
+        "layout": {
+          "estimatedUnits": 62,
+          "minUnits": 41,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 12,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-2-2-apparatura-i-materialy",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-pribory-opticheskie-s-izmeritelnoi-geometriei-ug",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-tolschinomer-s-pogreshnostyu-izmereniya-ne-bolee-5",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-plastinki-steklyannye-steklo-dlya-fotograficheskih",
+              "type": "paragraph",
+              "estimatedUnits": 7,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-pulverizator-kist-applikator-ili-drugoe-obor",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-plastinka-chernaya-predstavlyayuschaya-soboi-kusok-bel",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-plastinka-belaya-predstavlyayuschaya-soboi-kusok-belo",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-plastinka-cherno-belaya-kontrastnaya-p-1-2-vesy",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-2-1-2-2-izmenennaya-redakciya",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-2-apparatura-i-materialy-s-4-gost-8784-75",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1314,8 +1971,47 @@
         "pageAnchor": "#section-2-3"
       },
       "print": {
+        "sourcePageNumber": 5,
         "pageNumber": 5,
-        "pageAnchor": "#section-2-3"
+        "pageAnchor": "#section-2-3",
+        "layout": {
+          "estimatedUnits": 39,
+          "minUnits": 26,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 30,
+          "introUnits": 6,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-2-3-provedenie-ispytaniya-2-3-provedenie-ispytaniya",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-3-provedenie-ispytaniya-dlya-opredeleniya-ukryvistosti-lakokrasochnyi-mater",
+              "type": "paragraph",
+              "estimatedUnits": 8,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-3-provedenie-ispytaniya-plastinki-s-pokrytiem-vzveshivayut-s-tochnostyu-do",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-3-provedenie-ispytaniya-vid-produkta-dlya-razbavleniya-lakokrasochnogo-mate",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1496,8 +2192,125 @@
         "pageAnchor": "#section-2-3"
       },
       "print": {
+        "sourcePageNumber": 5,
         "pageNumber": 5,
-        "pageAnchor": "#section-2-4"
+        "pageAnchor": "#section-2-4",
+        "layout": {
+          "estimatedUnits": 77,
+          "minUnits": 51,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 8,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-2-4-obrabotka-rezultatov",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-po-velichinam-koefficientov-yarkosti-vychislyayut-koe",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-m-m-2-minus-m-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-7",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-gde-m-massa-edinicy-ploschadi-plastinki-g-m",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-grafik-dlya-opredeleniya-ukryvistosti",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-c-0-80-0-90-0-98-1-00-d-m-g-m-a-chert-2-zatem",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-ukryvistost-lakokrasochnogo-materiala-gotovogo",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-d-d-rho-middot-x-middot-10-5",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-7a",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-gde-plotnost-lakokrasochnogo-materiala-g-sm",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-rashod-lakokrasochnogo-materiala-pri-nanesenii",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-p-1-d-rho-middot-x-d-middot-10-minus",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-7b",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-koefficient-kontrastnosti-dlya-ustanovlennogo-ras",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-2-3-2-4-izmenennaya-redakciya",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-2-4-obrabotka-rezultatov-gost-8784-75-s-5",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1530,8 +2343,29 @@
         "pageAnchor": "#section-3"
       },
       "print": {
+        "sourcePageNumber": 6,
         "pageNumber": 6,
-        "pageAnchor": "#section-3"
+        "pageAnchor": "#section-3",
+        "layout": {
+          "estimatedUnits": 17,
+          "minUnits": 12,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti",
+              "type": "section-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1582,8 +2416,41 @@
         "pageAnchor": "#section-3"
       },
       "print": {
+        "sourcePageNumber": 6,
         "pageNumber": 6,
-        "pageAnchor": "#section-3-1"
+        "pageAnchor": "#section-3-1",
+        "layout": {
+          "estimatedUnits": 21,
+          "minUnits": 14,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-3-1-suschnost-metoda-3-1-suschnost-metoda",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-1-suschnost-metoda-suschnost-metoda-zaklyuchaetsya-v-opredelenii-koeffi",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-1-suschnost-metoda-metod-prednaznachaetsya-dlya-opredeleniya-ukryvistos",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1652,8 +2519,53 @@
         "pageAnchor": "#section-3"
       },
       "print": {
+        "sourcePageNumber": 6,
         "pageNumber": 6,
-        "pageAnchor": "#section-3-2"
+        "pageAnchor": "#section-3-2",
+        "layout": {
+          "estimatedUnits": 27,
+          "minUnits": 18,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-3-2-apparatura-i-materialy-3-2-apparatura-i-materialy",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-2-apparatura-i-materialy-mashina-cifrovaya-elektronno-vychislitelnaya-pribo",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-2-apparatura-i-materialy-pulverizator-kist-applikator-ili-drugoe-obor",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-2-apparatura-i-materialy-plastinka-chernaya-prigotovlennaya-po-p-2-2-plas",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-2-apparatura-i-materialy-izmenennaya-redakciya-izm-1-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1717,8 +2629,47 @@
         "pageAnchor": "#section-3"
       },
       "print": {
+        "sourcePageNumber": 6,
         "pageNumber": 6,
-        "pageAnchor": "#section-3-3"
+        "pageAnchor": "#section-3-3",
+        "layout": {
+          "estimatedUnits": 37,
+          "minUnits": 25,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 30,
+          "introUnits": 6,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-3-3-provedenie-ispytaniya-3-3-provedenie-ispytaniya",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-3-provedenie-ispytaniya-dlya-opredeleniya-ukryvistosti-lakokrasochnyi-mater",
+              "type": "paragraph",
+              "estimatedUnits": 6,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-3-provedenie-ispytaniya-izmerenie-koefficientov-yarkosti-provodyat-po-p-2",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-3-provedenie-ispytaniya-vid-produkta-dlya-razbavleniya-lakokrasochnogo-mate",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -1881,8 +2832,113 @@
         "pageAnchor": "#section-3"
       },
       "print": {
+        "sourcePageNumber": 6,
         "pageNumber": 6,
-        "pageAnchor": "#section-3-4"
+        "pageAnchor": "#section-3-4",
+        "layout": {
+          "estimatedUnits": 62,
+          "minUnits": 41,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 5,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-3-4-obrabotka-rezultatov",
+              "type": "subsection-heading",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-3-4-1-ukryvistost-y",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-y-n-k-minus-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-8",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-gde-h-k-tolschina-pokrytiya-s-koefficientom-kontr",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-3-4-2-tolschinu-ukryvayuschego-sloya",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-h-k-h-middot-ln-1-minus-r-ok-middot-r-i",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-9",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-gde-h-tolschina-neukryvayuschego-sloya-mm-r-ok-k",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-r-ok-c-middot-a-1-minus-c-2-r-g-min",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-10",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-gde-r-g-koefficient-yarkosti-beloi-plastinki-a",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-a-1-r-infin-r-infin-2",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-11",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-obrabotka-rezultatov-s-6-gost-8784-75",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2002,8 +3058,71 @@
         "pageAnchor": "#section-3-4-3"
       },
       "print": {
+        "sourcePageNumber": 7,
         "pageNumber": 7,
-        "pageAnchor": "#section-3-4-3"
+        "pageAnchor": "#section-3-4-3",
+        "layout": {
+          "estimatedUnits": 46,
+          "minUnits": 30,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 8,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti-3-4-3-perevod-velichiny-ukryvistosti",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti-d-rho-middot-10-3-y-rho-middot-h-ln",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti-12",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti-gde-plotnost-plenki-opredelennaya-po-gost-2",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti-za-rezultat-ispytaniya-prinimayut-srednearifmetich",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti-dlya-uskoreniya-rascheta-i-obrabotki-dannyh-dlya-cel",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti-gost-8784-75-s-7",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti-prilozhenie-1-rekomenduemoe",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2128,8 +3247,83 @@
         "pageAnchor": "#appendix-1"
       },
       "print": {
+        "sourcePageNumber": 8,
         "pageNumber": 8,
-        "pageAnchor": "#appendix-1"
+        "pageAnchor": "#appendix-1",
+        "layout": {
+          "estimatedUnits": 55,
+          "minUnits": 36,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 32,
+          "introUnits": 8,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-opredelenie-tolschiny-pokrytiya-vesovym-metodom",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-steklyannuyu-plastinku-s-pokrytiem-vzveshivayut-s-po",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-tolschinu-pokrytiya-h-v-millimetrah-vychislyayut-p",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-h-m-1-minus-m-4-middot-10-3-s-middot",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-1",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-gde-m-massa-plastinki-s-pokrytiem-g-m-ma",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-plotnost-plenok-opredelyayut-po-gost-267-ili-po-g",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-v-kachestve-rabochei-zhidkosti-primenyayut-geksan-tu",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-s-8-gost-8784-75",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom-prilozhenie-2-rekomenduemoe",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2184,8 +3378,41 @@
         "pageAnchor": "#appendix-2"
       },
       "print": {
+        "sourcePageNumber": 9,
         "pageNumber": 9,
-        "pageAnchor": "#appendix-2"
+        "pageAnchor": "#appendix-2",
+        "layout": {
+          "estimatedUnits": 29,
+          "minUnits": 19,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": true,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 26,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-blok-shema-rascheta-ukryvistosti-instrumentalno",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-nachalo-1-2-3-4-5-6-vvod-ishodnyh-dannyh-r-0",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-gost-8784-75-s-9",
+              "type": "paragraph",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2322,8 +3549,83 @@
         "pageAnchor": "#section-info"
       },
       "print": {
+        "sourcePageNumber": 10,
         "pageNumber": 10,
-        "pageAnchor": "#section-info"
+        "pageAnchor": "#section-info",
+        "layout": {
+          "estimatedUnits": 68,
+          "minUnits": 45,
+          "avoidBreakInside": false,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 3,
+          "splittable": true,
+          "segmentTargetUnits": 24,
+          "introUnits": 10,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-informacionnye-dannye",
+              "type": "paragraph",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-1-razrabotan-i-vnesen",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-2-utverzhden-i-vveden",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-3-standart-soderzhit-vse",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-4-standart-polnostyu-sootvetstvuet",
+              "type": "list-item",
+              "estimatedUnits": 4,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-5-vzamen-gost-8784-58",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-6-ssylochnye-normativno-tehnicheskie-dokumenty",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-tablica",
+              "type": "table",
+              "estimatedUnits": 20,
+              "prefersSoloSegment": true
+            },
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-7-ogranichenie-sroka-deistviya",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            },
+            {
+              "unitId": "gost-8784-75-informacionnye-dannye-8-izdanie-sentyabr-2002",
+              "type": "list-item",
+              "estimatedUnits": 3,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2356,8 +3658,29 @@
         "pageAnchor": "#section-imprint"
       },
       "print": {
+        "sourcePageNumber": 11,
         "pageNumber": 11,
-        "pageAnchor": "#section-imprint"
+        "pageAnchor": "#section-imprint",
+        "layout": {
+          "estimatedUnits": 16,
+          "minUnits": 11,
+          "avoidBreakInside": true,
+          "keepWithNext": false,
+          "forcePageBreakBefore": false,
+          "prefersSoloPage": false,
+          "pageFillWeight": 2,
+          "splittable": false,
+          "segmentTargetUnits": 32,
+          "introUnits": 4,
+          "unitEstimates": [
+            {
+              "unitId": "gost-8784-75-izdatelskie-svedeniya-redaktor-v-n-kolosov-tehnicheskii-redaktor-l-a",
+              "type": "paragraph",
+              "estimatedUnits": 5,
+              "prefersSoloSegment": false
+            }
+          ]
+        }
       },
       "migration": {
         "source": "legacy-viewer",
@@ -2992,108 +4315,150 @@
   "printMap": [
     {
       "blockId": "gost-8784-75-oblozhka",
+      "sourcePageNumber": 1,
       "pageNumber": 1,
-      "pageAnchor": "#cover-page"
+      "pageAnchor": "#cover-page",
+      "estimatedUnits": 31
     },
     {
       "blockId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti",
+      "sourcePageNumber": 2,
       "pageNumber": 2,
-      "pageAnchor": "#page1-start"
+      "pageAnchor": "#page1-start",
+      "estimatedUnits": 52
     },
     {
       "blockId": "gost-8784-75-1-1-suschnost-metoda",
+      "sourcePageNumber": 2,
       "pageNumber": 2,
-      "pageAnchor": "#section-1-1"
+      "pageAnchor": "#section-1-1",
+      "estimatedUnits": 22
     },
     {
       "blockId": "gost-8784-75-1-2-apparatura-i-materialy",
+      "sourcePageNumber": 2,
       "pageNumber": 2,
-      "pageAnchor": "#section-1-2"
+      "pageAnchor": "#section-1-2",
+      "estimatedUnits": 55
     },
     {
       "blockId": "gost-8784-75-1-3-provedenie-ispytaniya",
+      "sourcePageNumber": 3,
       "pageNumber": 3,
-      "pageAnchor": "#section-1-3"
+      "pageAnchor": "#section-1-3",
+      "estimatedUnits": 48
     },
     {
       "blockId": "gost-8784-75-1-4-obrabotka-rezultatov",
+      "sourcePageNumber": 3,
       "pageNumber": 3,
-      "pageAnchor": "#section-1-4"
+      "pageAnchor": "#section-1-4",
+      "estimatedUnits": 123
     },
     {
       "blockId": "gost-8784-75-2-instrumentalnyi-metod-opredeleniya-ukryvistosti",
+      "sourcePageNumber": 4,
       "pageNumber": 4,
-      "pageAnchor": "#section-2"
+      "pageAnchor": "#section-2",
+      "estimatedUnits": 17
     },
     {
       "blockId": "gost-8784-75-2-1-suschnost-metoda",
+      "sourcePageNumber": 4,
       "pageNumber": 4,
-      "pageAnchor": "#section-2-1"
+      "pageAnchor": "#section-2-1",
+      "estimatedUnits": 38
     },
     {
       "blockId": "gost-8784-75-2-2-apparatura-i-materialy",
+      "sourcePageNumber": 4,
       "pageNumber": 4,
-      "pageAnchor": "#section-2-2"
+      "pageAnchor": "#section-2-2",
+      "estimatedUnits": 62
     },
     {
       "blockId": "gost-8784-75-2-3-provedenie-ispytaniya",
+      "sourcePageNumber": 5,
       "pageNumber": 5,
-      "pageAnchor": "#section-2-3"
+      "pageAnchor": "#section-2-3",
+      "estimatedUnits": 39
     },
     {
       "blockId": "gost-8784-75-2-4-obrabotka-rezultatov",
+      "sourcePageNumber": 5,
       "pageNumber": 5,
-      "pageAnchor": "#section-2-4"
+      "pageAnchor": "#section-2-4",
+      "estimatedUnits": 77
     },
     {
       "blockId": "gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti",
+      "sourcePageNumber": 6,
       "pageNumber": 6,
-      "pageAnchor": "#section-3"
+      "pageAnchor": "#section-3",
+      "estimatedUnits": 17
     },
     {
       "blockId": "gost-8784-75-3-1-suschnost-metoda",
+      "sourcePageNumber": 6,
       "pageNumber": 6,
-      "pageAnchor": "#section-3-1"
+      "pageAnchor": "#section-3-1",
+      "estimatedUnits": 21
     },
     {
       "blockId": "gost-8784-75-3-2-apparatura-i-materialy",
+      "sourcePageNumber": 6,
       "pageNumber": 6,
-      "pageAnchor": "#section-3-2"
+      "pageAnchor": "#section-3-2",
+      "estimatedUnits": 27
     },
     {
       "blockId": "gost-8784-75-3-3-provedenie-ispytaniya",
+      "sourcePageNumber": 6,
       "pageNumber": 6,
-      "pageAnchor": "#section-3-3"
+      "pageAnchor": "#section-3-3",
+      "estimatedUnits": 37
     },
     {
       "blockId": "gost-8784-75-3-4-obrabotka-rezultatov",
+      "sourcePageNumber": 6,
       "pageNumber": 6,
-      "pageAnchor": "#section-3-4"
+      "pageAnchor": "#section-3-4",
+      "estimatedUnits": 62
     },
     {
       "blockId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti",
+      "sourcePageNumber": 7,
       "pageNumber": 7,
-      "pageAnchor": "#section-3-4-3"
+      "pageAnchor": "#section-3-4-3",
+      "estimatedUnits": 46
     },
     {
       "blockId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom",
+      "sourcePageNumber": 8,
       "pageNumber": 8,
-      "pageAnchor": "#appendix-1"
+      "pageAnchor": "#appendix-1",
+      "estimatedUnits": 55
     },
     {
       "blockId": "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti",
+      "sourcePageNumber": 9,
       "pageNumber": 9,
-      "pageAnchor": "#appendix-2"
+      "pageAnchor": "#appendix-2",
+      "estimatedUnits": 29
     },
     {
       "blockId": "gost-8784-75-informacionnye-dannye",
+      "sourcePageNumber": 10,
       "pageNumber": 10,
-      "pageAnchor": "#section-info"
+      "pageAnchor": "#section-info",
+      "estimatedUnits": 68
     },
     {
       "blockId": "gost-8784-75-izdatelskie-svedeniya",
+      "sourcePageNumber": 11,
       "pageNumber": 11,
-      "pageAnchor": "#section-imprint"
+      "pageAnchor": "#section-imprint",
+      "estimatedUnits": 16
     }
   ]
 }
