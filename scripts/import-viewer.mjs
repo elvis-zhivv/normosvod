@@ -1,18 +1,23 @@
 import path from 'node:path';
-import { mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
+import { cp, mkdir, readdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { hashContent } from './lib/hash-file.mjs';
 import { readDocumentsManifest } from './lib/manifest.mjs';
+import { buildMetaFromCanonicalPackage, normalizeCanonicalPackage } from './lib/canonical-package.mjs';
+import {
+  normalizeDocumentPackageManifest,
+  PACKAGE_MANIFEST_FILENAME,
+  resolvePackagePath
+} from './lib/document-package.mjs';
 import { enrichDocumentRecord } from './lib/document-record.mjs';
 import { buildSlug } from './lib/slugify.mjs';
 import {
   ARCHIVE_DIR,
+  CONTENT_DOCS_DIR,
   DOCS_DIR,
   INCOMING_DIR,
 } from './lib/project-paths.mjs';
 import { extractViewerMeta, validateViewerHtmlBasic } from './lib/parse-viewer-meta.mjs';
-import { generatePreviewOrPlaceholder } from './generate-preview.mjs';
-import { buildV2DocumentStub } from './lib/v2-document-stub.mjs';
 import { rebuildManifest } from './rebuild-manifest.mjs';
 
 function timestampForPath(date = new Date()) {
@@ -21,7 +26,7 @@ function timestampForPath(date = new Date()) {
 
 async function pathExists(targetPath) {
   try {
-    await readdir(targetPath);
+    await stat(targetPath);
     return true;
   } catch {
     return false;
@@ -67,6 +72,13 @@ async function archiveExistingDocument(slug) {
   await rename(sourcePath, archivePath);
 }
 
+async function archiveExistingCanonicalSource(slug) {
+  const sourcePath = path.join(CONTENT_DOCS_DIR, slug);
+  const archivePath = path.join(ARCHIVE_DIR, 'replaced-canonical', `${timestampForPath()}-${slug}`);
+  await mkdir(path.dirname(archivePath), { recursive: true });
+  await rename(sourcePath, archivePath);
+}
+
 async function archiveImportedSource(sourcePath) {
   const archiveDirectory = path.join(ARCHIVE_DIR, 'imported', timestampForPath());
   await mkdir(archiveDirectory, { recursive: true });
@@ -74,7 +86,63 @@ async function archiveImportedSource(sourcePath) {
   await rename(sourcePath, destinationPath);
 }
 
-function buildLocalMeta(meta, slug, fileHash, timestamps, previewFileName = 'preview.html') {
+async function readPackageManifestFromDirectory(packageDirectoryPath) {
+  const manifestPath = path.join(packageDirectoryPath, PACKAGE_MANIFEST_FILENAME);
+  const manifestSource = await readFile(manifestPath, 'utf8').catch(() => '');
+
+  if (!manifestSource) {
+    return {
+      manifestPath,
+      source: '',
+      manifest: normalizeDocumentPackageManifest({}, { documentPath: 'document.json' })
+    };
+  }
+
+  return {
+    manifestPath,
+    source: manifestSource,
+    manifest: normalizeDocumentPackageManifest(JSON.parse(manifestSource))
+  };
+}
+
+async function collectPackageFileEntries(directoryPath, {
+  baseRelativeDirectory,
+  idPrefix,
+  fallbackKind
+}, state = { index: 0 }) {
+  const directoryEntries = await readdir(directoryPath, { withFileTypes: true }).catch(() => []);
+  const entries = [];
+
+  for (const entry of directoryEntries) {
+    const absolutePath = path.join(directoryPath, entry.name);
+    const relativePath = path.posix.join(baseRelativeDirectory, entry.name);
+
+    if (entry.isDirectory()) {
+      entries.push(...await collectPackageFileEntries(absolutePath, {
+        baseRelativeDirectory: relativePath,
+        idPrefix,
+        fallbackKind
+      }, state));
+      continue;
+    }
+
+    state.index += 1;
+    if (!entry.isFile()) {
+      continue;
+    }
+
+    entries.push({
+      id: `${idPrefix}-${state.index}`,
+      path: relativePath,
+      label: entry.name,
+      kind: path.extname(entry.name).replace(/^\./, '') || fallbackKind
+    });
+  }
+
+  return entries;
+}
+
+function buildLocalMeta(meta, slug, fileHash, timestamps) {
   return enrichDocumentRecord({
     id: slug,
     slug,
@@ -88,7 +156,8 @@ function buildLocalMeta(meta, slug, fileHash, timestamps, previewFileName = 'pre
     viewerUrl: `/docs/${slug}/viewer.html`,
     printUrl: `/docs/${slug}/print.html`,
     metaUrl: `/docs/${slug}/meta.json`,
-    previewUrl: `/docs/${slug}/${previewFileName}`,
+    canonicalDocumentUrl: `/data/canonical/${slug}.json`,
+    v2DocumentUrl: `/data/canonical/${slug}.json`,
     searchTextUrl: '/data/search-index.json',
     tags: meta.tags,
     sourceType: meta.sourceType,
@@ -109,7 +178,20 @@ function buildLocalMeta(meta, slug, fileHash, timestamps, previewFileName = 'pre
 
 export async function importViewer(inputPath, options = {}) {
   const absoluteInputPath = path.resolve(inputPath);
-  const html = await readFile(absoluteInputPath, 'utf8');
+  const targetStat = await stat(absoluteInputPath);
+
+  if (targetStat.isDirectory()) {
+    return importDocumentPackageDirectory(absoluteInputPath, options);
+  }
+
+  const source = await readFile(absoluteInputPath, 'utf8');
+  const extension = path.extname(absoluteInputPath).toLowerCase();
+
+  if (extension === '.json') {
+    return importJsonInput(absoluteInputPath, source, options);
+  }
+
+  const html = source;
 
   validateViewerHtmlBasic(html);
 
@@ -136,25 +218,15 @@ export async function importViewer(inputPath, options = {}) {
   const localMeta = buildLocalMeta(parsedMeta, slug, fileHash, {
     importedAt: existing?.importedAt ?? now,
     updatedAt: now
-  }, 'preview.html');
+  });
 
   await mkdir(stagingDirectory, { recursive: true });
 
   try {
     await writeFile(path.join(stagingDirectory, 'viewer.html'), html, 'utf8');
-    await generatePreviewOrPlaceholder({
-      outputDirectory: stagingDirectory,
-      html,
-      meta: parsedMeta
-    });
     await writeFile(
       path.join(stagingDirectory, 'meta.json'),
       `${JSON.stringify(localMeta, null, 2)}\n`,
-      'utf8'
-    );
-    await writeFile(
-      path.join(stagingDirectory, 'v2.json'),
-      `${JSON.stringify(buildV2DocumentStub(localMeta), null, 2)}\n`,
       'utf8'
     );
 
@@ -173,11 +245,214 @@ export async function importViewer(inputPath, options = {}) {
   }
 }
 
+async function importJsonInput(absoluteInputPath, source, options = {}) {
+  const rawPayload = JSON.parse(source);
+
+  if (rawPayload?.kind === 'normosvod-document-package') {
+    return importDocumentPackage(
+      path.dirname(absoluteInputPath),
+      normalizeDocumentPackageManifest(rawPayload),
+      source,
+      options,
+      path.dirname(absoluteInputPath)
+    );
+  }
+
+  return importCanonicalPackage(absoluteInputPath, source, options);
+}
+
+async function importCanonicalPackage(absoluteInputPath, source, options = {}) {
+  const rawPackage = JSON.parse(source);
+  const canonicalPackage = normalizeCanonicalPackage(rawPackage);
+  const slug = canonicalPackage.slug;
+  const fileHash = hashContent(source);
+  const manifest = await readDocumentsManifest();
+  const { existing } = ensureNoConflict(
+    manifest,
+    { slug, gostNumber: canonicalPackage.meta.gostNumber, fileHash },
+    { replace: Boolean(options.replace) }
+  );
+  const now = new Date().toISOString();
+  const localMeta = enrichDocumentRecord(buildMetaFromCanonicalPackage(canonicalPackage, {
+    fileHash,
+    importedAt: existing?.importedAt ?? now,
+    updatedAt: now
+  }));
+  const finalDirectory = path.join(DOCS_DIR, slug);
+  const stagingDirectory = path.join(DOCS_DIR, `.staging-${slug}-${Date.now()}`);
+  const finalCanonicalDirectory = path.join(CONTENT_DOCS_DIR, slug);
+  const stagingCanonicalDirectory = path.join(CONTENT_DOCS_DIR, `.staging-${slug}-${Date.now()}`);
+
+  await mkdir(stagingDirectory, { recursive: true });
+  await mkdir(stagingCanonicalDirectory, { recursive: true });
+
+  try {
+    await writeFile(
+      path.join(stagingDirectory, 'meta.json'),
+      `${JSON.stringify(localMeta, null, 2)}\n`,
+      'utf8'
+    );
+    await writeFile(
+      path.join(stagingCanonicalDirectory, 'document.json'),
+      `${JSON.stringify(canonicalPackage, null, 2)}\n`,
+      'utf8'
+    );
+
+    if (options.replace && await pathExists(finalDirectory)) {
+      await archiveExistingDocument(slug);
+    }
+
+    if (options.replace && await pathExists(finalCanonicalDirectory)) {
+      await archiveExistingCanonicalSource(slug);
+    }
+
+    await rename(stagingDirectory, finalDirectory);
+    await rename(stagingCanonicalDirectory, finalCanonicalDirectory);
+    await rebuildManifest();
+    await archiveImportedSource(absoluteInputPath);
+    return localMeta;
+  } catch (error) {
+    await rm(stagingDirectory, { recursive: true, force: true });
+    await rm(stagingCanonicalDirectory, { recursive: true, force: true });
+    throw error;
+  }
+}
+
+async function importDocumentPackageDirectory(packageDirectoryPath, options = {}) {
+  const { source, manifest } = await readPackageManifestFromDirectory(packageDirectoryPath);
+  return importDocumentPackage(packageDirectoryPath, manifest, source, options, packageDirectoryPath);
+}
+
+async function importDocumentPackage(packageDirectoryPath, packageManifest, manifestSource, options = {}, importSourcePath = '') {
+  const documentPath = resolvePackagePath(packageDirectoryPath, packageManifest.documentPath);
+  const canonicalSource = await readFile(documentPath, 'utf8');
+  const canonicalPackage = normalizeCanonicalPackage(JSON.parse(canonicalSource));
+  const slug = canonicalPackage.slug;
+  const fileHash = hashContent(JSON.stringify({
+    packageManifest,
+    canonicalDocument: canonicalPackage
+  }));
+  const manifest = await readDocumentsManifest();
+  const { existing } = ensureNoConflict(
+    manifest,
+    { slug, gostNumber: canonicalPackage.meta.gostNumber, fileHash },
+    { replace: Boolean(options.replace) }
+  );
+  const now = new Date().toISOString();
+  const legacyViewerPath = packageManifest.legacyViewerPath
+    ? resolvePackagePath(packageDirectoryPath, packageManifest.legacyViewerPath)
+    : '';
+  const legacyViewerHtml = legacyViewerPath ? await readFile(legacyViewerPath, 'utf8') : '';
+  const attachmentSourceDirectory = packageManifest.attachmentsDir
+    ? resolvePackagePath(packageDirectoryPath, packageManifest.attachmentsDir)
+    : '';
+  const assetsSourceDirectory = packageManifest.assetsDir
+    ? resolvePackagePath(packageDirectoryPath, packageManifest.assetsDir)
+    : '';
+  const packageAttachments = packageManifest.attachments.length
+    ? packageManifest.attachments
+    : (attachmentSourceDirectory && await pathExists(attachmentSourceDirectory)
+      ? await collectPackageFileEntries(attachmentSourceDirectory, {
+        baseRelativeDirectory: 'attachments',
+        idPrefix: 'attachment',
+        fallbackKind: 'attachment'
+      })
+      : []);
+  const packageAssets = packageManifest.assets.length
+    ? packageManifest.assets
+    : (assetsSourceDirectory && await pathExists(assetsSourceDirectory)
+      ? await collectPackageFileEntries(assetsSourceDirectory, {
+        baseRelativeDirectory: 'assets',
+        idPrefix: 'asset',
+        fallbackKind: 'asset'
+      })
+      : []);
+  const localMeta = enrichDocumentRecord({
+    ...buildMetaFromCanonicalPackage(canonicalPackage, {
+      fileHash,
+      importedAt: existing?.importedAt ?? now,
+      updatedAt: now
+    }),
+    sourceType: 'document-package',
+    packageManifestUrl: `/docs/${slug}/package.json`,
+    attachmentCount: packageAttachments.length,
+    assetCount: packageAssets.length,
+    editionCount: packageManifest.editions.length,
+    editions: packageManifest.editions,
+    attachments: packageAttachments,
+    assets: packageAssets,
+    attachmentsBaseUrl: packageAttachments.length ? `/docs/${slug}/attachments/` : '',
+    assetsBaseUrl: packageAssets.length ? `/docs/${slug}/assets/` : '',
+    hasLegacyViewer: Boolean(legacyViewerHtml),
+    ...(legacyViewerHtml ? {
+      viewerUrl: `/docs/${slug}/viewer.html`,
+      legacyViewerUrl: `/docs/${slug}/viewer.html`
+    } : {})
+  });
+  const finalDirectory = path.join(DOCS_DIR, slug);
+  const stagingDirectory = path.join(DOCS_DIR, `.staging-${slug}-${Date.now()}`);
+  const finalCanonicalDirectory = path.join(CONTENT_DOCS_DIR, slug);
+  const stagingCanonicalDirectory = path.join(CONTENT_DOCS_DIR, `.staging-${slug}-${Date.now()}`);
+
+  await mkdir(stagingDirectory, { recursive: true });
+  await mkdir(stagingCanonicalDirectory, { recursive: true });
+
+  try {
+    await writeFile(
+      path.join(stagingDirectory, 'meta.json'),
+      `${JSON.stringify(localMeta, null, 2)}\n`,
+      'utf8'
+    );
+    await writeFile(
+      path.join(stagingDirectory, 'package.json'),
+      `${JSON.stringify({ ...packageManifest, attachments: packageAttachments, assets: packageAssets }, null, 2)}\n`,
+      'utf8'
+    );
+    if (legacyViewerHtml) {
+      await writeFile(path.join(stagingDirectory, 'viewer.html'), legacyViewerHtml, 'utf8');
+    }
+    if (attachmentSourceDirectory && await pathExists(attachmentSourceDirectory)) {
+      await cp(attachmentSourceDirectory, path.join(stagingDirectory, 'attachments'), { recursive: true });
+    }
+    if (assetsSourceDirectory && await pathExists(assetsSourceDirectory)) {
+      await cp(assetsSourceDirectory, path.join(stagingDirectory, 'assets'), { recursive: true });
+    }
+    await writeFile(
+      path.join(stagingCanonicalDirectory, 'document.json'),
+      `${JSON.stringify(canonicalPackage, null, 2)}\n`,
+      'utf8'
+    );
+    await writeFile(
+      path.join(stagingCanonicalDirectory, 'package.json'),
+      `${JSON.stringify({ ...packageManifest, attachments: packageAttachments, assets: packageAssets }, null, 2)}\n`,
+      'utf8'
+    );
+
+    if (options.replace && await pathExists(finalDirectory)) {
+      await archiveExistingDocument(slug);
+    }
+
+    if (options.replace && await pathExists(finalCanonicalDirectory)) {
+      await archiveExistingCanonicalSource(slug);
+    }
+
+    await rename(stagingDirectory, finalDirectory);
+    await rename(stagingCanonicalDirectory, finalCanonicalDirectory);
+    await rebuildManifest();
+    await archiveImportedSource(importSourcePath || packageDirectoryPath);
+    return localMeta;
+  } catch (error) {
+    await rm(stagingDirectory, { recursive: true, force: true });
+    await rm(stagingCanonicalDirectory, { recursive: true, force: true });
+    throw error;
+  }
+}
+
 async function resolveTargets(args) {
   if (args.includes('--all')) {
     const directoryEntries = await readdir(INCOMING_DIR, { withFileTypes: true }).catch(() => []);
     return directoryEntries
-      .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith('.html'))
+      .filter((entry) => (entry.isFile() && /\.(html|json)$/i.test(entry.name)) || entry.isDirectory())
       .map((entry) => path.join(INCOMING_DIR, entry.name));
   }
 
@@ -190,7 +465,7 @@ async function main() {
   const targets = await resolveTargets(args);
 
   if (targets.length === 0) {
-    throw new Error('Не указан HTML-viewer для импорта и в incoming нет файлов для --all.');
+    throw new Error('Не указан входной документ для импорта и в incoming нет файлов или пакетов для --all.');
   }
 
   let hasErrors = false;

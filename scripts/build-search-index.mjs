@@ -1,9 +1,10 @@
 import path from 'node:path';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { extractSearchEntries } from './lib/extract-search-text.mjs';
+import { extractCanonicalSearchEntries, extractSearchEntries } from './lib/extract-search-text.mjs';
 import { readDocumentsManifest } from './lib/manifest.mjs';
 import { DOCS_DIR, SEARCH_INDEX_PATH } from './lib/project-paths.mjs';
+import { readCanonicalDocument } from './lib/canonical-document.mjs';
 import { writeJsonAtomic } from './lib/write-json.mjs';
 
 export async function buildSearchIndex(manifestOverride = null, options = {}) {
@@ -15,14 +16,19 @@ export async function buildSearchIndex(manifestOverride = null, options = {}) {
   for (const document of manifest) {
     const html = htmlBySlug.has(document.slug)
       ? htmlBySlug.get(document.slug)
-      : await readFile(path.join(DOCS_DIR, document.slug, 'viewer.html'), 'utf8');
+      : await readFile(path.join(DOCS_DIR, document.slug, 'viewer.html'), 'utf8').catch(() => '');
+    const canonicalDocument = html
+      ? null
+      : await readCanonicalDocument(document.slug);
 
     entries.push({
       slug: document.slug,
       gostNumber: document.gostNumber,
       title: document.title,
       pages: document.pages,
-      entries: extractSearchEntries(html)
+      entries: html
+        ? extractSearchEntries(html)
+        : extractCanonicalSearchEntries(canonicalDocument)
     });
   }
 

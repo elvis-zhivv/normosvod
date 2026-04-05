@@ -30,3 +30,50 @@ export function extractSearchEntries(html) {
     })
     .filter(Boolean);
 }
+
+function normalizeCanonicalPageIndex(block, index) {
+  const pageNumber = Number(
+    block?.print?.sourcePageNumber
+    ?? block?.print?.pageNumber
+    ?? index + 1
+  );
+
+  if (!Number.isFinite(pageNumber) || pageNumber <= 0) {
+    return index;
+  }
+
+  return pageNumber - 1;
+}
+
+function buildCanonicalBlockText(block) {
+  return normalizeWhitespace([
+    block?.title,
+    block?.summary,
+    block?.bodyText,
+    ...(block?.references ?? []),
+    ...(block?.units ?? []).flatMap((unit) => [
+      unit?.title,
+      unit?.summary,
+      unit?.text,
+      ...(unit?.references ?? [])
+    ])
+  ].filter(Boolean).join(' '));
+}
+
+export function extractCanonicalSearchEntries(canonicalDocument) {
+  return (canonicalDocument?.blocks ?? [])
+    .map((block, index) => {
+      const text = buildCanonicalBlockText(block);
+
+      if (!text) {
+        return null;
+      }
+
+      return {
+        pageIndex: normalizeCanonicalPageIndex(block, index),
+        anchor: block?.id ? `#${block.id}` : null,
+        text
+      };
+    })
+    .filter(Boolean);
+}

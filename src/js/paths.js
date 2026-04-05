@@ -70,3 +70,24 @@ export function normalizeDocumentUrl(pathname) {
 
   return withBase(normalizedPath);
 }
+
+function buildDocumentPath(slug, suffix = '') {
+  const safeSlug = encodeURIComponent(String(slug ?? '').trim());
+  return `/doc/${safeSlug}${suffix}`;
+}
+
+export function buildDocumentRoute(slug, hash = '') {
+  return withBase(`${buildDocumentPath(slug)}${hash || ''}`);
+}
+
+export function buildDocumentCardRoute(slug) {
+  return withBase(`${buildDocumentPath(slug)}?view=card`);
+}
+
+export function buildDocumentLegacyRoute(slug, hash = '') {
+  return withBase(`${buildDocumentPath(slug, '/legacy')}${hash || ''}`);
+}
+
+export function buildDocumentPrintRoute(slug, hash = '') {
+  return withBase(`${buildDocumentPath(slug, '/print')}${hash || ''}`);
+}

@@ -40,6 +40,18 @@ export function formatMigrationStatusLabel(migrationStatus) {
   }
 }
 
+export function formatSourceTypeLabel(sourceType) {
+  switch (sourceType) {
+    case 'document-package':
+      return 'Document package';
+    case 'canonical-document':
+      return 'Canonical document';
+    case 'html-viewer':
+    default:
+      return 'Legacy HTML viewer';
+  }
+}
+
 function toFiniteCount(value) {
   const count = Number(value);
   return Number.isFinite(count) && count > 0 ? count : 0;
@@ -52,8 +64,16 @@ export function buildDocumentSignals(document) {
   const hiddenBlocksCount = toFiniteCount(document?.hiddenBlocksCount);
   const issuesCount = toFiniteCount(document?.curationIssuesCount);
   const pendingBlocksCount = toFiniteCount(document?.curationPendingBlocksCount);
+  const editionCount = toFiniteCount(document?.editionCount);
+  const attachmentCount = toFiniteCount(document?.attachmentCount);
+  const assetCount = toFiniteCount(document?.assetCount);
 
   return [
+    {
+      kind: 'source-type',
+      label: formatSourceTypeLabel(document?.sourceType),
+      tone: document?.sourceCategory || 'legacy'
+    },
     {
       kind: 'theme',
       label: formatThemeLabel(document?.themeId),
@@ -99,6 +119,27 @@ export function buildDocumentSignals(document) {
         kind: 'curation-pending-blocks',
         label: `Блоков на проверке: ${pendingBlocksCount}`,
         tone: 'needs-review'
+      }
+      : null,
+    editionCount
+      ? {
+        kind: 'editions',
+        label: `${editionCount} редакций`,
+        tone: 'metric'
+      }
+      : null,
+    attachmentCount
+      ? {
+        kind: 'attachments',
+        label: `${attachmentCount} вложений`,
+        tone: 'metric'
+      }
+      : null,
+    assetCount
+      ? {
+        kind: 'assets',
+        label: `${assetCount} assets`,
+        tone: 'metric'
       }
       : null,
     blockCount

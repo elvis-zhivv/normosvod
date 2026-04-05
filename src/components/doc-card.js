@@ -1,5 +1,10 @@
 import { escapeHtml, highlightSearchTerms } from '../js/html.js';
-import { normalizeDocumentUrl, withBase } from '../js/paths.js';
+import { renderDocumentSurface } from './document-surface.js';
+import {
+  buildDocumentLegacyRoute,
+  buildDocumentRoute,
+  withBase
+} from '../js/paths.js';
 import { buildDocumentSignals } from '../js/document-signals.js';
 
 function getSearchHitBadge(searchHit) {
@@ -59,14 +64,14 @@ function renderSignalChips(document) {
 }
 
 export function renderDocCard(document) {
-  const previewUrl = normalizeDocumentUrl(document.previewUrl);
-  const viewerUrl = normalizeDocumentUrl(document.viewerUrl);
-  const documentUrl = withBase(`/doc/${encodeURIComponent(document.slug ?? '')}`);
+  const documentUrl = buildDocumentRoute(document.slug ?? '');
   const searchHit = document.searchHit ?? null;
   const isV2Hit = Boolean(searchHit?.kind?.startsWith('v2-'));
   const matchUrl = searchHit?.actionUrl
     ? withBase(searchHit.actionUrl)
-    : (searchHit?.anchor ? `${viewerUrl}${searchHit.anchor}` : viewerUrl);
+    : searchHit?.anchor
+      ? buildDocumentLegacyRoute(document.slug ?? '', searchHit.anchor)
+      : documentUrl;
   const tags = (document.tags ?? [])
     .map((tag) => `<li class="tag-chip">${escapeHtml(tag)}</li>`)
     .join('');
@@ -86,18 +91,12 @@ export function renderDocCard(document) {
   const primaryLabel = searchHit
     ? (isV2Hit ? 'К semantic-блоку' : 'К совпадению')
     : 'Открыть';
-  const description = document.description ?? 'Автономный HTML-viewer документа ГОСТ.';
+  const description = document.description ?? 'Профессиональный нормативный документ в рабочем экранном режиме.';
 
   return `
     <article class="doc-card">
       <div class="doc-card-preview">
-        <iframe
-          class="doc-preview-frame"
-          src="${escapeHtml(previewUrl)}"
-          title="Титульный лист ${escapeHtml(document.gostNumber)}"
-          loading="lazy"
-          tabindex="-1"
-        ></iframe>
+        ${renderDocumentSurface(document, { mode: 'summary', title: 'Быстрый обзор' })}
       </div>
       <div class="doc-card-body">
         <p class="doc-card-kicker">${escapeHtml(document.gostNumber)}</p>
@@ -112,10 +111,8 @@ export function renderDocCard(document) {
         <ul class="tag-list">${tags}</ul>
       </div>
       <div class="doc-card-actions">
-        <a class="button button-secondary" href="${escapeHtml(documentUrl)}" data-link>Карточка документа</a>
-        ${isV2Hit
-          ? `<a class="button button-primary" href="${escapeHtml(matchUrl)}" data-link>${primaryLabel}</a>`
-          : `<a class="button button-primary" href="${escapeHtml(matchUrl)}" target="_blank" rel="noreferrer">${primaryLabel}</a>`}
+        <a class="button button-secondary" href="${escapeHtml(documentUrl)}" data-link>Открыть документ</a>
+        <a class="button button-primary" href="${escapeHtml(matchUrl)}" data-link>${primaryLabel}</a>
       </div>
     </article>
   `;

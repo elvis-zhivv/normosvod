@@ -108,7 +108,7 @@ test('buildDocumentSearchHit prefers semantic V2 block hits when canonical match
   assert.ok(hit);
   assert.equal(hit.kind, 'v2-block');
   assert.equal(hit.anchor, '#doc-a-block-1');
-  assert.equal(hit.actionUrl, '/doc/doc-a?view=v2#doc-a-block-1');
+  assert.equal(hit.actionUrl, '/doc/doc-a#doc-a-block-1');
   assert.match(hit.snippet, /загрязненные панели/i);
 });
 

@@ -1,7 +1,13 @@
-import { renderViewerFrame } from '../components/viewer-frame.js';
+import { renderDocumentSurface } from '../components/document-surface.js';
 import { escapeHtml } from './html.js';
-import { normalizeDocumentUrl, withBase } from './paths.js';
-import { buildDocumentSignals, formatMigrationStatusLabel, formatReaderModeLabel, formatThemeLabel } from './document-signals.js';
+import {
+  buildDocumentCardRoute,
+  buildDocumentLegacyRoute,
+  buildDocumentPrintRoute,
+  buildDocumentRoute,
+  withBase
+} from './paths.js';
+import { buildDocumentSignals, formatMigrationStatusLabel, formatReaderModeLabel, formatSourceTypeLabel, formatThemeLabel } from './document-signals.js';
 
 function renderNavItems(document) {
   if (!document.navItems?.length) {
@@ -71,6 +77,13 @@ function renderPlatformStatus(document) {
       </div>
       <div class="platform-status-grid">
         <article class="platform-status-card">
+          <p class="platform-status-label">Import source</p>
+          <strong>${escapeHtml(formatSourceTypeLabel(document.sourceType))}</strong>
+          <p>${document.supportsPackageManifest
+            ? 'Документ управляется через package manifest и может включать редакции, вложения и assets.'
+            : 'Документ использует прямой import contract без package manifest.'}</p>
+        </article>
+        <article class="platform-status-card">
           <p class="platform-status-label">Тематический режим</p>
           <strong>${escapeHtml(formatThemeLabel(document.themeId))}</strong>
           <p>Тема применяется к screen-flow и print-A4 представлениям.</p>
@@ -93,6 +106,11 @@ function renderPlatformStatus(document) {
           <strong>${escapeHtml(document.v2BlockCount ?? 0)} блоков</strong>
           <p>${escapeHtml(document.v2DefinitionsCount ?? 0)} определений · ${escapeHtml(document.v2RelatedNormsCount ?? 0)} связанных норм</p>
         </article>
+        <article class="platform-status-card">
+          <p class="platform-status-label">Package payload</p>
+          <strong>${escapeHtml(document.editionCount ?? 0)} редакций · ${escapeHtml(document.attachmentCount ?? 0)} вложений</strong>
+          <p>${escapeHtml(document.assetCount ?? 0)} assets · ${document.hasLegacyViewer ? 'legacy fallback доступен' : 'legacy fallback отсутствует'}</p>
+        </article>
       </div>
     </section>
   `;
@@ -110,11 +128,10 @@ export function renderMissingDocument(slug) {
 }
 
 function renderV2Scaffold(document) {
-  const readerUrl = withBase(`/doc/${encodeURIComponent(document.slug ?? '')}?view=v2`);
-  const cardUrl = withBase(`/doc/${encodeURIComponent(document.slug ?? '')}`);
-  const previewUrl = normalizeDocumentUrl(document.previewUrl);
-  const legacyUrl = normalizeDocumentUrl(document.legacyViewerUrl || document.viewerUrl);
-  const printUrl = normalizeDocumentUrl(document.printUrl || legacyUrl);
+  const readerUrl = buildDocumentRoute(document.slug ?? '');
+  const cardUrl = buildDocumentCardRoute(document.slug ?? '');
+  const legacyUrl = document.legacyViewerUrl ? buildDocumentLegacyRoute(document.slug ?? '') : '';
+  const printUrl = buildDocumentPrintRoute(document.slug ?? '');
   const themeLabel = document.themeId || 'regulation';
 
   return `
@@ -134,18 +151,12 @@ function renderV2Scaffold(document) {
         <div class="hero-actions">
           <a class="button button-primary" href="${escapeHtml(readerUrl)}" data-link>Reader V2</a>
           <a class="button button-secondary" href="${escapeHtml(cardUrl)}" data-link>Карточка legacy</a>
-          <a class="button button-secondary" href="${escapeHtml(legacyUrl)}" target="_blank" rel="noreferrer">Legacy viewer</a>
-          <a class="button button-ghost" href="${escapeHtml(printUrl)}" target="_blank" rel="noreferrer">Print A4</a>
+          ${legacyUrl ? `<a class="button button-secondary" href="${escapeHtml(legacyUrl)}" data-link>Legacy-режим</a>` : ''}
+          <a class="button button-ghost" href="${escapeHtml(printUrl)}" data-link>Print A4</a>
         </div>
       </div>
       <div class="document-hero-preview">
-        <iframe
-          class="doc-preview-frame"
-          src="${escapeHtml(previewUrl)}"
-          title="Титульный лист ${escapeHtml(document.gostNumber)}"
-          loading="lazy"
-          tabindex="-1"
-        ></iframe>
+        ${renderDocumentSurface(document, { mode: 'summary', title: 'Reader entry surface' })}
       </div>
     </section>
     ${renderPlatformStatus(document)}
@@ -164,12 +175,47 @@ function renderV2Scaffold(document) {
   `;
 }
 
-export function renderDocumentPage(document, { showEmbeddedViewer, showV2Reader = false }) {
-  const previewUrl = normalizeDocumentUrl(document.previewUrl);
-  const viewerUrl = normalizeDocumentUrl(document.viewerUrl);
-  const printUrl = normalizeDocumentUrl(document.printUrl || document.viewerUrl);
-  const embedUrl = withBase(`/doc/${encodeURIComponent(document.slug ?? '')}?embed=${showEmbeddedViewer ? '0' : '1'}`);
-  const readerUrl = withBase(`/doc/${encodeURIComponent(document.slug ?? '')}?view=v2`);
+export function renderDocumentArtifactPage(document, { mode = 'legacy', anchor = '' } = {}) {
+  const readerUrl = buildDocumentRoute(document.slug ?? '');
+  const cardUrl = buildDocumentCardRoute(document.slug ?? '');
+  const routeLabel = mode === 'print' ? 'Print A4' : 'Legacy-режим';
+  const description = mode === 'print'
+    ? 'Печатный A4-маршрут использует canonical print renderer и остаётся без `.html` в пользовательском URL.'
+    : 'Legacy-режим сохранён как совместимый слой поверх старого viewer, но открывается через чистый пользовательский маршрут.';
+
+  return `
+    <section class="document-hero">
+      <div class="document-hero-copy">
+        <p class="eyebrow">${escapeHtml(routeLabel)}</p>
+        <h1>${escapeHtml(document.title)}</h1>
+        <p class="document-lead">${escapeHtml(description)}</p>
+        ${renderSignalChips(document)}
+        <ul class="meta-list">
+          <li><strong>Документ:</strong> ${escapeHtml(document.gostNumber)}</li>
+          <li><strong>Режим:</strong> ${escapeHtml(mode)}</li>
+          <li><strong>Маршрут:</strong> <code>/doc/${escapeHtml(document.slug)}/${escapeHtml(mode === 'print' ? 'print' : 'legacy')}</code></li>
+        </ul>
+        <div class="hero-actions">
+          <a class="button button-primary" href="${escapeHtml(readerUrl)}" data-link>Reader V2</a>
+          <a class="button button-secondary" href="${escapeHtml(cardUrl)}" data-link>Карточка документа</a>
+          ${mode === 'print'
+            ? `<button class="button button-ghost" type="button" onclick="window.print()">Печать</button>`
+            : `<a class="button button-ghost" href="${escapeHtml(buildDocumentPrintRoute(document.slug ?? '', anchor))}" data-link>Print A4</a>`}
+        </div>
+      </div>
+      <div class="document-hero-preview">
+        ${renderDocumentSurface(document, { mode, title: mode === 'print' ? 'Print route surface' : 'Legacy route surface' })}
+      </div>
+    </section>
+    ${renderPlatformStatus(document)}
+    ${renderNavItems(document)}
+  `;
+}
+
+export function renderDocumentPage(document, { showEmbeddedViewer, showV2Reader = false, anchor = '' }) {
+  const legacyUrl = document.legacyViewerUrl ? buildDocumentLegacyRoute(document.slug ?? '', anchor) : '';
+  const printUrl = buildDocumentPrintRoute(document.slug ?? '', anchor);
+  const readerUrl = buildDocumentRoute(document.slug ?? '');
   const tags = (document.tags ?? []).map((tag) => `<li class="tag-chip">${escapeHtml(tag)}</li>`).join('');
   const importedAt = document.importedAt ? new Date(document.importedAt).toLocaleString('ru-RU') : '—';
   const updatedAt = document.updatedAt ? new Date(document.updatedAt).toLocaleString('ru-RU') : '—';
@@ -183,7 +229,7 @@ export function renderDocumentPage(document, { showEmbeddedViewer, showV2Reader 
       <div class="document-hero-copy">
         <p class="eyebrow">${escapeHtml(document.gostNumber)}</p>
         <h1>${escapeHtml(document.title)}</h1>
-        <p class="document-lead">${escapeHtml(document.description ?? 'Автономный HTML-viewer документа ГОСТ.')}</p>
+        <p class="document-lead">${escapeHtml(document.description ?? 'Профессиональный нормативный документ с экранным и печатным представлением.')}</p>
         ${renderSignalChips(document)}
         <ul class="meta-list">
           <li><strong>Год:</strong> ${escapeHtml(document.year)}</li>
@@ -196,24 +242,14 @@ export function renderDocumentPage(document, { showEmbeddedViewer, showV2Reader 
         <ul class="tag-list">${tags}</ul>
         <div class="hero-actions">
           <a class="button button-primary" href="${escapeHtml(readerUrl)}" data-link>Reader V2</a>
-          <a class="button button-secondary" href="${escapeHtml(viewerUrl)}" target="_blank" rel="noreferrer">Открыть viewer</a>
-          <a class="button button-secondary" href="${escapeHtml(printUrl)}" target="_blank" rel="noreferrer">Print A4</a>
-          <a class="button button-secondary" href="${escapeHtml(embedUrl)}" data-link>${showEmbeddedViewer ? 'Скрыть встроенный просмотр' : 'Встроенный просмотр'}</a>
-          <a class="button button-ghost" href="${escapeHtml(viewerUrl)}" download>Скачать HTML</a>
+          ${legacyUrl ? `<a class="button button-secondary" href="${escapeHtml(legacyUrl)}" data-link>Legacy-режим</a>` : ''}
+          <a class="button button-secondary" href="${escapeHtml(printUrl)}" data-link>Print A4</a>
         </div>
-        <p class="direct-link">Прямой URL: <a href="${escapeHtml(viewerUrl)}" target="_blank" rel="noreferrer">${escapeHtml(viewerUrl)}</a></p>
       </div>
       <div class="document-hero-preview">
-        <iframe
-          class="doc-preview-frame"
-          src="${escapeHtml(previewUrl)}"
-          title="Титульный лист ${escapeHtml(document.gostNumber)}"
-          loading="lazy"
-          tabindex="-1"
-        ></iframe>
+        ${renderDocumentSurface(document, { mode: 'summary', title: 'Документная поверхность' })}
       </div>
     </section>
-    ${showEmbeddedViewer ? renderViewerFrame(document) : ''}
     ${renderPlatformStatus(document)}
     ${renderNavItems(document)}
   `;

@@ -1,4 +1,5 @@
 import { inferThemeId } from './theme.mjs';
+import { applySourceProfile, getSourceProfile } from './source-registry.mjs';
 
 function normalizeReaderMode(value) {
   const supported = new Set(['legacy', 'hybrid', 'v2']);
@@ -11,17 +12,24 @@ function normalizeMigrationStatus(value) {
 }
 
 export function enrichDocumentRecord(record) {
-  const viewerUrl = record.viewerUrl || `/docs/${record.slug}/viewer.html`;
+  const { previewUrl, ...restRecord } = record;
   const slug = record.slug;
+  const sourceRecord = applySourceProfile(restRecord);
+  const sourceProfile = getSourceProfile(sourceRecord.sourceType);
+  const viewerUrl = sourceRecord.viewerUrl || (sourceProfile.allowsImplicitLegacyViewer ? `/docs/${slug}/viewer.html` : '');
   const printUrl = record.printUrl || `/docs/${slug}/print.html`;
+  const canonicalDocumentUrl = record.canonicalDocumentUrl || `/data/canonical/${slug}.json`;
+  const legacyViewerUrl = record.legacyViewerUrl || viewerUrl || '';
 
   return {
-    ...record,
+    ...sourceRecord,
+    ...(viewerUrl ? { viewerUrl } : {}),
     themeId: record.themeId || inferThemeId(record),
     readerMode: normalizeReaderMode(record.readerMode),
     migrationStatus: normalizeMigrationStatus(record.migrationStatus),
-    v2DocumentUrl: record.v2DocumentUrl || `/data/v2/${slug}.json`,
-    legacyViewerUrl: record.legacyViewerUrl || viewerUrl,
+    canonicalDocumentUrl,
+    v2DocumentUrl: record.v2DocumentUrl || canonicalDocumentUrl,
+    ...(legacyViewerUrl ? { legacyViewerUrl } : {}),
     printUrl,
     hasV2Scaffold: record.hasV2Scaffold ?? true
   };

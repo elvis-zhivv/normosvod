@@ -1,5 +1,11 @@
 import { escapeHtml } from './html.js';
-import { normalizeDocumentUrl, withBase } from './paths.js';
+import {
+  buildDocumentLegacyRoute,
+  buildDocumentPrintRoute,
+  buildDocumentRoute,
+  normalizeDocumentUrl,
+  withBase
+} from './paths.js';
 import { formatMigrationStatusLabel, formatReaderModeLabel, formatThemeLabel } from './document-signals.js';
 
 function buildFilteredItems(index = [], filters = {}) {
@@ -142,7 +148,7 @@ function renderWorkbenchCard(item) {
       </div>
       <div class="hero-actions">
         <a class="button button-primary" href="${withBase(`/curation/${encodeURIComponent(item.slug)}`)}" data-link>Открыть workbench</a>
-        <a class="button button-secondary" href="${withBase(`/doc/${encodeURIComponent(item.slug)}?view=v2`)}" data-link>Reader V2</a>
+        <a class="button button-secondary" href="${buildDocumentRoute(item.slug)}" data-link>Reader V2</a>
       </div>
     </article>
   `;
@@ -199,8 +205,8 @@ export function renderMissingWorkbench(slug) {
 }
 
 export function renderCurationDocumentPage(workbench, documentItem) {
-  const printUrl = normalizeDocumentUrl(documentItem?.printUrl || '');
-  const legacyUrl = normalizeDocumentUrl(documentItem?.legacyViewerUrl || documentItem?.viewerUrl || '');
+  const printUrl = documentItem ? buildDocumentPrintRoute(documentItem.slug) : normalizeDocumentUrl('');
+  const legacyUrl = documentItem ? buildDocumentLegacyRoute(documentItem.slug) : normalizeDocumentUrl('');
 
   return `
     <section class="document-hero">
@@ -223,9 +229,9 @@ export function renderCurationDocumentPage(workbench, documentItem) {
           <li><strong>Info:</strong> ${escapeHtml(workbench.reportSummary?.counts?.info ?? 0)}</li>
         </ul>
         <div class="hero-actions">
-          <a class="button button-primary" href="${withBase(`/doc/${encodeURIComponent(workbench.slug)}?view=v2`)}" data-link>Reader V2</a>
-          ${documentItem?.printUrl ? `<a class="button button-secondary" href="${escapeHtml(printUrl)}" target="_blank" rel="noreferrer">Print A4</a>` : ''}
-          ${documentItem?.legacyViewerUrl ? `<a class="button button-secondary" href="${escapeHtml(legacyUrl)}" target="_blank" rel="noreferrer">Legacy viewer</a>` : ''}
+          <a class="button button-primary" href="${buildDocumentRoute(workbench.slug)}" data-link>Reader V2</a>
+          ${documentItem?.printUrl ? `<a class="button button-secondary" href="${escapeHtml(printUrl)}" data-link>Print A4</a>` : ''}
+          ${documentItem?.legacyViewerUrl ? `<a class="button button-secondary" href="${escapeHtml(legacyUrl)}" data-link>Legacy-режим</a>` : ''}
           <a class="button button-ghost" href="${withBase('/curation')}" data-link>К очереди</a>
         </div>
       </div>

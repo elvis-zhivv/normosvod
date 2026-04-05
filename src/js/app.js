@@ -2,7 +2,7 @@ import { renderHeader } from '../components/header.js';
 import { SORT_OPTIONS } from './filters.js';
 import { renderCatalogPage, renderHomePage } from './catalog.js';
 import { renderCurationDocumentPage, renderCurationIndexPage, renderMissingWorkbench } from './curation.js';
-import { renderDocumentPage, renderMissingDocument } from './document.js';
+import { renderDocumentArtifactPage, renderDocumentPage, renderMissingDocument } from './document.js';
 import { safeDecodePathSegment, stripBasePath, withBase } from './paths.js';
 import { enhanceV2Readers } from '../v2/enhance.js';
 
@@ -68,15 +68,49 @@ function getRoute() {
   }
 
   if (segments[0] === 'doc' && segments[1]) {
+    const slug = safeDecodePathSegment(segments[1]);
+    const mode = segments[2] ?? '';
+
+    if (!mode) {
+      return {
+        name: 'document',
+        currentPath: pathname,
+        params: { slug },
+        query: url.searchParams,
+        hash: url.hash
+      };
+    }
+
+    if (mode === 'legacy') {
+      return {
+        name: 'document-legacy',
+        currentPath: pathname,
+        params: { slug },
+        query: url.searchParams,
+        hash: url.hash
+      };
+    }
+
+    if (mode === 'print') {
+      return {
+        name: 'document-print',
+        currentPath: pathname,
+        params: { slug },
+        query: url.searchParams,
+        hash: url.hash
+      };
+    }
+
     return {
-      name: 'document',
+      name: 'not-found',
       currentPath: pathname,
-      params: { slug: safeDecodePathSegment(segments.slice(1).join('/')) },
-      query: url.searchParams
+      params: {},
+      query: url.searchParams,
+      hash: url.hash
     };
   }
 
-  return { name: 'not-found', currentPath: pathname, params: {}, query: url.searchParams };
+  return { name: 'not-found', currentPath: pathname, params: {}, query: url.searchParams, hash: url.hash };
 }
 
 function getFilters(query) {
@@ -124,11 +158,15 @@ function renderLayout(content, route) {
 
   document.title = route.name === 'document'
     ? `${route.pageTitle ?? route.params.slug} — Normosvod`
+      : route.name === 'document-legacy'
+      ? `${route.pageTitle ?? route.params.slug} · Legacy — Normosvod`
+      : route.name === 'document-print'
+      ? `${route.pageTitle ?? route.params.slug} · Print A4 — Normosvod`
       : route.name === 'catalog'
       ? 'Каталог — Normosvod'
       : route.name.startsWith('curation')
       ? 'Curation Workbench — Normosvod'
-      : 'Normosvod — каталог HTML-viewer ГОСТ';
+      : 'Normosvod — нормативная платформа';
 }
 
 async function renderRoute() {
@@ -179,17 +217,34 @@ async function renderRoute() {
 
   if (route.name === 'document') {
     const documentItem = state.documents.find((item) => item.slug === route.params.slug);
-    const showEmbeddedViewer = route.query.get('embed') === '1';
-    const showV2Reader = route.query.get('view') === 'v2' || documentItem?.readerMode === 'v2';
+    const requestedView = route.query.get('view');
+    const showEmbeddedViewer = requestedView === 'card' && route.query.get('embed') === '1';
+    const showV2Reader = requestedView === 'v2' || (requestedView !== 'card' && documentItem?.readerMode !== 'legacy');
     route.pageTitle = documentItem?.gostNumber ?? route.params.slug;
 
     renderLayout(
       documentItem
-        ? renderDocumentPage(documentItem, { showEmbeddedViewer, showV2Reader })
+        ? renderDocumentPage(documentItem, { showEmbeddedViewer, showV2Reader, anchor: route.hash })
         : renderMissingDocument(route.params.slug),
       route
     );
     await enhanceV2Readers(state.documents);
+    return;
+  }
+
+  if (route.name === 'document-legacy' || route.name === 'document-print') {
+    const documentItem = state.documents.find((item) => item.slug === route.params.slug);
+    route.pageTitle = documentItem?.gostNumber ?? route.params.slug;
+
+    renderLayout(
+      documentItem
+        ? renderDocumentArtifactPage(documentItem, {
+          mode: route.name === 'document-print' ? 'print' : 'legacy',
+          anchor: route.hash
+        })
+        : renderMissingDocument(route.params.slug),
+      route
+    );
     return;
   }
 

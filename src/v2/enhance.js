@@ -5,7 +5,7 @@ import { renderV2Reader } from './render.js';
 
 async function loadV2Document(document) {
   const fallback = buildFallbackV2Document(document);
-  const v2Url = document.v2DocumentUrl || `/data/v2/${document.slug}.json`;
+  const v2Url = document.canonicalDocumentUrl || document.v2DocumentUrl || `/data/canonical/${document.slug}.json`;
 
   try {
     const response = await fetch(withBase(v2Url), { cache: 'no-store' });

@@ -125,7 +125,7 @@ function buildSemanticCandidates(document, indexEntry) {
       ...(block.unitLabels ?? [])
     ],
     pageNumber: block.pageNumber ?? null,
-    actionUrl: `/doc/${encodeURIComponent(document.slug ?? '')}?view=v2${block.id ? `#${block.id}` : ''}`,
+    actionUrl: `/doc/${encodeURIComponent(document.slug ?? '')}${block.id ? `#${block.id}` : ''}`,
     contextLabel: block.title ?? block.type ?? 'Block'
   }));
 
@@ -139,7 +139,7 @@ function buildSemanticCandidates(document, indexEntry) {
     summary: definition.summary ?? '',
     references: [],
     pageNumber: blockCandidates.find((block) => block.id === definition.blockId)?.pageNumber ?? null,
-    actionUrl: `/doc/${encodeURIComponent(document.slug ?? '')}?view=v2${definition.blockId ? `#${definition.blockId}` : ''}`,
+    actionUrl: `/doc/${encodeURIComponent(document.slug ?? '')}${definition.blockId ? `#${definition.blockId}` : ''}`,
     contextLabel: `Определение: ${definition.term ?? 'термин'}`
   }));
 
@@ -153,7 +153,7 @@ function buildSemanticCandidates(document, indexEntry) {
     summary: item.label ?? '',
     references: [],
     pageNumber: blockCandidates.find((block) => block.id === item.sourceBlockIds?.[0])?.pageNumber ?? null,
-    actionUrl: `/doc/${encodeURIComponent(document.slug ?? '')}?view=v2${item.sourceBlockIds?.[0] ? `#${item.sourceBlockIds[0]}` : ''}`,
+    actionUrl: `/doc/${encodeURIComponent(document.slug ?? '')}${item.sourceBlockIds?.[0] ? `#${item.sourceBlockIds[0]}` : ''}`,
     contextLabel: `Связанная норма: ${item.label ?? 'ссылка'}`
   }));
 
@@ -167,7 +167,7 @@ function buildSemanticCandidates(document, indexEntry) {
     summary: entity.label ?? '',
     references: [],
     pageNumber: blockCandidates[0]?.pageNumber ?? null,
-    actionUrl: `/doc/${encodeURIComponent(document.slug ?? '')}?view=v2${blockCandidates[0]?.anchor ?? ''}`,
+    actionUrl: `/doc/${encodeURIComponent(document.slug ?? '')}${blockCandidates[0]?.anchor ?? ''}`,
     contextLabel: `Сущность: ${entity.label ?? 'entity'}`
   }));
 

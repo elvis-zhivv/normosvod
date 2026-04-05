@@ -10,7 +10,6 @@
   "pages": 26,
   "viewerUrl": "/docs/gost-29319-2025/viewer.html",
   "metaUrl": "/docs/gost-29319-2025/meta.json",
-  "previewUrl": "/docs/gost-29319-2025/preview.html",
   "searchTextUrl": "/data/search-index.json",
   "tags": [
     "ГОСТ",
@@ -150,5 +149,6 @@
       "targetPageIndex": 19,
       "targetSelector": null
     }
-  ]
+  ],
+  "canonicalDocumentUrl": "/data/canonical/gost-29319-2025.json"
 }

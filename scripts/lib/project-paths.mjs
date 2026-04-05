@@ -10,6 +10,7 @@ export const CONTENT_DOCS_DIR = path.join(CONTENT_DIR, 'docs');
 export const PUBLIC_DIR = path.join(ROOT_DIR, 'public');
 export const DOCS_DIR = path.join(PUBLIC_DIR, 'docs');
 export const DATA_DIR = path.join(PUBLIC_DIR, 'data');
+export const CANONICAL_DATA_DIR = path.join(DATA_DIR, 'canonical');
 export const V2_DATA_DIR = path.join(DATA_DIR, 'v2');
 export const CURATION_WORKBENCH_DIR = path.join(DATA_DIR, 'curation-workbench');
 export const INCOMING_DIR = path.join(ROOT_DIR, 'incoming');

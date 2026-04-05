@@ -12,7 +12,39 @@ test('enrichDocumentRecord points printUrl to canonical print renderer by defaul
   });
 
   assert.equal(record.printUrl, '/docs/gost-29319-2025/print.html');
+  assert.equal(record.canonicalDocumentUrl, '/data/canonical/gost-29319-2025.json');
+  assert.equal(record.v2DocumentUrl, '/data/canonical/gost-29319-2025.json');
   assert.equal(record.legacyViewerUrl, '/docs/gost-29319-2025/viewer.html');
+});
+
+test('enrichDocumentRecord does not invent legacy viewer for canonical-only source', () => {
+  const record = enrichDocumentRecord({
+    slug: 'canonical-only-doc',
+    sourceType: 'canonical-document'
+  });
+
+  assert.equal(record.canonicalDocumentUrl, '/data/canonical/canonical-only-doc.json');
+  assert.equal(record.v2DocumentUrl, '/data/canonical/canonical-only-doc.json');
+  assert.equal(record.printUrl, '/docs/canonical-only-doc/print.html');
+  assert.equal(record.legacyViewerUrl, undefined);
+  assert.equal(record.viewerUrl, undefined);
+});
+
+test('enrichDocumentRecord applies package source capabilities to document-package imports', () => {
+  const record = enrichDocumentRecord({
+    slug: 'package-doc',
+    sourceType: 'document-package',
+    editionCount: 2,
+    attachmentCount: 4,
+    assetCount: 3
+  });
+
+  assert.equal(record.sourceLabel, 'Document package');
+  assert.equal(record.sourceCategory, 'package');
+  assert.equal(record.supportsPackageManifest, true);
+  assert.equal(record.supportsAttachments, true);
+  assert.equal(record.supportsAssets, true);
+  assert.equal(record.viewerUrl, undefined);
 });
 
 test('buildPrintHtml renders A4 print pages from canonical block source', () => {

@@ -10,7 +10,6 @@
   "pages": 16,
   "viewerUrl": "/docs/gost-8784-75/viewer.html",
   "metaUrl": "/docs/gost-8784-75/meta.json",
-  "previewUrl": "/docs/gost-8784-75/preview.html",
   "searchTextUrl": "/data/search-index.json",
   "tags": [
     "ГОСТ",
@@ -135,5 +134,6 @@
       "targetPageIndex": 10,
       "targetSelector": "#section-imprint"
     }
-  ]
+  ],
+  "canonicalDocumentUrl": "/data/canonical/gost-8784-75.json"
 }

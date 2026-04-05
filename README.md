@@ -1,16 +1,19 @@
 # GOST Catalog Site
 
-Сайт-каталог автономных HTML-viewer документов ГОСТ.
+Статическая нормативная платформа Normosvod с экранным reader и отдельным print-A4 представлением.
 
 ## Что реализовано
 
 - каталог и главная страница работают от `public/data/documents.json`, `stats.json` и `search-index.json`;
-- карточка документа доступна по маршруту `/doc/:slug`;
-- viewer публикуются как отдельные автономные HTML по `/docs/:slug/viewer.html`;
+- основной маршрут документа доступен по `/doc/:slug`;
+- совместимый legacy-режим доступен по `/doc/:slug/legacy`;
+- print-A4 доступен по `/doc/:slug/print`;
+- legacy viewer публикуются как внутренние совместимые артефакты по `/docs/:slug/viewer.html`;
 - полнотекстовый поиск работает по `public/data/search-index.json` с ранжированием результатов и переходом к лучшему совпадению;
-- есть режим открытия в новой вкладке и встроенный просмотр через `iframe`;
 - импорт нового viewer выполняется через `scripts/import-viewer.mjs`;
-- локальные `meta.json`, общий `documents.json`, `stats.json` и `search-index.json` обновляются автоматически.
+- локальные `meta.json`, общий `documents.json`, `stats.json` и `search-index.json` обновляются автоматически;
+- `preview.html` больше не является частью продуктового контракта и не генерируется;
+- primary public artifact для reader теперь публикуется как `/data/canonical/:slug.json`.
 
 ## Команды
 
@@ -23,6 +26,7 @@ npm run build:pages
 npm run deploy:pack
 npm run deploy:ssh
 npm run import:all
+npm run canonical-public:rebuild
 ```
 
 Импорт одного файла:
@@ -30,6 +34,25 @@ npm run import:all
 ```bash
 node scripts/import-viewer.mjs ./incoming/gost-8784-75.html
 ```
+
+Поддерживаются два входных формата:
+
+- legacy HTML viewer;
+- canonical document package `.json`.
+
+Также поддерживается импорт каталога-пакета из `incoming/<package>/`, где могут лежать:
+
+- `normosvod-package.json` — manifest пакета;
+- `document.json` — canonical document;
+- `viewer.html` или путь из `legacyViewerPath` — optional legacy fallback;
+- `attachments/` — optional вложения пакета.
+- `assets/` — optional внутренние ресурсы пакета.
+
+Import registry сейчас поддерживает три штатных source contract:
+
+- `html-viewer` — legacy HTML import;
+- `canonical-document` — canonical JSON document;
+- `document-package` — package manifest + canonical document + optional legacy/assets/attachments/editions.
 
 Импорт всех файлов из `incoming`:
 
@@ -136,5 +159,5 @@ REG_SSH_KEY=<приватный SSH-ключ для деплоя>
 
 ## Замечания по маршрутам
 
-Каталог использует client-side routing для `/`, `/catalog` и `/doc/:slug`.
-Viewer документов не встраиваются в runtime каталога и остаются отдельными HTML-файлами.
+Каталог использует client-side routing для `/`, `/catalog`, `/doc/:slug`, `/doc/:slug/legacy` и `/doc/:slug/print`.
+Legacy viewer остаются внутренними HTML-артефактами для migration layer, но основной reader читает canonical document package из `/data/canonical/:slug.json`.

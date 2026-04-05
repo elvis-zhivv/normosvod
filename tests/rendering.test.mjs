@@ -41,8 +41,8 @@ test('renderDocCard escapes document fields in generated markup', () => {
   assert.doesNotMatch(html, /<script>alert\(1\)<\/script>/);
   assert.doesNotMatch(html, /src="javascript:alert\(1\)"/);
   assert.doesNotMatch(html, /href="data:text\/html,test"/);
-  assert.match(html, /src="about:blank"/);
-  assert.match(html, /href="about:blank#match-1"/);
+  assert.match(html, /Быстрый обзор/);
+  assert.match(html, /href="\/doc\/gost-1-0-2015\/legacy#match-1"/);
   assert.match(html, /Совпадения: 4 · стр. 1, 3/);
   assert.match(html, /Page hit/);
 });
@@ -71,7 +71,7 @@ test('renderDocCard renders semantic search preview for V2 hits', () => {
       totalMatches: 2,
       snippet: 'Контрольный образец используют для сравнения цвета.',
       contextLabel: 'Определение: контрольный образец',
-      actionUrl: '/doc/gost-29319-2025?view=v2#block-definition',
+      actionUrl: '/doc/gost-29319-2025#block-definition',
       pageNumber: 7
     },
     searchQuery: 'контрольный образец'
@@ -83,7 +83,7 @@ test('renderDocCard renders semantic search preview for V2 hits', () => {
   assert.match(html, /Кураторски проверено/);
   assert.match(html, /24 блоков/);
   assert.match(html, /5 определений/);
-  assert.match(html, /href="\/doc\/gost-29319-2025\?view=v2#block-definition"/);
+  assert.match(html, /href="\/doc\/gost-29319-2025#block-definition"/);
   assert.doesNotMatch(html, /target="_blank" rel="noreferrer">К semantic-блоку/);
 });
 
@@ -103,8 +103,14 @@ test('renderDocumentPage escapes route and manifest content', () => {
     previewUrl: '/docs/gost-1-0-2015/preview.html',
     viewerUrl: 'javascript:alert(1)',
     themeId: 'regulation',
+    sourceType: 'document-package',
+    sourceCategory: 'package',
+    supportsPackageManifest: true,
     readerMode: 'legacy',
     migrationStatus: 'imported',
+    editionCount: 2,
+    attachmentCount: 4,
+    assetCount: 3,
     navItems: [
       {
         label: '<img src=x onerror=alert(1)>',
@@ -116,12 +122,15 @@ test('renderDocumentPage escapes route and manifest content', () => {
 
   assert.match(html, /Документ &lt;script&gt;alert\(1\)&lt;\/script&gt;/);
   assert.match(html, /Описание &lt;iframe src=evil&gt;&lt;\/iframe&gt;/);
-  assert.match(html, /bad%20slug%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert\(1\)%3E\?embed=0/);
   assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt;/);
   assert.match(html, /#section-1&quot;&gt;&lt;script&gt;alert\(1\)&lt;\/script&gt;/);
+  assert.match(html, /Документная поверхность/);
   assert.match(html, /Состояние reader и migration layer/);
+  assert.match(html, /Document package/);
+  assert.match(html, /2 редакций · 4 вложений/);
   assert.doesNotMatch(html, /href="javascript:alert\(1\)"/);
-  assert.match(html, /href="about:blank"/);
+  assert.doesNotMatch(html, /href="\/doc\/bad%20slug%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert\(1\)%3E\/legacy"/);
+  assert.match(html, /href="\/doc\/bad%20slug%22%3E%3Cimg%20src%3Dx%20onerror%3Dalert\(1\)%3E\/print"/);
 });
 
 test('renderMissingDocument escapes slug from URL', () => {
@@ -338,8 +347,8 @@ test('renderCurationDocumentPage renders detailed queues and safe external links
   assert.match(html, /Block Queue/);
   assert.match(html, /Definition Queue/);
   assert.match(html, /Related Norm Queue/);
-  assert.match(html, /href="about:blank"/);
-  assert.match(html, /href="\/docs\/gost-29319-2025\/viewer.html"/);
+  assert.match(html, /href="\/doc\/gost-29319-2025\/print"/);
+  assert.match(html, /href="\/doc\/gost-29319-2025\/legacy"/);
 });
 
 test('renderMissingWorkbench escapes slug from URL', () => {

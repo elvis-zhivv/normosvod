@@ -16,12 +16,12 @@
     "import:all": "node scripts/import-viewer.mjs --all",
     "reindex": "node scripts/build-search-index.mjs",
     "canonical:rebuild": "node scripts/rebuild-canonical-docs.mjs",
+    "canonical-public:rebuild": "node scripts/rebuild-v2-data.mjs",
     "curation:rebuild": "node scripts/rebuild-curation-data.mjs",
     "curation-workbench:rebuild": "node scripts/rebuild-curation-workbench.mjs",
     "v2:rebuild": "node scripts/rebuild-v2-data.mjs",
     "v2-search:rebuild": "node scripts/build-v2-search-index.mjs",
     "print:rebuild": "node scripts/rebuild-print-docs.mjs",
-    "previews:rebuild": "node scripts/rebuild-previews.mjs",
     "manifest:rebuild": "node scripts/rebuild-manifest.mjs",
     "validate:viewers": "node scripts/validate-viewer.mjs"
   },

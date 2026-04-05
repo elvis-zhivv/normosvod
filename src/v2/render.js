@@ -1,5 +1,10 @@
 import { escapeHtml } from '../js/html.js';
-import { normalizeDocumentUrl } from '../js/paths.js';
+import {
+  buildDocumentLegacyRoute,
+  buildDocumentPrintRoute,
+  buildDocumentRoute,
+  normalizeDocumentUrl
+} from '../js/paths.js';
 import { buildDocumentSignals, formatMigrationStatusLabel, formatReaderModeLabel, formatThemeLabel } from '../js/document-signals.js';
 
 function buildRelatedNormIndex(model) {
@@ -275,10 +280,10 @@ function renderBlocks(blocks = [], entryPoints = {}, options = {}) {
         : ''}
       <div class="v2-block-links">
         ${block.legacy?.targetSelector
-          ? `<a class="v2-block-link" href="${escapeHtml(buildAnchorUrl(legacyBaseUrl, block.legacy.targetSelector))}" target="_blank" rel="noreferrer">Источник: ${escapeHtml(block.legacy.targetSelector)}</a>`
+          ? `<a class="v2-block-link" href="${escapeHtml(buildAnchorUrl(legacyBaseUrl, block.legacy.targetSelector))}" data-link>Источник: ${escapeHtml(block.legacy.targetSelector)}</a>`
           : ''}
         ${block.print?.pageNumber
-          ? `<a class="v2-block-link" href="${escapeHtml(buildAnchorUrl(printBaseUrl, `#${block.id}`))}" target="_blank" rel="noreferrer">Печать A4</a>`
+          ? `<a class="v2-block-link" href="${escapeHtml(buildAnchorUrl(printBaseUrl, `#${block.id}`))}" data-link>Печать A4</a>`
           : ''}
       </div>
     </article>
@@ -346,8 +351,9 @@ function renderRail(model) {
 }
 
 export function renderV2Reader(model, legacyDocument) {
-  const legacyUrl = normalizeDocumentUrl(model.entryPoints?.legacyUrl || legacyDocument.legacyViewerUrl || legacyDocument.viewerUrl);
-  const printUrl = normalizeDocumentUrl(model.entryPoints?.printUrl || legacyDocument.printUrl || legacyDocument.viewerUrl);
+  const legacyUrl = legacyDocument.legacyViewerUrl ? buildDocumentLegacyRoute(legacyDocument.slug) : '';
+  const printUrl = buildDocumentPrintRoute(legacyDocument.slug);
+  const screenUrl = buildDocumentRoute(legacyDocument.slug);
   const relatedNormIndex = buildRelatedNormIndex(model);
   const definitionIndex = buildDefinitionIndex(model);
   const signalDocument = {
@@ -380,12 +386,16 @@ export function renderV2Reader(model, legacyDocument) {
           ${renderSignalChips(signalDocument)}
           <p class="v2-source-note">Source: ${escapeHtml(model.source?.type ?? 'unknown')} · migration ${escapeHtml(formatMigrationStatusLabel(model.meta?.migrationStatus ?? 'imported'))} · ${model.curation?.applied ? 'curated' : 'auto-generated'}</p>
           <div class="hero-actions">
-            <a class="button button-secondary" href="${escapeHtml(legacyUrl)}" target="_blank" rel="noreferrer">Legacy viewer</a>
-            <a class="button button-ghost" href="${escapeHtml(printUrl)}" target="_blank" rel="noreferrer">Print A4</a>
+            <a class="button button-secondary" href="${escapeHtml(screenUrl)}" data-link>Screen Flow</a>
+            ${legacyUrl ? `<a class="button button-secondary" href="${escapeHtml(legacyUrl)}" data-link>Legacy-режим</a>` : ''}
+            <a class="button button-ghost" href="${escapeHtml(printUrl)}" data-link>Print A4</a>
           </div>
         </header>
         <div class="v2-block-list">
-          ${renderBlocks(model.blocks, model.entryPoints, { relatedNormIndex, definitionIndex })}
+          ${renderBlocks(model.blocks, {
+            legacyUrl,
+            printUrl
+          }, { relatedNormIndex, definitionIndex })}
         </div>
       </section>
       <aside class="v2-rail">

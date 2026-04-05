@@ -2,7 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { applyCanonicalOverrides } from '../scripts/lib/canonical-overrides.mjs';
+import { buildMetaFromCanonicalPackage, normalizeCanonicalPackage } from '../scripts/lib/canonical-package.mjs';
+import { normalizeDocumentPackageManifest, resolvePackagePath } from '../scripts/lib/document-package.mjs';
 import { buildCanonicalDocument, inferBlockType } from '../scripts/lib/document-segmentation.mjs';
+import { extractCanonicalSearchEntries } from '../scripts/lib/extract-search-text.mjs';
 import { extractBlockFragmentsFromViewer } from '../scripts/lib/viewer-fragments.mjs';
 
 const legacyDocument = {
@@ -226,4 +229,119 @@ test('applyCanonicalOverrides applies curated block, definition and related norm
   assert.ok(curated.definitions.some((item) => item.id === 'manual-definition'));
   assert.ok(curated.relatedNorms.some((item) => item.label === 'ГОСТ Р 71216—2024'));
   assert.equal(curated.curation.applied, true);
+});
+
+test('normalizeCanonicalPackage prepares canonical-first import contract', () => {
+  const normalized = normalizeCanonicalPackage({
+    kind: 'normosvod-canonical-document',
+    slug: 'custom-doc',
+    meta: {
+      gostNumber: 'ГОСТ 9999—2026',
+      title: 'Тестовый canonical document'
+    },
+    synopsis: {
+      description: 'Импорт из canonical package.'
+    },
+    blocks: [
+      {
+        id: 'block-a',
+        title: '1 Область применения',
+        summary: 'Краткое описание.',
+        bodyText: 'Полный текст блока.',
+        print: {
+          pageNumber: 3
+        }
+      }
+    ]
+  });
+
+  const metaRecord = buildMetaFromCanonicalPackage(normalized, {
+    fileHash: 'sha256-test',
+    importedAt: '2026-04-05T00:00:00.000Z',
+    updatedAt: '2026-04-05T00:00:00.000Z'
+  });
+
+  assert.equal(normalized.meta.readerMode, 'v2');
+  assert.equal(normalized.meta.migrationStatus, 'print-verified');
+  assert.equal(normalized.entryPoints.screenUrl, '/doc/custom-doc');
+  assert.equal(metaRecord.sourceType, 'canonical-document');
+  assert.equal(metaRecord.canonicalDocumentUrl, '/data/canonical/custom-doc.json');
+  assert.equal(metaRecord.v2DocumentUrl, '/data/canonical/custom-doc.json');
+  assert.equal(metaRecord.navItemsCount, 1);
+});
+
+test('extractCanonicalSearchEntries builds page-like search entries from canonical blocks', () => {
+  const entries = extractCanonicalSearchEntries({
+    blocks: [
+      {
+        id: 'block-a',
+        title: '1 Область применения',
+        summary: 'Описание области применения.',
+        bodyText: 'Полный текст первого блока.',
+        units: [
+          {
+            id: 'unit-a',
+            title: '1.1 Общие положения',
+            summary: 'Уточняющий текст.'
+          }
+        ],
+        print: {
+          sourcePageNumber: 5
+        }
+      }
+    ]
+  });
+
+  assert.equal(entries.length, 1);
+  assert.equal(entries[0].pageIndex, 4);
+  assert.equal(entries[0].anchor, '#block-a');
+  assert.match(entries[0].text, /Область применения/);
+  assert.match(entries[0].text, /Уточняющий текст/);
+});
+
+test('normalizeDocumentPackageManifest validates document package manifest with editions and attachments', () => {
+  const manifest = normalizeDocumentPackageManifest({
+    kind: 'normosvod-document-package',
+    version: '0.2.0',
+    slug: 'custom-doc',
+    documentPath: 'document.json',
+    legacyViewerPath: 'legacy/viewer.html',
+    attachmentsDir: 'attachments',
+    assetsDir: 'assets',
+    editions: [
+      {
+        id: 'edition-2026',
+        label: 'Редакция 2026',
+        status: 'active',
+        effectiveDate: '2026-01-01'
+      }
+    ],
+    attachments: [
+      {
+        path: 'attachments/sheet-a.pdf',
+        label: 'Лист A',
+        kind: 'pdf'
+      }
+    ],
+    assets: [
+      {
+        path: 'assets/cover.png',
+        label: 'Cover',
+        kind: 'image'
+      }
+    ]
+  });
+
+  assert.equal(manifest.slug, 'custom-doc');
+  assert.equal(manifest.legacyViewerPath, 'legacy/viewer.html');
+  assert.equal(manifest.assetsDir, 'assets');
+  assert.equal(manifest.editions.length, 1);
+  assert.equal(manifest.attachments.length, 1);
+  assert.equal(manifest.assets.length, 1);
+  assert.equal(manifest.attachments[0].path, 'attachments/sheet-a.pdf');
+  assert.equal(manifest.assets[0].path, 'assets/cover.png');
+});
+
+test('resolvePackagePath blocks path traversal outside document package directory', () => {
+  assert.throws(() => resolvePackagePath('D:/normosvod/incoming/pkg', '../outside.json'));
 });
