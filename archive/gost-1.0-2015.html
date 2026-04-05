@@ -2812,7 +2812,7 @@
           btn.addEventListener('click', () => {
             closeSearchDropdown();
             if (item.targetSelector) {
-              navigateToSelector(item.targetSelector);
+              navigateToSelector(item.targetSelector, true, { scrollBlock: 'start' });
             } else {
               goToPage(item.targetPageIndex);
             }
@@ -2846,7 +2846,7 @@
         zoomReadout.textContent = `${Math.round(zoom * 100)}%`;
       }
 
-      function updatePage(){
+      function updatePage(options = {}){
         pages.forEach((page, idx) => {
           page.classList.toggle('active', idx === currentPage);
         });
@@ -2857,7 +2857,9 @@
         nextBtn.disabled = currentPage === pages.length - 1;
         updatePageButtons();
         updateBibliographyBackButton();
-        workspace.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        if (options.resetScroll !== false) {
+          workspace.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        }
       }
 
       function goToPage(index, options = {}){
@@ -2870,7 +2872,7 @@
         }
 
         discardBibliographyNavigationForPageChange(previousPage, currentPage);
-        updatePage();
+        updatePage(options);
       }
 
       function getTargetPageIndex(hash){
@@ -2893,7 +2895,7 @@
         currentNavigationHash = resolvedHash;
 
         if (pageIndex >= 0) {
-          goToPage(pageIndex, { preserveNavigationContext: true });
+          goToPage(pageIndex, { preserveNavigationContext: true, resetScroll: false });
         }
 
         requestAnimationFrame(() => {
@@ -2904,7 +2906,11 @@
           }
 
           const focusTarget = activeSearchElement || element;
-          focusTarget.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' });
+          focusTarget.scrollIntoView({
+            block: options.scrollBlock || 'center',
+            inline: 'nearest',
+            behavior: 'auto'
+          });
 
           if (options.syncUrl && element.id) {
             syncLocationHash(`#${element.id}`);

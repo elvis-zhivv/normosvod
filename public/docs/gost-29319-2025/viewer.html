@@ -2693,7 +2693,7 @@
         zoomReadout.textContent = `${Math.round(zoom * 100)}%`;
       }
 
-      function updatePage(){
+      function updatePage(options = {}){
         pages.forEach((page, idx) => {
           page.classList.toggle('active', idx === currentPage);
         });
@@ -2704,14 +2704,16 @@
         nextBtn.disabled = currentPage === pages.length - 1;
         updatePageButtons();
         updateBibliographyBackButton();
-        workspace.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        if (options.resetScroll !== false) {
+          workspace.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+        }
       }
 
-      function goToPage(index){
+      function goToPage(index, options = {}){
         const previousPage = currentPage;
         currentPage = clampPage(index);
         discardBibliographyNavigationForPageChange(previousPage, currentPage);
-        updatePage();
+        updatePage(options);
       }
 
       function getTargetPageIndex(hash){
@@ -2727,7 +2729,7 @@
         const page = element.closest('.page');
         const pageIndex = page ? pages.indexOf(page) : (typeof options.pageIndex === 'number' ? options.pageIndex : -1);
         if (pageIndex >= 0) {
-          goToPage(pageIndex);
+          goToPage(pageIndex, { resetScroll: false });
         }
 
         requestAnimationFrame(() => {
@@ -2738,7 +2740,11 @@
           }
 
           const focusTarget = activeSearchElement || element;
-          focusTarget.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'auto' });
+          focusTarget.scrollIntoView({
+            block: options.scrollBlock || 'center',
+            inline: 'nearest',
+            behavior: 'auto'
+          });
 
           if (options.syncUrl && element.id) {
             syncLocationHash(`#${element.id}`);

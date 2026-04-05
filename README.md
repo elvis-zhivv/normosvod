@@ -37,6 +37,14 @@ node scripts/import-viewer.mjs ./incoming/gost-8784-75.html
 node scripts/import-viewer.mjs --all
 ```
 
+Базовая публикация изменений в git:
+
+```bash
+git add .
+git commit -m "your message"
+git push origin main
+```
+
 ## Деплой на Reg.ru
 
 Для обычного Linux-хостинга Reg.ru с `ispmanager` проект публикуется как статический сайт:
