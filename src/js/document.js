@@ -82,14 +82,22 @@ export function renderDocumentPage(document, { showEmbeddedViewer }) {
         <div
           class="document-cover-preview"
           data-cover-preview
+          data-preview-kind="hero"
           data-viewer-url="${viewerUrl}"
           data-gost-number="${document.gostNumber}"
+          data-title="${document.shortTitle || document.title}"
+          data-year="${document.year ?? ''}"
         >
           <div class="document-cover-preview-shell">
-            <div class="document-cover-preview-loading">Загружаем титульный лист…</div>
+            <div class="document-cover-preview-loading">
+              <div class="doc-cover-card doc-cover-card-hero" aria-label="Обложка ${document.gostNumber}">
+                <p class="doc-cover-card-kicker">${document.gostNumber}</p>
+                <strong>${document.shortTitle || document.title}</strong>
+                <span>${document.year}</span>
+              </div>
+            </div>
             <iframe
               title="Титульный лист ${document.gostNumber}"
-              src="${viewerUrl}"
               loading="lazy"
               tabindex="-1"
             ></iframe>

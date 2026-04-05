@@ -305,6 +305,7 @@ select {
 .doc-cover-card {
   display: grid;
   align-content: space-between;
+  gap: 14px;
   height: 100%;
   padding: 18px;
   background:
@@ -335,6 +336,16 @@ select {
   background: rgba(12, 74, 110, 0.1);
   color: var(--brand);
   font-weight: 700;
+}
+
+.doc-cover-card-note {
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.doc-cover-card-hero {
+  min-height: 100%;
 }
 
 .doc-card-body h3 {
@@ -405,15 +416,13 @@ select {
 .document-cover-preview-loading {
   position: absolute;
   inset: 12px;
-  display: grid;
-  place-items: center;
+  display: block;
   border-radius: 22px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(246, 239, 228, 0.92)),
     linear-gradient(135deg, #f5efe4, #e5edf5);
   color: var(--muted);
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  overflow: hidden;
 }
 
 .document-cover-preview iframe {
@@ -423,6 +432,19 @@ select {
   opacity: 0;
   transition: opacity 0.24s ease;
   background: transparent;
+}
+
+.document-cover-preview-card .document-cover-preview-shell {
+  padding: 0;
+}
+
+.document-cover-preview-card .document-cover-preview-loading {
+  inset: 0;
+  border-radius: 18px;
+}
+
+.document-cover-preview-card iframe {
+  border-radius: 18px;
 }
 
 .meta-list {

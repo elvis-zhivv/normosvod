@@ -10,10 +10,29 @@ export function renderDocCard(document) {
   return `
     <article class="doc-card">
       <div class="doc-card-preview">
-        <div class="doc-cover-card" aria-label="Обложка ${document.gostNumber}">
-          <p class="doc-cover-card-kicker">${document.gostNumber}</p>
-          <strong>${document.shortTitle || document.title}</strong>
-          <span>${document.year}</span>
+        <div
+          class="document-cover-preview document-cover-preview-card"
+          data-cover-preview
+          data-preview-kind="card"
+          data-viewer-url="${viewerUrl}"
+          data-gost-number="${document.gostNumber}"
+          data-title="${document.shortTitle || document.title}"
+          data-year="${document.year ?? ''}"
+        >
+          <div class="document-cover-preview-shell">
+            <div class="document-cover-preview-loading">
+              <div class="doc-cover-card" aria-label="Обложка ${document.gostNumber}">
+                <p class="doc-cover-card-kicker">${document.gostNumber}</p>
+                <strong>${document.shortTitle || document.title}</strong>
+                <span>${document.year}</span>
+              </div>
+            </div>
+            <iframe
+              title="Титульный лист ${document.gostNumber}"
+              loading="lazy"
+              tabindex="-1"
+            ></iframe>
+          </div>
         </div>
       </div>
       <div class="doc-card-body">
