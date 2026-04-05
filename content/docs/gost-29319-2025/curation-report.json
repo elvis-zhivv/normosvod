@@ -1,0 +1,43 @@
+{
+  "slug": "gost-29319-2025",
+  "gostNumber": "ГОСТ 29319—2025",
+  "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
+  "themeId": "coatings",
+  "readerMode": "hybrid",
+  "migrationStatus": "entity-linked",
+  "curationApplied": true,
+  "reviewStatus": "needs-review",
+  "blockCount": 24,
+  "definitionsCount": 5,
+  "relatedNormsCount": 18,
+  "hiddenBlocksCount": 0,
+  "counts": {
+    "errors": 0,
+    "warnings": 2,
+    "info": 1
+  },
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "reader-cutover-pending",
+      "message": "Документ ещё не переведён в полный V2 reader mode (hybrid).",
+      "blockId": null
+    },
+    {
+      "severity": "warning",
+      "code": "migration-incomplete",
+      "message": "Migration status документа: entity-linked.",
+      "blockId": null
+    },
+    {
+      "severity": "info",
+      "code": "thin-block",
+      "message": "Блок слишком короткий и, вероятно, требует ручной проверки сегментации.",
+      "blockId": "gost-29319-2025-stranica-20"
+    }
+  ],
+  "suggestedActions": [
+    "Дополнить manual overrides для блоков, определений и связанных норм.",
+    "Подготовить документ к полному cutover в Reader V2."
+  ]
+}

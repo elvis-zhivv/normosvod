@@ -1,0 +1,647 @@
+{
+  "slug": "gost-29319-2025",
+  "gostNumber": "ГОСТ 29319—2025",
+  "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
+  "themeId": "coatings",
+  "readerMode": "hybrid",
+  "migrationStatus": "entity-linked",
+  "draftState": "needs-review",
+  "targetMigrationStatus": "print-verified",
+  "curationApplied": true,
+  "overrideVersion": 1,
+  "reportSummary": {
+    "reviewStatus": "needs-review",
+    "counts": {
+      "errors": 0,
+      "warnings": 2,
+      "info": 1
+    },
+    "suggestedActions": [
+      "Дополнить manual overrides для блоков, определений и связанных норм.",
+      "Подготовить документ к полному cutover в Reader V2."
+    ]
+  },
+  "draftSummary": {
+    "notes": "Подтвердить перевод документа в print-verified после проверки короткого хвостового блока и policy переключения hybrid -> v2.",
+    "blockReviews": {
+      "accepted": 1,
+      "rejected": 0,
+      "pending": 1
+    },
+    "definitionReviews": {
+      "accepted": 1,
+      "rejected": 0,
+      "pending": 0
+    },
+    "relatedNormReviews": {
+      "accepted": 1,
+      "rejected": 0,
+      "pending": 0
+    }
+  },
+  "queueSummary": {
+    "blocksPending": 23,
+    "definitionsPending": 4,
+    "relatedNormsPending": 17
+  },
+  "documentIssues": [
+    {
+      "severity": "warning",
+      "code": "reader-cutover-pending",
+      "message": "Документ ещё не переведён в полный V2 reader mode (hybrid).",
+      "blockId": null
+    },
+    {
+      "severity": "warning",
+      "code": "migration-incomplete",
+      "message": "Migration status документа: entity-linked.",
+      "blockId": null
+    }
+  ],
+  "blockQueue": [
+    {
+      "blockId": "gost-29319-2025-stranica-i-titul",
+      "title": "Страница I — «Титул»",
+      "type": "section",
+      "sourcePageNumber": 1,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte",
+      "title": "Страница II — «Предисловие. Сведения о стандарте»",
+      "type": "meta",
+      "sourcePageNumber": 2,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-stranica-iii-informacionnye-svedeniya",
+      "title": "Страница III — «Информационные сведения»",
+      "type": "section",
+      "sourcePageNumber": 3,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-stranica-iv-vvedenie",
+      "title": "Страница IV — «Введение»",
+      "type": "meta",
+      "sourcePageNumber": 4,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-1-oblast-primeneniya",
+      "title": "1. Область применения",
+      "type": "section",
+      "sourcePageNumber": 5,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-2-normativnye-ssylki",
+      "title": "2. Нормативные ссылки",
+      "type": "references",
+      "sourcePageNumber": 5,
+      "reviewStatus": "accepted",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": true,
+      "note": "Нормативные ссылки вручную подтверждены, включая национальную замену.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-05T12:10:00.000Z"
+    },
+    {
+      "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
+      "title": "3. Термины и определения",
+      "type": "definition-set",
+      "sourcePageNumber": 6,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": true,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta",
+      "title": "4. Требования к освещению для сравнения цвета",
+      "type": "requirements",
+      "sourcePageNumber": 6,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-5-trebovaniya-k-specialistu",
+      "title": "5. Требования к специалисту",
+      "type": "requirements",
+      "sourcePageNumber": 7,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam",
+      "title": "6. Требования к образцам и эталонам",
+      "type": "requirements",
+      "sourcePageNumber": 8,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-razdel-6-prodolzhenie",
+      "title": "Раздел 6 (продолжение)",
+      "type": "section",
+      "sourcePageNumber": 9,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-7-provedenie-ispytanii",
+      "title": "7. Проведение испытаний",
+      "type": "procedure",
+      "sourcePageNumber": 10,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-8-ocenka-metamerii",
+      "title": "8. Оценка метамерии",
+      "type": "analysis",
+      "sourcePageNumber": 11,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-9-obrabotka-rezultatov",
+      "title": "9. Обработка результатов",
+      "type": "analysis",
+      "sourcePageNumber": 12,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-10-precizionnost",
+      "title": "10. Прецизионность",
+      "type": "section",
+      "sourcePageNumber": 12,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-11-protokol-ispytanii",
+      "title": "11. Протокол испытаний",
+      "type": "procedure",
+      "sourcePageNumber": 12,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov",
+      "title": "Приложение А (справочное) — «Идентификация цвета образцов»",
+      "type": "appendix",
+      "sourcePageNumber": 13,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-prilozhenie-a-prodolzhenie",
+      "title": "Приложение А (продолжение)",
+      "type": "appendix",
+      "sourcePageNumber": 14,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii",
+      "title": "Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»",
+      "type": "appendix",
+      "sourcePageNumber": 15,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya",
+      "title": "Приложение В (справочное) — «Метамерия и метамерные соответствия»",
+      "type": "appendix",
+      "sourcePageNumber": 16,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-bibliografiya",
+      "title": "Библиография",
+      "type": "bibliography",
+      "sourcePageNumber": 17,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-klyuchevye-slova",
+      "title": "Ключевые слова",
+      "type": "meta",
+      "sourcePageNumber": 18,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-izdatelskie-svedeniya",
+      "title": "Издательские сведения",
+      "type": "meta",
+      "sourcePageNumber": 19,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-29319-2025-stranica-20",
+      "title": "Страница 20",
+      "type": "section",
+      "sourcePageNumber": 20,
+      "reviewStatus": "needs-review",
+      "issueCodes": [
+        "thin-block"
+      ],
+      "issueCount": 1,
+      "hasOverride": false,
+      "note": "Короткий финальный блок требует ручной проверки: оставить meta block или скрыть в curated слое.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-05T12:12:00.000Z"
+    }
+  ],
+  "definitionQueue": [
+    {
+      "definitionId": "gost-29319-2025-3-terminy-i-opredeleniya-cvet-lakokrasochnogo-pokrytiya",
+      "term": "цвет лакокрасочного покрытия",
+      "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "definitionId": "gost-29319-2025-3-terminy-i-opredeleniya-vizualnoe-cvetovoe-razlichie",
+      "term": "визуальное цветовое различие",
+      "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "definitionId": "gost-29319-2025-3-terminy-i-opredeleniya-kontrolnyi-obrazec-cveta-koc",
+      "term": "контрольный образец цвета; КОЦ",
+      "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "definitionId": "gost-29319-2025-3-terminy-i-opredeleniya-metameriya-mezhdu-dvumya-cvetami",
+      "term": "метамерия (между двумя цветами)",
+      "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "definitionId": "manual-definition-kontrolnyi-obrazec",
+      "term": "контрольный образец",
+      "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
+      "reviewStatus": "accepted",
+      "note": "Определение подтверждено вручную.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-05T12:14:00.000Z"
+    }
+  ],
+  "relatedNormQueue": [
+    {
+      "relatedNormId": "related-gost-29319-2025",
+      "label": "ГОСТ 29319— 2025",
+      "sourceBlockIds": [
+        "gost-29319-2025-stranica-i-titul"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-iso-3668-2017",
+      "label": "ISO 3668:2017",
+      "sourceBlockIds": [
+        "gost-29319-2025-stranica-i-titul",
+        "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-29319-2025",
+      "label": "ГОСТ 29319—2025",
+      "sourceBlockIds": [
+        "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte",
+        "gost-29319-2025-stranica-iii-informacionnye-svedeniya",
+        "gost-29319-2025-stranica-iv-vvedenie",
+        "gost-29319-2025-2-normativnye-ssylki",
+        "gost-29319-2025-4-trebovaniya-k-osvescheniyu-dlya-sravneniya-cveta",
+        "gost-29319-2025-5-trebovaniya-k-specialistu",
+        "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam",
+        "gost-29319-2025-razdel-6-prodolzhenie",
+        "gost-29319-2025-7-provedenie-ispytanii",
+        "gost-29319-2025-8-ocenka-metamerii",
+        "gost-29319-2025-11-protokol-ispytanii",
+        "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov",
+        "gost-29319-2025-prilozhenie-a-prodolzhenie",
+        "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii",
+        "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya",
+        "gost-29319-2025-bibliografiya"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-1-0",
+      "label": "ГОСТ 1.0",
+      "sourceBlockIds": [
+        "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-1-2",
+      "label": "ГОСТ 1.2",
+      "sourceBlockIds": [
+        "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-29319-92",
+      "label": "ГОСТ 29319—92",
+      "sourceBlockIds": [
+        "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-8784",
+      "label": "ГОСТ 8784",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki",
+        "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-8832",
+      "label": "ГОСТ 8832",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki",
+        "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam",
+        "gost-29319-2025-razdel-6-prodolzhenie"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-9980-2",
+      "label": "ГОСТ 9980.2",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki",
+        "gost-29319-2025-razdel-6-prodolzhenie"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "manual-related-gost-r-71216-2024",
+      "label": "ГОСТ Р 71216—2024",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki"
+      ],
+      "reviewStatus": "accepted",
+      "note": "Связанная норма добавлена вручную и подтверждена.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-05T12:15:00.000Z"
+    },
+    {
+      "relatedNormId": "related-gost-29317",
+      "label": "ГОСТ 29317",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki",
+        "gost-29319-2025-razdel-6-prodolzhenie",
+        "gost-29319-2025-7-provedenie-ispytanii"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-31993",
+      "label": "ГОСТ 31993",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki",
+        "gost-29319-2025-razdel-6-prodolzhenie"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-iso-1513-2010",
+      "label": "ISO 1513:2010",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-iso-15528-2013",
+      "label": "ISO 15528:2013",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-iso-2808-2019",
+      "label": "ISO 2808:2019",
+      "sourceBlockIds": [
+        "gost-29319-2025-2-normativnye-ssylki"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-r-59953-2021",
+      "label": "ГОСТ Р 59953—2021",
+      "sourceBlockIds": [
+        "gost-29319-2025-razdel-6-prodolzhenie"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-iso-cie-11664-4-2019",
+      "label": "ISO/CIE 11664-4:2019",
+      "sourceBlockIds": [
+        "gost-29319-2025-bibliografiya"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-astm-d1729-22",
+      "label": "ASTM D1729-22",
+      "sourceBlockIds": [
+        "gost-29319-2025-bibliografiya"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    }
+  ]
+}

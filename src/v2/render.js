@@ -317,6 +317,7 @@ function renderRail(model) {
         <li>${escapeHtml(formatReaderModeLabel(model.meta?.readerMode))}</li>
         <li>${escapeHtml(formatMigrationStatusLabel(model.meta?.migrationStatus))}</li>
         <li>${model.curation?.applied ? 'Кураторский слой активен' : 'Без ручной верификации'}</li>
+        <li>${model.curation?.applied ? 'Документ прошёл curator review.' : 'Требуется manual QA по canonical blocks.'}</li>
       </ul>
     </section>
     <section class="v2-rail-card">

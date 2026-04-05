@@ -1,0 +1,586 @@
+{
+  "slug": "gost-8784-75",
+  "gostNumber": "ГОСТ 8784—75",
+  "title": "Материалы лакокрасочные. Методы определения укрывистости",
+  "themeId": "coatings",
+  "readerMode": "legacy",
+  "migrationStatus": "imported",
+  "draftState": "pending",
+  "targetMigrationStatus": "",
+  "curationApplied": false,
+  "overrideVersion": 0,
+  "reportSummary": {
+    "reviewStatus": "needs-review",
+    "counts": {
+      "errors": 0,
+      "warnings": 3,
+      "info": 1
+    },
+    "suggestedActions": [
+      "Дополнить manual overrides для блоков, определений и связанных норм.",
+      "Создать и применить overrides.json для документа.",
+      "Подготовить документ к полному cutover в Reader V2."
+    ]
+  },
+  "draftSummary": {
+    "notes": "",
+    "blockReviews": {
+      "accepted": 0,
+      "rejected": 0,
+      "pending": 0
+    },
+    "definitionReviews": {
+      "accepted": 0,
+      "rejected": 0,
+      "pending": 0
+    },
+    "relatedNormReviews": {
+      "accepted": 0,
+      "rejected": 0,
+      "pending": 0
+    }
+  },
+  "queueSummary": {
+    "blocksPending": 21,
+    "definitionsPending": 0,
+    "relatedNormsPending": 20
+  },
+  "documentIssues": [
+    {
+      "severity": "warning",
+      "code": "manual-curation-missing",
+      "message": "Для документа не применён ручной curation слой.",
+      "blockId": null
+    },
+    {
+      "severity": "info",
+      "code": "reader-cutover-pending",
+      "message": "Документ ещё не переведён в полный V2 reader mode (legacy).",
+      "blockId": null
+    },
+    {
+      "severity": "warning",
+      "code": "migration-incomplete",
+      "message": "Migration status документа: imported.",
+      "blockId": null
+    },
+    {
+      "severity": "warning",
+      "code": "definitions-missing",
+      "message": "В документе есть definition-set блоки, но definitions graph пуст.",
+      "blockId": null
+    }
+  ],
+  "blockQueue": [
+    {
+      "blockId": "gost-8784-75-oblozhka",
+      "title": "Обложка",
+      "type": "section",
+      "sourcePageNumber": 1,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti",
+      "title": "Титульная страница и 1. Визуальный метод определения укрывистости",
+      "type": "definition-set",
+      "sourcePageNumber": 2,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-1-1-suschnost-metoda",
+      "title": "1.1. Сущность метода",
+      "type": "section",
+      "sourcePageNumber": 2,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-1-2-apparatura-i-materialy",
+      "title": "1.2. Аппаратура и материалы",
+      "type": "section",
+      "sourcePageNumber": 2,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-1-3-provedenie-ispytaniya",
+      "title": "1.3. Проведение испытания",
+      "type": "procedure",
+      "sourcePageNumber": 3,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-1-4-obrabotka-rezultatov",
+      "title": "1.4. Обработка результатов",
+      "type": "analysis",
+      "sourcePageNumber": 3,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-2-instrumentalnyi-metod-opredeleniya-ukryvistosti",
+      "title": "2. Инструментальный метод определения укрывистости",
+      "type": "definition-set",
+      "sourcePageNumber": 4,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-2-1-suschnost-metoda",
+      "title": "2.1. Сущность метода",
+      "type": "section",
+      "sourcePageNumber": 4,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-2-2-apparatura-i-materialy",
+      "title": "2.2. Аппаратура и материалы",
+      "type": "section",
+      "sourcePageNumber": 4,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-2-3-provedenie-ispytaniya",
+      "title": "2.3. Проведение испытания",
+      "type": "procedure",
+      "sourcePageNumber": 5,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-2-4-obrabotka-rezultatov",
+      "title": "2.4. Обработка результатов",
+      "type": "analysis",
+      "sourcePageNumber": 5,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti",
+      "title": "3. Инструментально-математический метод определения укрывистости",
+      "type": "definition-set",
+      "sourcePageNumber": 6,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-3-1-suschnost-metoda",
+      "title": "3.1. Сущность метода",
+      "type": "section",
+      "sourcePageNumber": 6,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-3-2-apparatura-i-materialy",
+      "title": "3.2. Аппаратура и материалы",
+      "type": "section",
+      "sourcePageNumber": 6,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-3-3-provedenie-ispytaniya",
+      "title": "3.3. Проведение испытания",
+      "type": "procedure",
+      "sourcePageNumber": 6,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-3-4-obrabotka-rezultatov",
+      "title": "3.4. Обработка результатов",
+      "type": "analysis",
+      "sourcePageNumber": 6,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti",
+      "title": "3.4.3. Перевод величины укрывистости",
+      "type": "section",
+      "sourcePageNumber": 7,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom",
+      "title": "Приложение 1 — определение толщины покрытия весовым методом",
+      "type": "definition-set",
+      "sourcePageNumber": 8,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti",
+      "title": "Приложение 2 — блок-схема расчета укрывистости",
+      "type": "appendix",
+      "sourcePageNumber": 9,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-informacionnye-dannye",
+      "title": "Информационные данные",
+      "type": "section",
+      "sourcePageNumber": 10,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "blockId": "gost-8784-75-izdatelskie-svedeniya",
+      "title": "Издательские сведения",
+      "type": "meta",
+      "sourcePageNumber": 11,
+      "reviewStatus": "pending",
+      "issueCodes": [],
+      "issueCount": 0,
+      "hasOverride": false,
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    }
+  ],
+  "definitionQueue": [],
+  "relatedNormQueue": [
+    {
+      "relatedNormId": "related-gost-8784-75",
+      "label": "ГОСТ 8784—75",
+      "sourceBlockIds": [
+        "gost-8784-75-oblozhka",
+        "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti",
+        "gost-8784-75-1-2-apparatura-i-materialy",
+        "gost-8784-75-1-4-obrabotka-rezultatov",
+        "gost-8784-75-2-2-apparatura-i-materialy",
+        "gost-8784-75-2-4-obrabotka-rezultatov",
+        "gost-8784-75-3-4-obrabotka-rezultatov",
+        "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti",
+        "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom",
+        "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-597",
+      "label": "ГОСТ 597",
+      "sourceBlockIds": [
+        "gost-8784-75-1-2-apparatura-i-materialy",
+        "gost-8784-75-2-2-apparatura-i-materialy"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-9095",
+      "label": "ГОСТ 9095",
+      "sourceBlockIds": [
+        "gost-8784-75-1-2-apparatura-i-materialy",
+        "gost-8784-75-2-2-apparatura-i-materialy"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-7931",
+      "label": "ГОСТ 7931",
+      "sourceBlockIds": [
+        "gost-8784-75-1-3-provedenie-ispytaniya"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-8832",
+      "label": "ГОСТ 8832",
+      "sourceBlockIds": [
+        "gost-8784-75-1-3-provedenie-ispytaniya",
+        "gost-8784-75-3-3-provedenie-ispytaniya"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-17537",
+      "label": "ГОСТ 17537",
+      "sourceBlockIds": [
+        "gost-8784-75-1-4-obrabotka-rezultatov"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-24234",
+      "label": "ГОСТ 24234",
+      "sourceBlockIds": [
+        "gost-8784-75-2-2-apparatura-i-materialy"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-267",
+      "label": "ГОСТ 267",
+      "sourceBlockIds": [
+        "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti",
+        "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-15139",
+      "label": "ГОСТ 15139",
+      "sourceBlockIds": [
+        "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti",
+        "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-14243",
+      "label": "ГОСТ 14243",
+      "sourceBlockIds": [
+        "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-8784-58",
+      "label": "ГОСТ 8784—58",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-267-73",
+      "label": "ГОСТ 267—73",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-597-73",
+      "label": "ГОСТ 597—73",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-7931-76",
+      "label": "ГОСТ 7931—76",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-8832-76",
+      "label": "ГОСТ 8832—76",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-9095-89",
+      "label": "ГОСТ 9095—89",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-14243-78",
+      "label": "ГОСТ 14243—78",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-15139-69",
+      "label": "ГОСТ 15139—69",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-17537-72",
+      "label": "ГОСТ 17537—72",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    },
+    {
+      "relatedNormId": "related-gost-24234-80",
+      "label": "ГОСТ 24234—80",
+      "sourceBlockIds": [
+        "gost-8784-75-informacionnye-dannye"
+      ],
+      "reviewStatus": "pending",
+      "note": "",
+      "reviewer": "",
+      "updatedAt": ""
+    }
+  ]
+}

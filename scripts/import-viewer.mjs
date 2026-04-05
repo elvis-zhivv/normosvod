@@ -2,27 +2,18 @@ import path from 'node:path';
 import { mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { hashContent } from './lib/hash-file.mjs';
-import { buildStats, readDocumentsManifest, upsertDocumentRecord } from './lib/manifest.mjs';
+import { readDocumentsManifest } from './lib/manifest.mjs';
 import { enrichDocumentRecord } from './lib/document-record.mjs';
 import { buildSlug } from './lib/slugify.mjs';
 import {
   ARCHIVE_DIR,
   DOCS_DIR,
-  DOCUMENTS_MANIFEST_PATH,
   INCOMING_DIR,
-  SEARCH_INDEX_PATH,
-  V2_SEARCH_INDEX_PATH,
-  STATS_PATH
 } from './lib/project-paths.mjs';
 import { extractViewerMeta, validateViewerHtmlBasic } from './lib/parse-viewer-meta.mjs';
-import { writeJsonAtomic } from './lib/write-json.mjs';
-import { buildSearchIndex } from './build-search-index.mjs';
-import { buildV2SearchIndex } from './build-v2-search-index.mjs';
 import { generatePreviewOrPlaceholder } from './generate-preview.mjs';
 import { buildV2DocumentStub } from './lib/v2-document-stub.mjs';
-import { rebuildCanonicalDocs } from './rebuild-canonical-docs.mjs';
-import { rebuildPrintDocs } from './rebuild-print-docs.mjs';
-import { rebuildV2Data } from './rebuild-v2-data.mjs';
+import { rebuildManifest } from './rebuild-manifest.mjs';
 
 function timestampForPath(date = new Date()) {
   return date.toISOString().replace(/[:.]/g, '-');
@@ -167,28 +158,12 @@ export async function importViewer(inputPath, options = {}) {
       'utf8'
     );
 
-    const nextManifest = upsertDocumentRecord(manifest, localMeta);
-    const nextStats = buildStats(nextManifest);
-    const nextSearchIndex = await buildSearchIndex(nextManifest, {
-      htmlBySlug: new Map([[slug, html]])
-    });
-
     if (options.replace && await pathExists(finalDirectory)) {
       await archiveExistingDocument(slug);
     }
 
     await rename(stagingDirectory, finalDirectory);
-
-    await Promise.all([
-      writeJsonAtomic(DOCUMENTS_MANIFEST_PATH, nextManifest),
-      writeJsonAtomic(STATS_PATH, nextStats),
-      writeJsonAtomic(SEARCH_INDEX_PATH, nextSearchIndex)
-    ]);
-    await rebuildCanonicalDocs();
-    await rebuildPrintDocs();
-    await rebuildV2Data();
-    const nextV2SearchIndex = await buildV2SearchIndex(nextManifest);
-    await writeJsonAtomic(V2_SEARCH_INDEX_PATH, nextV2SearchIndex);
+    await rebuildManifest();
 
     await archiveImportedSource(absoluteInputPath);
     return localMeta;

@@ -1,0 +1,139 @@
+[
+  {
+    "slug": "gost-1-0-2015",
+    "gostNumber": "ГОСТ 1.0—2015",
+    "title": "Межгосударственная система стандартизации. Основные положения",
+    "themeId": "regulation",
+    "readerMode": "legacy",
+    "migrationStatus": "imported",
+    "curationApplied": false,
+    "reviewStatus": "needs-review",
+    "blockCount": 16,
+    "definitionsCount": 0,
+    "relatedNormsCount": 14,
+    "hiddenBlocksCount": 0,
+    "counts": {
+      "errors": 0,
+      "warnings": 2,
+      "info": 1
+    },
+    "issues": [
+      {
+        "severity": "warning",
+        "code": "manual-curation-missing",
+        "message": "Для документа не применён ручной curation слой.",
+        "blockId": null
+      },
+      {
+        "severity": "info",
+        "code": "reader-cutover-pending",
+        "message": "Документ ещё не переведён в полный V2 reader mode (legacy).",
+        "blockId": null
+      },
+      {
+        "severity": "warning",
+        "code": "migration-incomplete",
+        "message": "Migration status документа: imported.",
+        "blockId": null
+      }
+    ],
+    "suggestedActions": [
+      "Дополнить manual overrides для блоков, определений и связанных норм.",
+      "Создать и применить overrides.json для документа.",
+      "Подготовить документ к полному cutover в Reader V2."
+    ]
+  },
+  {
+    "slug": "gost-29319-2025",
+    "gostNumber": "ГОСТ 29319—2025",
+    "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
+    "themeId": "coatings",
+    "readerMode": "hybrid",
+    "migrationStatus": "entity-linked",
+    "curationApplied": true,
+    "reviewStatus": "needs-review",
+    "blockCount": 24,
+    "definitionsCount": 5,
+    "relatedNormsCount": 18,
+    "hiddenBlocksCount": 0,
+    "counts": {
+      "errors": 0,
+      "warnings": 2,
+      "info": 1
+    },
+    "issues": [
+      {
+        "severity": "warning",
+        "code": "reader-cutover-pending",
+        "message": "Документ ещё не переведён в полный V2 reader mode (hybrid).",
+        "blockId": null
+      },
+      {
+        "severity": "warning",
+        "code": "migration-incomplete",
+        "message": "Migration status документа: entity-linked.",
+        "blockId": null
+      },
+      {
+        "severity": "info",
+        "code": "thin-block",
+        "message": "Блок слишком короткий и, вероятно, требует ручной проверки сегментации.",
+        "blockId": "gost-29319-2025-stranica-20"
+      }
+    ],
+    "suggestedActions": [
+      "Дополнить manual overrides для блоков, определений и связанных норм.",
+      "Подготовить документ к полному cutover в Reader V2."
+    ]
+  },
+  {
+    "slug": "gost-8784-75",
+    "gostNumber": "ГОСТ 8784—75",
+    "title": "Материалы лакокрасочные. Методы определения укрывистости",
+    "themeId": "coatings",
+    "readerMode": "legacy",
+    "migrationStatus": "imported",
+    "curationApplied": false,
+    "reviewStatus": "needs-review",
+    "blockCount": 21,
+    "definitionsCount": 0,
+    "relatedNormsCount": 20,
+    "hiddenBlocksCount": 0,
+    "counts": {
+      "errors": 0,
+      "warnings": 3,
+      "info": 1
+    },
+    "issues": [
+      {
+        "severity": "warning",
+        "code": "manual-curation-missing",
+        "message": "Для документа не применён ручной curation слой.",
+        "blockId": null
+      },
+      {
+        "severity": "info",
+        "code": "reader-cutover-pending",
+        "message": "Документ ещё не переведён в полный V2 reader mode (legacy).",
+        "blockId": null
+      },
+      {
+        "severity": "warning",
+        "code": "migration-incomplete",
+        "message": "Migration status документа: imported.",
+        "blockId": null
+      },
+      {
+        "severity": "warning",
+        "code": "definitions-missing",
+        "message": "В документе есть definition-set блоки, но definitions graph пуст.",
+        "blockId": null
+      }
+    ],
+    "suggestedActions": [
+      "Дополнить manual overrides для блоков, определений и связанных норм.",
+      "Создать и применить overrides.json для документа.",
+      "Подготовить документ к полному cutover в Reader V2."
+    ]
+  }
+]

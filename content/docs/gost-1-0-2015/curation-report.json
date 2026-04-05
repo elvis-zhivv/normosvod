@@ -1,0 +1,44 @@
+{
+  "slug": "gost-1-0-2015",
+  "gostNumber": "ГОСТ 1.0—2015",
+  "title": "Межгосударственная система стандартизации. Основные положения",
+  "themeId": "regulation",
+  "readerMode": "legacy",
+  "migrationStatus": "imported",
+  "curationApplied": false,
+  "reviewStatus": "needs-review",
+  "blockCount": 16,
+  "definitionsCount": 0,
+  "relatedNormsCount": 14,
+  "hiddenBlocksCount": 0,
+  "counts": {
+    "errors": 0,
+    "warnings": 2,
+    "info": 1
+  },
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "manual-curation-missing",
+      "message": "Для документа не применён ручной curation слой.",
+      "blockId": null
+    },
+    {
+      "severity": "info",
+      "code": "reader-cutover-pending",
+      "message": "Документ ещё не переведён в полный V2 reader mode (legacy).",
+      "blockId": null
+    },
+    {
+      "severity": "warning",
+      "code": "migration-incomplete",
+      "message": "Migration status документа: imported.",
+      "blockId": null
+    }
+  ],
+  "suggestedActions": [
+    "Дополнить manual overrides для блоков, определений и связанных норм.",
+    "Создать и применить overrides.json для документа.",
+    "Подготовить документ к полному cutover в Reader V2."
+  ]
+}

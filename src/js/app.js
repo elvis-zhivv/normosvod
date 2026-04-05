@@ -1,6 +1,7 @@
 import { renderHeader } from '../components/header.js';
 import { SORT_OPTIONS } from './filters.js';
 import { renderCatalogPage, renderHomePage } from './catalog.js';
+import { renderCurationDocumentPage, renderCurationIndexPage, renderMissingWorkbench } from './curation.js';
 import { renderDocumentPage, renderMissingDocument } from './document.js';
 import { safeDecodePathSegment, stripBasePath, withBase } from './paths.js';
 import { enhanceV2Readers } from '../v2/enhance.js';
@@ -14,6 +15,8 @@ const state = {
   documents: [],
   searchIndex: [],
   v2SearchIndex: [],
+  curationWorkbenchIndex: [],
+  curationWorkbenchBySlug: new Map(),
   stats: {
     totalDocuments: 0,
     totalPages: 0,
@@ -51,6 +54,19 @@ function getRoute() {
     return { name: 'catalog', currentPath: pathname, params: {}, query: url.searchParams };
   }
 
+  if (pathname === '/curation') {
+    return { name: 'curation-index', currentPath: pathname, params: {}, query: url.searchParams };
+  }
+
+  if (segments[0] === 'curation' && segments[1]) {
+    return {
+      name: 'curation-document',
+      currentPath: pathname,
+      params: { slug: safeDecodePathSegment(segments.slice(1).join('/')) },
+      query: url.searchParams
+    };
+  }
+
   if (segments[0] === 'doc' && segments[1]) {
     return {
       name: 'document',
@@ -75,6 +91,29 @@ function getFilters(query) {
   };
 }
 
+function getCurationFilters(query) {
+  return {
+    query: query.get('q') ?? '',
+    draft: query.get('draft') ?? '',
+    migration: query.get('migration') ?? '',
+    theme: query.get('theme') ?? ''
+  };
+}
+
+async function loadWorkbenchDocument(slug) {
+  if (state.curationWorkbenchBySlug.has(slug)) {
+    return state.curationWorkbenchBySlug.get(slug);
+  }
+
+  const workbenchDocument = await loadJson(`/data/curation-workbench/${encodeURIComponent(slug)}.json`, null);
+
+  if (workbenchDocument) {
+    state.curationWorkbenchBySlug.set(slug, workbenchDocument);
+  }
+
+  return workbenchDocument;
+}
+
 function renderLayout(content, route) {
   appNode.innerHTML = `
     ${renderHeader(route.currentPath)}
@@ -87,10 +126,12 @@ function renderLayout(content, route) {
     ? `${route.pageTitle ?? route.params.slug} — Normosvod`
       : route.name === 'catalog'
       ? 'Каталог — Normosvod'
+      : route.name.startsWith('curation')
+      ? 'Curation Workbench — Normosvod'
       : 'Normosvod — каталог HTML-viewer ГОСТ';
 }
 
-function renderRoute() {
+async function renderRoute() {
   const route = getRoute();
   const filters = getFilters(route.query);
 
@@ -115,6 +156,27 @@ function renderRoute() {
     return;
   }
 
+  if (route.name === 'curation-index') {
+    renderLayout(renderCurationIndexPage({
+      index: state.curationWorkbenchIndex,
+      filters: getCurationFilters(route.query)
+    }), route);
+    return;
+  }
+
+  if (route.name === 'curation-document') {
+    const workbenchDocument = await loadWorkbenchDocument(route.params.slug);
+    const documentItem = state.documents.find((item) => item.slug === route.params.slug) ?? null;
+    route.pageTitle = documentItem?.gostNumber ?? route.params.slug;
+    renderLayout(
+      workbenchDocument
+        ? renderCurationDocumentPage(workbenchDocument, documentItem)
+        : renderMissingWorkbench(route.params.slug),
+      route
+    );
+    return;
+  }
+
   if (route.name === 'document') {
     const documentItem = state.documents.find((item) => item.slug === route.params.slug);
     const showEmbeddedViewer = route.query.get('embed') === '1';
@@ -127,7 +189,7 @@ function renderRoute() {
         : renderMissingDocument(route.params.slug),
       route
     );
-    void enhanceV2Readers(state.documents);
+    await enhanceV2Readers(state.documents);
     return;
   }
 
@@ -139,13 +201,13 @@ function renderRoute() {
       <a class="button button-primary" href="${withBase('/catalog')}" data-link>В каталог</a>
     </section>
   `, route);
-  void enhanceV2Readers(state.documents);
+  await enhanceV2Readers(state.documents);
 }
 
 function navigate(url, { replace = false } = {}) {
   const method = replace ? 'replaceState' : 'pushState';
   window.history[method]({}, '', url);
-  renderRoute();
+  void renderRoute();
 }
 
 function buildFormUrl(form) {
@@ -220,7 +282,7 @@ function handleFormChange(event) {
     target.dataset.explicit = 'true';
   }
 
-  if (target.matches('select[name="year"], select[name="tag"], select[name="sort"]')) {
+  if (target.matches('select[name="year"], select[name="tag"], select[name="sort"], select[name="draft"], select[name="migration"], select[name="theme"]')) {
     submitFilterForm(form);
   }
 }
@@ -256,25 +318,29 @@ async function bootstrap() {
     window.history.replaceState({}, '', withBase(nextUrl));
   }
 
-  const [documents, stats, searchIndex, v2SearchIndex] = await Promise.all([
+  const [documents, stats, searchIndex, v2SearchIndex, curationWorkbenchIndex] = await Promise.all([
     loadJson('/data/documents.json', []),
     loadJson('/data/stats.json', state.stats),
     loadJson('/data/search-index.json', []),
-    loadJson('/data/v2-search-index.json', [])
+    loadJson('/data/v2-search-index.json', []),
+    loadJson('/data/curation-workbench-index.json', [])
   ]);
 
   state.documents = documents;
   state.stats = stats;
   state.searchIndex = Array.isArray(searchIndex) ? searchIndex : [];
   state.v2SearchIndex = Array.isArray(v2SearchIndex) ? v2SearchIndex : [];
+  state.curationWorkbenchIndex = Array.isArray(curationWorkbenchIndex) ? curationWorkbenchIndex : [];
 
   document.addEventListener('submit', handleFormSubmit);
   document.addEventListener('click', handleLinkClick);
   document.addEventListener('change', handleFormChange);
   document.addEventListener('input', handleSearchInput);
-  window.addEventListener('popstate', renderRoute);
+  window.addEventListener('popstate', () => {
+    void renderRoute();
+  });
 
-  renderRoute();
+  await renderRoute();
 }
 
 bootstrap();

@@ -8,6 +8,8 @@ import { writeJsonAtomic } from './lib/write-json.mjs';
 import { buildSearchIndex } from './build-search-index.mjs';
 import { buildV2SearchIndex } from './build-v2-search-index.mjs';
 import { rebuildCanonicalDocs } from './rebuild-canonical-docs.mjs';
+import { rebuildCurationData } from './rebuild-curation-data.mjs';
+import { rebuildCurationWorkbench } from './rebuild-curation-workbench.mjs';
 import { rebuildPrintDocs } from './rebuild-print-docs.mjs';
 import { rebuildV2Data } from './rebuild-v2-data.mjs';
 import { overlayManifestWithCanonicalData } from './lib/manifest-overlay.mjs';
@@ -35,6 +37,8 @@ export async function rebuildManifest() {
   await rebuildCanonicalDocs(draftManifest, searchIndex);
   const manifest = sortManifestEntries(await overlayManifestWithCanonicalData(draftManifest));
   const stats = buildStats(manifest);
+  await rebuildCurationData(manifest);
+  await rebuildCurationWorkbench(manifest);
 
   await Promise.all([
     writeJsonAtomic(DOCUMENTS_MANIFEST_PATH, manifest),

@@ -85,7 +85,8 @@ function renderPlatformStatus(document) {
           <strong>${escapeHtml(formatMigrationStatusLabel(document.migrationStatus))}</strong>
           <p>${document.curationApplied
             ? 'Документ прошёл ручную верификацию canonical-модели.'
-            : 'Документ пока использует auto-generated migration слой без ручной верификации.'}</p>
+            : 'Документ пока использует auto-generated migration слой без ручной верификации.'}
+            ${document.curationIssuesCount ? ` Открытых QA issues: ${escapeHtml(document.curationIssuesCount)}.` : ''}</p>
         </article>
         <article class="platform-status-card">
           <p class="platform-status-label">Canonical coverage</p>

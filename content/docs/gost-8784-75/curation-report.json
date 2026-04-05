@@ -1,0 +1,50 @@
+{
+  "slug": "gost-8784-75",
+  "gostNumber": "ГОСТ 8784—75",
+  "title": "Материалы лакокрасочные. Методы определения укрывистости",
+  "themeId": "coatings",
+  "readerMode": "legacy",
+  "migrationStatus": "imported",
+  "curationApplied": false,
+  "reviewStatus": "needs-review",
+  "blockCount": 21,
+  "definitionsCount": 0,
+  "relatedNormsCount": 20,
+  "hiddenBlocksCount": 0,
+  "counts": {
+    "errors": 0,
+    "warnings": 3,
+    "info": 1
+  },
+  "issues": [
+    {
+      "severity": "warning",
+      "code": "manual-curation-missing",
+      "message": "Для документа не применён ручной curation слой.",
+      "blockId": null
+    },
+    {
+      "severity": "info",
+      "code": "reader-cutover-pending",
+      "message": "Документ ещё не переведён в полный V2 reader mode (legacy).",
+      "blockId": null
+    },
+    {
+      "severity": "warning",
+      "code": "migration-incomplete",
+      "message": "Migration status документа: imported.",
+      "blockId": null
+    },
+    {
+      "severity": "warning",
+      "code": "definitions-missing",
+      "message": "В документе есть definition-set блоки, но definitions graph пуст.",
+      "blockId": null
+    }
+  ],
+  "suggestedActions": [
+    "Дополнить manual overrides для блоков, определений и связанных норм.",
+    "Создать и применить overrides.json для документа.",
+    "Подготовить документ к полному cutover в Reader V2."
+  ]
+}

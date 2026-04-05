@@ -50,6 +50,8 @@ export function buildDocumentSignals(document) {
   const definitionsCount = toFiniteCount(document?.v2DefinitionsCount);
   const relatedNormsCount = toFiniteCount(document?.v2RelatedNormsCount);
   const hiddenBlocksCount = toFiniteCount(document?.hiddenBlocksCount);
+  const issuesCount = toFiniteCount(document?.curationIssuesCount);
+  const pendingBlocksCount = toFiniteCount(document?.curationPendingBlocksCount);
 
   return [
     {
@@ -72,6 +74,31 @@ export function buildDocumentSignals(document) {
         kind: 'curation',
         label: 'Кураторски проверено',
         tone: 'curated'
+      }
+      : {
+        kind: 'curation-review',
+        label: 'Нужна верификация',
+        tone: 'needs-review'
+      },
+    issuesCount
+      ? {
+        kind: 'curation-issues',
+        label: `${issuesCount} QA issues`,
+        tone: 'needs-review'
+      }
+      : null,
+    document?.curationDraftState
+      ? {
+        kind: 'curation-draft',
+        label: `Draft: ${document.curationDraftState}`,
+        tone: document.curationDraftState === 'accepted' ? 'curated' : 'needs-review'
+      }
+      : null,
+    pendingBlocksCount
+      ? {
+        kind: 'curation-pending-blocks',
+        label: `Блоков на проверке: ${pendingBlocksCount}`,
+        tone: 'needs-review'
       }
       : null,
     blockCount

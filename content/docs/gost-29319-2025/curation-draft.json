@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "reviewState": "needs-review",
+  "notes": "Подтвердить перевод документа в print-verified после проверки короткого хвостового блока и policy переключения hybrid -> v2.",
+  "targetMigrationStatus": "print-verified",
+  "blockReviews": [
+    {
+      "blockId": "gost-29319-2025-2-normativnye-ssylki",
+      "status": "accepted",
+      "note": "Нормативные ссылки вручную подтверждены, включая национальную замену.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-05T12:10:00.000Z"
+    },
+    {
+      "blockId": "gost-29319-2025-stranica-20",
+      "status": "needs-review",
+      "note": "Короткий финальный блок требует ручной проверки: оставить meta block или скрыть в curated слое.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-05T12:12:00.000Z"
+    }
+  ],
+  "definitionReviews": [
+    {
+      "definitionId": "manual-definition-kontrolnyi-obrazec",
+      "status": "accepted",
+      "note": "Определение подтверждено вручную.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-05T12:14:00.000Z"
+    }
+  ],
+  "relatedNormReviews": [
+    {
+      "relatedNormId": "manual-related-gost-r-71216-2024",
+      "status": "accepted",
+      "note": "Связанная норма добавлена вручную и подтверждена.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-05T12:15:00.000Z"
+    }
+  ]
+}

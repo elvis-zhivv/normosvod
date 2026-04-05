@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 
 import { renderDocCard } from '../src/components/doc-card.js';
 import { renderCatalogPage } from '../src/js/catalog.js';
+import { renderCurationDocumentPage, renderCurationIndexPage, renderMissingWorkbench } from '../src/js/curation.js';
 import { renderDocumentPage, renderMissingDocument } from '../src/js/document.js';
 import { normalizeDocumentUrl } from '../src/js/paths.js';
 
@@ -225,4 +226,124 @@ test('renderCatalogPage groups search results by semantic hit type', () => {
   assert.match(html, /Semantic Results/);
   assert.match(html, /Legacy \/ Document Hits/);
   assert.match(html, /search-result-summary/);
+});
+
+test('renderCurationIndexPage renders curator queue and filters', () => {
+  const html = renderCurationIndexPage({
+    index: [
+      {
+        slug: 'gost-29319-2025',
+        gostNumber: 'ГОСТ 29319—2025',
+        title: 'Метод визуального сравнения цвета',
+        themeId: 'coatings',
+        readerMode: 'hybrid',
+        migrationStatus: 'entity-linked',
+        draftState: 'needs-review',
+        reviewStatus: 'needs-review',
+        queueSummary: {
+          blocksPending: 23,
+          definitionsPending: 4,
+          relatedNormsPending: 17
+        },
+        issueCounts: {
+          warnings: 2
+        }
+      }
+    ],
+    filters: {
+      query: '',
+      draft: '',
+      migration: '',
+      theme: ''
+    }
+  });
+
+  assert.match(html, /Очередь ручной верификации/);
+  assert.match(html, /ГОСТ 29319—2025/);
+  assert.match(html, /Открыть workbench/);
+  assert.match(html, /23/);
+});
+
+test('renderCurationDocumentPage renders detailed queues and safe external links', () => {
+  const html = renderCurationDocumentPage({
+    slug: 'gost-29319-2025',
+    gostNumber: 'ГОСТ 29319—2025',
+    title: 'Метод визуального сравнения цвета',
+    themeId: 'coatings',
+    readerMode: 'hybrid',
+    migrationStatus: 'entity-linked',
+    draftState: 'needs-review',
+    targetMigrationStatus: 'print-verified',
+    overrideVersion: 1,
+    reportSummary: {
+      reviewStatus: 'needs-review',
+      counts: {
+        warnings: 2,
+        info: 1
+      },
+      suggestedActions: ['Подготовить документ к полному cutover в Reader V2.']
+    },
+    draftSummary: {
+      notes: 'Проверить финальный блок.'
+    },
+    queueSummary: {
+      blocksPending: 23,
+      definitionsPending: 4,
+      relatedNormsPending: 17
+    },
+    documentIssues: [
+      {
+        severity: 'warning',
+        code: 'migration-incomplete',
+        message: 'Migration status документа: entity-linked.'
+      }
+    ],
+    blockQueue: [
+      {
+        blockId: 'block-1',
+        title: '2. Нормативные ссылки',
+        type: 'references',
+        sourcePageNumber: 5,
+        reviewStatus: 'accepted',
+        issueCodes: [],
+        hasOverride: true,
+        note: 'Проверено.'
+      }
+    ],
+    definitionQueue: [
+      {
+        definitionId: 'definition-1',
+        term: 'контрольный образец',
+        blockId: 'block-1',
+        reviewStatus: 'accepted',
+        note: 'Подтверждено.'
+      }
+    ],
+    relatedNormQueue: [
+      {
+        relatedNormId: 'related-1',
+        label: 'ГОСТ Р 71216—2024',
+        sourceBlockIds: ['block-1'],
+        reviewStatus: 'accepted',
+        note: 'Подтверждено.'
+      }
+    ]
+  }, {
+    slug: 'gost-29319-2025',
+    printUrl: 'javascript:alert(1)',
+    legacyViewerUrl: '/docs/gost-29319-2025/viewer.html'
+  });
+
+  assert.match(html, /Document Issues/);
+  assert.match(html, /Block Queue/);
+  assert.match(html, /Definition Queue/);
+  assert.match(html, /Related Norm Queue/);
+  assert.match(html, /href="about:blank"/);
+  assert.match(html, /href="\/docs\/gost-29319-2025\/viewer.html"/);
+});
+
+test('renderMissingWorkbench escapes slug from URL', () => {
+  const html = renderMissingWorkbench('<img src=x onerror=alert(1)>');
+  assert.match(html, /&lt;img src=x onerror=alert\(1\)&gt;/);
+  assert.doesNotMatch(html, /<img src=x onerror=alert\(1\)>/);
 });

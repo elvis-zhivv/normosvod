@@ -122,9 +122,17 @@
     "curationApplied": false,
     "curationVersion": null,
     "hiddenBlocksCount": 0,
+    "curationReviewStatus": "needs-review",
+    "curationIssuesCount": 2,
+    "curationWarningsCount": 2,
+    "curationErrorsCount": 0,
     "v2BlockCount": 16,
     "v2DefinitionsCount": 0,
-    "v2RelatedNormsCount": 14
+    "v2RelatedNormsCount": 14,
+    "curationDraftState": "pending",
+    "curationDraftTargetStatus": "",
+    "curationReviewedBlocksCount": 0,
+    "curationPendingBlocksCount": 0
   },
   {
     "id": "gost-29319-2025",
@@ -289,9 +297,17 @@
     "curationApplied": true,
     "curationVersion": 1,
     "hiddenBlocksCount": 0,
+    "curationReviewStatus": "needs-review",
+    "curationIssuesCount": 2,
+    "curationWarningsCount": 2,
+    "curationErrorsCount": 0,
     "v2BlockCount": 24,
     "v2DefinitionsCount": 5,
-    "v2RelatedNormsCount": 18
+    "v2RelatedNormsCount": 18,
+    "curationDraftState": "needs-review",
+    "curationDraftTargetStatus": "print-verified",
+    "curationReviewedBlocksCount": 1,
+    "curationPendingBlocksCount": 1
   },
   {
     "id": "gost-8784-75",
@@ -441,8 +457,16 @@
     "curationApplied": false,
     "curationVersion": null,
     "hiddenBlocksCount": 0,
+    "curationReviewStatus": "needs-review",
+    "curationIssuesCount": 3,
+    "curationWarningsCount": 3,
+    "curationErrorsCount": 0,
     "v2BlockCount": 21,
     "v2DefinitionsCount": 0,
-    "v2RelatedNormsCount": 20
+    "v2RelatedNormsCount": 20,
+    "curationDraftState": "pending",
+    "curationDraftTargetStatus": "",
+    "curationReviewedBlocksCount": 0,
+    "curationPendingBlocksCount": 0
   }
 ]

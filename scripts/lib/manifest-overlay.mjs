@@ -1,5 +1,7 @@
 import { readCanonicalDocument } from './canonical-document.mjs';
 import { enrichDocumentRecord } from './document-record.mjs';
+import { buildCurationReportEntry } from './curation-report.mjs';
+import { readCurationDraft } from './curation-draft.mjs';
 
 function getCount(items) {
   return Array.isArray(items) ? items.length : 0;
@@ -9,6 +11,8 @@ export function applyCanonicalFieldsToRecord(record, canonicalDocument) {
   if (!canonicalDocument || typeof canonicalDocument !== 'object') {
     return enrichDocumentRecord(record);
   }
+
+  const curationReport = buildCurationReportEntry(canonicalDocument, record);
 
   return enrichDocumentRecord({
     ...record,
@@ -21,6 +25,10 @@ export function applyCanonicalFieldsToRecord(record, canonicalDocument) {
       ? Number(canonicalDocument.curation.overrideVersion)
       : null,
     hiddenBlocksCount: Number(canonicalDocument.curation?.hiddenBlocksCount ?? 0) || 0,
+    curationReviewStatus: curationReport.reviewStatus,
+    curationIssuesCount: curationReport.counts.errors + curationReport.counts.warnings,
+    curationWarningsCount: curationReport.counts.warnings,
+    curationErrorsCount: curationReport.counts.errors,
     v2BlockCount: getCount(canonicalDocument.blocks),
     v2DefinitionsCount: getCount(canonicalDocument.definitions),
     v2RelatedNormsCount: getCount(canonicalDocument.relatedNorms)
@@ -32,7 +40,14 @@ export async function overlayManifestWithCanonicalData(manifest) {
 
   for (const record of manifest) {
     const canonicalDocument = await readCanonicalDocument(record.slug);
-    nextManifest.push(applyCanonicalFieldsToRecord(record, canonicalDocument));
+    const draft = await readCurationDraft(record.slug);
+    nextManifest.push({
+      ...applyCanonicalFieldsToRecord(record, canonicalDocument),
+      curationDraftState: draft.reviewState,
+      curationDraftTargetStatus: draft.targetMigrationStatus || '',
+      curationReviewedBlocksCount: draft.blockReviews.filter((item) => item.status === 'accepted').length,
+      curationPendingBlocksCount: draft.blockReviews.filter((item) => item.status === 'pending' || item.status === 'needs-review').length
+    });
   }
 
   return nextManifest;
