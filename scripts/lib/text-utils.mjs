@@ -10,8 +10,32 @@ export function decodeHtmlEntities(input) {
     .replace(/&#x([0-9a-f]+);/gi, (_, codePoint) => String.fromCharCode(parseInt(codePoint, 16)));
 }
 
+export function decodeHtmlEntitiesRepeated(input, maxPasses = 4) {
+  let value = String(input ?? '');
+
+  for (let index = 0; index < maxPasses; index += 1) {
+    const decoded = decodeHtmlEntities(value);
+
+    if (decoded === value) {
+      break;
+    }
+
+    value = decoded;
+  }
+
+  return value;
+}
+
+function removeDangerousBlocks(input) {
+  return String(input ?? '')
+    .replace(/<\s*(script|style|noscript|template|iframe|object|embed)\b[^>]*>[\s\S]*?<\s*\/\s*\1\s*>/gi, ' ')
+    .replace(/<\s*(script|style|noscript|template|iframe|object|embed)\b[^>]*\/?\s*>/gi, ' ');
+}
+
 export function stripTags(input) {
-  return decodeHtmlEntities(String(input ?? '').replace(/<[^>]+>/g, ' '));
+  const decoded = decodeHtmlEntitiesRepeated(input);
+  const stripped = removeDangerousBlocks(decoded).replace(/<[^>]+>/g, ' ');
+  return normalizeWhitespace(stripped);
 }
 
 export function normalizeWhitespace(input) {
@@ -21,7 +45,7 @@ export function normalizeWhitespace(input) {
 }
 
 export function cleanText(input) {
-  return normalizeWhitespace(stripTags(input));
+  return stripTags(input);
 }
 
 export function escapeRegExp(value) {

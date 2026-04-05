@@ -4,9 +4,10 @@
 
 ## Что реализовано
 
-- каталог и главная страница работают только от `public/data/documents.json`;
+- каталог и главная страница работают от `public/data/documents.json`, `stats.json` и `search-index.json`;
 - карточка документа доступна по маршруту `/doc/:slug`;
 - viewer публикуются как отдельные автономные HTML по `/docs/:slug/viewer.html`;
+- полнотекстовый поиск работает по `public/data/search-index.json` с ранжированием результатов и переходом к лучшему совпадению;
 - есть режим открытия в новой вкладке и встроенный просмотр через `iframe`;
 - импорт нового viewer выполняется через `scripts/import-viewer.mjs`;
 - локальные `meta.json`, общий `documents.json`, `stats.json` и `search-index.json` обновляются автоматически.

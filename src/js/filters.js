@@ -1,6 +1,7 @@
-import { matchesQuery, normalizeText } from './search.js';
+import { buildDocumentSearchHit, buildSearchIndexMap, normalizeText } from './search.js';
 
 export const SORT_OPTIONS = {
+  relevance: 'relevance-desc',
   updated: 'updated-desc',
   yearDesc: 'year-desc',
   yearAsc: 'year-asc',
@@ -33,6 +34,17 @@ export function sortDocuments(documents, sort) {
   const nextDocuments = [...documents];
 
   switch (sort) {
+    case SORT_OPTIONS.relevance:
+      return nextDocuments.sort((left, right) => {
+        const leftScore = Number(left.searchHit?.score ?? 0);
+        const rightScore = Number(right.searchHit?.score ?? 0);
+
+        if (rightScore !== leftScore) {
+          return rightScore - leftScore;
+        }
+
+        return new Date(right.updatedAt).getTime() - new Date(left.updatedAt).getTime();
+      });
     case SORT_OPTIONS.yearAsc:
       return nextDocuments.sort((left, right) => Number(left.year) - Number(right.year));
     case SORT_OPTIONS.yearDesc:
@@ -52,14 +64,19 @@ export function sortDocuments(documents, sort) {
   }
 }
 
-export function applyDocumentFilters(documents, filters) {
-  const filtered = documents.filter((document) => {
-    if (!matchesQuery(document, filters.query)) {
-      return false;
+export function applyDocumentFilters(documents, filters, searchIndex = []) {
+  const indexBySlug = buildSearchIndexMap(searchIndex);
+  const filtered = documents.reduce((items, document) => {
+    const searchHit = filters.query
+      ? buildDocumentSearchHit(document, filters.query, indexBySlug.get(document.slug))
+      : null;
+
+    if (filters.query && !searchHit) {
+      return items;
     }
 
     if (filters.year && Number(document.year) !== Number(filters.year)) {
-      return false;
+      return items;
     }
 
     if (filters.tag) {
@@ -67,12 +84,13 @@ export function applyDocumentFilters(documents, filters) {
       const documentTags = (document.tags ?? []).map((tag) => normalizeText(tag));
 
       if (!documentTags.includes(normalizedTag)) {
-        return false;
+        return items;
       }
     }
 
-    return true;
-  });
+    items.push(searchHit ? { ...document, searchHit, searchQuery: filters.query ?? '' } : document);
+    return items;
+  }, []);
 
   return sortDocuments(filtered, filters.sort);
 }

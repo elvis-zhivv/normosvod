@@ -1,4 +1,3 @@
-import vm from 'node:vm';
 import { cleanText, normalizeWhitespace } from './text-utils.mjs';
 
 function sanitizeNavItems(items) {
@@ -14,6 +13,29 @@ function sanitizeNavItems(items) {
     .filter((item) => item.label);
 }
 
+function unescapeJsString(value) {
+  return String(value ?? '')
+    .replace(/\\'/g, '\'')
+    .replace(/\\"/g, '"')
+    .replace(/\\\\/g, '\\')
+    .replace(/\\n/g, '\n')
+    .replace(/\\r/g, '\r')
+    .replace(/\\t/g, '\t');
+}
+
+function readObjectString(objectLiteral, fieldName) {
+  const match = objectLiteral.match(
+    new RegExp(`\\b${fieldName}\\s*:\\s*(['"])((?:\\\\.|(?!\\1)[\\s\\S])*?)\\1`)
+  );
+
+  return match ? unescapeJsString(match[2]) : null;
+}
+
+function readObjectNumber(objectLiteral, fieldName) {
+  const match = objectLiteral.match(new RegExp(`\\b${fieldName}\\s*:\\s*(-?\\d+)`));
+  return match ? Number(match[1]) : null;
+}
+
 function parseNavItemsLiteral(html) {
   const match = html.match(/const\s+NAV_ITEMS\s*=\s*(\[[\s\S]*?\]);/);
 
@@ -21,12 +43,28 @@ function parseNavItemsLiteral(html) {
     return [];
   }
 
-  try {
-    const value = vm.runInNewContext(`(${match[1]})`, Object.create(null), { timeout: 200 });
-    return sanitizeNavItems(Array.isArray(value) ? value : []);
-  } catch {
-    return [];
+  const arraySource = match[1];
+  const objectMatches = Array.from(arraySource.matchAll(/\{[\s\S]*?\}/g));
+  const items = [];
+
+  for (const objectMatch of objectMatches) {
+    const objectLiteral = objectMatch[0];
+    const label = readObjectString(objectLiteral, 'label') ?? readObjectString(objectLiteral, 'title');
+    const targetPageIndex = readObjectNumber(objectLiteral, 'targetPageIndex')
+      ?? readObjectNumber(objectLiteral, 'pageIndex')
+      ?? readObjectNumber(objectLiteral, 'page');
+    const targetSelector = readObjectString(objectLiteral, 'targetSelector')
+      ?? readObjectString(objectLiteral, 'selector')
+      ?? readObjectString(objectLiteral, 'target');
+
+    items.push({
+      label,
+      targetPageIndex,
+      targetSelector
+    });
   }
+
+  return sanitizeNavItems(items);
 }
 
 function extractFallbackNavItems(html) {

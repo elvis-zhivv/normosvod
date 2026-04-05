@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.BASE_URL || '/';
+const BASE_URL = import.meta.env?.BASE_URL || '/';
+const UNSAFE_PROTOCOL_PATTERN = /^(?:javascript|data|vbscript|file):/i;
 
 function trimTrailingSlash(value) {
   return value.endsWith('/') && value !== '/' ? value.slice(0, -1) : value;
@@ -6,6 +7,14 @@ function trimTrailingSlash(value) {
 
 function ensureLeadingSlash(value) {
   return value.startsWith('/') ? value : `/${value}`;
+}
+
+export function safeDecodePathSegment(value) {
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
 }
 
 export function getBaseUrl() {
@@ -42,12 +51,22 @@ export function withBase(pathname) {
 
 export function normalizeDocumentUrl(pathname) {
   if (!pathname) {
-    return pathname;
+    return 'about:blank';
   }
 
-  if (/^(?:https?:)?\/\//i.test(pathname)) {
-    return pathname;
+  const normalizedPath = String(pathname).trim();
+
+  if (UNSAFE_PROTOCOL_PATTERN.test(normalizedPath) || normalizedPath.startsWith('//')) {
+    return 'about:blank';
   }
 
-  return withBase(pathname);
+  if (/^https?:\/\//i.test(normalizedPath)) {
+    return normalizedPath;
+  }
+
+  if (/^[?#]/.test(normalizedPath)) {
+    return 'about:blank';
+  }
+
+  return withBase(normalizedPath);
 }

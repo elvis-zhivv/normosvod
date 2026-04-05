@@ -1,5 +1,6 @@
 import { applyDocumentFilters, collectFilterOptions, SORT_OPTIONS } from './filters.js';
 import { renderDocCard } from '../components/doc-card.js';
+import { escapeHtml } from './html.js';
 import { withBase } from './paths.js';
 
 function renderEmptyState() {
@@ -11,26 +12,52 @@ function renderEmptyState() {
   `;
 }
 
+function renderResultsHeading(filtered, filters) {
+  if (filters.query?.trim()) {
+    return `
+      <div>
+        <p class="eyebrow">Полнотекстовый поиск</p>
+        <h2>${filtered.length} документов по запросу «${escapeHtml(filters.query.trim())}»</h2>
+      </div>
+    `;
+  }
+
+  return `
+    <div>
+      <p class="eyebrow">Результаты</p>
+      <h2>${filtered.length} документов</h2>
+    </div>
+  `;
+}
+
 function renderFilterForm({ filters, options, actionPath, heading, lead, compact = false }) {
   const yearsOptions = options.years
-    .map((year) => `<option value="${year}" ${String(filters.year) === String(year) ? 'selected' : ''}>${year}</option>`)
+    .map((year) => {
+      const escapedYear = escapeHtml(year);
+      return `<option value="${escapedYear}" ${String(filters.year) === String(year) ? 'selected' : ''}>${escapedYear}</option>`;
+    })
     .join('');
 
   const tagOptions = options.tags
-    .map((tag) => `<option value="${tag}" ${filters.tag === tag ? 'selected' : ''}>${tag}</option>`)
+    .map((tag) => {
+      const escapedTag = escapeHtml(tag);
+      return `<option value="${escapedTag}" ${filters.tag === tag ? 'selected' : ''}>${escapedTag}</option>`;
+    })
     .join('');
+
+  const escapedQuery = escapeHtml(filters.query ?? '');
 
   return `
     <section class="search-panel ${compact ? 'search-panel-compact' : ''}">
       <div class="search-panel-copy">
         <p class="eyebrow">Каталог</p>
-        <h1>${heading}</h1>
-        <p>${lead}</p>
+        <h1>${escapeHtml(heading)}</h1>
+        <p>${escapeHtml(lead)}</p>
       </div>
       <form class="filter-grid" action="${actionPath}" data-filter-form>
         <label>
           <span>Поиск</span>
-          <input type="search" name="q" value="${filters.query ?? ''}" placeholder="ГОСТ, название, теги, год" />
+          <input type="search" name="q" value="${escapedQuery}" placeholder="ГОСТ, название, теги, год" data-search-input autocomplete="off" />
         </label>
         <label>
           <span>Год</span>
@@ -48,8 +75,9 @@ function renderFilterForm({ filters, options, actionPath, heading, lead, compact
         </label>
         <label>
           <span>Сортировка</span>
-          <select name="sort">
+          <select name="sort" data-sort-select data-explicit="${filters.hasExplicitSort ? 'true' : 'false'}">
             <option value="${SORT_OPTIONS.updated}" ${filters.sort === SORT_OPTIONS.updated ? 'selected' : ''}>По обновлению</option>
+            <option value="${SORT_OPTIONS.relevance}" ${filters.sort === SORT_OPTIONS.relevance ? 'selected' : ''}>По релевантности</option>
             <option value="${SORT_OPTIONS.yearDesc}" ${filters.sort === SORT_OPTIONS.yearDesc ? 'selected' : ''}>Год: новые сверху</option>
             <option value="${SORT_OPTIONS.yearAsc}" ${filters.sort === SORT_OPTIONS.yearAsc ? 'selected' : ''}>Год: старые сверху</option>
             <option value="${SORT_OPTIONS.title}" ${filters.sort === SORT_OPTIONS.title ? 'selected' : ''}>По номеру/названию</option>
@@ -66,10 +94,10 @@ function renderFilterForm({ filters, options, actionPath, heading, lead, compact
 
 function renderStats(stats) {
   const cards = [
-    ['Документов', stats.totalDocuments ?? 0],
-    ['Страниц', stats.totalPages ?? 0],
-    ['Лет охвата', stats.yearRange ? `${stats.yearRange.min}–${stats.yearRange.max}` : '—'],
-    ['Последний импорт', stats.lastImportedLabel ?? '—']
+    ['Документов', escapeHtml(stats.totalDocuments ?? 0)],
+    ['Страниц', escapeHtml(stats.totalPages ?? 0)],
+    ['Лет охвата', escapeHtml(stats.yearRange ? `${stats.yearRange.min}–${stats.yearRange.max}` : '—')],
+    ['Последний импорт', escapeHtml(stats.lastImportedLabel ?? '—')]
   ];
 
   return `
@@ -78,7 +106,7 @@ function renderStats(stats) {
         .map(
           ([label, value]) => `
             <article class="stat-card">
-              <p>${label}</p>
+              <p>${escapeHtml(label)}</p>
               <strong>${value}</strong>
             </article>
           `
@@ -88,10 +116,11 @@ function renderStats(stats) {
   `;
 }
 
-export function renderHomePage({ documents, stats, filters }) {
+export function renderHomePage({ documents, searchIndex, stats, filters }) {
   const options = collectFilterOptions(documents);
-  const filtered = applyDocumentFilters(documents, filters);
+  const filtered = applyDocumentFilters(documents, filters, searchIndex);
   const recent = filtered.slice(0, 6);
+  const hasQuery = Boolean(filters.query?.trim());
 
   return `
     ${renderFilterForm({
@@ -99,15 +128,21 @@ export function renderHomePage({ documents, stats, filters }) {
       options,
       actionPath: withBase('/catalog'),
       heading: 'Каталог автономных HTML-viewer документов ГОСТ',
-      lead: 'Каталог не смешивает runtime документов. Каждый viewer публикуется отдельно, а сайт работает как слой навигации, метаданных и поиска по manifest.'
+      lead: hasQuery
+        ? 'Поиск использует полнотекстовый индекс страниц документов и ранжирует результаты по релевантности.'
+        : 'Каталог не смешивает runtime документов. Каждый viewer публикуется отдельно, а сайт работает как слой навигации, метаданных и поиска по manifest.'
     })}
     ${renderStats(stats)}
     <section class="content-block">
       <div class="section-head">
-        <div>
-          <p class="eyebrow">Последние документы</p>
-          <h2>Новые и обновлённые viewer</h2>
-        </div>
+        ${hasQuery
+          ? renderResultsHeading(filtered, filters)
+          : `
+            <div>
+              <p class="eyebrow">Последние документы</p>
+              <h2>Новые и обновлённые viewer</h2>
+            </div>
+          `}
         <a class="button button-secondary" href="${withBase('/catalog')}" data-link>Открыть полный каталог</a>
       </div>
       <div class="doc-grid">
@@ -117,9 +152,9 @@ export function renderHomePage({ documents, stats, filters }) {
   `;
 }
 
-export function renderCatalogPage({ documents, filters }) {
+export function renderCatalogPage({ documents, searchIndex, filters }) {
   const options = collectFilterOptions(documents);
-  const filtered = applyDocumentFilters(documents, filters);
+  const filtered = applyDocumentFilters(documents, filters, searchIndex);
 
   return `
     ${renderFilterForm({
@@ -132,10 +167,7 @@ export function renderCatalogPage({ documents, filters }) {
     })}
     <section class="content-block">
       <div class="section-head">
-        <div>
-          <p class="eyebrow">Результаты</p>
-          <h2>${filtered.length} документов</h2>
-        </div>
+        ${renderResultsHeading(filtered, filters)}
       </div>
       <div class="doc-grid">
         ${filtered.length > 0 ? filtered.map(renderDocCard).join('') : renderEmptyState()}

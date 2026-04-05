@@ -2,12 +2,16 @@ import { renderHeader } from '../components/header.js';
 import { SORT_OPTIONS } from './filters.js';
 import { renderCatalogPage, renderHomePage } from './catalog.js';
 import { renderDocumentPage, renderMissingDocument } from './document.js';
-import { stripBasePath, withBase } from './paths.js';
+import { safeDecodePathSegment, stripBasePath, withBase } from './paths.js';
 
 const appNode = document.getElementById('app');
+const SEARCH_INPUT_SELECTOR = 'input[data-search-input]';
+const SORT_SELECT_SELECTOR = 'select[data-sort-select]';
+const AUTO_SEARCH_DELAY_MS = 280;
 
 const state = {
   documents: [],
+  searchIndex: [],
   stats: {
     totalDocuments: 0,
     totalPages: 0,
@@ -15,6 +19,7 @@ const state = {
     lastImportedLabel: '—'
   }
 };
+let autoSearchTimerId = null;
 
 async function loadJson(url, fallback) {
   try {
@@ -48,7 +53,7 @@ function getRoute() {
     return {
       name: 'document',
       currentPath: pathname,
-      params: { slug: decodeURIComponent(segments.slice(1).join('/')) },
+      params: { slug: safeDecodePathSegment(segments.slice(1).join('/')) },
       query: url.searchParams
     };
   }
@@ -57,11 +62,14 @@ function getRoute() {
 }
 
 function getFilters(query) {
+  const queryValue = query.get('q') ?? '';
+
   return {
-    query: query.get('q') ?? '',
+    query: queryValue,
     year: query.get('year') ?? '',
     tag: query.get('tag') ?? '',
-    sort: query.get('sort') ?? SORT_OPTIONS.updated
+    sort: query.get('sort') ?? (queryValue.trim() ? SORT_OPTIONS.relevance : SORT_OPTIONS.updated),
+    hasExplicitSort: query.has('sort')
   };
 }
 
@@ -87,6 +95,7 @@ function renderRoute() {
   if (route.name === 'home') {
     renderLayout(renderHomePage({
       documents: state.documents,
+      searchIndex: state.searchIndex,
       stats: state.stats,
       filters
     }), route);
@@ -96,6 +105,7 @@ function renderRoute() {
   if (route.name === 'catalog') {
     renderLayout(renderCatalogPage({
       documents: state.documents,
+      searchIndex: state.searchIndex,
       filters
     }), route);
     return;
@@ -131,6 +141,33 @@ function navigate(url, { replace = false } = {}) {
   renderRoute();
 }
 
+function buildFormUrl(form) {
+  const data = new FormData(form);
+  const params = new URLSearchParams();
+  const rawQuery = String(data.get('q') ?? '');
+  const normalizedQuery = rawQuery.trim();
+  const sortSelect = form.querySelector(SORT_SELECT_SELECTOR);
+  const isExplicitSort = sortSelect?.dataset.explicit === 'true';
+
+  for (const [key, value] of data.entries()) {
+    if (String(value).trim()) {
+      params.set(key, String(value));
+    }
+  }
+
+  if (normalizedQuery && sortSelect && !isExplicitSort && sortSelect.value === SORT_OPTIONS.updated) {
+    params.set('sort', SORT_OPTIONS.relevance);
+  }
+
+  const action = form.getAttribute('action') || '/catalog';
+  return params.toString() ? `${action}?${params.toString()}` : action;
+}
+
+function submitFilterForm(form, options = {}) {
+  const nextUrl = buildFormUrl(form);
+  navigate(nextUrl, options);
+}
+
 function handleFormSubmit(event) {
   const form = event.target.closest('[data-filter-form]');
 
@@ -139,18 +176,7 @@ function handleFormSubmit(event) {
   }
 
   event.preventDefault();
-  const data = new FormData(form);
-  const params = new URLSearchParams();
-
-  for (const [key, value] of data.entries()) {
-    if (String(value).trim()) {
-      params.set(key, String(value));
-    }
-  }
-
-  const action = form.getAttribute('action') || '/catalog';
-  const nextUrl = params.toString() ? `${action}?${params.toString()}` : action;
-  navigate(nextUrl);
+  submitFilterForm(form);
 }
 
 function handleLinkClick(event) {
@@ -170,6 +196,47 @@ function handleLinkClick(event) {
   navigate(href);
 }
 
+function handleFormChange(event) {
+  const target = event.target;
+
+  if (!(target instanceof HTMLElement)) {
+    return;
+  }
+
+  const form = target.closest('[data-filter-form]');
+
+  if (!form) {
+    return;
+  }
+
+  if (target.matches(SORT_SELECT_SELECTOR)) {
+    target.dataset.explicit = 'true';
+  }
+
+  if (target.matches('select[name="year"], select[name="tag"], select[name="sort"]')) {
+    submitFilterForm(form);
+  }
+}
+
+function handleSearchInput(event) {
+  const target = event.target;
+
+  if (!(target instanceof HTMLInputElement) || !target.matches(SEARCH_INPUT_SELECTOR)) {
+    return;
+  }
+
+  const form = target.closest('[data-filter-form]');
+
+  if (!form) {
+    return;
+  }
+
+  window.clearTimeout(autoSearchTimerId);
+  autoSearchTimerId = window.setTimeout(() => {
+    submitFilterForm(form, { replace: true });
+  }, AUTO_SEARCH_DELAY_MS);
+}
+
 async function bootstrap() {
   const redirectUrl = new URL(window.location.href);
   const redirectPath = redirectUrl.searchParams.get('redirect');
@@ -182,16 +249,20 @@ async function bootstrap() {
     window.history.replaceState({}, '', withBase(nextUrl));
   }
 
-  const [documents, stats] = await Promise.all([
+  const [documents, stats, searchIndex] = await Promise.all([
     loadJson('/data/documents.json', []),
-    loadJson('/data/stats.json', state.stats)
+    loadJson('/data/stats.json', state.stats),
+    loadJson('/data/search-index.json', [])
   ]);
 
   state.documents = documents;
   state.stats = stats;
+  state.searchIndex = Array.isArray(searchIndex) ? searchIndex : [];
 
   document.addEventListener('submit', handleFormSubmit);
   document.addEventListener('click', handleLinkClick);
+  document.addEventListener('change', handleFormChange);
+  document.addEventListener('input', handleSearchInput);
   window.addEventListener('popstate', renderRoute);
 
   renderRoute();

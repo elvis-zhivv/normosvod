@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "node ./node_modules/vite/bin/vite.js",
     "build": "node ./node_modules/vite/bin/vite.js build",
+    "test": "node --test",
     "build:reg": "node ./node_modules/vite/bin/vite.js build",
     "build:pages": "node ./node_modules/vite/bin/vite.js build",
     "deploy:pack": "npm run build:reg && node scripts/create-deploy-archive.mjs",
