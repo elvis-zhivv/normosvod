@@ -117,11 +117,12 @@ test('renderV2Reader includes contextual rail and interactive tooltip triggers',
   assert.match(html, /data-v2-tooltip-layer/);
   assert.match(html, /data-v2-context-kind="related-norm"/);
   assert.match(html, /data-v2-context-kind="definition"/);
-  assert.match(html, /Верификация/);
+  assert.match(html, /<p class="eyebrow">Документ<\/p>/);
+  assert.match(html, /data-v2-find-form/);
   assert.match(html, /Выберите определение, связанную норму или ссылку в потоке/);
 });
 
-test('renderV2Reader uses specialized screen-flow renderers for procedure, appendix and tables', () => {
+test('renderV2Reader uses clause rows for procedural lists and keeps appendix/table renderers', () => {
   const model = normalizeV2Document({
     meta: {
       themeId: 'coatings',
@@ -187,7 +188,10 @@ test('renderV2Reader uses specialized screen-flow renderers for procedure, appen
 
   assert.match(html, /v2-block-band-procedure/);
   assert.match(html, /v2-block-band-appendix/);
-  assert.match(html, /v2-unit-procedure-item/);
+  assert.match(html, /v2-clause-row/);
+  assert.match(html, /class="v2-clause-marker">7\.1/);
+  assert.match(html, /class="v2-clause-inline-title">Подготовка<\/span>/);
+  assert.doesNotMatch(html, /Шаг/);
   assert.match(html, /v2-table-group/);
 });
 
@@ -259,7 +263,10 @@ test('renderV2Reader renders figures and keeps protocol checklists out of step m
 
   assert.match(html, /class="v2-figure"/);
   assert.match(html, /figure-a1-lightness-scale\.svg/);
-  assert.doesNotMatch(html, /protocol-item[\s\S]*v2-procedure-marker/);
+  assert.match(html, /protocol-item/);
+  assert.match(html, /class="v2-clause-marker">а\)/);
+  assert.doesNotMatch(html, /v2-procedure-marker/);
+  assert.doesNotMatch(html, /Шаг/);
 });
 
 test('renderV2Reader moves ancillary pages out of the main flow and renders prose as reading text', () => {
@@ -314,11 +321,11 @@ test('renderV2Reader moves ancillary pages out of the main flow and renders pros
   const html = renderV2Reader(model, legacyDocument);
 
   assert.match(html, /Вступительные и служебные страницы/);
-  assert.match(html, /Чтение начинается с раздела «1\. Область применения»/);
   assert.match(html, /class="v2-prose-group"/);
   assert.equal((html.match(/class="v2-prose-paragraph"/g) ?? []).length, 2);
   assert.equal((html.match(/class="v2-outline-link"/g) ?? []).length, 1);
-  assert.match(html, /class="v2-outline-link" href="#main-1"/);
+  assert.match(html, /data-v2-outline-link="main-1"/);
+  assert.match(html, /data-v2-document-body/);
   assert.match(html, /v2-callout-note/);
 });
 

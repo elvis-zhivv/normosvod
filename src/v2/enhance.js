@@ -233,6 +233,257 @@ function bindReaderInteractions(container, model) {
   });
 }
 
+function bindOutlineState(container) {
+  const outlineLinks = Array.from(container.querySelectorAll('[data-v2-outline-link]'));
+  const blocks = Array.from(container.querySelectorAll('[data-v2-scroll-anchor]'));
+
+  if (!outlineLinks.length || !blocks.length || typeof IntersectionObserver === 'undefined') {
+    return;
+  }
+
+  const linkMap = new Map(outlineLinks.map((link) => [link.dataset.v2OutlineLink, link]));
+
+  function setActiveBlock(id) {
+    for (const link of outlineLinks) {
+      const active = link.dataset.v2OutlineLink === id;
+      link.classList.toggle('is-active', active);
+      if (active) {
+        link.setAttribute('aria-current', 'true');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    }
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    const visibleEntries = entries
+      .filter((entry) => entry.isIntersecting)
+      .sort((left, right) => left.boundingClientRect.top - right.boundingClientRect.top);
+
+    if (!visibleEntries.length) {
+      return;
+    }
+
+    const current = visibleEntries[0].target;
+
+    if (!(current instanceof HTMLElement)) {
+      return;
+    }
+
+    if (linkMap.has(current.id)) {
+      setActiveBlock(current.id);
+    }
+  }, {
+    root: null,
+    rootMargin: '-120px 0px -65% 0px',
+    threshold: [0, 0.1, 0.4]
+  });
+
+  for (const block of blocks) {
+    observer.observe(block);
+  }
+}
+
+function bindSidebarToggle(container) {
+  const root = container.querySelector('[data-v2-reader-root]');
+  const toggle = container.querySelector('[data-v2-sidebar-toggle]');
+
+  if (!(root instanceof HTMLElement) || !(toggle instanceof HTMLButtonElement)) {
+    return;
+  }
+
+  toggle.addEventListener('click', () => {
+    const collapsed = root.classList.toggle('v2-reader-sidebar-collapsed');
+    toggle.textContent = collapsed ? 'Показать колонку' : 'Колонка';
+  });
+}
+
+function clearFindMarks(root) {
+  const marks = Array.from(root.querySelectorAll('mark[data-v2-find-mark]'));
+
+  for (const mark of marks) {
+    const parent = mark.parentNode;
+
+    if (!parent) {
+      continue;
+    }
+
+    parent.replaceChild(document.createTextNode(mark.textContent ?? ''), mark);
+    parent.normalize();
+  }
+}
+
+function escapeRegExp(value) {
+  return String(value ?? '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function collectSearchableTextNodes(root) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      if (!(node.parentElement instanceof HTMLElement)) {
+        return NodeFilter.FILTER_REJECT;
+      }
+
+      if (!node.nodeValue || !node.nodeValue.trim()) {
+        return NodeFilter.FILTER_REJECT;
+      }
+
+      if (node.parentElement.closest('mark[data-v2-find-mark]')) {
+        return NodeFilter.FILTER_REJECT;
+      }
+
+      if (node.parentElement.closest('[data-v2-context-panel], .v2-toolbar, script, style')) {
+        return NodeFilter.FILTER_REJECT;
+      }
+
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+
+  const nodes = [];
+
+  while (walker.nextNode()) {
+    nodes.push(walker.currentNode);
+  }
+
+  return nodes;
+}
+
+function bindFindInDocument(container) {
+  const root = container.querySelector('[data-v2-document-body]');
+  const form = container.querySelector('[data-v2-find-form]');
+  const input = container.querySelector('[data-v2-find-input]');
+  const count = container.querySelector('[data-v2-find-count]');
+  const prevButton = container.querySelector('[data-v2-find-prev]');
+  const nextButton = container.querySelector('[data-v2-find-next]');
+  const clearButton = container.querySelector('[data-v2-find-clear]');
+
+  if (
+    !(root instanceof HTMLElement)
+    || !(form instanceof HTMLFormElement)
+    || !(input instanceof HTMLInputElement)
+    || !(count instanceof HTMLElement)
+    || !(prevButton instanceof HTMLButtonElement)
+    || !(nextButton instanceof HTMLButtonElement)
+    || !(clearButton instanceof HTMLButtonElement)
+  ) {
+    return;
+  }
+
+  let marks = [];
+  let currentIndex = -1;
+
+  function updateCount() {
+    count.textContent = marks.length
+      ? `${currentIndex + 1}/${marks.length}`
+      : '0';
+    clearButton.hidden = !input.value.trim();
+  }
+
+  function setCurrentMark(nextIndex, { scroll = true } = {}) {
+    if (!marks.length) {
+      currentIndex = -1;
+      updateCount();
+      return;
+    }
+
+    currentIndex = ((nextIndex % marks.length) + marks.length) % marks.length;
+
+    for (const [index, mark] of marks.entries()) {
+      mark.classList.toggle('is-current', index === currentIndex);
+    }
+
+    const currentMark = marks[currentIndex];
+
+    if (scroll && currentMark instanceof HTMLElement) {
+      currentMark.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+
+    updateCount();
+  }
+
+  function runSearch() {
+    clearFindMarks(root);
+    marks = [];
+    currentIndex = -1;
+
+    const query = input.value.trim();
+
+    if (!query) {
+      updateCount();
+      return;
+    }
+
+    const pattern = new RegExp(escapeRegExp(query), 'giu');
+    const textNodes = collectSearchableTextNodes(root);
+
+    for (const textNode of textNodes) {
+      const text = textNode.nodeValue ?? '';
+      pattern.lastIndex = 0;
+
+      if (!pattern.test(text)) {
+        continue;
+      }
+
+      pattern.lastIndex = 0;
+      const fragment = document.createDocumentFragment();
+      let lastIndex = 0;
+      let match;
+
+      while ((match = pattern.exec(text)) !== null) {
+        const matchText = match[0];
+        const start = match.index;
+
+        if (start > lastIndex) {
+          fragment.appendChild(document.createTextNode(text.slice(lastIndex, start)));
+        }
+
+        const mark = document.createElement('mark');
+        mark.dataset.v2FindMark = 'true';
+        mark.textContent = matchText;
+        fragment.appendChild(mark);
+        marks.push(mark);
+        lastIndex = start + matchText.length;
+      }
+
+      if (lastIndex < text.length) {
+        fragment.appendChild(document.createTextNode(text.slice(lastIndex)));
+      }
+
+      textNode.parentNode?.replaceChild(fragment, textNode);
+    }
+
+    setCurrentMark(0, { scroll: false });
+  }
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    runSearch();
+  });
+
+  input.addEventListener('input', () => {
+    runSearch();
+  });
+
+  prevButton.addEventListener('click', () => {
+    setCurrentMark(currentIndex - 1);
+  });
+
+  nextButton.addEventListener('click', () => {
+    setCurrentMark(currentIndex + 1);
+  });
+
+  clearButton.addEventListener('click', () => {
+    input.value = '';
+    clearFindMarks(root);
+    marks = [];
+    currentIndex = -1;
+    updateCount();
+  });
+
+  updateCount();
+}
+
 export async function enhanceV2Readers(documents = []) {
   const documentMap = new Map((documents ?? []).map((item) => [item.slug, item]));
   const containers = Array.from(document.querySelectorAll('[data-v2-reader]'));
@@ -253,6 +504,9 @@ export async function enhanceV2Readers(documents = []) {
     const model = await loadV2Document(legacyDocument);
     container.innerHTML = renderV2Reader(model, legacyDocument);
     bindReaderInteractions(container, model);
+    bindOutlineState(container);
+    bindSidebarToggle(container);
+    bindFindInDocument(container);
     const hash = window.location.hash;
 
     if (hash) {

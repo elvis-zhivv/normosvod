@@ -261,7 +261,7 @@
       "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
-      "hasOverride": false,
+      "hasOverride": true,
       "note": "",
       "reviewer": "",
       "updatedAt": ""

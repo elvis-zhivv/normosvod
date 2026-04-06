@@ -17,7 +17,7 @@ function mergeUniqueStrings(base = [], extra = []) {
   ]));
 }
 
-function applyItemOverrides(items = [], overrides = {}, appendItems = []) {
+function applyItemOverrides(items = [], overrides = {}, appendItems = [], insertAfterItems = {}) {
   const nextItems = [];
 
   for (const item of Array.isArray(items) ? items : []) {
@@ -34,6 +34,12 @@ function applyItemOverrides(items = [], overrides = {}, appendItems = []) {
         ? [...override.referencesReplace]
         : mergeUniqueStrings(item.references, override?.referencesAppend)
     });
+
+    const trailingItems = insertAfterItems?.[item.id];
+
+    if (Array.isArray(trailingItems) && trailingItems.length) {
+      nextItems.push(...trailingItems);
+    }
   }
 
   return [...nextItems, ...(Array.isArray(appendItems) ? appendItems : [])];
@@ -214,7 +220,12 @@ export function applyCanonicalOverrides(document, overrides = null) {
       return items;
     }
 
-    const units = applyItemOverrides(block.units, override?.unitOverrides, override?.unitsAppend);
+    const units = applyItemOverrides(
+      block.units,
+      override?.unitOverrides,
+      override?.unitsAppend,
+      override?.unitsInsertAfter
+    );
     const nextBlock = {
       ...block,
       ...(override ?? {}),

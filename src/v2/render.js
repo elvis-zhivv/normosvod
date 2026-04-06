@@ -2,7 +2,6 @@ import { escapeHtml } from '../js/html.js';
 import {
   buildDocumentLegacyRoute,
   buildDocumentPrintRoute,
-  buildDocumentRoute,
   normalizeDocumentUrl
 } from '../js/paths.js';
 import { buildDocumentSignals, formatMigrationStatusLabel, formatReaderModeLabel, formatThemeLabel } from '../js/document-signals.js';
@@ -13,6 +12,7 @@ function normalizeComparableText(value) {
     .replace(/ё/g, 'е')
     .replace(/[«»"'()]/g, ' ')
     .replace(/[—–-]/g, ' ')
+    .replace(/[.,:;!?]/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();
 }
@@ -222,14 +222,6 @@ function parseStructuredParagraph(text) {
     || parseMarkedListParagraph(text, '\\d+\\)', 'numeric');
 }
 
-function shouldRenderProcedureAsSteps(block = {}) {
-  const normalizedTitle = normalizeComparableText(block?.title);
-
-  return block?.type === 'procedure'
-    && (normalizedTitle.includes('проведение испытаний')
-      || normalizedTitle.startsWith('7 '));
-}
-
 function buildRelatedNormIndex(model) {
   return new Map((model.relatedNorms ?? []).map((item) => [item.label, item.id]));
 }
@@ -254,9 +246,9 @@ function buildAnchorUrl(baseUrl, anchor) {
 
 function renderOutline(items = []) {
   return items.map((item) => `
-    <a class="v2-outline-link" href="#${escapeHtml(item.id)}">
+    <a class="v2-outline-link" href="#${escapeHtml(item.id)}" data-v2-outline-link="${escapeHtml(item.id)}">
       <span>${escapeHtml(item.title)}</span>
-      <small>Источник: стр. ${escapeHtml(item.pageNumber ?? '—')}</small>
+      <small>стр. ${escapeHtml(item.pageNumber ?? '—')}</small>
     </a>
   `).join('');
 }
@@ -358,7 +350,7 @@ function renderRelatedNorms(relatedNorms = []) {
 
 function renderContextPanel() {
   return `
-    <section class="v2-rail-card v2-context-card" data-v2-context-panel>
+    <section class="v2-sidebar-panel v2-context-card" data-v2-context-panel>
       <p class="eyebrow">Контекст</p>
       <div data-v2-context-body>
         <p class="v2-rail-empty">Выберите определение, связанную норму или ссылку в потоке, чтобы увидеть контекст и быстрые переходы.</p>
@@ -513,26 +505,64 @@ function renderStandardUnit(unit, relatedNormIndex, definitionIndex) {
   `;
 }
 
-function renderListItem(unit, relatedNormIndex) {
-  return `
-    <div class="v2-list-row" id="${escapeHtml(unit.id)}">
-      ${unit.title ? `<div class="v2-list-label">${escapeHtml(unit.title)}</div>` : ''}
-      <p class="v2-list-text">${escapeHtml(unit.text ?? unit.summary ?? '')}</p>
-      ${renderReferenceTokens(unit.references, relatedNormIndex)}
-    </div>
-  `;
+function splitClauseTitle(title = '') {
+  const value = String(title ?? '').trim();
+  const match = value.match(/^((?:\d+\)|\d+(?:\.\d+)*|[а-яё]\)))\s*(.*)$/iu);
+
+  if (!match) {
+    return {
+      marker: '',
+      heading: value
+    };
+  }
+
+  return {
+    marker: match[1],
+    heading: match[2].trim()
+  };
 }
 
-function renderProcedureItem(unit, relatedNormIndex) {
+function stripRepeatedClauseTitle(title = '', text = '') {
+  const normalizedTitle = normalizeComparableText(title);
+  const value = String(text ?? '').trim();
+
+  if (!normalizedTitle || !value) {
+    return value;
+  }
+
+  const exactPattern = new RegExp(`^${title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\s.:;,-]*`, 'iu');
+
+  if (exactPattern.test(value)) {
+    return value.replace(exactPattern, '').trim();
+  }
+
+  const clause = splitClauseTitle(title);
+
+  if (clause.marker) {
+    const markerPattern = new RegExp(`^${clause.marker.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}[\\s.:;,-]*`, 'iu');
+
+    if (markerPattern.test(value)) {
+      return value.replace(markerPattern, '').trim();
+    }
+  }
+
+  return value;
+}
+
+function renderClauseItem(unit, relatedNormIndex) {
+  const { marker, heading } = splitClauseTitle(unit.title ?? '');
+  const bodyText = stripRepeatedClauseTitle(unit.title ?? '', unit.text ?? unit.summary ?? '');
+  const contentText = bodyText.trim();
+  const clauseText = [
+    heading ? `<span class="v2-clause-inline-title">${escapeHtml(heading)}</span>` : '',
+    contentText ? escapeHtml(contentText) : ''
+  ].filter(Boolean).join(' ');
+
   return `
-    <div class="v2-unit v2-unit-procedure-item" id="${escapeHtml(unit.id)}">
-      <div class="v2-procedure-marker">Шаг</div>
-      <div class="v2-procedure-body">
-        <div class="v2-unit-head">
-          <span class="v2-unit-type">${escapeHtml(formatUnitTypeLabel(unit.type))}</span>
-          ${unit.title ? `<strong>${escapeHtml(unit.title)}</strong>` : ''}
-        </div>
-        <p>${escapeHtml(unit.text ?? unit.summary ?? '')}</p>
+    <div class="v2-clause-row" id="${escapeHtml(unit.id)}">
+      ${marker ? `<div class="v2-clause-marker">${escapeHtml(marker)}</div>` : ''}
+      <div class="v2-clause-body">
+        ${clauseText ? `<p class="v2-clause-text">${clauseText}</p>` : ''}
         ${renderReferenceTokens(unit.references, relatedNormIndex)}
       </div>
     </div>
@@ -658,13 +688,8 @@ function renderUnitList(units = [], relatedNormIndex = new Map(), definitionInde
       continue;
     }
 
-    if (shouldRenderProcedureAsSteps(block) && unit?.type === 'list-item') {
-      renderedUnits.push(renderProcedureItem(unit, relatedNormIndex));
-      continue;
-    }
-
     if (unit?.type === 'list-item') {
-      renderedUnits.push(renderListItem(unit, relatedNormIndex));
+      renderedUnits.push(renderClauseItem(unit, relatedNormIndex));
       continue;
     }
 
@@ -700,7 +725,7 @@ function renderFrontMatterSummary(frontMatter = []) {
         <span>Вступительные и служебные страницы</span>
         <small>${escapeHtml(frontMatter.length)} блока</small>
       </summary>
-      <p class="v2-preface-copy">Титул, предисловие, введение и издательские страницы вынесены из основного потока, чтобы документ читался как нормативный текст, а не как OCR-лента.</p>
+      <p class="v2-preface-copy">Титул, предисловие и издательские страницы вынесены отдельно, чтобы основной маршрут работал как сплошной документ, а не как набор обложек и служебных листов.</p>
       <div class="v2-preface-list">
         ${frontMatter.map((block) => `
           <a class="v2-preface-link" href="#${escapeHtml(block.id)}">
@@ -724,6 +749,7 @@ function renderBlocks(blocks = [], entryPoints = {}, options = {}) {
     <article
       class="v2-block v2-block-${escapeHtml(block.type)}"
       id="${escapeHtml(block.id)}"
+      data-v2-scroll-anchor="${escapeHtml(block.id)}"
       ${index === 0 ? 'data-v2-primary-block="true"' : ''}
     >
       ${renderBlockBand(block.type)}
@@ -754,77 +780,88 @@ function renderBlocks(blocks = [], entryPoints = {}, options = {}) {
   `).join('');
 }
 
-function renderRail(model) {
-  const entities = (model.entities ?? [])
-    .map((entity) => `<li><strong>${escapeHtml(entity.label)}</strong><span>${escapeHtml(entity.type)}</span></li>`)
-    .join('');
-  const takeaways = (model.synopsis?.keyTakeaways ?? [])
-    .map((item) => `<li>${escapeHtml(item)}</li>`)
-    .join('');
-  const references = (model.referenceBadges ?? [])
-    .map((item) => `<li>${escapeHtml(item)}</li>`)
-    .join('');
-  const highlightItems = (model.highlights ?? []).slice(0, 6);
-  const definitionIndex = buildDefinitionIndex(model);
-  const signalDocument = {
-    themeId: model.meta?.themeId,
-    readerMode: model.meta?.readerMode,
-    migrationStatus: model.meta?.migrationStatus,
-    curationApplied: model.curation?.applied,
-    hiddenBlocksCount: model.curation?.hiddenBlocksCount,
-    v2BlockCount: model.blocks?.length,
-    v2DefinitionsCount: model.definitions?.length,
-    v2RelatedNormsCount: model.relatedNorms?.length
-  };
+function renderSidebarMeta(model, legacyDocument, signalDocument) {
+  const metaItems = [
+    ['Документ', model.meta?.gostNumber ?? legacyDocument.gostNumber],
+    ['Год', model.meta?.year ?? legacyDocument.year ?? '—'],
+    ['Страниц', model.meta?.pages ?? legacyDocument.pages ?? '—'],
+    ['Режим', formatReaderModeLabel(model.meta?.readerMode)],
+    ['Миграция', formatMigrationStatusLabel(model.meta?.migrationStatus)],
+    ['Источник', model.source?.type ?? 'legacy-viewer']
+  ];
 
   return `
-    <section class="v2-rail-card">
-      <p class="eyebrow">Верификация</p>
+    <section class="v2-sidebar-panel">
+      <p class="eyebrow">Документ</p>
+      <h2>${escapeHtml(model.meta?.gostNumber ?? legacyDocument.gostNumber)}</h2>
+      <p class="v2-sidebar-title">${escapeHtml(model.meta?.title ?? legacyDocument.title)}</p>
       ${renderSignalChips(signalDocument)}
-      <ul class="v2-rail-list">
-        <li>${escapeHtml(formatThemeLabel(model.meta?.themeId))}</li>
-        <li>${escapeHtml(formatReaderModeLabel(model.meta?.readerMode))}</li>
-        <li>${escapeHtml(formatMigrationStatusLabel(model.meta?.migrationStatus))}</li>
-        <li>${model.curation?.applied ? 'Кураторский слой активен' : 'Без ручной верификации'}</li>
-        <li>${model.curation?.applied ? 'Документ прошёл curator review.' : 'Требуется manual QA по canonical blocks.'}</li>
-      </ul>
+      <dl class="v2-sidebar-meta-list">
+        ${metaItems.map(([label, value]) => `
+          <div class="v2-sidebar-meta-row">
+            <dt>${escapeHtml(label)}</dt>
+            <dd>${escapeHtml(value)}</dd>
+          </div>
+        `).join('')}
+      </dl>
     </section>
-    <section class="v2-rail-card">
-      <p class="eyebrow">Сводка</p>
-      <p>${escapeHtml(model.synopsis?.description ?? '')}</p>
-      <ul class="v2-rail-list">${takeaways}</ul>
+  `;
+}
+
+function renderSidebarOutline(items = []) {
+  return `
+    <section class="v2-sidebar-panel">
+      <p class="eyebrow">Содержание</p>
+      <div class="v2-outline-nav">
+        ${renderOutline(items)}
+      </div>
     </section>
-    <section class="v2-rail-card">
-      <p class="eyebrow">Практические акценты</p>
-      ${renderHighlights(highlightItems) || '<p class="v2-rail-empty">Автоматические акценты пока не выделены.</p>'}
-    </section>
-    <section class="v2-rail-card">
+  `;
+}
+
+function renderSidebarSupplemental(model) {
+  const definitionIndex = buildDefinitionIndex(model);
+  const entities = (model.entities ?? [])
+    .slice(0, 8)
+    .map((entity) => `<li><strong>${escapeHtml(entity.label)}</strong><span>${escapeHtml(entity.type)}</span></li>`)
+    .join('');
+
+  return `
+    <section class="v2-sidebar-panel">
       <p class="eyebrow">Определения</p>
       ${renderDefinitions((model.definitions ?? []).slice(0, 8), definitionIndex)}
     </section>
-    <section class="v2-rail-card">
-      <p class="eyebrow">Сущности</p>
+    <section class="v2-sidebar-panel">
+      <p class="eyebrow">Связанные нормы</p>
+      ${renderRelatedNorms(model.relatedNorms ?? [])}
+    </section>
+    <section class="v2-sidebar-panel">
+      <p class="eyebrow">Сущности и тема</p>
+      <p class="v2-sidebar-caption">${escapeHtml(formatThemeLabel(model.meta?.themeId))}</p>
       <ul class="v2-entity-list">${entities}</ul>
     </section>
-    <section class="v2-rail-card">
-      <p class="eyebrow">Связанные нормы</p>
-      ${renderRelatedNorms(model.relatedNorms?.length ? model.relatedNorms : (references ? model.referenceBadges.map((item) => ({ label: item, occurrenceCount: 1 })) : []))}
-    </section>
-    ${renderContextPanel()}
   `;
 }
 
 export function renderV2Reader(model, legacyDocument) {
   const legacyUrl = legacyDocument.legacyViewerUrl ? buildDocumentLegacyRoute(legacyDocument.slug) : '';
   const printUrl = buildDocumentPrintRoute(legacyDocument.slug);
-  const screenUrl = buildDocumentRoute(legacyDocument.slug);
   const { frontMatter, mainBlocks } = splitReaderBlocks(model.blocks ?? []);
   const primaryBlock = mainBlocks[0] ?? null;
-  const primaryAnchor = primaryBlock?.id ? `#${primaryBlock.id}` : '';
   const outlineItems = (model.outline ?? [])
     .filter((item) => !isAncillaryBlock(item));
   const relatedNormIndex = buildRelatedNormIndex(model);
   const definitionIndex = buildDefinitionIndex(model);
+  const canonicalUrl = normalizeDocumentUrl(
+    legacyDocument.canonicalDocumentUrl
+    || legacyDocument.v2DocumentUrl
+    || `/data/canonical/${legacyDocument.slug}.json`
+  );
+  const rawViewerUrl = normalizeDocumentUrl(
+    legacyDocument.legacyViewerUrl
+    || legacyDocument.viewerUrl
+    || model.entryPoints?.legacyUrl
+  );
   const signalDocument = {
     themeId: model.meta?.themeId,
     readerMode: model.meta?.readerMode,
@@ -835,61 +872,69 @@ export function renderV2Reader(model, legacyDocument) {
     v2DefinitionsCount: model.definitions?.length,
     v2RelatedNormsCount: model.relatedNorms?.length
   };
+  const quickFacts = [
+    model.meta?.gostNumber ?? legacyDocument.gostNumber,
+    model.meta?.year ? `${model.meta.year}` : '',
+    model.meta?.pages ? `${model.meta.pages} стр.` : '',
+    formatThemeLabel(model.meta?.themeId)
+  ].filter(Boolean);
 
   return `
-    <div class="v2-reader v2-theme-${escapeHtml(model.meta?.themeId ?? 'regulation')}">
-      <aside class="v2-outline">
-        <div class="v2-pane-head">
-          <p class="eyebrow">Структура</p>
-          <h2>${escapeHtml(model.meta?.gostNumber ?? legacyDocument.gostNumber)}</h2>
+    <div class="v2-reader v2-theme-${escapeHtml(model.meta?.themeId ?? 'regulation')}" data-v2-reader-root>
+      <aside class="v2-sidebar">
+        <div class="v2-sidebar-inner">
+          ${renderSidebarMeta(model, legacyDocument, signalDocument)}
+          ${renderSidebarOutline(outlineItems.length ? outlineItems : model.outline)}
+          ${renderSidebarSupplemental(model)}
+          ${renderContextPanel()}
         </div>
-        <nav class="v2-outline-nav">
-          ${renderOutline(outlineItems.length ? outlineItems : model.outline)}
-        </nav>
       </aside>
-      <section class="v2-flow">
-        <header class="v2-flow-hero">
-          <p class="eyebrow">Режим чтения</p>
-          <h1>${escapeHtml(model.meta?.title ?? legacyDocument.title)}</h1>
-          <p>${escapeHtml(model.synopsis?.description ?? '')}</p>
-          ${renderSignalChips(signalDocument)}
-          <p class="v2-source-note">Источник: ${escapeHtml(model.source?.type ?? 'unknown')} · миграция ${escapeHtml(formatMigrationStatusLabel(model.meta?.migrationStatus ?? 'imported'))} · ${model.curation?.applied ? 'кураторски подтверждено' : 'автоматическая сборка'}</p>
-          <div class="hero-actions">
-            ${primaryAnchor ? `<a class="button button-primary" href="${escapeHtml(primaryAnchor)}">Начать чтение</a>` : ''}
-            <a class="button button-secondary" href="${escapeHtml(screenUrl)}" data-link>Поток чтения</a>
-            ${legacyUrl ? `<a class="button button-secondary" href="${escapeHtml(legacyUrl)}" data-link>Legacy-режим</a>` : ''}
-            <a class="button button-ghost" href="${escapeHtml(printUrl)}" data-link>Print A4</a>
+      <section class="v2-main">
+        <header class="v2-toolbar" data-v2-toolbar>
+          <div class="v2-toolbar-doc">
+            <span class="v2-toolbar-kicker">Viewer</span>
+            <strong>${escapeHtml(model.meta?.gostNumber ?? legacyDocument.gostNumber)}</strong>
+          </div>
+          <form class="v2-toolbar-search" data-v2-find-form>
+            <input type="search" placeholder="Поиск по тексту документа" autocomplete="off" data-v2-find-input />
+            <span class="v2-toolbar-search-count" data-v2-find-count>0</span>
+            <button class="v2-toolbar-icon" type="button" data-v2-find-prev aria-label="Предыдущее совпадение">↑</button>
+            <button class="v2-toolbar-icon" type="button" data-v2-find-next aria-label="Следующее совпадение">↓</button>
+            <button class="v2-toolbar-text" type="button" data-v2-find-clear hidden>Очистить</button>
+          </form>
+          <div class="v2-toolbar-actions">
+            <button class="v2-toolbar-text" type="button" data-v2-sidebar-toggle>Колонка</button>
+            ${legacyUrl ? `<a class="v2-toolbar-link" href="${escapeHtml(legacyUrl)}" data-link>Legacy</a>` : ''}
+            <a class="v2-toolbar-link" href="${escapeHtml(printUrl)}" data-link>Печать</a>
+            ${rawViewerUrl ? `<a class="v2-toolbar-link" href="${escapeHtml(rawViewerUrl)}" download>HTML</a>` : ''}
+            ${canonicalUrl ? `<a class="v2-toolbar-link" href="${escapeHtml(canonicalUrl)}" download>JSON</a>` : ''}
           </div>
         </header>
-        <div class="v2-reading-start">
-          ${frontMatter.length && primaryBlock
-            ? `
-              <section class="v2-reading-note">
-                <div class="v2-reading-note-copy">
-                  <p class="eyebrow">Основной текст</p>
-                  <h2>Чтение начинается с раздела «${escapeHtml(primaryBlock.title)}»</h2>
-                  <p>Служебные страницы вынесены отдельно. Основной поток показывает только рабочие разделы, определения, требования, процедуры и приложения.</p>
-                </div>
-                ${primaryAnchor ? `<a class="button button-secondary" href="${escapeHtml(primaryAnchor)}">Перейти к первому разделу</a>` : ''}
-              </section>
-            `
-            : ''}
-          ${renderFrontMatterSummary(frontMatter)}
-        </div>
-        <div class="v2-block-list">
-          ${renderBlocks(mainBlocks, {
-            legacyUrl,
-            printUrl
-          }, {
-            relatedNormIndex,
-            definitionIndex,
-            gostNumber: model.meta?.gostNumber ?? legacyDocument.gostNumber
-          })}
+        <div class="v2-canvas">
+          <header class="v2-document-head">
+            <p class="eyebrow">Нормативный документ</p>
+            <h1>${escapeHtml(model.meta?.title ?? legacyDocument.title)}</h1>
+            <p class="v2-document-summary">${escapeHtml(model.synopsis?.description ?? '')}</p>
+            ${renderSignalChips(signalDocument)}
+            <div class="v2-document-facts">
+              ${quickFacts.map((item) => `<span>${escapeHtml(item)}</span>`).join('')}
+            </div>
+          </header>
+          <div class="v2-document-body" data-v2-document-body>
+            ${renderFrontMatterSummary(frontMatter)}
+            <div class="v2-block-list">
+              ${renderBlocks(mainBlocks, {
+                legacyUrl,
+                printUrl
+              }, {
+                relatedNormIndex,
+                definitionIndex,
+                gostNumber: model.meta?.gostNumber ?? legacyDocument.gostNumber
+              })}
+            </div>
+          </div>
         </div>
       </section>
-      <aside class="v2-rail">
-        ${renderRail(model)}
-      </aside>
       <div class="v2-tooltip-layer" data-v2-tooltip-layer hidden></div>
     </div>
   `;

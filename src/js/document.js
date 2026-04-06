@@ -326,48 +326,17 @@ export function renderMissingDocument(slug) {
 }
 
 function renderV2Scaffold(document) {
-  const readerUrl = buildDocumentRoute(document.slug ?? '');
-  const cardUrl = buildDocumentCardRoute(document.slug ?? '');
-  const legacyUrl = document.legacyViewerUrl ? buildDocumentLegacyRoute(document.slug ?? '') : '';
-  const printUrl = buildDocumentPrintRoute(document.slug ?? '');
-  const themeLabel = document.themeId || 'regulation';
-
   return `
-    <section class="v2-entry v2-theme-${escapeHtml(themeLabel)}">
-      <div class="v2-entry-copy">
-        <p class="eyebrow">Reader V2</p>
-        <h1>${escapeHtml(document.title)}</h1>
-        <p class="document-lead">${escapeHtml(document.description ?? 'Структурированный экранный режим документа.')}</p>
-        ${renderSignalChips(document)}
-        <ul class="meta-list">
-          <li><strong>Документ:</strong> ${escapeHtml(document.gostNumber)}</li>
-          <li><strong>Тема:</strong> ${escapeHtml(formatThemeLabel(themeLabel))}</li>
-          <li><strong>Режим:</strong> ${escapeHtml(formatReaderModeLabel(document.readerMode ?? 'legacy'))}</li>
-          <li><strong>Миграция:</strong> ${escapeHtml(formatMigrationStatusLabel(document.migrationStatus ?? 'imported'))}</li>
-          <li><strong>Кураторский слой:</strong> ${escapeHtml(document.curationApplied ? 'применён' : 'не применён')}</li>
-        </ul>
-        <div class="hero-actions">
-          <a class="button button-primary" href="${escapeHtml(readerUrl)}" data-link>Reader V2</a>
-          <a class="button button-secondary" href="${escapeHtml(cardUrl)}" data-link>Карточка legacy</a>
-          ${legacyUrl ? `<a class="button button-secondary" href="${escapeHtml(legacyUrl)}" data-link>Legacy-режим</a>` : ''}
-          <a class="button button-ghost" href="${escapeHtml(printUrl)}" data-link>Print A4</a>
-        </div>
-      </div>
-      <div class="document-hero-preview">
-        ${renderDocumentSurface(document, { mode: 'summary', title: 'Reader entry surface' })}
-      </div>
-    </section>
-    ${renderPlatformStatus(document)}
     <section
-      class="v2-reader-shell"
+      class="v2-reader-shell v2-reader-shell-page"
       data-v2-reader
       data-slug="${escapeHtml(document.slug)}"
       data-theme-id="${escapeHtml(document.themeId ?? 'regulation')}"
       aria-label="Reader V2 ${escapeHtml(document.gostNumber)}"
     >
       <div class="v2-reader-loading">
-        <strong>Загрузка V2 scaffold...</strong>
-        <p>Если structured document model недоступен, будет показан migration fallback.</p>
+        <strong>Загрузка документа...</strong>
+        <p>Подготавливается непрерывное экранное представление нормативного текста.</p>
       </div>
     </section>
   `;
