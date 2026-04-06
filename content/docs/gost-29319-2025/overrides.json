@@ -1,8 +1,8 @@
 {
   "version": 2,
   "meta": {
-    "migrationStatus": "v2-ready",
-    "readerMode": "v2"
+    "migrationStatus": "print-verified",
+    "readerMode": "legacy"
   },
   "synopsis": {
     "description": "Кураторски выверенная canonical-модель ГОСТ 29319—2025 для screen-flow и print-A4 режимов."
@@ -30,6 +30,31 @@
           "summary": "Шкала изменения светлоты для ахроматических цветов.",
           "src": "/docs/gost-29319-2025/figures/figure-a1-lightness-scale.svg",
           "alt": "Рисунок А.1. Шкала изменения светлоты для ахроматических цветов"
+        },
+        "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-tablica": {
+          "columns": [
+            "Группы наименований основных цветов",
+            "Описание цвета"
+          ],
+          "rows": [
+            ["Белый", "Цвет снега, молока, мела"],
+            ["Черный", "Цвет сажи, угля"],
+            ["Серый", "Цвет пепла, пыли"],
+            ["Красный", "Цвет алой артериальной крови"],
+            ["Оранжевый", "Цвет апельсина, красно-желтый"],
+            ["Желтый", "Цвет яичного желтка, перьев канарейки"],
+            ["Зеленый", "Цвет сочной травы, листвы"],
+            ["Голубой", "Цвет ясного неба, светло-синий"],
+            ["Синий", "Цвет синьки, василька, темно-голубой"],
+            ["Фиолетовый", "Цвет темной фиалки, сине-красный"],
+            ["Коричневый", "Цвет кофе, шоколада, ореховой скорлупы"]
+          ]
+        },
+        "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-9": {
+          "hidden": true
+        },
+        "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-gost-29319-2025": {
+          "hidden": true
         }
       }
     },
@@ -41,6 +66,62 @@
           "summary": "Спектральная шкала для идентификации хроматических цветов.",
           "src": "/docs/gost-29319-2025/figures/figure-a2-spectrum-scale.svg",
           "alt": "Рисунок А.2. Шкала длин волн видимого диапазона электромагнитного спектра"
+        }
+      }
+    },
+    "gost-29319-2025-7-provedenie-ispytanii": {
+      "unitOverrides": {
+        "gost-29319-2025-7-provedenie-ispytanii-6": {
+          "hidden": true
+        },
+        "gost-29319-2025-7-provedenie-ispytanii-gost-29319-2025": {
+          "hidden": true
+        }
+      }
+    },
+    "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam": {
+      "unitOverrides": {
+        "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-tablica": {
+          "columns": [
+            "Расстояние осмотра, мм",
+            "Размер отверстия, мм × мм"
+          ],
+          "rows": [
+            ["300", "54 × 54"],
+            ["500", "87 × 87"],
+            ["700", "123 × 123"],
+            ["900", "158 × 158"]
+          ]
+        },
+        "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-4": {
+          "hidden": true
+        },
+        "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam-gost-29319-2025": {
+          "hidden": true
+        }
+      }
+    },
+    "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii": {
+      "unitOverrides": {
+        "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-tablica": {
+          "columns": [
+            "Оценка цветового различия в баллах",
+            "Описание цветового различия"
+          ],
+          "rows": [
+            ["0", "Нет заметного различия"],
+            ["1", "Очень незначительное, то есть едва ощутимое различие"],
+            ["2", "Небольшое, но отчетливо ощутимое различие"],
+            ["3", "Умеренное, достаточно заметное различие"],
+            ["4", "Значительное, явно выраженное различие"],
+            ["5", "Очень существенное различие"]
+          ]
+        },
+        "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-11": {
+          "hidden": true
+        },
+        "gost-29319-2025-prilozhenie-b-obyazatelnoe-shema-vizualnoi-ocenki-komponentov-cvetovyh-razlichii-gost-29319-2025": {
+          "hidden": true
         }
       }
     },

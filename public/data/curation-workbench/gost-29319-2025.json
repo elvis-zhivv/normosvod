@@ -3,8 +3,8 @@
   "gostNumber": "ГОСТ 29319—2025",
   "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
   "themeId": "coatings",
-  "readerMode": "v2",
-  "migrationStatus": "v2-ready",
+  "readerMode": "legacy",
+  "migrationStatus": "print-verified",
   "draftState": "accepted",
   "targetMigrationStatus": "v2-ready",
   "curationApplied": true,
@@ -14,9 +14,11 @@
     "counts": {
       "errors": 0,
       "warnings": 0,
-      "info": 0
+      "info": 2
     },
-    "suggestedActions": []
+    "suggestedActions": [
+      "Подготовить документ к полному cutover в Reader V2."
+    ]
   },
   "draftSummary": {
     "notes": "Экранный reader и print A4 подтверждены. Короткий хвостовой блок скрыт из curated screen-flow слоя.",
@@ -41,7 +43,20 @@
     "definitionsPending": 0,
     "relatedNormsPending": 0
   },
-  "documentIssues": [],
+  "documentIssues": [
+    {
+      "severity": "info",
+      "code": "reader-cutover-pending",
+      "message": "Документ ещё не переведён в полный V2 reader mode (legacy).",
+      "blockId": null
+    },
+    {
+      "severity": "info",
+      "code": "migration-incomplete",
+      "message": "Migration status документа: print-verified.",
+      "blockId": null
+    }
+  ],
   "blockQueue": [
     {
       "blockId": "gost-29319-2025-stranica-i-titul",
@@ -168,7 +183,7 @@
       "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
-      "hasOverride": false,
+      "hasOverride": true,
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -194,7 +209,7 @@
       "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
-      "hasOverride": false,
+      "hasOverride": true,
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -285,7 +300,7 @@
       "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
-      "hasOverride": false,
+      "hasOverride": true,
       "note": "",
       "reviewer": "",
       "updatedAt": ""

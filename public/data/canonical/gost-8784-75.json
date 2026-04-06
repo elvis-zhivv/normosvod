@@ -13,8 +13,8 @@
     "language": "ru",
     "pages": 16,
     "themeId": "coatings",
-    "readerMode": "v2",
-    "migrationStatus": "v2-ready"
+    "readerMode": "legacy",
+    "migrationStatus": "print-verified"
   },
   "synopsis": {
     "description": "Кураторски проверенная canonical-модель ГОСТ 8784—75 с подтвержденными методами определения укрывистости для screen-flow и print A4.",
@@ -629,49 +629,13 @@
         {
           "id": "gost-8784-75-1-2-apparatura-i-materialy-shahmatnaya-doska",
           "order": 2,
-          "type": "paragraph",
-          "title": null,
+          "type": "figure",
+          "title": "Черт. 1 — Шахматная доска",
           "text": "Шахматная доска",
-          "summary": "Шахматная доска",
-          "references": []
-        },
-        {
-          "id": "gost-8784-75-1-2-apparatura-i-materialy-izdanie-oficialnoe",
-          "order": 3,
-          "type": "paragraph",
-          "title": null,
-          "text": "Издание официальное",
-          "summary": "Издание официальное",
-          "references": []
-        },
-        {
-          "id": "gost-8784-75-1-2-apparatura-i-materialy-perepechatka-vospreschena",
-          "order": 4,
-          "type": "paragraph",
-          "title": null,
-          "text": "Перепечатка воспрещена",
-          "summary": "Перепечатка воспрещена",
-          "references": []
-        },
-        {
-          "id": "gost-8784-75-1-2-apparatura-i-materialy-izdatelstvo-standartov-1975-ipk-izdatelst",
-          "order": 5,
-          "type": "paragraph",
-          "title": null,
-          "text": "© Издательство стандартов, 1975 © ИПК Издательство стандартов, 2002",
-          "summary": "© Издательство стандартов, 1975 © ИПК Издательство стандартов, 2002",
-          "references": []
-        },
-        {
-          "id": "gost-8784-75-1-2-apparatura-i-materialy-s-2-gost-8784-75",
-          "order": 6,
-          "type": "paragraph",
-          "title": null,
-          "text": "С. 2 ГОСТ 8784—75",
-          "summary": "С. 2 ГОСТ 8784—75",
-          "references": [
-            "ГОСТ 8784—75"
-          ]
+          "summary": "Шахматная доска для визуального метода определения укрывистости.",
+          "references": [],
+          "src": "/docs/gost-8784-75/figures/figure-1-checkerboard.svg",
+          "alt": "Чертеж 1. Шахматная доска"
         },
         {
           "id": "gost-8784-75-1-2-apparatura-i-materialy-vesy-analiticheskie-s-pogreshnostyu-vzveshivaniya-ne",
@@ -789,6 +753,27 @@
       "migration": {
         "source": "legacy-viewer",
         "confidence": "high"
+      },
+      "unitOverrides": {
+        "gost-8784-75-1-2-apparatura-i-materialy-shahmatnaya-doska": {
+          "type": "figure",
+          "title": "Черт. 1 — Шахматная доска",
+          "summary": "Шахматная доска для визуального метода определения укрывистости.",
+          "src": "/docs/gost-8784-75/figures/figure-1-checkerboard.svg",
+          "alt": "Чертеж 1. Шахматная доска"
+        },
+        "gost-8784-75-1-2-apparatura-i-materialy-izdanie-oficialnoe": {
+          "hidden": true
+        },
+        "gost-8784-75-1-2-apparatura-i-materialy-perepechatka-vospreschena": {
+          "hidden": true
+        },
+        "gost-8784-75-1-2-apparatura-i-materialy-izdatelstvo-standartov-1975-ipk-izdatelst": {
+          "hidden": true
+        },
+        "gost-8784-75-1-2-apparatura-i-materialy-s-2-gost-8784-75": {
+          "hidden": true
+        }
       }
     },
     {
@@ -2076,22 +2061,15 @@
           "references": []
         },
         {
-          "id": "gost-8784-75-2-4-obrabotka-rezultatov-grafik-dlya-opredeleniya-ukryvistosti",
-          "order": 5,
-          "type": "paragraph",
-          "title": null,
-          "text": "График для определения укрывистости",
-          "summary": "График для определения укрывистости",
-          "references": []
-        },
-        {
           "id": "gost-8784-75-2-4-obrabotka-rezultatov-c-0-80-0-90-0-98-1-00-d-m-g-m-a-chert-2-zatem",
           "order": 6,
-          "type": "paragraph",
-          "title": null,
+          "type": "figure",
+          "title": "Черт. 2 — График для определения укрывистости",
           "text": "C 0,80 0,90 0,98 1,00 D m, г/м² a Черт. 2 Затем строят график (черт. 2): на оси ординат откладывают величины коэффициентов контрастности C , а на оси абсцисс — соответствующие каждому C значения m и проводят кривую. Из точки на оси ординат, соответствующей величине C , равной 0,98, проводят прямую, параллельную оси абсцисс, до пересечения с кривой (точка a ). Из точки a опускают перпендикуляр к оси абсцисс и находят значение m , которое соответствует укрывистости высушенного лакокрасочного материала ( D ), г/м².",
-          "summary": "C 0,80 0,90 0,98 1,00 D m, г/м² a Черт. 2 Затем строят график (черт. 2): на оси ординат откладывают величины коэффициентов контрастности C , а на оси абсцисс — соответствующие каждому C значения m и проводят кривую. Из т…",
-          "references": []
+          "summary": "График зависимости коэффициента контрастности от массы покрытия для определения укрывистости.",
+          "references": [],
+          "src": "/docs/gost-8784-75/figures/figure-2-hiding-power-graph.svg",
+          "alt": "Чертеж 2. График для определения укрывистости"
         },
         {
           "id": "gost-8784-75-2-4-obrabotka-rezultatov-ukryvistost-lakokrasochnogo-materiala-gotovogo",
@@ -2173,17 +2151,6 @@
           "text": "2.3, 2.4. (Измененная редакция, Изм. № 2).",
           "summary": "2.3, 2.4. (Измененная редакция, Изм. № 2).",
           "references": []
-        },
-        {
-          "id": "gost-8784-75-2-4-obrabotka-rezultatov-gost-8784-75-s-5",
-          "order": 16,
-          "type": "paragraph",
-          "title": null,
-          "text": "ГОСТ 8784—75 С. 5",
-          "summary": "ГОСТ 8784—75 С. 5",
-          "references": [
-            "ГОСТ 8784—75"
-          ]
         }
       ],
       "highlights": [],
@@ -2316,6 +2283,21 @@
       "migration": {
         "source": "legacy-viewer",
         "confidence": "high"
+      },
+      "unitOverrides": {
+        "gost-8784-75-2-4-obrabotka-rezultatov-grafik-dlya-opredeleniya-ukryvistosti": {
+          "hidden": true
+        },
+        "gost-8784-75-2-4-obrabotka-rezultatov-c-0-80-0-90-0-98-1-00-d-m-g-m-a-chert-2-zatem": {
+          "type": "figure",
+          "title": "Черт. 2 — График для определения укрывистости",
+          "summary": "График зависимости коэффициента контрастности от массы покрытия для определения укрывистости.",
+          "src": "/docs/gost-8784-75/figures/figure-2-hiding-power-graph.svg",
+          "alt": "Чертеж 2. График для определения укрывистости"
+        },
+        "gost-8784-75-2-4-obrabotka-rezultatov-gost-8784-75-s-5": {
+          "hidden": true
+        }
       }
     },
     {
@@ -3343,33 +3325,15 @@
       ],
       "units": [
         {
-          "id": "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-blok-shema-rascheta-ukryvistosti-instrumentalno",
-          "order": 0,
-          "type": "paragraph",
-          "title": null,
-          "text": "БЛОК-СХЕМА РАСЧЕТА УКРЫВИСТОСТИ ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИМ МЕТОДОМ",
-          "summary": "БЛОК-СХЕМА РАСЧЕТА УКРЫВИСТОСТИ ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИМ МЕТОДОМ",
-          "references": []
-        },
-        {
           "id": "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-nachalo-1-2-3-4-5-6-vvod-ishodnyh-dannyh-r-0",
           "order": 1,
-          "type": "paragraph",
-          "title": null,
+          "type": "figure",
+          "title": "Приложение 2 — Блок-схема расчета укрывистости",
           "text": "НАЧАЛО 1 2 3 4 5 6 ВВОД ИСХОДНЫХ ДАННЫХ ( R 0 ) j , ( R ∞ ) j , H , R g , C (равно 0,98) РАСЧЕТ a ПО ФОРМУЛЕ (11) РАСЧЕТ R ок ПО ФОРМУЛЕ (10) РАСЧЕТ ТОЛЩИНЫ КРОЮЩЕГО СЛОЯ H к ПО ФОРМУЛЕ (9) РАСЧЕТ ВЕЛИЧИНЫ УКРЫВИСТОСТИ ПО ФОРМУЛЕ (8) ПРОВЕРКА НА КОНЕЦ ЦИКЛА ОСТАНОВКА Нет Да",
-          "summary": "НАЧАЛО 1 2 3 4 5 6 ВВОД ИСХОДНЫХ ДАННЫХ ( R 0 ) j , ( R ∞ ) j , H , R g , C (равно 0,98) РАСЧЕТ a ПО ФОРМУЛЕ (11) РАСЧЕТ R ок ПО ФОРМУЛЕ (10) РАСЧЕТ ТОЛЩИНЫ КРОЮЩЕГО СЛОЯ H к ПО ФОРМУЛЕ (9) РАСЧЕТ ВЕЛИЧИНЫ УКРЫВИСТОСТИ П…",
-          "references": []
-        },
-        {
-          "id": "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-gost-8784-75-s-9",
-          "order": 2,
-          "type": "paragraph",
-          "title": null,
-          "text": "ГОСТ 8784—75 С. 9",
-          "summary": "ГОСТ 8784—75 С. 9",
-          "references": [
-            "ГОСТ 8784—75"
-          ]
+          "summary": "Блок-схема инструментально-математического метода расчета укрывистости.",
+          "references": [],
+          "src": "/docs/gost-8784-75/figures/appendix-2-flowchart.svg",
+          "alt": "Приложение 2. Блок-схема расчета укрывистости"
         }
       ],
       "highlights": [],
@@ -3418,6 +3382,21 @@
       "migration": {
         "source": "legacy-viewer",
         "confidence": "high"
+      },
+      "unitOverrides": {
+        "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-blok-shema-rascheta-ukryvistosti-instrumentalno": {
+          "hidden": true
+        },
+        "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-nachalo-1-2-3-4-5-6-vvod-ishodnyh-dannyh-r-0": {
+          "type": "figure",
+          "title": "Приложение 2 — Блок-схема расчета укрывистости",
+          "summary": "Блок-схема инструментально-математического метода расчета укрывистости.",
+          "src": "/docs/gost-8784-75/figures/appendix-2-flowchart.svg",
+          "alt": "Приложение 2. Блок-схема расчета укрывистости"
+        },
+        "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-gost-8784-75-s-9": {
+          "hidden": true
+        }
       }
     },
     {
@@ -4510,6 +4489,6 @@
   "curation": {
     "applied": true,
     "hiddenBlocksCount": 0,
-    "overrideVersion": 1
+    "overrideVersion": 2
   }
 }

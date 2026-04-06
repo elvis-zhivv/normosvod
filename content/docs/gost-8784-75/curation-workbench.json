@@ -3,20 +3,22 @@
   "gostNumber": "ГОСТ 8784—75",
   "title": "Материалы лакокрасочные. Методы определения укрывистости",
   "themeId": "coatings",
-  "readerMode": "v2",
-  "migrationStatus": "v2-ready",
+  "readerMode": "legacy",
+  "migrationStatus": "print-verified",
   "draftState": "accepted",
   "targetMigrationStatus": "v2-ready",
   "curationApplied": true,
-  "overrideVersion": 1,
+  "overrideVersion": 2,
   "reportSummary": {
     "reviewStatus": "curated",
     "counts": {
       "errors": 0,
       "warnings": 0,
-      "info": 0
+      "info": 2
     },
-    "suggestedActions": []
+    "suggestedActions": [
+      "Подготовить документ к полному cutover в Reader V2."
+    ]
   },
   "draftSummary": {
     "notes": "Методы определения укрывистости, manual definitions и экранный cutover подтверждены вручную.",
@@ -41,7 +43,20 @@
     "definitionsPending": 0,
     "relatedNormsPending": 0
   },
-  "documentIssues": [],
+  "documentIssues": [
+    {
+      "severity": "info",
+      "code": "reader-cutover-pending",
+      "message": "Документ ещё не переведён в полный V2 reader mode (legacy).",
+      "blockId": null
+    },
+    {
+      "severity": "info",
+      "code": "migration-incomplete",
+      "message": "Migration status документа: print-verified.",
+      "blockId": null
+    }
+  ],
   "blockQueue": [
     {
       "blockId": "gost-8784-75-oblozhka",
@@ -90,7 +105,7 @@
       "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
-      "hasOverride": false,
+      "hasOverride": true,
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -181,7 +196,7 @@
       "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
-      "hasOverride": false,
+      "hasOverride": true,
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -285,7 +300,7 @@
       "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
-      "hasOverride": false,
+      "hasOverride": true,
       "note": "",
       "reviewer": "",
       "updatedAt": ""

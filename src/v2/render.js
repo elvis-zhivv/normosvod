@@ -129,6 +129,99 @@ function isProseUnit(unit) {
   return unit?.type === 'paragraph';
 }
 
+function parseDashListParagraph(text) {
+  const value = String(text ?? '').trim();
+
+  if (!value) {
+    return null;
+  }
+
+  let lead = '';
+  let body = value;
+  const leadMatch = value.match(/^(.*?:)\s*-\s+/u);
+
+  if (leadMatch) {
+    lead = leadMatch[1].trim();
+    body = value.slice(leadMatch[0].length);
+  } else if (value.startsWith('- ')) {
+    body = value.slice(2);
+  } else {
+    return null;
+  }
+
+  const items = body
+    .split(/;\s*-\s+/u)
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  if (items.length < 2) {
+    return null;
+  }
+
+  return {
+    kind: 'dash',
+    lead,
+    items: items.map((item) => ({ marker: '—', content: item }))
+  };
+}
+
+function parseMarkedListParagraph(text, markerPattern, kind) {
+  const value = String(text ?? '').trim();
+
+  if (!value) {
+    return null;
+  }
+
+  const leadStart = new RegExp(`^(.*?:)\\s*(${markerPattern})\\s+`, 'u');
+  const directStart = new RegExp(`^(${markerPattern})\\s+`, 'u');
+  let lead = '';
+  let body = value;
+
+  const leadMatch = value.match(leadStart);
+  if (leadMatch) {
+    lead = leadMatch[1].trim();
+    body = value.slice(leadMatch[1].length).trim();
+  } else if (!directStart.test(value)) {
+    return null;
+  }
+
+  const itemSplitPattern = new RegExp(`;\\s*(?=${markerPattern}\\s+)`, 'u');
+  const itemPattern = new RegExp(`^(${markerPattern})\\s+(.+)$`, 'u');
+  const items = body
+    .split(itemSplitPattern)
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .map((item) => {
+      const match = item.match(itemPattern);
+
+      if (!match) {
+        return null;
+      }
+
+      return {
+        marker: match[1],
+        content: match[2].trim()
+      };
+    })
+    .filter(Boolean);
+
+  if (items.length < 2) {
+    return null;
+  }
+
+  return {
+    kind,
+    lead,
+    items
+  };
+}
+
+function parseStructuredParagraph(text) {
+  return parseDashListParagraph(text)
+    || parseMarkedListParagraph(text, '[а-яё]\\)', 'alpha')
+    || parseMarkedListParagraph(text, '\\d+\\)', 'numeric');
+}
+
 function shouldRenderProcedureAsSteps(block = {}) {
   const normalizedTitle = normalizeComparableText(block?.title);
 
@@ -336,6 +429,29 @@ function renderProseGroup(units = [], relatedNormIndex = new Map()) {
   `;
 }
 
+function renderStructuredParagraph(unit, relatedNormIndex = new Map()) {
+  const parsed = parseStructuredParagraph(unit?.text ?? unit?.summary ?? '');
+
+  if (!parsed) {
+    return '';
+  }
+
+  return `
+    <section class="v2-structured-block v2-structured-block-${escapeHtml(parsed.kind)}" id="${escapeHtml(unit.id)}">
+      ${parsed.lead ? `<p class="v2-prose-paragraph">${escapeHtml(parsed.lead)}</p>` : ''}
+      <ul class="v2-structured-list">
+        ${parsed.items.map((item) => `
+          <li class="v2-structured-item">
+            <span class="v2-structured-marker">${escapeHtml(item.marker)}</span>
+            <div class="v2-structured-content">${escapeHtml(item.content)}</div>
+          </li>
+        `).join('')}
+      </ul>
+      ${renderReferenceTokens(unit.references, relatedNormIndex)}
+    </section>
+  `;
+}
+
 function isCalloutUnit(unit) {
   return ['note', 'advice', 'requirement', 'warning'].includes(unit?.type);
 }
@@ -445,6 +561,10 @@ function renderFigureUnit(unit, relatedNormIndex) {
 }
 
 function renderTableGroup(captionUnit, tableUnit, relatedNormIndex) {
+  const columns = Array.isArray(tableUnit.columns) ? tableUnit.columns : [];
+  const rows = Array.isArray(tableUnit.rows) ? tableUnit.rows : [];
+  const hasStructuredTable = columns.length > 0 && rows.length > 0;
+
   return `
     <section class="v2-table-group" id="${escapeHtml(tableUnit.id)}">
       ${captionUnit
@@ -455,7 +575,26 @@ function renderTableGroup(captionUnit, tableUnit, relatedNormIndex) {
           <span class="v2-unit-type">${escapeHtml(formatUnitTypeLabel('table'))}</span>
           <strong>${escapeHtml(tableUnit.title || 'Таблица')}</strong>
         </div>
-        <p class="v2-table-text">${escapeHtml(tableUnit.text ?? tableUnit.summary ?? '')}</p>
+        ${hasStructuredTable
+          ? `
+            <div class="v2-table-scroll">
+              <table class="v2-data-table">
+                <thead>
+                  <tr>
+                    ${columns.map((column) => `<th>${escapeHtml(column)}</th>`).join('')}
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows.map((row) => `
+                    <tr>
+                      ${row.map((cell) => `<td>${escapeHtml(cell)}</td>`).join('')}
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            </div>
+          `
+          : `<p class="v2-table-text">${escapeHtml(tableUnit.text ?? tableUnit.summary ?? '')}</p>`}
         ${renderReferenceTokens(tableUnit.references, relatedNormIndex)}
       </div>
     </section>
@@ -484,6 +623,14 @@ function renderUnitList(units = [], relatedNormIndex = new Map(), definitionInde
     }
 
     if (isProseUnit(unit)) {
+      const structuredParagraph = parseStructuredParagraph(unit?.text ?? unit?.summary ?? '');
+
+      if (structuredParagraph) {
+        flushBufferedProse();
+        renderedUnits.push(renderStructuredParagraph(unit, relatedNormIndex));
+        continue;
+      }
+
       bufferedProseUnits.push(unit);
       continue;
     }

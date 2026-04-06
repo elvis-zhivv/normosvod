@@ -321,3 +321,102 @@ test('renderV2Reader moves ancillary pages out of the main flow and renders pros
   assert.match(html, /class="v2-outline-link" href="#main-1"/);
   assert.match(html, /v2-callout-note/);
 });
+
+test('renderV2Reader expands structured lists that were flattened into a paragraph', () => {
+  const model = normalizeV2Document({
+    meta: {
+      themeId: 'regulation',
+      migrationStatus: 'v2-ready'
+    },
+    blocks: [
+      {
+        id: 'block-1',
+        type: 'section',
+        title: '3. Цели стандартизации',
+        summary: 'Список целей.',
+        references: [],
+        units: [
+          {
+            id: 'dash-list',
+            type: 'paragraph',
+            text: '- содействие устранению технических барьеров в торговле; - обеспечение безопасности продукции; - защита интересов потребителей.',
+            references: []
+          },
+          {
+            id: 'alpha-list',
+            type: 'paragraph',
+            text: 'Образцы могут быть осмотрены: а) при естественном дневном освещении; б) при искусственном дневном освещении.',
+            references: []
+          }
+        ],
+        highlights: [],
+        print: { pageNumber: 4 },
+        legacy: {}
+      }
+    ],
+    entryPoints: {
+      legacyUrl: '/docs/gost-29319-2025/viewer.html',
+      printUrl: '/docs/gost-29319-2025/print.html'
+    }
+  }, legacyDocument);
+
+  const html = renderV2Reader(model, legacyDocument);
+
+  assert.match(html, /class="v2-structured-block v2-structured-block-dash"/);
+  assert.match(html, /class="v2-structured-block v2-structured-block-alpha"/);
+  assert.match(html, /содействие устранению технических барьеров/u);
+  assert.match(html, /class="v2-structured-marker">а\)/);
+  assert.match(html, /class="v2-structured-marker">б\)/);
+});
+
+test('renderV2Reader renders structured table data as an HTML table', () => {
+  const model = normalizeV2Document({
+    meta: {
+      themeId: 'coatings',
+      migrationStatus: 'v2-ready'
+    },
+    blocks: [
+      {
+        id: 'block-table',
+        type: 'section',
+        title: '6. Требования к образцам',
+        summary: 'Таблица расстояний осмотра.',
+        references: [],
+        units: [
+          {
+            id: 'table-caption',
+            type: 'table-caption',
+            text: 'Т а б л и ц а 1',
+            references: []
+          },
+          {
+            id: 'table-unit',
+            type: 'table',
+            title: 'Таблица 1',
+            text: 'Плоский текст таблицы.',
+            columns: ['Расстояние осмотра, мм', 'Размер отверстия, мм × мм'],
+            rows: [
+              ['300', '54 × 54'],
+              ['500', '87 × 87']
+            ],
+            references: []
+          }
+        ],
+        highlights: [],
+        print: { pageNumber: 8 },
+        legacy: {}
+      }
+    ],
+    entryPoints: {
+      legacyUrl: '/docs/gost-29319-2025/viewer.html',
+      printUrl: '/docs/gost-29319-2025/print.html'
+    }
+  }, legacyDocument);
+
+  const html = renderV2Reader(model, legacyDocument);
+
+  assert.match(html, /class="v2-data-table"/);
+  assert.match(html, /<th>Расстояние осмотра, мм<\/th>/);
+  assert.match(html, /<td>300<\/td>/);
+  assert.match(html, /<td>54 × 54<\/td>/);
+});

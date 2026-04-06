@@ -24,8 +24,8 @@
     "gostNumber": "ГОСТ 29319—2025",
     "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
     "themeId": "coatings",
-    "readerMode": "v2",
-    "migrationStatus": "v2-ready",
+    "readerMode": "legacy",
+    "migrationStatus": "print-verified",
     "draftState": "accepted",
     "reviewStatus": "curated",
     "queueSummary": {
@@ -36,7 +36,7 @@
     "issueCounts": {
       "errors": 0,
       "warnings": 0,
-      "info": 0
+      "info": 2
     }
   },
   {
@@ -44,8 +44,8 @@
     "gostNumber": "ГОСТ 8784—75",
     "title": "Материалы лакокрасочные. Методы определения укрывистости",
     "themeId": "coatings",
-    "readerMode": "v2",
-    "migrationStatus": "v2-ready",
+    "readerMode": "legacy",
+    "migrationStatus": "print-verified",
     "draftState": "accepted",
     "reviewStatus": "curated",
     "queueSummary": {
@@ -56,7 +56,7 @@
     "issueCounts": {
       "errors": 0,
       "warnings": 0,
-      "info": 0
+      "info": 2
     }
   }
 ]

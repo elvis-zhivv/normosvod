@@ -3,8 +3,8 @@
   "gostNumber": "ГОСТ 29319—2025",
   "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
   "themeId": "coatings",
-  "readerMode": "v2",
-  "migrationStatus": "v2-ready",
+  "readerMode": "legacy",
+  "migrationStatus": "print-verified",
   "curationApplied": true,
   "reviewStatus": "curated",
   "blockCount": 23,
@@ -14,8 +14,23 @@
   "counts": {
     "errors": 0,
     "warnings": 0,
-    "info": 0
+    "info": 2
   },
-  "issues": [],
-  "suggestedActions": []
+  "issues": [
+    {
+      "severity": "info",
+      "code": "reader-cutover-pending",
+      "message": "Документ ещё не переведён в полный V2 reader mode (legacy).",
+      "blockId": null
+    },
+    {
+      "severity": "info",
+      "code": "migration-incomplete",
+      "message": "Migration status документа: print-verified.",
+      "blockId": null
+    }
+  ],
+  "suggestedActions": [
+    "Подготовить документ к полному cutover в Reader V2."
+  ]
 }

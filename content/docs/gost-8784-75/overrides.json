@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "meta": {
-    "migrationStatus": "v2-ready",
-    "readerMode": "v2"
+    "migrationStatus": "print-verified",
+    "readerMode": "legacy"
   },
   "synopsis": {
     "description": "Кураторски проверенная canonical-модель ГОСТ 8784—75 с подтвержденными методами определения укрывистости для screen-flow и print A4."
@@ -16,6 +16,63 @@
     },
     "gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti": {
       "summary": "Кураторски уточненный блок инструментально-математического метода определения укрывистости."
+    },
+    "gost-8784-75-1-2-apparatura-i-materialy": {
+      "unitOverrides": {
+        "gost-8784-75-1-2-apparatura-i-materialy-shahmatnaya-doska": {
+          "type": "figure",
+          "title": "Черт. 1 — Шахматная доска",
+          "summary": "Шахматная доска для визуального метода определения укрывистости.",
+          "src": "/docs/gost-8784-75/figures/figure-1-checkerboard.svg",
+          "alt": "Чертеж 1. Шахматная доска"
+        },
+        "gost-8784-75-1-2-apparatura-i-materialy-izdanie-oficialnoe": {
+          "hidden": true
+        },
+        "gost-8784-75-1-2-apparatura-i-materialy-perepechatka-vospreschena": {
+          "hidden": true
+        },
+        "gost-8784-75-1-2-apparatura-i-materialy-izdatelstvo-standartov-1975-ipk-izdatelst": {
+          "hidden": true
+        },
+        "gost-8784-75-1-2-apparatura-i-materialy-s-2-gost-8784-75": {
+          "hidden": true
+        }
+      }
+    },
+    "gost-8784-75-2-4-obrabotka-rezultatov": {
+      "unitOverrides": {
+        "gost-8784-75-2-4-obrabotka-rezultatov-grafik-dlya-opredeleniya-ukryvistosti": {
+          "hidden": true
+        },
+        "gost-8784-75-2-4-obrabotka-rezultatov-c-0-80-0-90-0-98-1-00-d-m-g-m-a-chert-2-zatem": {
+          "type": "figure",
+          "title": "Черт. 2 — График для определения укрывистости",
+          "summary": "График зависимости коэффициента контрастности от массы покрытия для определения укрывистости.",
+          "src": "/docs/gost-8784-75/figures/figure-2-hiding-power-graph.svg",
+          "alt": "Чертеж 2. График для определения укрывистости"
+        },
+        "gost-8784-75-2-4-obrabotka-rezultatov-gost-8784-75-s-5": {
+          "hidden": true
+        }
+      }
+    },
+    "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti": {
+      "unitOverrides": {
+        "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-blok-shema-rascheta-ukryvistosti-instrumentalno": {
+          "hidden": true
+        },
+        "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-nachalo-1-2-3-4-5-6-vvod-ishodnyh-dannyh-r-0": {
+          "type": "figure",
+          "title": "Приложение 2 — Блок-схема расчета укрывистости",
+          "summary": "Блок-схема инструментально-математического метода расчета укрывистости.",
+          "src": "/docs/gost-8784-75/figures/appendix-2-flowchart.svg",
+          "alt": "Приложение 2. Блок-схема расчета укрывистости"
+        },
+        "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti-gost-8784-75-s-9": {
+          "hidden": true
+        }
+      }
     }
   },
   "definitionsAppend": [
