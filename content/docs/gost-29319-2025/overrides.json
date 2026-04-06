@@ -22,6 +22,28 @@
     "gost-29319-2025-3-terminy-i-opredeleniya": {
       "summary": "Ключевые термины визуальной оценки цвета и метамерного соответствия, подтвержденные вручную."
     },
+    "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov": {
+      "unitOverrides": {
+        "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-chernye-serye-belye-0-10-20-30-40-50-60-70-80-90": {
+          "type": "figure",
+          "title": "Рисунок А.1 — Шкала изменения светлоты",
+          "summary": "Шкала изменения светлоты для ахроматических цветов.",
+          "src": "/docs/gost-29319-2025/figures/figure-a1-lightness-scale.svg",
+          "alt": "Рисунок А.1. Шкала изменения светлоты для ахроматических цветов"
+        }
+      }
+    },
+    "gost-29319-2025-prilozhenie-a-prodolzhenie": {
+      "unitOverrides": {
+        "gost-29319-2025-prilozhenie-a-prodolzhenie-fioletovye-sinie-golubye-zelenye-zheltye-oranzhevy": {
+          "type": "figure",
+          "title": "Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра",
+          "summary": "Спектральная шкала для идентификации хроматических цветов.",
+          "src": "/docs/gost-29319-2025/figures/figure-a2-spectrum-scale.svg",
+          "alt": "Рисунок А.2. Шкала длин волн видимого диапазона электромагнитного спектра"
+        }
+      }
+    },
     "gost-29319-2025-stranica-20": {
       "hidden": true
     }

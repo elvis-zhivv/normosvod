@@ -129,6 +129,14 @@ function isProseUnit(unit) {
   return unit?.type === 'paragraph';
 }
 
+function shouldRenderProcedureAsSteps(block = {}) {
+  const normalizedTitle = normalizeComparableText(block?.title);
+
+  return block?.type === 'procedure'
+    && (normalizedTitle.includes('проведение испытаний')
+      || normalizedTitle.startsWith('7 '));
+}
+
 function buildRelatedNormIndex(model) {
   return new Map((model.relatedNorms ?? []).map((item) => [item.label, item.id]));
 }
@@ -372,6 +380,27 @@ function renderProcedureItem(unit, relatedNormIndex) {
   `;
 }
 
+function renderFigureUnit(unit, relatedNormIndex) {
+  const src = normalizeDocumentUrl(unit?.src ?? '');
+
+  return `
+    <figure class="v2-figure" id="${escapeHtml(unit.id)}">
+      <div class="v2-figure-frame">
+        <img
+          class="v2-figure-image"
+          src="${escapeHtml(src)}"
+          alt="${escapeHtml(unit.alt ?? unit.title ?? unit.summary ?? 'Рисунок')}"
+          loading="lazy"
+        />
+      </div>
+      <figcaption class="v2-figure-caption">
+        ${escapeHtml(unit.title ?? unit.summary ?? 'Рисунок')}
+      </figcaption>
+      ${renderReferenceTokens(unit.references, relatedNormIndex)}
+    </figure>
+  `;
+}
+
 function renderTableGroup(captionUnit, tableUnit, relatedNormIndex) {
   return `
     <section class="v2-table-group" id="${escapeHtml(tableUnit.id)}">
@@ -434,7 +463,12 @@ function renderUnitList(units = [], relatedNormIndex = new Map(), definitionInde
       continue;
     }
 
-    if (block.type === 'procedure' && unit?.type === 'list-item') {
+    if (unit?.type === 'figure') {
+      renderedUnits.push(renderFigureUnit(unit, relatedNormIndex));
+      continue;
+    }
+
+    if (shouldRenderProcedureAsSteps(block) && unit?.type === 'list-item') {
       renderedUnits.push(renderProcedureItem(unit, relatedNormIndex));
       continue;
     }

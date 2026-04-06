@@ -1,0 +1,63 @@
+<svg viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" aria-labelledby="title desc" role="img">
+  <title id="title">Рисунок А.1 — Шкала изменения светлоты</title>
+  <desc id="desc">Градиентная шкала изменения светлоты от черного к белому с делениями от 0 до 100.</desc>
+  <defs>
+    <linearGradient id="grayScaleA1" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#000000"/>
+      <stop offset="18%" stop-color="#444444"/>
+      <stop offset="50%" stop-color="#9f9f9f"/>
+      <stop offset="78%" stop-color="#d8d8d8"/>
+      <stop offset="100%" stop-color="#f2f2f2"/>
+    </linearGradient>
+  </defs>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#111">
+    <text x="46" y="18" font-size="18" font-weight="700">Черные</text>
+    <text x="340" y="18" font-size="18" font-weight="700">Серые</text>
+    <text x="680" y="18" font-size="18" font-weight="700">Белые</text>
+  </g>
+
+  <g stroke="#444" stroke-width="2" fill="none" shape-rendering="crispEdges">
+    <path d="M22 46 V34 H140 V46"/>
+    <line x1="81" y1="22" x2="81" y2="34"/>
+    <path d="M146 46 V34 H615 V46"/>
+    <line x1="370.5" y1="22" x2="370.5" y2="34"/>
+    <path d="M620 46 V34 H798 V46"/>
+    <line x1="709" y1="22" x2="709" y2="34"/>
+  </g>
+
+  <rect x="22" y="54" width="776" height="40" fill="url(#grayScaleA1)" stroke="#666" stroke-width="1.5"/>
+
+  <g stroke="#8c8c8c" stroke-width="2" fill="none" shape-rendering="crispEdges">
+    <line x1="22" y1="120" x2="798" y2="120"/>
+    <line x1="22" y1="120" x2="22" y2="130"/>
+    <line x1="100" y1="120" x2="100" y2="130"/>
+    <line x1="177.2" y1="120" x2="177.2" y2="130"/>
+    <line x1="254.4" y1="120" x2="254.4" y2="130"/>
+    <line x1="331.6" y1="120" x2="331.6" y2="130"/>
+    <line x1="408.8" y1="120" x2="408.8" y2="130"/>
+    <line x1="486" y1="120" x2="486" y2="130"/>
+    <line x1="563.2" y1="120" x2="563.2" y2="130"/>
+    <line x1="640.4" y1="120" x2="640.4" y2="130"/>
+    <line x1="717.6" y1="120" x2="717.6" y2="130"/>
+    <line x1="798" y1="120" x2="798" y2="130"/>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#111" font-size="18" font-weight="700">
+    <text x="14" y="160">0</text>
+    <text x="88" y="160">10</text>
+    <text x="160" y="160">20</text>
+    <text x="238" y="160">30</text>
+    <text x="315" y="160">40</text>
+    <text x="392" y="160">50</text>
+    <text x="469" y="160">60</text>
+    <text x="546" y="160">70</text>
+    <text x="623" y="160">80</text>
+    <text x="700" y="160">90</text>
+    <text x="773" y="160">100</text>
+  </g>
+
+  <text x="410" y="208" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#111">
+    Рисунок А.1 — Шкала изменения светлоты
+  </text>
+</svg>

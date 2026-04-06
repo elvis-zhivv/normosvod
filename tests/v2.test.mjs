@@ -191,6 +191,77 @@ test('renderV2Reader uses specialized screen-flow renderers for procedure, appen
   assert.match(html, /v2-table-group/);
 });
 
+test('renderV2Reader renders figures and keeps protocol checklists out of step mode', () => {
+  const model = normalizeV2Document({
+    meta: {
+      themeId: 'coatings',
+      migrationStatus: 'v2-ready'
+    },
+    blocks: [
+      {
+        id: 'block-protocol',
+        type: 'procedure',
+        title: '11. Протокол испытаний',
+        summary: 'Протокол испытаний должен содержать:',
+        references: [],
+        units: [
+          {
+            id: 'protocol-head',
+            type: 'paragraph',
+            text: 'Протокол испытаний должен содержать:',
+            references: []
+          },
+          {
+            id: 'protocol-item',
+            type: 'list-item',
+            title: 'а) сведения',
+            text: 'а) сведения об образце;',
+            references: []
+          }
+        ],
+        highlights: [],
+        print: {
+          sourcePageNumber: 12
+        },
+        legacy: {}
+      },
+      {
+        id: 'block-appendix-figure',
+        type: 'appendix',
+        title: 'Приложение А',
+        summary: 'Рисунок приложения.',
+        references: [],
+        units: [
+          {
+            id: 'figure-a1',
+            type: 'figure',
+            title: 'Рисунок А.1 — Шкала изменения светлоты',
+            summary: 'Шкала изменения светлоты.',
+            src: '/docs/gost-29319-2025/figures/figure-a1-lightness-scale.svg',
+            alt: 'Рисунок А.1',
+            references: []
+          }
+        ],
+        highlights: [],
+        print: {
+          sourcePageNumber: 13
+        },
+        legacy: {}
+      }
+    ],
+    entryPoints: {
+      legacyUrl: '/docs/gost-29319-2025/viewer.html',
+      printUrl: '/docs/gost-29319-2025/print.html'
+    }
+  }, legacyDocument);
+
+  const html = renderV2Reader(model, legacyDocument);
+
+  assert.match(html, /class="v2-figure"/);
+  assert.match(html, /figure-a1-lightness-scale\.svg/);
+  assert.doesNotMatch(html, /protocol-item[\s\S]*v2-procedure-marker/);
+});
+
 test('renderV2Reader moves ancillary pages out of the main flow and renders prose as reading text', () => {
   const model = normalizeV2Document({
     meta: {

@@ -1,0 +1,74 @@
+<svg viewBox="0 0 820 230" xmlns="http://www.w3.org/2000/svg" aria-labelledby="title desc" role="img">
+  <title id="title">Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра</title>
+  <desc id="desc">Спектральная шкала от фиолетового к красному с делениями длин волн от 400 до 750 нанометров.</desc>
+  <defs>
+    <linearGradient id="spectrumA2" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6d31ab"/>
+      <stop offset="12%" stop-color="#4941b0"/>
+      <stop offset="25%" stop-color="#3b68c3"/>
+      <stop offset="38%" stop-color="#49abd3"/>
+      <stop offset="50%" stop-color="#38c97b"/>
+      <stop offset="62%" stop-color="#b4df12"/>
+      <stop offset="72%" stop-color="#f0e50c"/>
+      <stop offset="82%" stop-color="#f7b40f"/>
+      <stop offset="91%" stop-color="#f56a1a"/>
+      <stop offset="100%" stop-color="#ff2530"/>
+    </linearGradient>
+  </defs>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#111">
+    <text x="20" y="18" font-size="12" font-weight="700">Фиолетовые</text>
+    <text x="135" y="18" font-size="12" font-weight="700">Синие</text>
+    <text x="249" y="18" font-size="12" font-weight="700">Голубые</text>
+    <text x="395" y="18" font-size="12" font-weight="700">Зеленые</text>
+    <text x="545" y="18" font-size="12" font-weight="700">Желтые</text>
+    <text x="638" y="18" font-size="12" font-weight="700">Оранжевые</text>
+    <text x="785" y="18" font-size="12" font-weight="700" text-anchor="end">Красные</text>
+  </g>
+
+  <g stroke="#444" stroke-width="2" fill="none" shape-rendering="crispEdges">
+    <path d="M22 46 V34 H95 V46"/>
+    <line x1="59.5" y1="22" x2="59.5" y2="34"/>
+    <path d="M101 46 V34 H206 V46"/>
+    <line x1="154" y1="22" x2="154" y2="34"/>
+    <path d="M211 46 V34 H333 V46"/>
+    <line x1="272" y1="22" x2="272" y2="34"/>
+    <path d="M339 46 V34 H503 V46"/>
+    <line x1="421" y1="22" x2="421" y2="34"/>
+    <path d="M509 46 V34 H627 V46"/>
+    <line x1="568" y1="22" x2="568" y2="34"/>
+    <path d="M632 46 V34 H713 V46"/>
+    <line x1="672.5" y1="22" x2="672.5" y2="34"/>
+    <path d="M719 46 V34 H798 V46"/>
+    <line x1="758.5" y1="22" x2="758.5" y2="34"/>
+  </g>
+
+  <rect x="22" y="54" width="776" height="40" fill="url(#spectrumA2)" stroke="#666" stroke-width="1.5"/>
+
+  <g stroke="#8c8c8c" stroke-width="2" fill="none" shape-rendering="crispEdges">
+    <line x1="22" y1="120" x2="798" y2="120"/>
+    <line x1="22" y1="120" x2="22" y2="130"/>
+    <line x1="132.857" y1="120" x2="132.857" y2="130"/>
+    <line x1="243.714" y1="120" x2="243.714" y2="130"/>
+    <line x1="354.571" y1="120" x2="354.571" y2="130"/>
+    <line x1="465.428" y1="120" x2="465.428" y2="130"/>
+    <line x1="576.285" y1="120" x2="576.285" y2="130"/>
+    <line x1="687.142" y1="120" x2="687.142" y2="130"/>
+    <line x1="798" y1="120" x2="798" y2="130"/>
+  </g>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#111" font-size="18" font-weight="700">
+    <text x="11" y="160">400</text>
+    <text x="120" y="160">450</text>
+    <text x="231" y="160">500</text>
+    <text x="342" y="160">550</text>
+    <text x="453" y="160">600</text>
+    <text x="564" y="160">650</text>
+    <text x="675" y="160">700</text>
+    <text x="786" y="160">750</text>
+  </g>
+
+  <text x="410" y="208" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#111">
+    Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра
+  </text>
+</svg>

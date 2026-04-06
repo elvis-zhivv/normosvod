@@ -4127,11 +4127,13 @@
         {
           "id": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-chernye-serye-belye-0-10-20-30-40-50-60-70-80-90",
           "order": 10,
-          "type": "paragraph",
-          "title": null,
+          "type": "figure",
+          "title": "Рисунок А.1 — Шкала изменения светлоты",
           "text": "Черные Серые Белые 0 10 20 30 40 50 60 70 80 90 100 Рисунок А.1 — Шкала изменения светлоты",
-          "summary": "Черные Серые Белые 0 10 20 30 40 50 60 70 80 90 100 Рисунок А.1 — Шкала изменения светлоты",
-          "references": []
+          "summary": "Шкала изменения светлоты для ахроматических цветов.",
+          "references": [],
+          "src": "/docs/gost-29319-2025/figures/figure-a1-lightness-scale.svg",
+          "alt": "Рисунок А.1. Шкала изменения светлоты для ахроматических цветов"
         },
         {
           "id": "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-dlya-hromaticheskih-cvetov-cvet-opredelyayut-po-shkal",
@@ -4275,6 +4277,15 @@
       "migration": {
         "source": "legacy-viewer",
         "confidence": "high"
+      },
+      "unitOverrides": {
+        "gost-29319-2025-prilozhenie-a-spravochnoe-identifikaciya-cveta-obrazcov-chernye-serye-belye-0-10-20-30-40-50-60-70-80-90": {
+          "type": "figure",
+          "title": "Рисунок А.1 — Шкала изменения светлоты",
+          "summary": "Шкала изменения светлоты для ахроматических цветов.",
+          "src": "/docs/gost-29319-2025/figures/figure-a1-lightness-scale.svg",
+          "alt": "Рисунок А.1. Шкала изменения светлоты для ахроматических цветов"
+        }
       }
     },
     {
@@ -4291,11 +4302,13 @@
         {
           "id": "gost-29319-2025-prilozhenie-a-prodolzhenie-fioletovye-sinie-golubye-zelenye-zheltye-oranzhevy",
           "order": 0,
-          "type": "paragraph",
-          "title": null,
+          "type": "figure",
+          "title": "Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра",
           "text": "Фиолетовые Синие Голубые Зеленые Желтые Оранжевые Красные 400 450 500 550 600 650 700 750 Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра",
-          "summary": "Фиолетовые Синие Голубые Зеленые Желтые Оранжевые Красные 400 450 500 550 600 650 700 750 Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра",
-          "references": []
+          "summary": "Спектральная шкала для идентификации хроматических цветов.",
+          "references": [],
+          "src": "/docs/gost-29319-2025/figures/figure-a2-spectrum-scale.svg",
+          "alt": "Рисунок А.2. Шкала длин волн видимого диапазона электромагнитного спектра"
         },
         {
           "id": "gost-29319-2025-prilozhenie-a-prodolzhenie-gruppa-svetlo-krasnyh-cvetov-prinyata-za-osnovnoi",
@@ -4483,6 +4496,15 @@
       "migration": {
         "source": "legacy-viewer",
         "confidence": "high"
+      },
+      "unitOverrides": {
+        "gost-29319-2025-prilozhenie-a-prodolzhenie-fioletovye-sinie-golubye-zelenye-zheltye-oranzhevy": {
+          "type": "figure",
+          "title": "Рисунок А.2 — Шкала длин волн видимого диапазона электромагнитного спектра",
+          "summary": "Спектральная шкала для идентификации хроматических цветов.",
+          "src": "/docs/gost-29319-2025/figures/figure-a2-spectrum-scale.svg",
+          "alt": "Рисунок А.2. Шкала длин волн видимого диапазона электромагнитного спектра"
+        }
       }
     },
     {
