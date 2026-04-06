@@ -520,6 +520,16 @@
   line-height: 1.62;
 }
 
+.v2-callout-list {
+  margin: 0;
+  padding-left: 1.35rem;
+  line-height: 1.62;
+}
+
+.v2-callout-list li + li {
+  margin-top: 8px;
+}
+
 .v2-callout-head {
   margin-bottom: 8px;
   font-size: 0.82rem;

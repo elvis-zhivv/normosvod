@@ -340,11 +340,37 @@ function isCalloutUnit(unit) {
   return ['note', 'advice', 'requirement', 'warning'].includes(unit?.type);
 }
 
+function renderCalloutBody(unit) {
+  const text = String(unit?.text ?? unit?.summary ?? '').trim();
+
+  if (!text) {
+    return '<p></p>';
+  }
+
+  if (/^Примечания?\s+1\b/u.test(text)) {
+    const normalized = text.replace(/^Примечания?\s+/u, '').trim();
+    const parts = normalized.split(/\s(?=\d+\s)/u).map((item) => item.trim()).filter(Boolean);
+
+    if (parts.length > 1) {
+      return `
+        <ol class="v2-callout-list">
+          ${parts.map((item) => {
+            const content = item.replace(/^\d+\s+/u, '').trim();
+            return `<li>${escapeHtml(content)}</li>`;
+          }).join('')}
+        </ol>
+      `;
+    }
+  }
+
+  return `<p>${escapeHtml(text)}</p>`;
+}
+
 function renderCalloutUnit(unit, relatedNormIndex) {
   return `
     <aside class="v2-callout v2-callout-${escapeHtml(unit.type)}" id="${escapeHtml(unit.id)}">
       <div class="v2-callout-head">${escapeHtml(formatUnitTypeLabel(unit.type))}</div>
-      <p>${escapeHtml(unit.summary ?? unit.text ?? '')}</p>
+      ${renderCalloutBody(unit)}
       ${renderReferenceTokens(unit.references, relatedNormIndex)}
     </aside>
   `;
