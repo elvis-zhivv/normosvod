@@ -6,6 +6,7 @@ import { renderDocumentArtifactPage, renderDocumentPage, renderMissingDocument }
 import { shouldOpenV2Reader } from './document-route-state.js';
 import { safeDecodePathSegment, stripBasePath, withBase } from './paths.js';
 import { enhanceV2Readers } from '../v2/enhance.js';
+import { normalizeV2Document } from '../v2/model.js';
 
 const appNode = document.getElementById('app');
 const SEARCH_INPUT_SELECTOR = 'input[data-search-input]';
@@ -18,6 +19,7 @@ const state = {
   v2SearchIndex: [],
   curationWorkbenchIndex: [],
   curationWorkbenchBySlug: new Map(),
+  documentModelsBySlug: new Map(),
   stats: {
     totalDocuments: 0,
     totalPages: 0,
@@ -149,6 +151,25 @@ async function loadWorkbenchDocument(slug) {
   return workbenchDocument;
 }
 
+async function loadDocumentModel(documentItem) {
+  if (!documentItem?.slug || !documentItem?.canonicalDocumentUrl) {
+    return null;
+  }
+
+  if (state.documentModelsBySlug.has(documentItem.slug)) {
+    return state.documentModelsBySlug.get(documentItem.slug);
+  }
+
+  const payload = await loadJson(documentItem.canonicalDocumentUrl, null);
+  const model = payload ? normalizeV2Document(payload, documentItem) : null;
+
+  if (model) {
+    state.documentModelsBySlug.set(documentItem.slug, model);
+  }
+
+  return model;
+}
+
 function renderLayout(content, route) {
   appNode.innerHTML = `
     ${renderHeader(route.currentPath)}
@@ -221,11 +242,17 @@ async function renderRoute() {
     const requestedView = route.query.get('view');
     const showEmbeddedViewer = requestedView === 'card' && route.query.get('embed') === '1';
     const showV2Reader = shouldOpenV2Reader(documentItem, requestedView ?? '');
+    const documentModel = !showV2Reader && documentItem ? await loadDocumentModel(documentItem) : null;
     route.pageTitle = documentItem?.gostNumber ?? route.params.slug;
 
     renderLayout(
       documentItem
-        ? renderDocumentPage(documentItem, { showEmbeddedViewer, showV2Reader, anchor: route.hash })
+        ? renderDocumentPage(documentItem, {
+          showEmbeddedViewer,
+          showV2Reader,
+          anchor: route.hash,
+          model: documentModel
+        })
         : renderMissingDocument(route.params.slug),
       route
     );
@@ -235,13 +262,15 @@ async function renderRoute() {
 
   if (route.name === 'document-legacy' || route.name === 'document-print') {
     const documentItem = state.documents.find((item) => item.slug === route.params.slug);
+    const documentModel = documentItem ? await loadDocumentModel(documentItem) : null;
     route.pageTitle = documentItem?.gostNumber ?? route.params.slug;
 
     renderLayout(
       documentItem
         ? renderDocumentArtifactPage(documentItem, {
           mode: route.name === 'document-print' ? 'print' : 'legacy',
-          anchor: route.hash
+          anchor: route.hash,
+          model: documentModel
         })
         : renderMissingDocument(route.params.slug),
       route

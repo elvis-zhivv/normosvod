@@ -1,4 +1,5 @@
 import { renderDocumentSurface } from '../components/document-surface.js';
+import { renderDocumentTextContent } from '../components/document-text-content.js';
 import { renderDocumentTextPreview } from '../components/document-text-preview.js';
 import { escapeHtml } from './html.js';
 import {
@@ -272,7 +273,23 @@ function renderRouteSummary(document, { mode = 'summary' } = {}) {
   `;
 }
 
-function renderDocumentContentSection(document) {
+function renderDocumentContentSection(document, model = null) {
+  const fullText = renderDocumentTextContent(model);
+
+  if (fullText) {
+    return `
+      <section class="document-workspace-panel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Содержимое</p>
+            <h2>Текст документа</h2>
+          </div>
+        </div>
+        ${fullText}
+      </section>
+    `;
+  }
+
   const preview = renderDocumentTextPreview(document, {
     title: 'Текст документа',
     limit: 4
@@ -297,14 +314,15 @@ function renderDocumentContentSection(document) {
 
 function renderDocumentWorkspace(document, {
   mode = 'summary',
-  anchor = ''
+  anchor = '',
+  model = null
 } = {}) {
   return `
     <section class="document-workspace document-workspace-${escapeHtml(mode)}">
       ${renderWorkspaceOutline(document)}
       <div class="document-workspace-main">
         ${renderDocumentOverview(document, { mode, anchor })}
-        ${renderDocumentContentSection(document)}
+        ${renderDocumentContentSection(document, model)}
         ${renderRouteSummary(document, { mode })}
         ${renderPlatformStatus(document)}
         ${renderNavItems(document)}
@@ -342,14 +360,14 @@ function renderV2Scaffold(document) {
   `;
 }
 
-export function renderDocumentArtifactPage(document, { mode = 'legacy', anchor = '' } = {}) {
-  return renderDocumentWorkspace(document, { mode, anchor });
+export function renderDocumentArtifactPage(document, { mode = 'legacy', anchor = '', model = null } = {}) {
+  return renderDocumentWorkspace(document, { mode, anchor, model });
 }
 
-export function renderDocumentPage(document, { showEmbeddedViewer, showV2Reader = false, anchor = '' }) {
+export function renderDocumentPage(document, { showEmbeddedViewer, showV2Reader = false, anchor = '', model = null }) {
   if (showV2Reader) {
     return renderV2Scaffold(document);
   }
 
-  return renderDocumentWorkspace(document, { mode: 'summary', anchor });
+  return renderDocumentWorkspace(document, { mode: 'summary', anchor, model });
 }
