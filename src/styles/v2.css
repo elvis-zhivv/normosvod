@@ -492,6 +492,23 @@
   margin: 0;
 }
 
+.v2-list-row {
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: #fbfbfc;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.v2-list-label {
+  margin-bottom: 6px;
+  font-weight: 700;
+}
+
+.v2-list-text {
+  margin: 0;
+  line-height: 1.62;
+}
+
 .v2-callout {
   padding: 16px 18px;
   border-radius: 16px;

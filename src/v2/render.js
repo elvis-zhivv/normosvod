@@ -314,6 +314,13 @@ function renderInlineHeading(unit, level = 3) {
   `;
 }
 
+function isDuplicateHeadingUnit(unit, block) {
+  const unitTitle = normalizeComparableText(unit?.title ?? unit?.summary ?? unit?.text ?? '');
+  const blockTitle = normalizeComparableText(block?.title ?? '');
+
+  return Boolean(unitTitle) && unitTitle === blockTitle;
+}
+
 function renderProseGroup(units = [], relatedNormIndex = new Map()) {
   if (!units.length) {
     return '';
@@ -358,7 +365,17 @@ function renderStandardUnit(unit, relatedNormIndex, definitionIndex) {
           })
           : ''}
       </div>
-      <p>${escapeHtml(unit.summary ?? unit.text ?? '')}</p>
+      <p>${escapeHtml(unit.text ?? unit.summary ?? '')}</p>
+      ${renderReferenceTokens(unit.references, relatedNormIndex)}
+    </div>
+  `;
+}
+
+function renderListItem(unit, relatedNormIndex) {
+  return `
+    <div class="v2-list-row" id="${escapeHtml(unit.id)}">
+      ${unit.title ? `<div class="v2-list-label">${escapeHtml(unit.title)}</div>` : ''}
+      <p class="v2-list-text">${escapeHtml(unit.text ?? unit.summary ?? '')}</p>
       ${renderReferenceTokens(unit.references, relatedNormIndex)}
     </div>
   `;
@@ -373,7 +390,7 @@ function renderProcedureItem(unit, relatedNormIndex) {
           <span class="v2-unit-type">${escapeHtml(formatUnitTypeLabel(unit.type))}</span>
           ${unit.title ? `<strong>${escapeHtml(unit.title)}</strong>` : ''}
         </div>
-        <p>${escapeHtml(unit.summary ?? unit.text ?? '')}</p>
+        <p>${escapeHtml(unit.text ?? unit.summary ?? '')}</p>
         ${renderReferenceTokens(unit.references, relatedNormIndex)}
       </div>
     </div>
@@ -412,7 +429,7 @@ function renderTableGroup(captionUnit, tableUnit, relatedNormIndex) {
           <span class="v2-unit-type">${escapeHtml(formatUnitTypeLabel('table'))}</span>
           <strong>${escapeHtml(tableUnit.title || 'Таблица')}</strong>
         </div>
-        <p class="v2-table-text">${escapeHtml(tableUnit.summary ?? tableUnit.text ?? '')}</p>
+        <p class="v2-table-text">${escapeHtml(tableUnit.text ?? tableUnit.summary ?? '')}</p>
         ${renderReferenceTokens(tableUnit.references, relatedNormIndex)}
       </div>
     </section>
@@ -473,13 +490,22 @@ function renderUnitList(units = [], relatedNormIndex = new Map(), definitionInde
       continue;
     }
 
+    if (unit?.type === 'list-item') {
+      renderedUnits.push(renderListItem(unit, relatedNormIndex));
+      continue;
+    }
+
     if (unit?.type === 'section-heading') {
-      renderedUnits.push(renderInlineHeading(unit, 3));
+      if (!isDuplicateHeadingUnit(unit, block)) {
+        renderedUnits.push(renderInlineHeading(unit, 3));
+      }
       continue;
     }
 
     if (unit?.type === 'subsection-heading' || unit?.type === 'heading') {
-      renderedUnits.push(renderInlineHeading(unit, 4));
+      if (!isDuplicateHeadingUnit(unit, block)) {
+        renderedUnits.push(renderInlineHeading(unit, 4));
+      }
       continue;
     }
 
@@ -488,27 +514,6 @@ function renderUnitList(units = [], relatedNormIndex = new Map(), definitionInde
 
   flushBufferedProse();
   return renderedUnits.join('');
-}
-
-function shouldRenderBlockSummary(block) {
-  const summary = String(block?.summary ?? '').trim();
-
-  if (!summary) {
-    return false;
-  }
-
-  if (!Array.isArray(block?.units) || block.units.length === 0) {
-    return true;
-  }
-
-  const normalizedSummary = normalizeComparableText(summary.replace(/…+$/u, ''));
-  const normalizedBodyText = normalizeComparableText(block?.bodyText ?? '');
-
-  if (normalizedSummary && normalizedBodyText.startsWith(normalizedSummary)) {
-    return false;
-  }
-
-  return block.type !== 'section' || summary.length <= 220;
 }
 
 function renderFrontMatterSummary(frontMatter = []) {
@@ -556,8 +561,6 @@ function renderBlocks(blocks = [], entryPoints = {}, options = {}) {
         <p class="v2-block-page">Стр. ${escapeHtml(block.print?.sourcePageNumber ?? block.print?.pageNumber ?? '—')}</p>
       </div>
       <h2>${escapeHtml(block.title)}</h2>
-      ${shouldRenderBlockSummary(block) ? `<p class="v2-block-summary">${escapeHtml(block.summary ?? '')}</p>` : ''}
-      ${renderHighlights(block.highlights)}
       ${renderReferenceTokens(block.references, relatedNormIndex)}
       ${block.units?.length
         ? `<div class="v2-unit-list">${renderUnitList(block.units, relatedNormIndex, definitionIndex, {
