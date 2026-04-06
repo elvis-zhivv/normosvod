@@ -2,25 +2,27 @@
   "version": "0.2.0",
   "kind": "normosvod-canonical-document",
   "slug": "gost-29319-2025",
+  "docType": "gost",
   "meta": {
     "gostNumber": "ГОСТ 29319—2025",
     "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
     "shortTitle": "Метод визуального сравнения цвета",
+    "docType": "gost",
     "year": 2025,
     "status": "active",
     "language": "ru",
     "pages": 26,
     "themeId": "coatings",
-    "readerMode": "hybrid",
-    "migrationStatus": "entity-linked"
+    "readerMode": "v2",
+    "migrationStatus": "v2-ready"
   },
   "synopsis": {
     "description": "Кураторски выверенная canonical-модель ГОСТ 29319—2025 для screen-flow и print-A4 режимов.",
     "keyTakeaways": [
-      "ГОСТ 29319—2025 сегментирован в 24 block units для V2 reader.",
+      "ГОСТ 29319—2025 сегментирован в 23 block units для V2 reader.",
       "В документе выявлены или подтверждены определения: 5.",
       "Связанные нормы в curated graph: 18.",
-      "Кураторский слой не скрывал блоки."
+      "Ручной кураторский слой скрыл технические блоки: 1."
     ]
   },
   "source": {
@@ -171,12 +173,6 @@
       "title": "Издательские сведения",
       "type": "meta",
       "pageNumber": 19
-    },
-    {
-      "id": "gost-29319-2025-stranica-20",
-      "title": "Страница 20",
-      "type": "section",
-      "pageNumber": 20
     }
   ],
   "blocks": [
@@ -5216,44 +5212,6 @@
         "source": "legacy-viewer",
         "confidence": "high"
       }
-    },
-    {
-      "id": "gost-29319-2025-stranica-20",
-      "order": 23,
-      "type": "section",
-      "title": "Страница 20",
-      "summary": "",
-      "bodyText": "",
-      "references": [],
-      "units": [],
-      "highlights": [],
-      "legacy": {
-        "pageIndex": 19,
-        "targetSelector": null,
-        "pageAnchor": null
-      },
-      "print": {
-        "sourcePageNumber": 20,
-        "pageNumber": 20,
-        "pageAnchor": null,
-        "layout": {
-          "estimatedUnits": 10,
-          "minUnits": 7,
-          "avoidBreakInside": true,
-          "keepWithNext": false,
-          "forcePageBreakBefore": true,
-          "prefersSoloPage": true,
-          "pageFillWeight": 1,
-          "splittable": false,
-          "segmentTargetUnits": 32,
-          "introUnits": 4,
-          "unitEstimates": []
-        }
-      },
-      "migration": {
-        "source": "legacy-viewer",
-        "confidence": "low"
-      }
     }
   ],
   "definitions": [
@@ -6159,18 +6117,11 @@
       "pageNumber": 19,
       "pageAnchor": "#section-imprint",
       "estimatedUnits": 18
-    },
-    {
-      "blockId": "gost-29319-2025-stranica-20",
-      "sourcePageNumber": 20,
-      "pageNumber": 20,
-      "pageAnchor": null,
-      "estimatedUnits": 10
     }
   ],
   "curation": {
     "applied": true,
-    "hiddenBlocksCount": 0,
-    "overrideVersion": 1
+    "hiddenBlocksCount": 1,
+    "overrideVersion": 2
   }
 }

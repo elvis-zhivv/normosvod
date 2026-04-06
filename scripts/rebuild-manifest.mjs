@@ -13,6 +13,7 @@ import { rebuildCurationWorkbench } from './rebuild-curation-workbench.mjs';
 import { rebuildPrintDocs } from './rebuild-print-docs.mjs';
 import { rebuildV2Data } from './rebuild-v2-data.mjs';
 import { overlayManifestWithCanonicalData } from './lib/manifest-overlay.mjs';
+import { assertSchema } from './lib/schema-validation.mjs';
 
 async function sanitizeDocumentDirectory(docDirectoryPath) {
   const metaPath = path.join(docDirectoryPath, 'meta.json');
@@ -59,6 +60,11 @@ export async function rebuildManifest() {
 
   await rebuildCanonicalDocs(draftManifest, searchIndex);
   const manifest = sortManifestEntries(await overlayManifestWithCanonicalData(draftManifest));
+  for (const entry of manifest) {
+    await assertSchema('manifest-entry.schema.json', entry, {
+      label: `manifest entry ${entry.slug}`
+    });
+  }
   const stats = buildStats(manifest);
   await rebuildCurationData(manifest);
   await rebuildCurationWorkbench(manifest);

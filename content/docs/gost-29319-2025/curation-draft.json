@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "reviewState": "needs-review",
-  "notes": "Подтвердить перевод документа в print-verified после проверки короткого хвостового блока и policy переключения hybrid -> v2.",
-  "targetMigrationStatus": "print-verified",
+  "reviewState": "accepted",
+  "notes": "Экранный reader и print A4 подтверждены. Короткий хвостовой блок скрыт из curated screen-flow слоя.",
+  "targetMigrationStatus": "v2-ready",
   "blockReviews": [
     {
       "blockId": "gost-29319-2025-2-normativnye-ssylki",
@@ -13,10 +13,10 @@
     },
     {
       "blockId": "gost-29319-2025-stranica-20",
-      "status": "needs-review",
-      "note": "Короткий финальный блок требует ручной проверки: оставить meta block или скрыть в curated слое.",
+      "status": "accepted",
+      "note": "Короткий финальный блок скрыт в curated слое как технический хвостовой артефакт viewer.",
       "reviewer": "curator",
-      "updatedAt": "2026-04-05T12:12:00.000Z"
+      "updatedAt": "2026-04-06T08:12:00.000Z"
     }
   ],
   "definitionReviews": [
@@ -25,7 +25,7 @@
       "status": "accepted",
       "note": "Определение подтверждено вручную.",
       "reviewer": "curator",
-      "updatedAt": "2026-04-05T12:14:00.000Z"
+      "updatedAt": "2026-04-06T08:14:00.000Z"
     }
   ],
   "relatedNormReviews": [
@@ -34,7 +34,7 @@
       "status": "accepted",
       "note": "Связанная норма добавлена вручную и подтверждена.",
       "reviewer": "curator",
-      "updatedAt": "2026-04-05T12:15:00.000Z"
+      "updatedAt": "2026-04-06T08:15:00.000Z"
     }
   ]
 }

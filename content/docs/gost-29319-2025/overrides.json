@@ -1,8 +1,8 @@
 {
-  "version": 1,
+  "version": 2,
   "meta": {
-    "migrationStatus": "entity-linked",
-    "readerMode": "hybrid"
+    "migrationStatus": "v2-ready",
+    "readerMode": "v2"
   },
   "synopsis": {
     "description": "Кураторски выверенная canonical-модель ГОСТ 29319—2025 для screen-flow и print-A4 режимов."
@@ -21,6 +21,9 @@
     },
     "gost-29319-2025-3-terminy-i-opredeleniya": {
       "summary": "Ключевые термины визуальной оценки цвета и метамерного соответствия, подтвержденные вручную."
+    },
+    "gost-29319-2025-stranica-20": {
+      "hidden": true
     }
   },
   "definitionsAppend": [

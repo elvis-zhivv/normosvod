@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { hashContent } from './lib/hash-file.mjs';
 import { readDocumentsManifest } from './lib/manifest.mjs';
 import { buildMetaFromCanonicalPackage, normalizeCanonicalPackage } from './lib/canonical-package.mjs';
+import { normalizeDocType } from './lib/doc-type.mjs';
 import {
   normalizeDocumentPackageManifest,
   PACKAGE_MANIFEST_FILENAME,
@@ -149,6 +150,7 @@ function buildLocalMeta(meta, slug, fileHash, timestamps) {
     gostNumber: meta.gostNumber,
     title: meta.title,
     shortTitle: meta.shortTitle,
+    docType: normalizeDocType(meta.docType, meta),
     year: meta.year,
     status: meta.status,
     language: meta.language,

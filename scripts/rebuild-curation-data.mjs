@@ -6,6 +6,7 @@ import { enrichDocumentRecord } from './lib/document-record.mjs';
 import { readCanonicalDocument } from './lib/canonical-document.mjs';
 import { buildCurationReportEntry } from './lib/curation-report.mjs';
 import { CONTENT_DOCS_DIR, CURATION_REPORT_PATH } from './lib/project-paths.mjs';
+import { assertSchema } from './lib/schema-validation.mjs';
 import { writeJson, writeJsonAtomic } from './lib/write-json.mjs';
 
 export async function rebuildCurationData(manifestOverride = null) {
@@ -20,6 +21,9 @@ export async function rebuildCurationData(manifestOverride = null) {
     }
 
     const entry = buildCurationReportEntry(canonicalDocument, document);
+    await assertSchema('curation-report-entry.schema.json', entry, {
+      label: `curation report ${document.slug}`
+    });
     report.push(entry);
 
     const outputDirectory = path.join(CONTENT_DOCS_DIR, document.slug);

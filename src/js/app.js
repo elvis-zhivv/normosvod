@@ -3,6 +3,7 @@ import { SORT_OPTIONS } from './filters.js';
 import { renderCatalogPage, renderHomePage } from './catalog.js';
 import { renderCurationDocumentPage, renderCurationIndexPage, renderMissingWorkbench } from './curation.js';
 import { renderDocumentArtifactPage, renderDocumentPage, renderMissingDocument } from './document.js';
+import { shouldOpenV2Reader } from './document-route-state.js';
 import { safeDecodePathSegment, stripBasePath, withBase } from './paths.js';
 import { enhanceV2Readers } from '../v2/enhance.js';
 
@@ -219,7 +220,7 @@ async function renderRoute() {
     const documentItem = state.documents.find((item) => item.slug === route.params.slug);
     const requestedView = route.query.get('view');
     const showEmbeddedViewer = requestedView === 'card' && route.query.get('embed') === '1';
-    const showV2Reader = requestedView === 'v2' || (requestedView !== 'card' && Boolean(documentItem?.canonicalDocumentUrl));
+    const showV2Reader = shouldOpenV2Reader(documentItem, requestedView ?? '');
     route.pageTitle = documentItem?.gostNumber ?? route.params.slug;
 
     renderLayout(

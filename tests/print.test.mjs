@@ -15,6 +15,7 @@ test('enrichDocumentRecord points printUrl to canonical print renderer by defaul
   assert.equal(record.canonicalDocumentUrl, '/data/canonical/gost-29319-2025.json');
   assert.equal(record.v2DocumentUrl, '/data/canonical/gost-29319-2025.json');
   assert.equal(record.legacyViewerUrl, '/docs/gost-29319-2025/viewer.html');
+  assert.equal(record.docType, 'gost');
 });
 
 test('enrichDocumentRecord does not invent legacy viewer for canonical-only source', () => {
@@ -26,8 +27,9 @@ test('enrichDocumentRecord does not invent legacy viewer for canonical-only sour
   assert.equal(record.canonicalDocumentUrl, '/data/canonical/canonical-only-doc.json');
   assert.equal(record.v2DocumentUrl, '/data/canonical/canonical-only-doc.json');
   assert.equal(record.printUrl, '/docs/canonical-only-doc/print.html');
-  assert.equal(record.legacyViewerUrl, undefined);
+  assert.equal(record.legacyViewerUrl, '');
   assert.equal(record.viewerUrl, undefined);
+  assert.equal(record.docType, 'standard');
 });
 
 test('enrichDocumentRecord applies package source capabilities to document-package imports', () => {

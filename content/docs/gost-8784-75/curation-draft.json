@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "reviewState": "accepted",
+  "notes": "Методы определения укрывистости, manual definitions и экранный cutover подтверждены вручную.",
+  "targetMigrationStatus": "v2-ready",
+  "blockReviews": [
+    {
+      "blockId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti",
+      "status": "accepted",
+      "note": "Визуальный метод и source locator подтверждены.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:40:00.000Z"
+    },
+    {
+      "blockId": "gost-8784-75-2-instrumentalnyi-metod-opredeleniya-ukryvistosti",
+      "status": "accepted",
+      "note": "Инструментальный метод подтвержден для V2 reader.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:42:00.000Z"
+    },
+    {
+      "blockId": "gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti",
+      "status": "accepted",
+      "note": "Инструментально-математический метод подтвержден для cutover.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:44:00.000Z"
+    }
+  ],
+  "definitionReviews": [
+    {
+      "definitionId": "manual-definition-visual-hiding-power",
+      "status": "accepted",
+      "note": "Термин зафиксирован вручную.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:46:00.000Z"
+    },
+    {
+      "definitionId": "manual-definition-instrumental-hiding-power",
+      "status": "accepted",
+      "note": "Термин зафиксирован вручную.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:47:00.000Z"
+    },
+    {
+      "definitionId": "manual-definition-instrumental-math-hiding-power",
+      "status": "accepted",
+      "note": "Термин зафиксирован вручную.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:48:00.000Z"
+    },
+    {
+      "definitionId": "manual-definition-coating-thickness",
+      "status": "accepted",
+      "note": "Термин зафиксирован вручную.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:49:00.000Z"
+    }
+  ],
+  "relatedNormReviews": [
+    {
+      "relatedNormId": "related-gost-29317-92",
+      "status": "accepted",
+      "note": "Ключевая связанная норма подтверждена.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:50:00.000Z"
+    }
+  ]
+}

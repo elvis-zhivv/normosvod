@@ -4,19 +4,19 @@
     "gostNumber": "ГОСТ 1.0—2015",
     "title": "Межгосударственная система стандартизации. Основные положения",
     "themeId": "regulation",
-    "readerMode": "legacy",
-    "migrationStatus": "imported",
-    "draftState": "pending",
-    "reviewStatus": "needs-review",
+    "readerMode": "v2",
+    "migrationStatus": "v2-ready",
+    "draftState": "accepted",
+    "reviewStatus": "curated",
     "queueSummary": {
-      "blocksPending": 16,
+      "blocksPending": 14,
       "definitionsPending": 0,
-      "relatedNormsPending": 14
+      "relatedNormsPending": 13
     },
     "issueCounts": {
       "errors": 0,
-      "warnings": 2,
-      "info": 1
+      "warnings": 0,
+      "info": 0
     }
   },
   {
@@ -24,19 +24,19 @@
     "gostNumber": "ГОСТ 29319—2025",
     "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
     "themeId": "coatings",
-    "readerMode": "hybrid",
-    "migrationStatus": "entity-linked",
-    "draftState": "needs-review",
-    "reviewStatus": "needs-review",
+    "readerMode": "v2",
+    "migrationStatus": "v2-ready",
+    "draftState": "accepted",
+    "reviewStatus": "curated",
     "queueSummary": {
-      "blocksPending": 23,
+      "blocksPending": 22,
       "definitionsPending": 4,
       "relatedNormsPending": 17
     },
     "issueCounts": {
       "errors": 0,
-      "warnings": 2,
-      "info": 1
+      "warnings": 0,
+      "info": 0
     }
   },
   {
@@ -44,19 +44,19 @@
     "gostNumber": "ГОСТ 8784—75",
     "title": "Материалы лакокрасочные. Методы определения укрывистости",
     "themeId": "coatings",
-    "readerMode": "legacy",
-    "migrationStatus": "imported",
-    "draftState": "pending",
-    "reviewStatus": "needs-review",
+    "readerMode": "v2",
+    "migrationStatus": "v2-ready",
+    "draftState": "accepted",
+    "reviewStatus": "curated",
     "queueSummary": {
-      "blocksPending": 21,
+      "blocksPending": 18,
       "definitionsPending": 0,
       "relatedNormsPending": 20
     },
     "issueCounts": {
       "errors": 0,
-      "warnings": 3,
-      "info": 1
+      "warnings": 0,
+      "info": 0
     }
   }
 ]

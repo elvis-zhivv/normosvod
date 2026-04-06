@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "meta": {
+    "migrationStatus": "v2-ready",
+    "readerMode": "v2"
+  },
+  "synopsis": {
+    "description": "Кураторски проверенная canonical-модель ГОСТ 8784—75 с подтвержденными методами определения укрывистости для screen-flow и print A4."
+  },
+  "blockOverrides": {
+    "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti": {
+      "summary": "Вводный блок и описание визуального метода определения укрывистости с ручной нормализацией терминов."
+    },
+    "gost-8784-75-2-instrumentalnyi-metod-opredeleniya-ukryvistosti": {
+      "summary": "Кураторски уточненный блок инструментального метода определения укрывистости."
+    },
+    "gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti": {
+      "summary": "Кураторски уточненный блок инструментально-математического метода определения укрывистости."
+    }
+  },
+  "definitionsAppend": [
+    {
+      "id": "manual-definition-visual-hiding-power",
+      "term": "визуальный метод определения укрывистости",
+      "summary": "Метод оценки укрывистости по исчезновению контрастного рисунка под нанесенным лакокрасочным покрытием.",
+      "blockId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti"
+    },
+    {
+      "id": "manual-definition-instrumental-hiding-power",
+      "term": "инструментальный метод определения укрывистости",
+      "summary": "Метод определения укрывистости с использованием фотометрических или иных инструментальных измерений контрастности покрытия.",
+      "blockId": "gost-8784-75-2-instrumentalnyi-metod-opredeleniya-ukryvistosti"
+    },
+    {
+      "id": "manual-definition-instrumental-math-hiding-power",
+      "term": "инструментально-математический метод определения укрывистости",
+      "summary": "Метод расчета укрывистости по измеренным оптическим параметрам с последующей математической обработкой результата.",
+      "blockId": "gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti"
+    },
+    {
+      "id": "manual-definition-coating-thickness",
+      "term": "толщина покрытия",
+      "summary": "Контролируемая характеристика покрытия, используемая при весовом определении параметров укрывистости.",
+      "blockId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom"
+    }
+  ]
+}

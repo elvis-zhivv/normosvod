@@ -104,7 +104,9 @@ test('buildCanonicalDocument creates canonical blocks with body text and extract
   }, viewerHtml);
 
   assert.equal(documentModel.kind, 'normosvod-canonical-document');
+  assert.equal(documentModel.docType, 'gost');
   assert.equal(documentModel.meta.themeId, 'coatings');
+  assert.equal(documentModel.meta.docType, 'gost');
   assert.equal(documentModel.blocks.length, 3);
   assert.match(documentModel.blocks[0].bodyText, /Текст первого раздела/);
   assert.ok(documentModel.blocks[1].references.length === 0);
@@ -263,8 +265,11 @@ test('normalizeCanonicalPackage prepares canonical-first import contract', () =>
 
   assert.equal(normalized.meta.readerMode, 'v2');
   assert.equal(normalized.meta.migrationStatus, 'print-verified');
+  assert.equal(normalized.docType, 'gost');
+  assert.equal(normalized.meta.docType, 'gost');
   assert.equal(normalized.entryPoints.screenUrl, '/doc/custom-doc');
   assert.equal(metaRecord.sourceType, 'canonical-document');
+  assert.equal(metaRecord.docType, 'gost');
   assert.equal(metaRecord.canonicalDocumentUrl, '/data/canonical/custom-doc.json');
   assert.equal(metaRecord.v2DocumentUrl, '/data/canonical/custom-doc.json');
   assert.equal(metaRecord.navItemsCount, 1);

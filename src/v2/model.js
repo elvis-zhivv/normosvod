@@ -4,6 +4,22 @@ function normalizeText(value) {
     .replace(/ё/g, 'е');
 }
 
+function inferDocType(document) {
+  const haystack = normalizeText([
+    document?.docType,
+    document?.slug,
+    document?.gostNumber,
+    document?.title,
+    document?.shortTitle
+  ].join(' '));
+
+  if (haystack.includes('гост') || haystack.includes('gost')) {
+    return 'gost';
+  }
+
+  return 'standard';
+}
+
 function inferThemeId(document) {
   const haystack = normalizeText([
     document?.gostNumber,
@@ -70,6 +86,7 @@ function buildReferenceBadges(blocks = []) {
 
 export function buildFallbackV2Document(document) {
   const themeId = document.themeId || inferThemeId(document);
+  const docType = document.docType || inferDocType(document);
   const blocks = (document.navItems ?? []).map((item, index) => ({
     id: `${document.slug}-fallback-${index + 1}`,
     type: inferBlockType(item.label),
@@ -86,9 +103,11 @@ export function buildFallbackV2Document(document) {
 
   return {
     slug: document.slug,
+    docType,
     meta: {
       gostNumber: document.gostNumber,
       title: document.title,
+      docType,
       year: document.year,
       pages: document.pages,
       themeId,

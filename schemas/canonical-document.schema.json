@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Normosvod Canonical Document",
+  "type": "object",
+  "required": [
+    "kind",
+    "slug",
+    "docType",
+    "meta",
+    "blocks",
+    "entities",
+    "relations",
+    "printMap"
+  ],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "const": "normosvod-canonical-document"
+    },
+    "slug": { "type": "string", "minLength": 1 },
+    "docType": {
+      "type": "string",
+      "enum": ["gost", "standard", "code", "rule", "recommendation", "collection", "other"]
+    },
+    "meta": {
+      "type": "object",
+      "required": [
+        "gostNumber",
+        "title",
+        "shortTitle",
+        "docType",
+        "themeId",
+        "status",
+        "readerMode",
+        "migrationStatus"
+      ],
+      "properties": {
+        "gostNumber": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "shortTitle": { "type": "string", "minLength": 1 },
+        "docType": {
+          "type": "string",
+          "enum": ["gost", "standard", "code", "rule", "recommendation", "collection", "other"]
+        },
+        "themeId": { "type": "string", "minLength": 1 },
+        "status": { "type": "string", "minLength": 1 },
+        "readerMode": { "type": "string", "enum": ["legacy", "hybrid", "v2"] },
+        "migrationStatus": {
+          "type": "string",
+          "enum": ["imported", "segmented", "entity-linked", "print-verified", "v2-ready"]
+        }
+      }
+    },
+    "blocks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "type", "print"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "type": { "type": "string", "minLength": 1 },
+          "print": {
+            "type": "object",
+            "required": ["sourcePageNumber", "pageNumber"],
+            "properties": {
+              "sourcePageNumber": { "type": "integer" },
+              "pageNumber": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "label"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "type": { "type": "string", "minLength": 1 },
+          "label": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "relations": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "printMap": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["blockId", "sourcePageNumber", "pageNumber"],
+        "properties": {
+          "blockId": { "type": "string", "minLength": 1 },
+          "sourcePageNumber": { "type": "integer" },
+          "pageNumber": { "type": "integer" }
+        }
+      }
+    }
+  }
+}

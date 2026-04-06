@@ -1,4 +1,5 @@
 import { buildSlug } from './slugify.mjs';
+import { normalizeDocType } from './doc-type.mjs';
 import { buildPrintLayoutForBlock } from './print-layout.mjs';
 import { inferThemeId } from './theme.mjs';
 import { extractBlockFragmentsFromViewer } from './viewer-fragments.mjs';
@@ -502,6 +503,7 @@ export function buildCanonicalDocument(document, searchIndexEntry, html = '') {
   const searchEntries = Array.isArray(searchIndexEntry?.entries) ? searchIndexEntry.entries : [];
   const navItems = Array.isArray(document.navItems) ? document.navItems : [];
   const themeId = document.themeId || inferThemeId(document);
+  const docType = normalizeDocType(document.docType, document);
   const fragments = html ? extractBlockFragmentsFromViewer(html, navItems) : [];
 
   const blocks = navItems.map((item, index) => {
@@ -563,10 +565,12 @@ export function buildCanonicalDocument(document, searchIndexEntry, html = '') {
     version: '0.2.0',
     kind: 'normosvod-canonical-document',
     slug: document.slug,
+    docType,
     meta: {
       gostNumber: document.gostNumber,
       title: document.title,
       shortTitle: document.shortTitle,
+      docType,
       year: document.year,
       status: document.status,
       language: document.language,

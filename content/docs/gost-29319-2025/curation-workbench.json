@@ -3,30 +3,27 @@
   "gostNumber": "ГОСТ 29319—2025",
   "title": "Материалы лакокрасочные. Метод визуального сравнения цвета",
   "themeId": "coatings",
-  "readerMode": "hybrid",
-  "migrationStatus": "entity-linked",
-  "draftState": "needs-review",
-  "targetMigrationStatus": "print-verified",
+  "readerMode": "v2",
+  "migrationStatus": "v2-ready",
+  "draftState": "accepted",
+  "targetMigrationStatus": "v2-ready",
   "curationApplied": true,
-  "overrideVersion": 1,
+  "overrideVersion": 2,
   "reportSummary": {
-    "reviewStatus": "needs-review",
+    "reviewStatus": "curated",
     "counts": {
       "errors": 0,
-      "warnings": 2,
-      "info": 1
+      "warnings": 0,
+      "info": 0
     },
-    "suggestedActions": [
-      "Дополнить manual overrides для блоков, определений и связанных норм.",
-      "Подготовить документ к полному cutover в Reader V2."
-    ]
+    "suggestedActions": []
   },
   "draftSummary": {
-    "notes": "Подтвердить перевод документа в print-verified после проверки короткого хвостового блока и policy переключения hybrid -> v2.",
+    "notes": "Экранный reader и print A4 подтверждены. Короткий хвостовой блок скрыт из curated screen-flow слоя.",
     "blockReviews": {
-      "accepted": 1,
+      "accepted": 2,
       "rejected": 0,
-      "pending": 1
+      "pending": 0
     },
     "definitionReviews": {
       "accepted": 1,
@@ -40,24 +37,11 @@
     }
   },
   "queueSummary": {
-    "blocksPending": 23,
+    "blocksPending": 22,
     "definitionsPending": 4,
     "relatedNormsPending": 17
   },
-  "documentIssues": [
-    {
-      "severity": "warning",
-      "code": "reader-cutover-pending",
-      "message": "Документ ещё не переведён в полный V2 reader mode (hybrid).",
-      "blockId": null
-    },
-    {
-      "severity": "warning",
-      "code": "migration-incomplete",
-      "message": "Migration status документа: entity-linked.",
-      "blockId": null
-    }
-  ],
+  "documentIssues": [],
   "blockQueue": [
     {
       "blockId": "gost-29319-2025-stranica-i-titul",
@@ -357,21 +341,6 @@
       "note": "",
       "reviewer": "",
       "updatedAt": ""
-    },
-    {
-      "blockId": "gost-29319-2025-stranica-20",
-      "title": "Страница 20",
-      "type": "section",
-      "sourcePageNumber": 20,
-      "reviewStatus": "needs-review",
-      "issueCodes": [
-        "thin-block"
-      ],
-      "issueCount": 1,
-      "hasOverride": false,
-      "note": "Короткий финальный блок требует ручной проверки: оставить meta block или скрыть в curated слое.",
-      "reviewer": "curator",
-      "updatedAt": "2026-04-05T12:12:00.000Z"
     }
   ],
   "definitionQueue": [
@@ -418,7 +387,7 @@
       "reviewStatus": "accepted",
       "note": "Определение подтверждено вручную.",
       "reviewer": "curator",
-      "updatedAt": "2026-04-05T12:14:00.000Z"
+      "updatedAt": "2026-04-06T08:14:00.000Z"
     }
   ],
   "relatedNormQueue": [
@@ -550,7 +519,7 @@
       "reviewStatus": "accepted",
       "note": "Связанная норма добавлена вручную и подтверждена.",
       "reviewer": "curator",
-      "updatedAt": "2026-04-05T12:15:00.000Z"
+      "updatedAt": "2026-04-06T08:15:00.000Z"
     },
     {
       "relatedNormId": "related-gost-29317",

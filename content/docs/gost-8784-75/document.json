@@ -2,26 +2,27 @@
   "version": "0.2.0",
   "kind": "normosvod-canonical-document",
   "slug": "gost-8784-75",
+  "docType": "gost",
   "meta": {
     "gostNumber": "ГОСТ 8784—75",
     "title": "Материалы лакокрасочные. Методы определения укрывистости",
     "shortTitle": "Методы определения укрывистости",
+    "docType": "gost",
     "year": 1975,
     "status": "active",
     "language": "ru",
     "pages": 16,
     "themeId": "coatings",
-    "readerMode": "legacy",
-    "migrationStatus": "imported"
+    "readerMode": "v2",
+    "migrationStatus": "v2-ready"
   },
   "synopsis": {
-    "description": "Автономный viewer ГОСТ 8784—75.",
+    "description": "Кураторски проверенная canonical-модель ГОСТ 8784—75 с подтвержденными методами определения укрывистости для screen-flow и print A4.",
     "keyTakeaways": [
       "ГОСТ 8784—75 сегментирован в 21 block units для V2 reader.",
-      "Во внутренних fragment-узлах выделено semantic units: 168.",
-      "Практические акценты автоматически выделены: 8.",
-      "В документе выявлены блоки определений: 4.",
-      "Из текста извлечено нормативных ссылок: 20."
+      "В документе выявлены или подтверждены определения: 4.",
+      "Связанные нормы в curated graph: 20.",
+      "Кураторский слой не скрывал блоки."
     ]
   },
   "source": {
@@ -302,7 +303,7 @@
       "order": 1,
       "type": "definition-set",
       "title": "Титульная страница и 1. Визуальный метод определения укрывистости",
-      "summary": "…кокрасочные материалы (эмали, краски) и неорганические пигменты и устанавливает визуальный, инструментальный и инструментально-математический методы определения укрывистости. За укрывистость принимают способность лакокрасочного материала делать невидимым цвет или цветовые различия окрашиваемой поверхности. (Измененная редакция, Изм. № 2). 1. ВИЗУАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ",
+      "summary": "Вводный блок и описание визуального метода определения укрывистости с ручной нормализацией терминов.",
       "bodyText": "МЕЖГОСУДАРСТВЕННЫЙ СТАНДАРТ МАТЕРИАЛЫ ЛАКОКРАСОЧНЫЕ Методы определения укрывистости Paint materials. Methods for determination of hiding power ГОСТ 8784—75 ОКСТУ 2310 Дата введения 01.01.76 Настоящий стандарт распространяется на лакокрасочные материалы (эмали, краски) и неорганические пигменты и устанавливает визуальный, инструментальный и инструментально-математический методы определения укрывистости. За укрывистость принимают способность лакокрасочного материала делать невидимым цвет или цветовые различия окрашиваемой поверхности. (Измененная редакция, Изм. № 2). 1. ВИЗУАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ",
       "references": [
         "ГОСТ 8784—75"
@@ -1474,7 +1475,7 @@
       "order": 6,
       "type": "definition-set",
       "title": "2. Инструментальный метод определения укрывистости",
-      "summary": "2. ИНСТРУМЕНТАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ",
+      "summary": "Кураторски уточненный блок инструментального метода определения укрывистости.",
       "bodyText": "2. ИНСТРУМЕНТАЛЬНЫЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ",
       "references": [],
       "units": [
@@ -2322,7 +2323,7 @@
       "order": 11,
       "type": "definition-set",
       "title": "3. Инструментально-математический метод определения укрывистости",
-      "summary": "3. ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ",
+      "summary": "Кураторски уточненный блок инструментально-математического метода определения укрывистости.",
       "bodyText": "3. ИНСТРУМЕНТАЛЬНО-МАТЕМАТИЧЕСКИЙ МЕТОД ОПРЕДЕЛЕНИЯ УКРЫВИСТОСТИ",
       "references": [],
       "units": [
@@ -3688,7 +3689,32 @@
       }
     }
   ],
-  "definitions": [],
+  "definitions": [
+    {
+      "id": "manual-definition-visual-hiding-power",
+      "term": "визуальный метод определения укрывистости",
+      "summary": "Метод оценки укрывистости по исчезновению контрастного рисунка под нанесенным лакокрасочным покрытием.",
+      "blockId": "gost-8784-75-titulnaya-stranica-i-1-vizualnyi-metod-opredeleniya-ukryvistosti"
+    },
+    {
+      "id": "manual-definition-instrumental-hiding-power",
+      "term": "инструментальный метод определения укрывистости",
+      "summary": "Метод определения укрывистости с использованием фотометрических или иных инструментальных измерений контрастности покрытия.",
+      "blockId": "gost-8784-75-2-instrumentalnyi-metod-opredeleniya-ukryvistosti"
+    },
+    {
+      "id": "manual-definition-instrumental-math-hiding-power",
+      "term": "инструментально-математический метод определения укрывистости",
+      "summary": "Метод расчета укрывистости по измеренным оптическим параметрам с последующей математической обработкой результата.",
+      "blockId": "gost-8784-75-3-instrumentalno-matematicheskii-metod-opredeleniya-ukryvistosti"
+    },
+    {
+      "id": "manual-definition-coating-thickness",
+      "term": "толщина покрытия",
+      "summary": "Контролируемая характеристика покрытия, используемая при весовом определении параметров укрывистости.",
+      "blockId": "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom"
+    }
+  ],
   "highlights": [
     {
       "id": "gost-8784-75-1-2-apparatura-i-materialy-requirement-1",
@@ -3960,84 +3986,104 @@
       "label": "Методы определения укрывистости"
     },
     {
-      "id": "entity-ref-1",
+      "id": "entity-related-gost-8784-75",
       "type": "reference",
       "label": "ГОСТ 8784—75"
     },
     {
-      "id": "entity-ref-2",
+      "id": "entity-related-gost-597",
       "type": "reference",
       "label": "ГОСТ 597"
     },
     {
-      "id": "entity-ref-3",
+      "id": "entity-related-gost-9095",
       "type": "reference",
       "label": "ГОСТ 9095"
     },
     {
-      "id": "entity-ref-4",
+      "id": "entity-related-gost-7931",
       "type": "reference",
       "label": "ГОСТ 7931"
     },
     {
-      "id": "entity-ref-5",
+      "id": "entity-related-gost-8832",
       "type": "reference",
       "label": "ГОСТ 8832"
     },
     {
-      "id": "entity-ref-6",
+      "id": "entity-related-gost-17537",
       "type": "reference",
       "label": "ГОСТ 17537"
     },
     {
-      "id": "entity-ref-7",
+      "id": "entity-related-gost-24234",
       "type": "reference",
       "label": "ГОСТ 24234"
     },
     {
-      "id": "entity-ref-8",
+      "id": "entity-related-gost-267",
       "type": "reference",
       "label": "ГОСТ 267"
     },
     {
-      "id": "entity-ref-9",
+      "id": "entity-related-gost-15139",
       "type": "reference",
       "label": "ГОСТ 15139"
     },
     {
-      "id": "entity-ref-10",
+      "id": "entity-related-gost-14243",
       "type": "reference",
       "label": "ГОСТ 14243"
     },
     {
-      "id": "entity-ref-11",
+      "id": "entity-related-gost-8784-58",
       "type": "reference",
       "label": "ГОСТ 8784—58"
     },
     {
-      "id": "entity-ref-12",
+      "id": "entity-related-gost-267-73",
       "type": "reference",
       "label": "ГОСТ 267—73"
     },
     {
-      "id": "entity-ref-13",
+      "id": "entity-related-gost-597-73",
       "type": "reference",
       "label": "ГОСТ 597—73"
     },
     {
-      "id": "entity-ref-14",
+      "id": "entity-related-gost-7931-76",
       "type": "reference",
       "label": "ГОСТ 7931—76"
     },
     {
-      "id": "entity-ref-15",
+      "id": "entity-related-gost-8832-76",
       "type": "reference",
       "label": "ГОСТ 8832—76"
     },
     {
-      "id": "entity-ref-16",
+      "id": "entity-related-gost-9095-89",
       "type": "reference",
       "label": "ГОСТ 9095—89"
+    },
+    {
+      "id": "entity-related-gost-14243-78",
+      "type": "reference",
+      "label": "ГОСТ 14243—78"
+    },
+    {
+      "id": "entity-related-gost-15139-69",
+      "type": "reference",
+      "label": "ГОСТ 15139—69"
+    },
+    {
+      "id": "entity-related-gost-17537-72",
+      "type": "reference",
+      "label": "ГОСТ 17537—72"
+    },
+    {
+      "id": "entity-related-gost-24234-80",
+      "type": "reference",
+      "label": "ГОСТ 24234—80"
     }
   ],
   "relations": [
@@ -4460,5 +4506,10 @@
       "pageAnchor": "#section-imprint",
       "estimatedUnits": 16
     }
-  ]
+  ],
+  "curation": {
+    "applied": true,
+    "hiddenBlocksCount": 0,
+    "overrideVersion": 1
+  }
 }

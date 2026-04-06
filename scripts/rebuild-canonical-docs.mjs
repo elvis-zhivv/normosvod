@@ -8,6 +8,7 @@ import { applyCanonicalOverrides, readCanonicalOverrides } from './lib/canonical
 import { readCanonicalDocument } from './lib/canonical-document.mjs';
 import { enrichDocumentRecord } from './lib/document-record.mjs';
 import { buildCanonicalDocument } from './lib/document-segmentation.mjs';
+import { assertSchema } from './lib/schema-validation.mjs';
 import { writeJson } from './lib/write-json.mjs';
 
 export async function rebuildCanonicalDocs(manifestOverride = null, searchIndexOverride = null) {
@@ -36,6 +37,9 @@ export async function rebuildCanonicalDocs(manifestOverride = null, searchIndexO
 
     const overrides = await readCanonicalOverrides(document.slug);
     const canonicalDocument = applyCanonicalOverrides(autoCanonicalDocument, overrides);
+    await assertSchema('canonical-document.schema.json', canonicalDocument, {
+      label: `canonical document ${document.slug}`
+    });
     const outputDirectory = path.join(CONTENT_DOCS_DIR, document.slug);
     await mkdir(outputDirectory, { recursive: true });
     await writeJson(path.join(outputDirectory, 'document.json'), canonicalDocument);

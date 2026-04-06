@@ -1,4 +1,5 @@
 import { buildSlug } from './slugify.mjs';
+import { normalizeDocType } from './doc-type.mjs';
 import { inferThemeId } from './theme.mjs';
 
 function inferBlockType(label) {
@@ -68,6 +69,7 @@ function buildEntities(document) {
 
 export function buildV2DocumentStub(document) {
   const themeId = document.themeId || inferThemeId(document);
+  const docType = normalizeDocType(document.docType, document);
   const blocks = (document.navItems ?? []).map((item, index) => {
     const blockId = buildSlug(`${document.slug}-${item.label || `block-${index + 1}`}`) || `${document.slug}-block-${index + 1}`;
     const pageNumber = Number(item.targetPageIndex ?? index) + 1;
@@ -99,10 +101,12 @@ export function buildV2DocumentStub(document) {
   return {
     version: '0.1.0',
     slug: document.slug,
+    docType,
     meta: {
       gostNumber: document.gostNumber,
       title: document.title,
       shortTitle: document.shortTitle,
+      docType,
       year: document.year,
       status: document.status,
       language: document.language,

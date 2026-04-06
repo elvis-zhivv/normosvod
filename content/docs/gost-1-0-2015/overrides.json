@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "meta": {
+    "migrationStatus": "v2-ready",
+    "readerMode": "v2"
+  },
+  "synopsis": {
+    "description": "Кураторски проверенная canonical-модель ГОСТ 1.0—2015 для непрерывного экранного чтения и print A4."
+  },
+  "blockOverrides": {
+    "gost-1-0-2015-2-normativnye-ssylki": {
+      "summary": "Нормативные ссылки, определяющие базовый контур межгосударственной стандартизации и правила применения связанных стандартов."
+    },
+    "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya": {
+      "summary": "Ключевой рабочий блок о категориях документов по межгосударственной стандартизации и правилах их применения."
+    }
+  }
+}

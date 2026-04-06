@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Normosvod Manifest Entry",
+  "type": "object",
+  "required": [
+    "slug",
+    "gostNumber",
+    "title",
+    "shortTitle",
+    "docType",
+    "themeId",
+    "status",
+    "year",
+    "readerMode",
+    "migrationStatus",
+    "legacyViewerUrl",
+    "printUrl",
+    "canonicalDocumentUrl"
+  ],
+  "properties": {
+    "slug": { "type": "string", "minLength": 1 },
+    "gostNumber": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "shortTitle": { "type": "string", "minLength": 1 },
+    "docType": {
+      "type": "string",
+      "enum": ["gost", "standard", "code", "rule", "recommendation", "collection", "other"]
+    },
+    "themeId": { "type": "string", "minLength": 1 },
+    "status": { "type": "string", "minLength": 1 },
+    "year": { "type": "integer" },
+    "readerMode": { "type": "string", "enum": ["legacy", "hybrid", "v2"] },
+    "migrationStatus": {
+      "type": "string",
+      "enum": ["imported", "segmented", "entity-linked", "print-verified", "v2-ready"]
+    },
+    "legacyViewerUrl": { "type": "string" },
+    "printUrl": { "type": "string", "minLength": 1 },
+    "canonicalDocumentUrl": { "type": "string", "minLength": 1 }
+  }
+}

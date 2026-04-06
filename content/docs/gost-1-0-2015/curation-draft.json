@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "reviewState": "accepted",
+  "notes": "Canonical block map, переходы к print и legacy, а также screen-flow reader подтверждены вручную.",
+  "targetMigrationStatus": "v2-ready",
+  "blockReviews": [
+    {
+      "blockId": "gost-1-0-2015-2-normativnye-ssylki",
+      "status": "accepted",
+      "note": "Нормативные ссылки и source locator подтверждены.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:30:00.000Z"
+    },
+    {
+      "blockId": "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya",
+      "status": "accepted",
+      "note": "Ключевой операционный блок подтвержден для cutover в V2.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:32:00.000Z"
+    }
+  ],
+  "definitionReviews": [],
+  "relatedNormReviews": [
+    {
+      "relatedNormId": "related-gost-1-2-2015",
+      "status": "accepted",
+      "note": "Связанная норма подтверждена по canonical references graph.",
+      "reviewer": "curator",
+      "updatedAt": "2026-04-06T08:34:00.000Z"
+    }
+  ]
+}

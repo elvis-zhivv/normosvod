@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Normosvod Curation Report Entry",
+  "type": "object",
+  "required": [
+    "slug",
+    "gostNumber",
+    "title",
+    "themeId",
+    "readerMode",
+    "migrationStatus",
+    "curationApplied",
+    "reviewStatus",
+    "counts",
+    "issues"
+  ],
+  "properties": {
+    "slug": { "type": "string", "minLength": 1 },
+    "gostNumber": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "themeId": { "type": "string", "minLength": 1 },
+    "readerMode": { "type": "string", "enum": ["legacy", "hybrid", "v2"] },
+    "migrationStatus": {
+      "type": "string",
+      "enum": ["imported", "segmented", "entity-linked", "print-verified", "v2-ready"]
+    },
+    "curationApplied": { "type": "boolean" },
+    "reviewStatus": { "type": "string", "enum": ["needs-review", "curated"] },
+    "counts": {
+      "type": "object",
+      "required": ["errors", "warnings", "info"],
+      "properties": {
+        "errors": { "type": "integer" },
+        "warnings": { "type": "integer" },
+        "info": { "type": "integer" }
+      }
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "code", "message"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["error", "warning", "info"] },
+          "code": { "type": "string", "minLength": 1 },
+          "message": { "type": "string", "minLength": 1 },
+          "blockId": { "type": ["string", "null"] }
+        }
+      }
+    }
+  }
+}

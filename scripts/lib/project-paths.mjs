@@ -5,6 +5,7 @@ const currentFilePath = fileURLToPath(import.meta.url);
 const currentDirectory = path.dirname(currentFilePath);
 
 export const ROOT_DIR = path.resolve(currentDirectory, '../..');
+export const SCHEMAS_DIR = path.join(ROOT_DIR, 'schemas');
 export const CONTENT_DIR = path.join(ROOT_DIR, 'content');
 export const CONTENT_DOCS_DIR = path.join(CONTENT_DIR, 'docs');
 export const PUBLIC_DIR = path.join(ROOT_DIR, 'public');

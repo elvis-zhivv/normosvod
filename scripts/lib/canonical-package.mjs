@@ -1,4 +1,5 @@
 import { buildSlug } from './slugify.mjs';
+import { normalizeDocType } from './doc-type.mjs';
 import { inferThemeId } from './theme.mjs';
 
 function normalizeArray(value) {
@@ -78,15 +79,22 @@ export function normalizeCanonicalPackage(rawDocument) {
   const outline = normalizeArray(rawDocument.outline);
   const pages = Number(rawDocument?.meta?.pages) || inferPagesFromBlocks(blocks);
   const tags = collectTags(rawDocument);
+  const docType = normalizeDocType(rawDocument?.meta?.docType ?? rawDocument?.docType, {
+    gostNumber,
+    title: rawDocument?.meta?.title,
+    shortTitle: rawDocument?.meta?.shortTitle
+  });
 
   return {
     ...rawDocument,
     slug,
+    docType,
     meta: {
       ...rawDocument.meta,
       gostNumber,
       title: String(rawDocument?.meta?.title ?? gostNumber).trim(),
       shortTitle: String(rawDocument?.meta?.shortTitle ?? rawDocument?.meta?.title ?? gostNumber).trim(),
+      docType,
       status: rawDocument?.meta?.status ?? 'active',
       language: rawDocument?.meta?.language ?? 'ru',
       pages,
@@ -136,6 +144,7 @@ export function buildMetaFromCanonicalPackage(canonicalDocument, { fileHash, imp
     gostNumber: canonicalDocument.meta.gostNumber,
     title: canonicalDocument.meta.title,
     shortTitle: canonicalDocument.meta.shortTitle,
+    docType: canonicalDocument.meta.docType ?? canonicalDocument.docType,
     year: canonicalDocument.meta.year ?? null,
     status: canonicalDocument.meta.status,
     language: canonicalDocument.meta.language,

@@ -1,5 +1,6 @@
 import { inferThemeId } from './theme.mjs';
 import { applySourceProfile, getSourceProfile } from './source-registry.mjs';
+import { normalizeDocType } from './doc-type.mjs';
 
 function normalizeReaderMode(value) {
   const supported = new Set(['legacy', 'hybrid', 'v2']);
@@ -23,13 +24,14 @@ export function enrichDocumentRecord(record) {
 
   return {
     ...sourceRecord,
+    docType: normalizeDocType(record.docType, record),
     ...(viewerUrl ? { viewerUrl } : {}),
     themeId: record.themeId || inferThemeId(record),
     readerMode: normalizeReaderMode(record.readerMode),
     migrationStatus: normalizeMigrationStatus(record.migrationStatus),
     canonicalDocumentUrl,
     v2DocumentUrl: record.v2DocumentUrl || canonicalDocumentUrl,
-    ...(legacyViewerUrl ? { legacyViewerUrl } : {}),
+    legacyViewerUrl,
     printUrl,
     hasV2Scaffold: record.hasV2Scaffold ?? true
   };
