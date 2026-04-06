@@ -37,9 +37,9 @@
     }
   },
   "queueSummary": {
-    "blocksPending": 22,
-    "definitionsPending": 4,
-    "relatedNormsPending": 17
+    "blocksPending": 0,
+    "definitionsPending": 0,
+    "relatedNormsPending": 0
   },
   "documentIssues": [],
   "blockQueue": [
@@ -48,7 +48,7 @@
       "title": "Страница I — «Титул»",
       "type": "section",
       "sourcePageNumber": 1,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -61,7 +61,7 @@
       "title": "Страница II — «Предисловие. Сведения о стандарте»",
       "type": "meta",
       "sourcePageNumber": 2,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -74,7 +74,7 @@
       "title": "Страница III — «Информационные сведения»",
       "type": "section",
       "sourcePageNumber": 3,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -87,7 +87,7 @@
       "title": "Страница IV — «Введение»",
       "type": "meta",
       "sourcePageNumber": 4,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -100,7 +100,7 @@
       "title": "1. Область применения",
       "type": "section",
       "sourcePageNumber": 5,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -126,7 +126,7 @@
       "title": "3. Термины и определения",
       "type": "definition-set",
       "sourcePageNumber": 6,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": true,
@@ -139,7 +139,7 @@
       "title": "4. Требования к освещению для сравнения цвета",
       "type": "requirements",
       "sourcePageNumber": 6,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -152,7 +152,7 @@
       "title": "5. Требования к специалисту",
       "type": "requirements",
       "sourcePageNumber": 7,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -165,7 +165,7 @@
       "title": "6. Требования к образцам и эталонам",
       "type": "requirements",
       "sourcePageNumber": 8,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -178,7 +178,7 @@
       "title": "Раздел 6 (продолжение)",
       "type": "section",
       "sourcePageNumber": 9,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -191,7 +191,7 @@
       "title": "7. Проведение испытаний",
       "type": "procedure",
       "sourcePageNumber": 10,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -204,7 +204,7 @@
       "title": "8. Оценка метамерии",
       "type": "analysis",
       "sourcePageNumber": 11,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -217,7 +217,7 @@
       "title": "9. Обработка результатов",
       "type": "analysis",
       "sourcePageNumber": 12,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -230,7 +230,7 @@
       "title": "10. Прецизионность",
       "type": "section",
       "sourcePageNumber": 12,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -243,7 +243,7 @@
       "title": "11. Протокол испытаний",
       "type": "procedure",
       "sourcePageNumber": 12,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -256,7 +256,7 @@
       "title": "Приложение А (справочное) — «Идентификация цвета образцов»",
       "type": "appendix",
       "sourcePageNumber": 13,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -269,7 +269,7 @@
       "title": "Приложение А (продолжение)",
       "type": "appendix",
       "sourcePageNumber": 14,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -282,7 +282,7 @@
       "title": "Приложение Б (обязательное) — «Схема визуальной оценки компонентов цветовых различий»",
       "type": "appendix",
       "sourcePageNumber": 15,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -295,7 +295,7 @@
       "title": "Приложение В (справочное) — «Метамерия и метамерные соответствия»",
       "type": "appendix",
       "sourcePageNumber": 16,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -308,7 +308,7 @@
       "title": "Библиография",
       "type": "bibliography",
       "sourcePageNumber": 17,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -321,7 +321,7 @@
       "title": "Ключевые слова",
       "type": "meta",
       "sourcePageNumber": 18,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -334,7 +334,7 @@
       "title": "Издательские сведения",
       "type": "meta",
       "sourcePageNumber": 19,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -348,7 +348,7 @@
       "definitionId": "gost-29319-2025-3-terminy-i-opredeleniya-cvet-lakokrasochnogo-pokrytiya",
       "term": "цвет лакокрасочного покрытия",
       "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -357,7 +357,7 @@
       "definitionId": "gost-29319-2025-3-terminy-i-opredeleniya-vizualnoe-cvetovoe-razlichie",
       "term": "визуальное цветовое различие",
       "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -366,7 +366,7 @@
       "definitionId": "gost-29319-2025-3-terminy-i-opredeleniya-kontrolnyi-obrazec-cveta-koc",
       "term": "контрольный образец цвета; КОЦ",
       "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -375,7 +375,7 @@
       "definitionId": "gost-29319-2025-3-terminy-i-opredeleniya-metameriya-mezhdu-dvumya-cvetami",
       "term": "метамерия (между двумя цветами)",
       "blockId": "gost-29319-2025-3-terminy-i-opredeleniya",
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -397,7 +397,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-stranica-i-titul"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -409,7 +409,7 @@
         "gost-29319-2025-stranica-i-titul",
         "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -435,7 +435,7 @@
         "gost-29319-2025-prilozhenie-v-spravochnoe-metameriya-i-metamernye-sootvetstviya",
         "gost-29319-2025-bibliografiya"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -446,7 +446,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -457,7 +457,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -468,7 +468,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-stranica-ii-predislovie-svedeniya-o-standarte"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -480,7 +480,7 @@
         "gost-29319-2025-2-normativnye-ssylki",
         "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -493,7 +493,7 @@
         "gost-29319-2025-6-trebovaniya-k-obrazcam-i-etalonam",
         "gost-29319-2025-razdel-6-prodolzhenie"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -505,7 +505,7 @@
         "gost-29319-2025-2-normativnye-ssylki",
         "gost-29319-2025-razdel-6-prodolzhenie"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -529,7 +529,7 @@
         "gost-29319-2025-razdel-6-prodolzhenie",
         "gost-29319-2025-7-provedenie-ispytanii"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -541,7 +541,7 @@
         "gost-29319-2025-2-normativnye-ssylki",
         "gost-29319-2025-razdel-6-prodolzhenie"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -552,7 +552,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-2-normativnye-ssylki"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -563,7 +563,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-2-normativnye-ssylki"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -574,7 +574,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-2-normativnye-ssylki"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -585,7 +585,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-razdel-6-prodolzhenie"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -596,7 +596,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-bibliografiya"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -607,7 +607,7 @@
       "sourceBlockIds": [
         "gost-29319-2025-bibliografiya"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""

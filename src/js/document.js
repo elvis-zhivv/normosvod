@@ -335,7 +335,7 @@ function renderV2Scaffold(document) {
   return `
     <section class="v2-entry v2-theme-${escapeHtml(themeLabel)}">
       <div class="v2-entry-copy">
-        <p class="eyebrow">Reader V2 Beta</p>
+        <p class="eyebrow">Reader V2</p>
         <h1>${escapeHtml(document.title)}</h1>
         <p class="document-lead">${escapeHtml(document.description ?? 'Структурированный экранный режим документа.')}</p>
         ${renderSignalChips(document)}

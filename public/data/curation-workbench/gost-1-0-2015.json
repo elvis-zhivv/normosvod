@@ -37,9 +37,9 @@
     }
   },
   "queueSummary": {
-    "blocksPending": 14,
+    "blocksPending": 0,
     "definitionsPending": 0,
-    "relatedNormsPending": 13
+    "relatedNormsPending": 0
   },
   "documentIssues": [],
   "blockQueue": [
@@ -48,7 +48,7 @@
       "title": "Обложка",
       "type": "section",
       "sourcePageNumber": 1,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -61,7 +61,7 @@
       "title": "Предисловие и сведения о стандарте",
       "type": "meta",
       "sourcePageNumber": 2,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -74,7 +74,7 @@
       "title": "Содержание",
       "type": "section",
       "sourcePageNumber": 3,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -87,7 +87,7 @@
       "title": "1. Область применения",
       "type": "section",
       "sourcePageNumber": 4,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -113,7 +113,7 @@
       "title": "3. Цели межгосударственной стандартизации",
       "type": "section",
       "sourcePageNumber": 5,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -126,7 +126,7 @@
       "title": "4. Основные принципы межгосударственной стандартизации",
       "type": "section",
       "sourcePageNumber": 5,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -139,7 +139,7 @@
       "title": "5. Основные направления работ по межгосударственной стандартизации",
       "type": "section",
       "sourcePageNumber": 5,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -152,7 +152,7 @@
       "title": "5.2. Приоритетные направления работ по межгосударственной стандартизации",
       "type": "section",
       "sourcePageNumber": 6,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -165,7 +165,7 @@
       "title": "6. Организация работ по межгосударственной стандартизации",
       "type": "section",
       "sourcePageNumber": 6,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -178,7 +178,7 @@
       "title": "7. Объекты межгосударственной стандартизации",
       "type": "section",
       "sourcePageNumber": 7,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -204,7 +204,7 @@
       "title": "8.3.4. Дата введения национальных стандартов",
       "type": "section",
       "sourcePageNumber": 9,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -217,7 +217,7 @@
       "title": "8.8.1. Уведомление о прекращении применения МГС в государстве — участнике Соглашения",
       "type": "section",
       "sourcePageNumber": 10,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -230,7 +230,7 @@
       "title": "Библиография",
       "type": "bibliography",
       "sourcePageNumber": 11,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -243,7 +243,7 @@
       "title": "Издательские сведения",
       "type": "meta",
       "sourcePageNumber": 11,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -260,7 +260,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-oblozhka"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -280,7 +280,7 @@
         "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov",
         "gost-1-0-2015-8-8-1-uvedomlenie-o-prekraschenii-primeneniya-mgs-v-gosudarstve-uchastnike-soglasheniya"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -303,7 +303,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-predislovie-i-svedeniya-o-standarte"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -314,7 +314,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-1-oblast-primeneniya"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -325,7 +325,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-2-normativnye-ssylki"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -336,7 +336,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-2-normativnye-ssylki"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -347,7 +347,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-2-normativnye-ssylki"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -358,7 +358,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-2-normativnye-ssylki"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -369,7 +369,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -382,7 +382,7 @@
         "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya",
         "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -393,7 +393,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-6-organizaciya-rabot-po-mezhgosudarstvennoi-standartizacii"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -404,7 +404,7 @@
       "sourceBlockIds": [
         "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -416,7 +416,7 @@
         "gost-1-0-2015-8-dokumenty-po-mezhgosudarstvennoi-standartizacii-i-pravila-ih-primeneniya",
         "gost-1-0-2015-8-3-4-data-vvedeniya-nacionalnyh-standartov"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""

@@ -9,9 +9,9 @@
     "draftState": "accepted",
     "reviewStatus": "curated",
     "queueSummary": {
-      "blocksPending": 14,
+      "blocksPending": 0,
       "definitionsPending": 0,
-      "relatedNormsPending": 13
+      "relatedNormsPending": 0
     },
     "issueCounts": {
       "errors": 0,
@@ -29,9 +29,9 @@
     "draftState": "accepted",
     "reviewStatus": "curated",
     "queueSummary": {
-      "blocksPending": 22,
-      "definitionsPending": 4,
-      "relatedNormsPending": 17
+      "blocksPending": 0,
+      "definitionsPending": 0,
+      "relatedNormsPending": 0
     },
     "issueCounts": {
       "errors": 0,
@@ -49,9 +49,9 @@
     "draftState": "accepted",
     "reviewStatus": "curated",
     "queueSummary": {
-      "blocksPending": 18,
+      "blocksPending": 0,
       "definitionsPending": 0,
-      "relatedNormsPending": 20
+      "relatedNormsPending": 0
     },
     "issueCounts": {
       "errors": 0,

@@ -37,9 +37,9 @@
     }
   },
   "queueSummary": {
-    "blocksPending": 18,
+    "blocksPending": 0,
     "definitionsPending": 0,
-    "relatedNormsPending": 20
+    "relatedNormsPending": 0
   },
   "documentIssues": [],
   "blockQueue": [
@@ -48,7 +48,7 @@
       "title": "Обложка",
       "type": "section",
       "sourcePageNumber": 1,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -74,7 +74,7 @@
       "title": "1.1. Сущность метода",
       "type": "section",
       "sourcePageNumber": 2,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -87,7 +87,7 @@
       "title": "1.2. Аппаратура и материалы",
       "type": "section",
       "sourcePageNumber": 2,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -100,7 +100,7 @@
       "title": "1.3. Проведение испытания",
       "type": "procedure",
       "sourcePageNumber": 3,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -113,7 +113,7 @@
       "title": "1.4. Обработка результатов",
       "type": "analysis",
       "sourcePageNumber": 3,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -139,7 +139,7 @@
       "title": "2.1. Сущность метода",
       "type": "section",
       "sourcePageNumber": 4,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -152,7 +152,7 @@
       "title": "2.2. Аппаратура и материалы",
       "type": "section",
       "sourcePageNumber": 4,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -165,7 +165,7 @@
       "title": "2.3. Проведение испытания",
       "type": "procedure",
       "sourcePageNumber": 5,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -178,7 +178,7 @@
       "title": "2.4. Обработка результатов",
       "type": "analysis",
       "sourcePageNumber": 5,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -204,7 +204,7 @@
       "title": "3.1. Сущность метода",
       "type": "section",
       "sourcePageNumber": 6,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -217,7 +217,7 @@
       "title": "3.2. Аппаратура и материалы",
       "type": "section",
       "sourcePageNumber": 6,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -230,7 +230,7 @@
       "title": "3.3. Проведение испытания",
       "type": "procedure",
       "sourcePageNumber": 6,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -243,7 +243,7 @@
       "title": "3.4. Обработка результатов",
       "type": "analysis",
       "sourcePageNumber": 6,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -256,7 +256,7 @@
       "title": "3.4.3. Перевод величины укрывистости",
       "type": "section",
       "sourcePageNumber": 7,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -269,7 +269,7 @@
       "title": "Приложение 1 — определение толщины покрытия весовым методом",
       "type": "definition-set",
       "sourcePageNumber": 8,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -282,7 +282,7 @@
       "title": "Приложение 2 — блок-схема расчета укрывистости",
       "type": "appendix",
       "sourcePageNumber": 9,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -295,7 +295,7 @@
       "title": "Информационные данные",
       "type": "section",
       "sourcePageNumber": 10,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -308,7 +308,7 @@
       "title": "Издательские сведения",
       "type": "meta",
       "sourcePageNumber": 11,
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "issueCodes": [],
       "issueCount": 0,
       "hasOverride": false,
@@ -371,7 +371,7 @@
         "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom",
         "gost-8784-75-prilozhenie-2-blok-shema-rascheta-ukryvistosti"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -383,7 +383,7 @@
         "gost-8784-75-1-2-apparatura-i-materialy",
         "gost-8784-75-2-2-apparatura-i-materialy"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -395,7 +395,7 @@
         "gost-8784-75-1-2-apparatura-i-materialy",
         "gost-8784-75-2-2-apparatura-i-materialy"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -406,7 +406,7 @@
       "sourceBlockIds": [
         "gost-8784-75-1-3-provedenie-ispytaniya"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -418,7 +418,7 @@
         "gost-8784-75-1-3-provedenie-ispytaniya",
         "gost-8784-75-3-3-provedenie-ispytaniya"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -429,7 +429,7 @@
       "sourceBlockIds": [
         "gost-8784-75-1-4-obrabotka-rezultatov"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -440,7 +440,7 @@
       "sourceBlockIds": [
         "gost-8784-75-2-2-apparatura-i-materialy"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -452,7 +452,7 @@
         "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti",
         "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -464,7 +464,7 @@
         "gost-8784-75-3-4-3-perevod-velichiny-ukryvistosti",
         "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -475,7 +475,7 @@
       "sourceBlockIds": [
         "gost-8784-75-prilozhenie-1-opredelenie-tolschiny-pokrytiya-vesovym-metodom"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -486,7 +486,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -497,7 +497,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -508,7 +508,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -519,7 +519,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -530,7 +530,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -541,7 +541,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -552,7 +552,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -563,7 +563,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -574,7 +574,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""
@@ -585,7 +585,7 @@
       "sourceBlockIds": [
         "gost-8784-75-informacionnye-dannye"
       ],
-      "reviewStatus": "pending",
+      "reviewStatus": "accepted",
       "note": "",
       "reviewer": "",
       "updatedAt": ""

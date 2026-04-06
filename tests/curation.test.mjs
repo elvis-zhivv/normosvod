@@ -264,3 +264,62 @@ test('buildCurationWorkbenchEntry combines report, overrides and draft review qu
   assert.equal(workbench.blockQueue[0].reviewStatus, 'accepted');
   assert.ok(workbench.queueSummary.relatedNormsPending >= 1);
 });
+
+test('buildCurationWorkbenchEntry does not keep curated documents in pending queues by default', () => {
+  const canonicalDocument = {
+    slug: 'doc-e',
+    meta: {
+      gostNumber: 'ГОСТ 5000—2026',
+      title: 'Полностью подтвержденный документ',
+      themeId: 'coatings',
+      readerMode: 'v2',
+      migrationStatus: 'v2-ready'
+    },
+    blocks: [
+      {
+        id: 'block-1',
+        title: '1 Область применения',
+        type: 'section',
+        bodyText: 'Подтвержденный блок без замечаний.',
+        print: { sourcePageNumber: 1 },
+        legacy: { targetSelector: '#section-1' }
+      }
+    ],
+    definitions: [
+      {
+        id: 'definition-1',
+        term: 'контрольный образец',
+        blockId: 'block-1'
+      }
+    ],
+    relatedNorms: [
+      {
+        id: 'related-1',
+        label: 'ГОСТ 29317—92',
+        sourceBlockIds: ['block-1']
+      }
+    ],
+    curation: {
+      applied: true,
+      overrideVersion: 1
+    }
+  };
+  const report = buildCurationReportEntry(canonicalDocument, {});
+  const workbench = buildCurationWorkbenchEntry({
+    canonicalDocument,
+    curationReport: report,
+    overrides: { version: 1 },
+    draft: normalizeCurationDraft({
+      reviewState: 'accepted',
+      targetMigrationStatus: 'v2-ready'
+    })
+  });
+
+  assert.equal(workbench.reportSummary.reviewStatus, 'curated');
+  assert.equal(workbench.queueSummary.blocksPending, 0);
+  assert.equal(workbench.queueSummary.definitionsPending, 0);
+  assert.equal(workbench.queueSummary.relatedNormsPending, 0);
+  assert.equal(workbench.blockQueue[0].reviewStatus, 'accepted');
+  assert.equal(workbench.definitionQueue[0].reviewStatus, 'accepted');
+  assert.equal(workbench.relatedNormQueue[0].reviewStatus, 'accepted');
+});

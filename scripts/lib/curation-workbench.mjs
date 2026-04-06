@@ -27,7 +27,23 @@ function buildReviewMap(items = [], idField = 'blockId') {
   );
 }
 
-function deriveBlockReviewStatus(blockIssueList = [], blockReview = null) {
+function deriveDefaultQueueStatus({ blockIssueList = [], review = null, isFullyCurated = false } = {}) {
+  if (review?.status) {
+    return review.status;
+  }
+
+  if (blockIssueList.some((issue) => issue.severity === 'error' || issue.severity === 'warning')) {
+    return 'needs-review';
+  }
+
+  if (isFullyCurated) {
+    return 'accepted';
+  }
+
+  return 'pending';
+}
+
+function deriveBlockReviewStatus(blockIssueList = [], blockReview = null, isFullyCurated = false) {
   if (blockReview?.status) {
     return blockReview.status;
   }
@@ -36,7 +52,7 @@ function deriveBlockReviewStatus(blockIssueList = [], blockReview = null) {
     return 'needs-review';
   }
 
-  return 'pending';
+  return isFullyCurated ? 'accepted' : 'pending';
 }
 
 export function buildCurationWorkbenchEntry({
@@ -56,6 +72,7 @@ export function buildCurationWorkbenchEntry({
   const definitionReviewCounts = countStatuses(draft?.definitionReviews);
   const relatedNormReviewCounts = countStatuses(draft?.relatedNormReviews);
   const blockOverrides = overrides?.blockOverrides ?? {};
+  const isFullyCurated = draft?.reviewState === 'accepted' && curationReport?.reviewStatus === 'curated';
 
   const blockQueue = blocks.map((block) => {
     const blockIssues = issueMap.get(block.id) ?? [];
@@ -66,7 +83,7 @@ export function buildCurationWorkbenchEntry({
       title: block.title,
       type: block.type,
       sourcePageNumber: block.print?.sourcePageNumber ?? block.print?.pageNumber ?? null,
-      reviewStatus: deriveBlockReviewStatus(blockIssues, blockReview),
+      reviewStatus: deriveBlockReviewStatus(blockIssues, blockReview, isFullyCurated),
       issueCodes: blockIssues.map((issue) => issue.code),
       issueCount: blockIssues.length,
       hasOverride: Boolean(blockOverrides[block.id]),
@@ -83,7 +100,7 @@ export function buildCurationWorkbenchEntry({
       definitionId: definition.id,
       term: definition.term,
       blockId: definition.blockId,
-      reviewStatus: review?.status ?? 'pending',
+      reviewStatus: deriveDefaultQueueStatus({ review, isFullyCurated }),
       note: review?.note ?? '',
       reviewer: review?.reviewer ?? '',
       updatedAt: review?.updatedAt ?? ''
@@ -97,7 +114,7 @@ export function buildCurationWorkbenchEntry({
       relatedNormId: item.id,
       label: item.label,
       sourceBlockIds: item.sourceBlockIds ?? [],
-      reviewStatus: review?.status ?? 'pending',
+      reviewStatus: deriveDefaultQueueStatus({ review, isFullyCurated }),
       note: review?.note ?? '',
       reviewer: review?.reviewer ?? '',
       updatedAt: review?.updatedAt ?? ''
