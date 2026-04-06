@@ -190,3 +190,63 @@ test('renderV2Reader uses specialized screen-flow renderers for procedure, appen
   assert.match(html, /v2-unit-procedure-item/);
   assert.match(html, /v2-table-group/);
 });
+
+test('renderV2Reader moves ancillary pages out of the main flow and renders prose as reading text', () => {
+  const model = normalizeV2Document({
+    meta: {
+      themeId: 'coatings',
+      migrationStatus: 'v2-ready',
+      gostNumber: 'ГОСТ TEST'
+    },
+    outline: [
+      { id: 'front-1', title: 'Страница I — «Титул»', type: 'section', pageNumber: 1 },
+      { id: 'main-1', title: '1. Область применения', type: 'section', pageNumber: 5 }
+    ],
+    blocks: [
+      {
+        id: 'front-1',
+        type: 'section',
+        title: 'Страница I — «Титул»',
+        summary: 'Служебная страница.',
+        references: [],
+        units: [
+          { id: 'front-unit', type: 'paragraph', text: 'Служебная страница.', references: [] }
+        ],
+        highlights: [],
+        print: { pageNumber: 1 },
+        legacy: {}
+      },
+      {
+        id: 'main-1',
+        type: 'section',
+        title: '1. Область применения',
+        summary: 'Основной нормативный текст.',
+        references: [],
+        units: [
+          { id: 'skip-title', type: 'paragraph', text: '1. Область применения', references: [] },
+          { id: 'keep-1', type: 'paragraph', text: 'Настоящий стандарт распространяется на материалы.', references: [] },
+          { id: 'skip-roman', type: 'paragraph', text: 'III', references: [] },
+          { id: 'keep-2', type: 'paragraph', text: 'Сравнение проводят при естественном или искусственном освещении.', references: [] },
+          { id: 'note-1', type: 'note', summary: 'Примечание для проверочного чтения.', references: [] }
+        ],
+        highlights: [],
+        print: { pageNumber: 5 },
+        legacy: {}
+      }
+    ],
+    entryPoints: {
+      legacyUrl: '/docs/gost-29319-2025/viewer.html',
+      printUrl: '/docs/gost-29319-2025/print.html'
+    }
+  }, legacyDocument);
+
+  const html = renderV2Reader(model, legacyDocument);
+
+  assert.match(html, /Вступительные и служебные страницы/);
+  assert.match(html, /Чтение начинается с раздела «1\. Область применения»/);
+  assert.match(html, /class="v2-prose-group"/);
+  assert.equal((html.match(/class="v2-prose-paragraph"/g) ?? []).length, 2);
+  assert.equal((html.match(/class="v2-outline-link"/g) ?? []).length, 1);
+  assert.match(html, /class="v2-outline-link" href="#main-1"/);
+  assert.match(html, /v2-callout-note/);
+});
